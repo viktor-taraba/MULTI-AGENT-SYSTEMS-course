@@ -28,9 +28,6 @@ web_search_tool_schema = {
     }
 }
 
-print("Tool Schema:")
-print(json.dumps(web_search_tool_schema, indent=2))
-
 def web_search(query: str) -> list[dict]:
     """
     Search the web to find up-to-date information.
@@ -83,9 +80,6 @@ read_url_tool_schema = {
         "required": ["url"]
     }
 }
-
-print("Tool Schema:")
-print(json.dumps(web_search_tool_schema, indent=2))
 
 def read_url(url: str) -> str:
     """
