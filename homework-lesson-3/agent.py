@@ -12,7 +12,7 @@ import json
 import os
 from dotenv import load_dotenv
 
-os.environ["OPENAI_API_KEY"] = 
+load_dotenv()
 client = OpenAI()
 
 # Tool registry — maps tool names to Python functions
@@ -29,7 +29,7 @@ messages = [
       1. DO NOT rely solely on search engine snippets. They are too brief.\
       2. After using 'web_search', you MUST use the 'read_url' tool on at least 1-2 of the most relevant links to gather deep context, statistics, and specific details.\
       3. Only generate your final report AFTER you have read the full text of the relevant sources."},
-     {"role": "user", "content": "LangChain vs LlamaIndex RAG"},
+     {"role": "user", "content": "ЮГОВ-проект - що це?"},#"Нещодавні новини про Україну (з коротким підсумком)"},#"LangChain vs LlamaIndex RAG"},
 ]
 
 response = client.responses.create(
@@ -41,7 +41,7 @@ response = client.responses.create(
 followup_input = messages.copy()
 
 # Set a maximum number of iterations to prevent infinite loops
-max_iterations = 100
+max_iterations = 50
 iteration = 0
 while iteration < max_iterations:
     iteration += 1
@@ -75,7 +75,7 @@ while iteration < max_iterations:
             # Execute the function
             result = func(**args)
             # to delete
-            print("Function Calling result:", json.dumps(result, indent=2))
+            # print("Function Calling result:", json.dumps(result, indent=2))
 
             # Append the result back to the conversation history
             followup_input.append({

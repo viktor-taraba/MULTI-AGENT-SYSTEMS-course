@@ -18,10 +18,6 @@ web_search_tool_schema = {
             "query": {
                 "type": "string",
                 "description": "Search query or question to look up., e.g. 'Dynamic pricing models'"
-            },
-            "max_results": {
-                "type": "integer",
-                "description": "The maximum number of search results to return. Default is 5'"
             }
         },
         "required": ["query"]
