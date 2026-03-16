@@ -20,6 +20,8 @@ CRITICAL RULES:
 sentence summary of your findings.
 6. NO FOLLOW-UP QUESTIONS: Do not include conversational filler, follow-up questions, or offers for further assistance.\
 Conclude your final message abruptly and professionally once the report is saved.
+7. NO AUTHOR ATTRIBUTION: The final report must NOT contain any indication of who prepared it. The document must be completely anonymous.\
+However, you MUST include a "Sources" section at the bottom listing the URLs and references you used.
 
 Try not to use more than 28 iterations of tool calls (web_search + read_url) to gather information. 
 If you reach the limit, stop, use 'write_report' with the information you currently have, and inform the user.
