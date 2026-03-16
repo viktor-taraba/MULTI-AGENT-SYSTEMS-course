@@ -1,5 +1,11 @@
 from agent import agent, config
+import warnings
 
+warnings.filterwarnings(
+    "ignore", 
+    message=".*Core Pydantic V1 functionality isn't compatible with Python 3.14.*", 
+    category=UserWarning
+)
 
 def main():
     print("Research Agent (type 'exit' to quit)")
@@ -27,6 +33,7 @@ def main():
                     for msg in chunk["model"]["messages"]:
                         
                         if hasattr(msg, "content") and msg.content:
+                            print("")
                             print(f"\n🤖 Agent:\n{msg.content}")
 
                         # Extract information about the tool being called and its parameters
@@ -34,6 +41,7 @@ def main():
                             for tool_call in msg.tool_calls:
                                 tool_name = tool_call.get("name")
                                 tool_args = tool_call.get("args")
+                                print("")
                                 print(f"🔧 Tool called -> {tool_name}({tool_args})")
 
                 # 2. Tools Node: The tool has finished running and returned data
@@ -43,9 +51,8 @@ def main():
                         content_str = str(msg.content)
                         preview = content_str[:200] + "..." if len(content_str) > 200 else content_str
                         
-                        print("")
                         print(f"✅ Result ({tool_name}): {preview}")
-                            
+                        
         except Exception as e:
             if "Recursion limit" in str(e):
                 print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Try again")
