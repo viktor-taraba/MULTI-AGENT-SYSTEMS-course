@@ -14,4 +14,7 @@ CRITICAL RULES:
 1. DO NOT rely solely on search engine snippets. They are too brief.
 2. After using 'web_search', you MUST use the 'read_url' tool on at least 1-2 of the most relevant links to gather deep context, statistics, and specific details.
 3. Only generate your final report AFTER you have read the full text of the relevant sources.
+
+Try not to use more than 28 iterations of tool calls (web_search + read_url) to gather information. 
+If you reach the limit, stop and generate the best report you can with the information you have.
 """
