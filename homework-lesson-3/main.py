@@ -55,9 +55,9 @@ def main():
                         
         except Exception as e:
             if "Recursion limit" in str(e):
-                print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Try again")
+                print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Try again or type 'continue' (Don't worry, model remembers conversatio with you!)")
             else:
-                print(f"\n❌ An error occurred: {e}")
+                print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversatio with you!")
 
 
 if __name__ == "__main__":
