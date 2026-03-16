@@ -1,43 +1,56 @@
-# llm = ...
-
-# tools = ...
-
-# memory = ...
-
-# agent = ...
-
-from tools import web_search, read_url, web_search_tool_schema, read_url_tool_schema
-from openai import OpenAI
-import json
-import os
+from tools import web_search, read_url
+from langchain_openai import ChatOpenAI
+from langchain.agents import create_agent
+from langgraph.checkpoint.memory import MemorySaver
+from config import SYSTEM_PROMPT, max_iterations, model_name, model_temerature
 from dotenv import load_dotenv
-
 load_dotenv()
-client = OpenAI()
+import warnings
 
-# Tool registry — maps tool names to Python functions
-tool_registry = {"web_search": web_search, "read_url": read_url}
-
-# Step 1: Define tools and call the API
-tools = [web_search_tool_schema, read_url_tool_schema]
-tools
-
-messages = [
-    {"role": "system", "content": "You are a Senior Analyst with 10 years of experience.\
-      Your task is to receive a question from the user, search and structure information using a appropriate tools, gathers findings, and generate a structured highly detailed, comprehensive Markdown report.\
-      CRITICAL RULES:\
-      1. DO NOT rely solely on search engine snippets. They are too brief.\
-      2. After using 'web_search', you MUST use the 'read_url' tool on at least 1-2 of the most relevant links to gather deep context, statistics, and specific details.\
-      3. Only generate your final report AFTER you have read the full text of the relevant sources."},
-     {"role": "user", "content": "ЮГОВ-проект - що це?"},#"Нещодавні новини про Україну (з коротким підсумком)"},#"LangChain vs LlamaIndex RAG"},
-]
-
-response = client.responses.create(
-    model="gpt-5-mini",
-    input=messages,
-    tools=tools,
+warnings.filterwarnings(
+    "ignore", 
+    message=".*Core Pydantic V1 functionality isn't compatible with Python 3.14.*", 
+    category=UserWarning
 )
 
+llm = ChatOpenAI(
+    model = model_name, 
+    temperature = model_temerature)
+
+tools = [web_search, read_url]
+
+memory = MemorySaver()
+
+agent = create_agent(
+    model = llm,
+    tools = tools,
+    system_prompt = SYSTEM_PROMPT,
+    checkpointer = memory
+)
+
+config = {
+        "configurable": {"thread_id": "my_session"},
+        "recursion_limit": max_iterations
+    }
+    
+user_query = "what is budget centralization?" #"ЮГОВ-проект - що це?"
+print(f"👤 Користувач: {user_query}\n")
+print("-" * 40)
+    
+try:
+    for event in agent.stream({"messages": [("user", user_query)]}, config=config):
+        for node_name, node_data in event.items():
+            if "messages" in node_data:
+                latest_message = node_data["messages"][-1]
+                latest_message.pretty_print()
+                    
+except Exception as e:
+    if "Recursion limit" in str(e):
+        print(f"\n⚠️ Agent stopped: Reached the maximum limit of {max_iterations} iterations.")
+    else:
+        print(f"\n❌ An error occurred: {e}")
+
+'''
 followup_input = messages.copy()
 
 # Set a maximum number of iterations to prevent infinite loops
@@ -85,3 +98,4 @@ while iteration < max_iterations:
             })
 else:
     print("\n⚠️ Agent reached the maximum number of iterations without providing a final answer.")
+'''
