@@ -1,4 +1,4 @@
-from tools import web_search, read_url
+from tools import web_search, read_url, write_report
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -10,7 +10,7 @@ llm = ChatOpenAI(
     model = model_name, 
     temperature = model_temerature)
 
-tools = [web_search, read_url]
+tools = [web_search, read_url, write_report]
 
 memory = MemorySaver()
 

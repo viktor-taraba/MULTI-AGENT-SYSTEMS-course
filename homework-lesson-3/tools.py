@@ -7,8 +7,32 @@ import os
 import trafilatura
 from config import max_search_results, max_url_content_length, output_dir
 
+@tool
 def write_report(filename: str, content: str) -> str:
-    pass
+    """
+    Saves the final Markdown report to the local disk.
+    Use this tool ONLY when the report is completely finished and you are ready to give the final answer.
+    
+    Args:
+        filename (str): The name of the file to save (e.g., 'report.md').
+        content (str): The full Markdown text of the report.
+        
+    Returns:
+        str: A confirmation message with the full path to the saved file, or an error message.
+    """
+    
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+        filepath = os.path.join(output_dir, filename)
+        
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(content)
+           
+        return f"Success: Report successfully saved to {os.path.abspath(filepath)}"
+        
+    except Exception as e:
+        return f"Error: Could not save the report. Details: {e}"
+
 
 @tool
 def web_search(query: str) -> list[dict]:
