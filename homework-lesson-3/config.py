@@ -36,3 +36,8 @@ However, you MUST include a "Sources" section at the bottom listing the URLs and
 Try not to use more than 15 iterations of tool calls (web_search + read_url) to gather information. 
 If you reach the limit of 15 tool uses, better to stop, use 'write_report' with the information you currently have, and inform the user.
 """
+
+FINAL_PROMPT = """
+STOP. You have reached your limit. Do not use tools. 
+Based ONLY on the info already gathered, write a detailed final report.
+"""

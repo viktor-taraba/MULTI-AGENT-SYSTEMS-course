@@ -1,4 +1,5 @@
 from agent import agent, config
+from config import FINAL_PROMPT
 
 def main():
     print("Research Agent (type 'exit' to quit)")
@@ -66,11 +67,7 @@ def main():
                             "content": "System Abort: Tool execution cancelled because iteration limit was reached."
                         })
 
-                recovery_messages.append(
-                    ("user", "STOP. You have reached your limit. Do not use tools. "
-                             "Based ONLY on the info already gathered, write a detailed final report.")
-                )
-
+                recovery_messages.append(("user", FINAL_PROMPT))
                 report_instruction = {"messages": recovery_messages}
                               
                 for chunk in agent.stream(report_instruction, config=config):
