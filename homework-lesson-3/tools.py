@@ -4,51 +4,13 @@ import trafilatura
 import yfinance  as yf
 import pandas as pd
 import json
+import io
+import requests
+import logging
 from ddgs import DDGS
 from config import max_search_results, max_url_content_length, output_dir, desired_keys_yfinance, period_yfinance
 from typing import List, Dict
-
-@tool
-def read_url(url: str) -> str:
-    """
-    Fetches and extracts the main text content from a given URL.
-    Use this AFTER a web search to read the full, in-depth content of a webpage.
-    Essential for gathering detailed facts, examples, and deep context for your final report.
-    This function acts as a tool for an LLM agent to read the full content of a webpage.
-    It deliberately truncates the output to prevent blowing up the LLM's context window
-    (context engineering). It also catches errors so the agent can recover.
-
-    Args:
-        url (str): The URL of the webpage to read, , e.g. 'https://...'.
-
-    Returns:
-        str: The extracted plain text from the webpage, or an error message if extraction fails.
-    """
-
-    try:
-        # fetch_url handles the HTTP request. It returns None if the request fails
-        # (e.g., 404, timeout, or blocked by the server).
-        downloaded = trafilatura.fetch_url(url)
-        if downloaded is None:
-            return f"Error: Unable to fetch content from '{url}'. The page might be inaccessible, invalid, or blocking automated requests."
-
-        # extract parses the HTML and isolates the main article text.
-        text = trafilatura.extract(downloaded)
-
-        # Sometimes a page is fetched successfully, but contains no extractable text
-        # (e.g., heavy client-side JavaScript rendering or purely visual pages).
-        if not text:
-            return f"Error: Fetched '{url}' successfully, but could not extract meaningful text. The page might rely heavily on JavaScript."
-
-        # Context Engineering: Truncate the text if it exceeds the max_chars limit.
-        if len(text) > max_url_content_length:
-            text = text[:max_url_content_length]
-            return text
-
-        return text
-
-    except Exception as e:
-        return f"An unexpected error occurred while reading '{url}': {str(e)}"
+from pypdf import PdfReader
 
 @tool
 def web_search(query: str) -> list[dict]:
@@ -83,6 +45,82 @@ def web_search(query: str) -> list[dict]:
         return f"Error during search for '{query}': {e}"
 
     return processed_results
+
+# read_url_pdf will be used at read_url function, not as a separate tool for llm agent
+def read_url_pdf(url: str):
+    """
+    Fetches a PDF from a URL and extracts its text in-memory.
+    """
+    try:
+        # Mute pypdf's warnings about broken pdfs so they don't flood the agent's console
+        logging.getLogger("pypdf").setLevel(logging.ERROR)
+
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+
+        # Load the raw downloaded bytes into a virtual memory file
+        pdf_bytes = io.BytesIO(response.content)
+        reader = PdfReader(pdf_bytes)
+
+        # Extract the text page by page
+        full_text = []
+        for i, page in enumerate(reader.pages):
+            page_text = page.extract_text()
+            
+            if page_text:
+                full_text.append(f"--- Page {i + 1} ---\n{page_text}")
+
+        final_text = "\n\n".join(full_text)
+        
+        return final_text
+
+    except Exception as e:
+        return f"Error extracting PDF from {url}. Details: {e}"
+
+@tool
+def read_url(url: str) -> str:
+    """
+    Fetches and extracts the main text content from a given URL.
+    Use this AFTER a web search to read the full, in-depth content of a webpage.
+    Essential for gathering detailed facts, examples, and deep context for your final report.
+    This function acts as a tool for an LLM agent to read the full content of a webpage.
+    It deliberately truncates the output to prevent blowing up the LLM's context window
+    (context engineering). It also catches errors so the agent can recover.
+
+    Args:
+        url (str): The URL of the webpage to read, , e.g. 'https://...'.
+
+    Returns:
+        str: The extracted plain text from the webpage, or an error message if extraction fails.
+    """
+
+    try:
+        # for pdf files
+        if url.endswith('.pdf'):
+            text = read_url_pdf(url)
+
+        else: 
+            # fetch_url handles the HTTP request. It returns None if the request fails (e.g., 404, timeout, or blocked by the server).
+            downloaded = trafilatura.fetch_url(url)
+            if downloaded is None:
+                return f"Error: Unable to fetch content from '{url}'. The page might be inaccessible, invalid, or blocking automated requests."
+
+            # extract parses the HTML and isolates the main article text.
+            text = trafilatura.extract(downloaded)
+
+            # Sometimes a page is fetched successfully, but contains no extractable text (e.g., heavy client-side JavaScript rendering or purely visual pages).
+            if not text:
+                return f"Error: Fetched '{url}' successfully, but could not extract meaningful text. The page might rely heavily on JavaScript."
+
+        # Context Engineering: Truncate the text if it exceeds the max_chars limit.
+        if len(text) > max_url_content_length:
+            text = text[:max_url_content_length]
+            return text
+
+        return text
+
+    except Exception as e:
+        return f"An unexpected error occurred while reading '{url}': {str(e)}"
 
 @tool
 def stock_company_info(stock_ticker: str, result_type: str) -> str:
