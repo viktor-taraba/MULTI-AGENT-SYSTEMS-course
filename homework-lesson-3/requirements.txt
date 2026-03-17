@@ -5,3 +5,5 @@ pydantic>=2.12.5
 pydantic-settings>=2.13.1
 langgraph>=1.1.2
 python-dotenv>=1.2.2
+yfinance>=1.2.0
+pandas>=3.0.1
