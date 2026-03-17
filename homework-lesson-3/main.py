@@ -50,12 +50,28 @@ def main():
         except Exception as e:
             if "Recursion limit" in str(e):
                 print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Generating final report from gathered data...")
-
+                
                 # Trigger a final "Report" prompt
-                report_instruction = {
-                    "messages": [("user", "STOP. You have reached your limit. Do not use tools. "
-                                         "Based ONLY on the info already gathered, write a detailed final report.")]
-                }
+                current_state = agent.get_state(config)
+                messages = current_state.values.get("messages", [])
+                
+                recovery_messages = []
+                
+                if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
+                    for tc in messages[-1].tool_calls:
+                        recovery_messages.append({
+                            "role": "tool",
+                            "tool_call_id": tc["id"],
+                            "name": tc["name"],
+                            "content": "System Abort: Tool execution cancelled because iteration limit was reached."
+                        })
+
+                recovery_messages.append(
+                    ("user", "STOP. You have reached your limit. Do not use tools. "
+                             "Based ONLY on the info already gathered, write a detailed final report.")
+                )
+
+                report_instruction = {"messages": recovery_messages}
                               
                 for chunk in agent.stream(report_instruction, config=config):
                     if "model" in chunk and "messages" in chunk["model"]:
