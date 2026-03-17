@@ -1,8 +1,7 @@
-# api_key: SecretStr
 model_name: str = "gpt-5-mini"
 model_temerature: float = 0.4
-max_search_results: int = 10
-max_url_content_length: int = 7000
+max_search_results: int = 7
+max_url_content_length: int = 6000
 output_dir: str = "output"
 max_iterations: int = 30
 
