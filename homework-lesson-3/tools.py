@@ -1,8 +1,5 @@
 from langchain_core.tools import tool
-from typing import List, Dict
 from ddgs import DDGS
-import json
-import sys
 import os
 import trafilatura
 from config import max_search_results, max_url_content_length, output_dir
