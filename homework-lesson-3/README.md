@@ -1,10 +1,19 @@
 # Завдання: Research Agent
 
+![LangChain](https://img.shields.io/badge/LangChain-1.2.12+-orange.svg)
+![LangGraph](https://img.shields.io/badge/LangGraph-1.1.2+-orange.svg)
+![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
+![yfinance](https://img.shields.io/badge/yfinance-1.2.0+-orange.svg)
+![trafilatura](https://img.shields.io/badge/trafilatura-2.0.0+-orange.svg)
+![pypdf](https://img.shields.io/badge/pypdf-6.9.1+-orange.svg)
+![pandas](https://img.shields.io/badge/pandas-3.0.1+-orange.svg)
+![ddgs](https://img.shields.io/badge/ddgs-9.11.4+-orange.svg)
+![requests](https://img.shields.io/badge/requests-2.32.5+-orange.svg)
+
 Агент запускається з терміналу (python3 main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
 Агент підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії.
 
 Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та створений файл .env з вказаним ключем: `OPENAI_API_KEY=<тут_ваш_ключ>`
-
 Файл залежностей — requirements.txt
 
 ### Приклад:
@@ -37,4 +46,41 @@ homework-lesson-3/
 │   └── RAG_comparison_naive_sentence-window_parent-child.md    # Example generated report (#3)
 │   └── dividend_policy_report.md                               # Example generated report (#4)
 └── README.md            # Setup instructions, architecture overview
+```
+
+### Блок-схема роботи агента
+
+```mermaid
+graph TD
+    User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
+    Main -->|Передає запит| Agent{agent.py<br/>Research Agent}
+    
+    Agent <-->|Читає/Записує стан| Memory[(MemorySaver<br/>Пам'ять сесії)]
+    Agent <-->|Reasoning / Планування| LLM[🤖 OpenAI LLM]
+    
+    Agent -->|Виклик інструменту| Tools[🔧 tools.py]
+    
+    Tools -->|web_search| Web[DuckDuckGo]
+    Tools -->|read_url| URL[Trafilatura / PyPDF]
+    Tools -->|stock_company_info| Fin[Yahoo Finance API]
+    Tools -->|find_articles_crossref| Sci[Crossref API]
+    Tools -->|write_report| Save[💾 Файлова система]
+    
+    Web -->|Результати пошуку| Agent
+    URL -->|Текст сторінки| Agent
+    Fin -->|Фінансові дані| Agent
+    Sci -->|Анотації статей| Agent
+    Save -->|Шлях до файлу| Agent
+    
+    Agent -->|Стримінг думок/відповіді| Main
+    Main -->|Вивід у термінал| User
+    
+    Fallback[⚠️ Recursion Limit Reached] -.->|Примусовий FINAL_PROMPT| Agent
+    
+    classDef core fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
+    classDef io fill:#bbdefb,stroke:#1976d2,stroke-width:1px;
+    classDef tool fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
+    class Agent,LLM core;
+    class User,Main io;
+    class Tools,Web,URL,Fin,Sci,Save tool;
 ```
