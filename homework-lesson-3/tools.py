@@ -14,7 +14,7 @@ from typing import List, Dict
 from pypdf import PdfReader
 
 @tool
-def web_search(query: str) -> list[dict]:
+def web_search(query: str) -> srt:
     """
     Search the web to find up-to-date information.
     Use this FIRST to find relevant URLs and basic summaries. Do not base your final answer solely on these short snippets.",
@@ -45,7 +45,7 @@ def web_search(query: str) -> list[dict]:
     except Exception as e:
         return f"Error during search for '{query}': {e}"
 
-    return processed_results
+    return json.dumps(processed_results)
 
 # read_url_pdf will be used at read_url function, not as a separate tool for llm agent
 def read_url_pdf(url: str):
