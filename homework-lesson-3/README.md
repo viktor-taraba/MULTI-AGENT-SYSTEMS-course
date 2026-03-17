@@ -9,7 +9,7 @@
 
 ### Приклад:
 
-![Demo](/homework-lesson-3/gif%20example/agent_example.gif)
+![Demo](/homework-lesson-3/gif%20example/agent_example_full.mp4)
 
 Приклади згенерованих звітів - в [output](/homework-lesson-3/output)
 
