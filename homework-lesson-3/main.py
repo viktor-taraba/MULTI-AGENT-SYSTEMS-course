@@ -40,7 +40,7 @@ def main():
                         if hasattr(msg, "tool_calls") and msg.tool_calls:
                             for tool_call in msg.tool_calls:
                                 tool_name = tool_call.get("name")
-                                tool_args = tool_call.get("args")
+                                tool_args = str(tool_call.get("args"))
                                 tool_args = tool_args[:150] + "..." if len(tool_args) > 150 else tool_args
                                 print("")
                                 print(f"🔧 Tool called -> {tool_name}({tool_args})")
