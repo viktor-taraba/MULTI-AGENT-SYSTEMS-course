@@ -52,7 +52,7 @@ homework-lesson-3/
 ### Блок-схема роботи агента
 
 ```mermaid
-graph TD
+graph LR
     User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
 
     Config[⚙️ config.py<br/>SYSTEM_PROMPT, Налаштування, Ліміти] -->|Задає правила поведінки| Agent
