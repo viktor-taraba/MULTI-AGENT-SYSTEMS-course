@@ -1,70 +1,12 @@
 from langchain_core.tools import tool
-from ddgs import DDGS
 import os
 import trafilatura
-from config import max_search_results, max_url_content_length, output_dir
-
-@tool
-def write_report(filename: str, content: str) -> str:
-    """
-    Saves the final Markdown report to the local disk.
-    Use this tool ONLY when the report is completely finished and you are ready to give the final answer.
-    
-    Args:
-        filename (str): The name of the file to save (e.g., 'report.md').
-        content (str): The full Markdown text of the report.
-        
-    Returns:
-        str: A confirmation message with the full path to the saved file, or an error message.
-    """
-    
-    try:
-        os.makedirs(output_dir, exist_ok=True)
-        filepath = os.path.join(output_dir, filename)
-        
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(content)
-           
-        return f"Success: Report successfully saved to {os.path.abspath(filepath)}"
-        
-    except Exception as e:
-        return f"Error: Could not save the report. Details: {e}"
-
-
-@tool
-def web_search(query: str) -> list[dict]:
-    """
-    Search the web to find up-to-date information.
-    Use this FIRST to find relevant URLs and basic summaries. Do not base your final answer solely on these short snippets.",
-
-    Args:
-        query (str): The search query or question to look up.
-
-    Returns:
-        List[Dict[str, str]]: A list of search results containing 'title', 'url', and 'snippet'.
-    """
-    processed_results: List[Dict[str, str]] = []
-
-    try:
-        raw_results = DDGS().text(query, max_results=max_search_results)
-
-        # Return an empty list if no results are found
-        if not raw_results:
-            return processed_results
-
-        # Map DDGS keys (href, body) to LLM-friendly keys (title, url, snippet)
-        for item in raw_results:
-            processed_results.append({
-                "title": item.get("title", ""),
-                "url": item.get("href", ""),
-                "snippet": item.get("body", "")
-            })
-
-    except Exception as e:
-        #prevent the agent from crashing in case of network or rate limit issues
-        return f"Error during search for '{query}': {e}"
-
-    return processed_results
+import yfinance  as yf
+import pandas as pd
+import json
+from ddgs import DDGS
+from config import max_search_results, max_url_content_length, output_dir, desired_keys_yfinance, period_yfinance
+from typing import List, Dict
 
 @tool
 def read_url(url: str) -> str:
@@ -106,5 +48,107 @@ def read_url(url: str) -> str:
         return text
 
     except Exception as e:
-        # Catch-all for unexpected exceptions to prevent the entire agent process from crashing.
         return f"An unexpected error occurred while reading '{url}': {str(e)}"
+
+@tool
+def web_search(query: str) -> list[dict]:
+    """
+    Search the web to find up-to-date information.
+    Use this FIRST to find relevant URLs and basic summaries. Do not base your final answer solely on these short snippets.",
+
+    Args:
+        query (str): The search query or question to look up.
+
+    Returns:
+        List[Dict[str, str]]: A list of search results containing 'title', 'url', and 'snippet'.
+    """
+    processed_results: List[Dict[str, str]] = []
+
+    try:
+        raw_results = DDGS().text(query, max_results=max_search_results)
+
+        # Return an empty list if no results are found
+        if not raw_results:
+            return processed_results
+
+        # Map DDGS keys (href, body) to LLM-friendly keys (title, url, snippet)
+        for item in raw_results:
+            processed_results.append({
+                "title": item.get("title", ""),
+                "url": item.get("href", ""),
+                "snippet": item.get("body", "")
+            })
+
+    except Exception as e:
+        return f"Error during search for '{query}': {e}"
+
+    return processed_results
+
+@tool
+def stock_company_info(stock_ticker: str, result_type: str) -> str:
+    """
+    Fetches financial data or company profile information for a given ticker (stock, ETF).
+
+    Use this tool ONLY if financial data (stock prices, company financials) or 
+    general information about a publicly traded company or about ETF or other financial instrument which a ticker
+    is needed, AND the specific stock ticker symbol is known.
+
+    This tool queries the Yahoo Finance API to retrieve either 3 months of daily 
+    historical price data or a filtered dictionary of general company information. 
+    The output is returned as a JSON-formatted string.
+
+    Args:
+        stock_ticker (str): The standard stock ticker symbol to query (e.g., "MSFT", "AAPL").
+        result_type (str): Determines the type of data to return. 
+            - Use "stock_data" to retrieve the last 3 months of historical market data.
+            - Use "info" (or any other string) to retrieve the company's general profile.
+
+    Returns:
+        json: A JSON-formatted string containing the requested data. If an error occurs 
+              during the API call, it returns a string detailing the exception.
+    """
+
+    try:
+        company = yf.Ticker(stock_ticker)
+
+        # stock prices, dividends etc
+        if result_type == "stock_data":
+            df = company.history(period=period_yfinance)
+            df["Date"] = df.index.date
+
+            return df.to_json(orient='records', lines=True)
+        
+        # company info and last financial statements data otherwise
+        else:
+            filtered_info = {key: company.info.get(key) for key in desired_keys_yfinance}
+
+            return json.dumps(filtered_info)
+
+    except Exception as e:
+        return f"Error using function stock_info. Details: {e}"
+
+@tool
+def write_report(filename: str, content: str) -> str:
+    """
+    Saves the final Markdown report to the local disk.
+    Use this tool ONLY when the report is completely finished and you are ready to give the final answer.
+    
+    Args:
+        filename (str): The name of the file to save (e.g., 'report.md').
+        content (str): The full Markdown text of the report.
+        
+    Returns:
+        str: A confirmation message with the full path to the saved file, or an error message.
+    """
+    
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+        filepath = os.path.join(output_dir, filename)
+        
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(content)
+           
+        return f"Success: Report successfully saved to {os.path.abspath(filepath)}"
+        
+    except Exception as e:
+        return f"Error: Could not save the report. Details: {e}"

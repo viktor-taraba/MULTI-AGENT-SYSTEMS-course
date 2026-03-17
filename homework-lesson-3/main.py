@@ -1,11 +1,4 @@
 from agent import agent, config
-import warnings
-
-warnings.filterwarnings(
-    "ignore", 
-    message=".*Core Pydantic V1 functionality isn't compatible with Python 3.14.*", 
-    category=UserWarning
-)
 
 def main():
     print("Research Agent (type 'exit' to quit)")
@@ -56,7 +49,7 @@ def main():
                         
         except Exception as e:
             if "Recursion limit" in str(e):
-                print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Try again or type 'continue' (Don't worry, model remembers conversatio with you!)")
+                print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Try again or type 'continue' (Don't worry, model remembers conversation with you!)")
             else:
                 print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversatio with you!")
 
