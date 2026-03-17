@@ -75,7 +75,7 @@ def read_url_pdf(url: str):
         return final_text
 
     except Exception as e:
-        return f"Error extracting PDF from {url}. Details: {e}"
+        return f"Error extracting PDF from {url}. Details: {e}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
 @tool
 def read_url(url: str) -> str:
@@ -120,7 +120,7 @@ def read_url(url: str) -> str:
         return text
 
     except Exception as e:
-        return f"An unexpected error occurred while reading '{url}': {str(e)}"
+        return f"An unexpected error occurred while reading '{url}': {str(e)}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
 @tool
 def stock_company_info(stock_ticker: str, result_type: str) -> str:
