@@ -1,4 +1,4 @@
-model_name: str = "gpt-4o"
+model_name: str = "gpt-5-mini"
 model_temerature: float = 0.4
 max_search_results: int = 7
 max_url_content_length: int = 6000
@@ -10,6 +10,7 @@ desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'long
                 'totalDebt','quickRatio','currentRatio','totalRevenue','debtToEquity','revenuePerShare','returnOnAssets','returnOnEquity','grossProfits',
                 'freeCashflow','operatingCashflow','earningsGrowth','revenueGrowth','grossMargins','ebitdaMargins','operatingMargins','shortName','longName']
 period_yfinance = "3mo"
+email_crossref_api =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 
 SYSTEM_PROMPT = """
 You are a Senior Analyst with 10 years of experience.

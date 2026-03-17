@@ -7,8 +7,9 @@ import json
 import io
 import requests
 import logging
+import re
 from ddgs import DDGS
-from config import max_search_results, max_url_content_length, output_dir, desired_keys_yfinance, period_yfinance
+from config import max_search_results, max_url_content_length, output_dir, desired_keys_yfinance, period_yfinance, email_crossref_api
 from typing import List, Dict
 from pypdf import PdfReader
 
@@ -57,6 +58,10 @@ def read_url_pdf(url: str):
 
         response = requests.get(url, timeout=5)
         response.raise_for_status()
+        content_type = response.headers.get('Content-Type', '').lower()
+        if 'application/pdf' not in content_type:
+            return f"Error: The server blocked the download or requires a subscription. It returned an HTML page instead of a PDF (Content-Type: {content_type}).\
+                     DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
         # Load the raw downloaded bytes into a virtual memory file
         pdf_bytes = io.BytesIO(response.content)
@@ -69,6 +74,8 @@ def read_url_pdf(url: str):
             
             if page_text:
                 full_text.append(f"--- Page {i + 1} ---\n{page_text}")
+            if i > max_search_results:
+                break
 
         final_text = "\n\n".join(full_text)
         
@@ -164,6 +171,60 @@ def stock_company_info(stock_ticker: str, result_type: str) -> str:
 
     except Exception as e:
         return f"Error using function stock_info. Details: {e}"
+
+@tool
+def find_articles_crossref(query: str) -> str:
+    """
+    Searches the Crossref database for scientific articles, journals, and conference papers.
+    Use this tool when you need to find peer-reviewed research, metadata, or summaries 
+    for specific academic topics or information from scientific articles on the specific topic.
+
+    Args:
+        query: A specific short search string containing keywords, topics, or paper titles 
+               (e.g., "llm banking" or "dividend policy"). Do not use more than 2-3 words for one query.
+
+    Returns:
+        A list of dictionaries containing 'title', 'abstract', 'doi', and 'year'.
+        Only records that contain a valid summary (abstract) are returned. 
+        Returns an error string if the API call fails.
+    """
+
+    # We request more than the limit (limit * 2) because many records in Crossref lack abstracts; this increases the chance of hitting target.
+    url = f"https://api.crossref.org/works?query={query.replace(' ', '+')}&rows={max_search_results * 2}"
+    headers = {"User-Agent": f"ResearchScript/1.0 (mailto:{email_crossref_api})"}
+    
+    try:
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            items = response.json()['message']['items']
+
+            filtered_articles = []
+            for i in items:
+                abstract = i.get('abstract')
+                
+                # Condition: Only include if abstract is present and not whitespace
+                if abstract and len(abstract.strip()) > 0:
+                    # Remove XML/JATS tags from the abstract text
+                    clean_abstract = re.sub(r'<[^>]+>', '', abstract)
+                    
+                    filtered_articles.append({
+                        "title": i.get('title', ['No Title'])[0],
+                        "abstract": clean_abstract.strip(),
+                        "doi": i.get('DOI'),
+                        "year": i.get('created', {}).get('date-parts', [[None]])[0][0]
+                    })
+                
+                # Stop once we have reached the limit
+                if len(filtered_articles) >= max_search_results:
+                    break
+                    
+            return filtered_articles
+        else:
+            return f"Error: {response.status_code}"
+            
+    except Exception as e:
+        return f"An error occurred: {e}"
 
 @tool
 def write_report(filename: str, content: str) -> str:
