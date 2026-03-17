@@ -11,7 +11,7 @@
 
 ![Demo](/homework-lesson-3/gif%20example/agent_example.gif)
 
-Приклади згенерованих звітів - в ![output](/homework-lesson-3/output)
+Приклади згенерованих звітів - в [output](/homework-lesson-3/output)
 
 ### Опис тулів для агента:
 |Назва|Параметри|Опис|
