@@ -14,7 +14,7 @@ from typing import List, Dict
 from pypdf import PdfReader
 
 @tool
-def web_search(query: str) -> srt:
+def web_search(query: str) -> str:
     """
     Search the web to find up-to-date information.
     Use this FIRST to find relevant URLs and basic summaries. Do not base your final answer solely on these short snippets.",
