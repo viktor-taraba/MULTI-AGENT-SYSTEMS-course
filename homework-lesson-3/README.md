@@ -25,13 +25,16 @@
 ### Структура проєкту
 
 ```
-research-agent/
+homework-lesson-3/
 ├── main.py              # Entry point
 ├── agent.py             # Agent setup (LLM, tools, memory, create_agent)
 ├── tools.py             # Tool definitions and implementations
 ├── config.py            # System prompt, settings, constants
-├── requirements.txt
-├── example_output/
-│   └── report.md        # Example generated report
+├── requirements.txt     # Libraries list + min version for each library
+├── output/
+│   └── MSFT_vs_NVDA_investment_comparison.md                   # Example generated report (#1)
+│   └── payment_system_risks_review.md                          # Example generated report (#2)
+│   └── RAG_comparison_naive_sentence-window_parent-child.md    # Example generated report (#3)
+│   └── dividend_policy_report.md                               # Example generated report (#4)
 └── README.md            # Setup instructions, architecture overview
 ```
