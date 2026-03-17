@@ -41,6 +41,7 @@ def main():
                             for tool_call in msg.tool_calls:
                                 tool_name = tool_call.get("name")
                                 tool_args = tool_call.get("args")
+                                tool_args = tool_args[:150] + "..." if len(tool_args) > 150 else tool_args
                                 print("")
                                 print(f"🔧 Tool called -> {tool_name}({tool_args})")
 
@@ -49,7 +50,7 @@ def main():
                     for msg in chunk["tools"]["messages"]:
                         tool_name = msg.name
                         content_str = str(msg.content)
-                        preview = content_str[:200] + "..." if len(content_str) > 200 else content_str
+                        preview = content_str[:150] + "..." if len(content_str) > 150 else content_str
                         
                         print(f"✅ Result ({tool_name}): {preview}")
                         
