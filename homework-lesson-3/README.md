@@ -53,6 +53,8 @@ homework-lesson-3/
 ```mermaid
 graph TD
     User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
+
+    Config[⚙️ config.py<br/>SYSTEM_PROMPT, Налаштування, Ліміти] -->|Задає правила поведінки| Agent
     Main -->|Передає запит| Agent{agent.py<br/>Research Agent}
     
     Agent <-->|Читає/Записує стан| Memory[(MemorySaver<br/>Пам'ять сесії)]
@@ -83,4 +85,5 @@ graph TD
     class Agent,LLM core;
     class User,Main io;
     class Tools,Web,URL,Fin,Sci,Save tool;
+    class Config conf;
 ```
