@@ -1,0 +1,27 @@
+from tools import web_search, read_url, write_report, stock_company_info, find_articles_crossref
+from langchain_openai import ChatOpenAI
+from langchain.agents import create_agent
+from langgraph.checkpoint.memory import MemorySaver
+from config import SYSTEM_PROMPT, max_iterations, model_name, model_temerature
+from dotenv import load_dotenv
+load_dotenv()
+
+llm = ChatOpenAI(
+    model = model_name, 
+    temperature = model_temerature)
+
+tools = [web_search, read_url, write_report, stock_company_info, find_articles_crossref]
+
+memory = MemorySaver()
+
+agent = create_agent(
+    model = llm,
+    tools = tools,
+    system_prompt = SYSTEM_PROMPT,
+    checkpointer = memory
+)
+
+config = {
+        "configurable": {"thread_id": "my_session"},
+        "recursion_limit": max_iterations
+    }
