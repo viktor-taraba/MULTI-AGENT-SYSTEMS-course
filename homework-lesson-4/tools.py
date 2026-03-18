@@ -77,7 +77,6 @@ def read_url_pdf(url: str):
         pdf_bytes = io.BytesIO(response.content)
         reader = PdfReader(pdf_bytes)
 
-        # Extract the text page by page
         full_text = []
         for i, page in enumerate(reader.pages):
             page_text = page.extract_text()
@@ -262,9 +261,7 @@ def find_articles_crossref(query: str) -> str:
             for i in items:
                 abstract = i.get('abstract')
                 
-                # Condition: Only include if abstract is present and not whitespace
                 if abstract and len(abstract.strip()) > 0:
-                    # Remove XML/JATS tags from the abstract text
                     clean_abstract = re.sub(r'<[^>]+>', '', abstract)
                     
                     filtered_articles.append({
@@ -274,7 +271,6 @@ def find_articles_crossref(query: str) -> str:
                         "year": i.get('created', {}).get('date-parts', [[None]])[0][0]
                     })
                 
-                # Stop once we have reached the limit
                 if len(filtered_articles) >= max_search_results:
                     break
                     
