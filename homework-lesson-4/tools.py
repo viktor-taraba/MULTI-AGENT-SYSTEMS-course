@@ -1,8 +1,6 @@
-from langchain_core.tools import tool
 import os
 import trafilatura
 import yfinance  as yf
-import pandas as pd
 import json
 import io
 import requests
@@ -13,7 +11,22 @@ from config import max_search_results, max_url_content_length, output_dir, desir
 from typing import List, Dict
 from pypdf import PdfReader
 
-@tool
+web_search_tool_schema = {
+    "type": "function",
+    "name": "web_search",
+    "description": "Search the web to find up-to-date information. Returns list of search results containing 'title', 'url', and 'snippet'. Use this FIRST to find relevant URLs and basic summaries. Do not base your final answer solely on these short snippets.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "Search query or question to look up., e.g. 'Dynamic pricing models'"
+            }
+        },
+        "required": ["query"]
+    }
+}
+
 def web_search(query: str) -> str:
     """
     Search the web to find up-to-date information.
@@ -29,12 +42,9 @@ def web_search(query: str) -> str:
 
     try:
         raw_results = DDGS().text(query, max_results=max_search_results)
-
-        # Return an empty list if no results are found
         if not raw_results:
             return processed_results
 
-        # Map DDGS keys (href, body) to LLM-friendly keys (title, url, snippet)
         for item in raw_results:
             processed_results.append({
                 "title": item.get("title", ""),
@@ -84,7 +94,24 @@ def read_url_pdf(url: str):
     except Exception as e:
         return f"Error extracting PDF from {url}. Details: {e}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
-@tool
+read_url_tool_schema = {
+    "type": "function",
+    "name": "read_url",
+    "description": "Fetches and extracts the main text content from a given URL. Use this AFTER a web search to read the full, in-depth content of\
+    a webpage. Essential for gathering detailed facts, examples, and deep context for your final report. This function acts as a tool for an LLM\
+    agent to read the full content of a webpage. It deliberately truncates the output to prevent blowing up the LLM's context window (context engineering). It also catches errors so the agent can recover.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "url": {
+                "type": "string",
+                "description": "The URL of the webpage to read., e.g. 'https://...'"
+            }
+        },
+        "required": ["url"]
+    }
+}
+
 def read_url(url: str) -> str:
     """
     Fetches and extracts the main text content from a given URL.
@@ -102,24 +129,18 @@ def read_url(url: str) -> str:
     """
 
     try:
-        # for pdf files
         if url.endswith('.pdf'):
             text = read_url_pdf(url)
 
         else: 
-            # fetch_url handles the HTTP request. It returns None if the request fails (e.g., 404, timeout, or blocked by the server).
             downloaded = trafilatura.fetch_url(url)
             if downloaded is None:
                 return f"Error: Unable to fetch content from '{url}'. The page might be inaccessible, invalid, or blocking automated requests."
-
-            # extract parses the HTML and isolates the main article text.
             text = trafilatura.extract(downloaded)
 
-            # Sometimes a page is fetched successfully, but contains no extractable text (e.g., heavy client-side JavaScript rendering or purely visual pages).
             if not text:
                 return f"Error: Fetched '{url}' successfully, but could not extract meaningful text. The page might rely heavily on JavaScript."
 
-        # Context Engineering: Truncate the text if it exceeds the max_chars limit.
         if len(text) > max_url_content_length:
             text = text[:max_url_content_length]
             return text
@@ -129,7 +150,30 @@ def read_url(url: str) -> str:
     except Exception as e:
         return f"An unexpected error occurred while reading '{url}': {str(e)}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
-@tool
+stock_company_info_tool_schema = {
+    "type": "function",
+    "name": "stock_company_info",
+    "description": "Fetches financial data or company profile information for a given ticker (stock, ETF). Use this tool ONLY if financial data\
+    (stock prices, company financials) or general information about a publicly traded company or about ETF or other financial instrument which a\
+    ticker is needed, AND the specific stock ticker symbol is known. This tool queries the Yahoo Finance API to retrieve either 3 months of daily\
+    historical price data or a filtered dictionary of general company information. The output is returned as a JSON-formatted string.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "stock_ticker": {
+                "type": "string",
+                "description": "The standard stock ticker symbol to query (e.g., MSFT, AAPL)"
+            },
+            "result_type": {
+                "type": "string",
+                "description": "Determines the type of data to return. Use 'stock_data' to retrieve the last 3 months of historical market data.\
+                Use 'info' (or any other string) to retrieve the companys general profile."
+            }
+        },
+        "required": ["stock_ticker", "result_type"]
+    }
+}
+
 def stock_company_info(stock_ticker: str, result_type: str) -> str:
     """
     Fetches financial data or company profile information for a given ticker (stock, ETF).
@@ -156,14 +200,12 @@ def stock_company_info(stock_ticker: str, result_type: str) -> str:
     try:
         company = yf.Ticker(stock_ticker)
 
-        # stock prices, dividends etc
         if result_type == "stock_data":
             df = company.history(period=period_yfinance)
             df["Date"] = df.index.date
 
             return df.to_json(orient='records', lines=True)
         
-        # company info and last financial statements data otherwise
         else:
             filtered_info = {key: company.info.get(key) for key in desired_keys_yfinance}
 
@@ -172,7 +214,24 @@ def stock_company_info(stock_ticker: str, result_type: str) -> str:
     except Exception as e:
         return f"Error using function stock_info. Details: {e}"
 
-@tool
+find_articles_crossref_tool_schema = {
+    "type": "function",
+    "name": "find_articles_crossref",
+    "description": "Searches the Crossref database for scientific articles, journals, and conference papers. Use this tool when you need to find\
+    peer-reviewed research, metadata, or summaries for specific academic topics or information from scientific articles on the specific topic.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "A specific short search string containing keywords, topics, or paper titles (e.g., 'llm banking' or 'dividend policy').\
+                Do not use more than 2-3 words for one query."
+            }
+        },
+        "required": ["query"]
+    }
+}
+
 def find_articles_crossref(query: str) -> str:
     """
     Searches the Crossref database for scientific articles, journals, and conference papers.
@@ -226,7 +285,26 @@ def find_articles_crossref(query: str) -> str:
     except Exception as e:
         return f"An error occurred: {e}"
 
-@tool
+write_report_tool_schema = {
+    "type": "function",
+    "name": "write_report",
+    "description": "Saves the final Markdown report to the local disk. Use this tool ONLY when the report is completely finished and you are ready to give the final answer.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "filename": {
+                "type": "string",
+                "description": "The name of the file to save (e.g., 'report.md')."
+            },
+            "content": {
+                "type": "string",
+                "description": "The full Markdown text of the report."
+            }
+        },
+        "required": ["filename","content"]
+    }
+}
+
 def write_report(filename: str, content: str) -> str:
     """
     Saves the final Markdown report to the local disk.
@@ -251,3 +329,18 @@ def write_report(filename: str, content: str) -> str:
         
     except Exception as e:
         return f"Error: Could not save the report. Details: {e}"
+
+tool_registry = {
+    "web_search": web_search, 
+    "read_url": read_url, 
+    "write_report": write_report, 
+    "stock_company_info": stock_company_info,
+    "find_articles_crossref": find_articles_crossref}
+
+tools = [
+    web_search_tool_schema, 
+    read_url_tool_schema, 
+    write_report_tool_schema, 
+    stock_company_info_tool_schema, 
+    find_articles_crossref_tool_schema
+    ]
