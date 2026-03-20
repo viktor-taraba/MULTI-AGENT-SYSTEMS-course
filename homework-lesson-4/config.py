@@ -38,5 +38,6 @@ If you reach the limit of 15 tool uses, better to stop, use 'write_report' with 
 
 FINAL_PROMPT = """
 STOP. You have reached your limit. Do not use tools. 
-Based ONLY on the info already gathered, write a detailed final report.
+Based ONLY on the info already gathered, write a detailed final report. 
+You MUST use the 'write_report' tool to submit your detailed final report.
 """
