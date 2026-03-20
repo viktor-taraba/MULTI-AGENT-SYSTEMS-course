@@ -2,7 +2,7 @@ model_name: str = "gpt-5-mini"
 max_search_results: int = 7
 max_url_content_length: int = 6000
 output_dir: str = "output"
-max_iterations: int = 30
+max_iterations: int = 5
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',
                 'twoHundredDayAverage', 'trailingEps', 'forwardEps', 'recommendationKey', 'numberOfAnalystOpinions', 'totalCash','totalCashPerShare','ebitda',

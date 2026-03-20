@@ -1,4 +1,4 @@
-from agent import agent, config
+from agent import tool_execution, run_agent, config
 from config import FINAL_PROMPT
 
 def main():
@@ -77,7 +77,7 @@ def main():
                                 print(f"\n📊 FINAL REPORT:\n{msg.content}")
 
             else:
-                print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversatio with you!")
+                print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversation with you!")
 
 
 if __name__ == "__main__":
