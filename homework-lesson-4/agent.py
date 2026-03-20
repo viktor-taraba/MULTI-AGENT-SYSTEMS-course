@@ -1,25 +1,30 @@
 from openai import OpenAI
-from tools import tool_registry, tools
-from config import SYSTEM_PROMPT, max_iterations, model_name
+from tools import tool_registry, tools, write_report_tool_schema
+from config import FINAL_PROMPT, max_iterations, model_name
 import json
 from dotenv import load_dotenv
 load_dotenv()
 
 client = OpenAI()
 
-messages = [
-    {"role": "system", "content": SYSTEM_PROMPT},
-    {"role": "user", "content": "Нещодавні новини про Україну"},
-]
-
-followup_input = messages.copy()
-
 # memory
     # ідея для пам'яті - зберігати такий же результат в БД, можливо з додатковою інфою
     # перед тим як знову давати користувачу можлмивість введення, зберегти в БД в окремій таблиці самарі розмови з таким-то ід
     # і потім при наступному виклику передавати агенту самарі цієї розмови з таблиці як контекст для наступних відповідей
 
-def tool_execution(item) -> dict:
+def create_or_use_database():
+    pass
+
+def get_memory_database():
+    pass
+
+def insert_memory_database():
+    pass
+
+def summarize_memory_database():
+    pass
+
+def tool_execution(item):
     tool_name = tool_registry.get(item.name)
     if tool_name is None:
         raise ValueError(f"Unknown tool: {item.name}")
@@ -41,29 +46,58 @@ def tool_execution(item) -> dict:
         "output": json.dumps(result)
     }
 
-def run_agent(messages: list) -> str: # debug: bool = True # додати debug mode - виводити повний текст усіх запусків, ітерації, т. д.
+def last_call(final_prompt_text, messages):
+    print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Generating final report from gathered data...")
+    tools = [write_report_tool_schema]
+
+    messages.append({
+        "role": "user",
+        "content": FINAL_PROMPT
+    })
+    
+    response = client.responses.create(
+            model = model_name,
+            input = messages,
+            tools = tools)
+    
+    messages_in_output = [item for item in response.output if item.type == "message"]
+    if messages_in_output:
+        final_text = messages_in_output[0].content[0].text
+        return f"\n🤖 Agent:\n{final_text}"
+
+    messages.extend(response.output)
+    for item in response.output:
+        if item.type == "function_call":
+            if item.name == "write_report":
+                tool_result_msg = tool_execution(item)
+                messages.append(tool_result_msg)
+                return f"\n✅ Finished: report generated. You can continue dialog with our agent: this conversation is not forgotten!"
+            else:
+                return f"\n🤖 Oh no... Something is not right. Please try again. Do not worry: this conversation is not forgotten, try to continue it"
+
+
+def run_agent(messages): # debug: bool = True # додати debug mode - виводити повний текст усіх запусків, ітерації, т. д.
     for iteration in range(1, max_iterations + 1):
         print(f"\n🔄 Iteration {iteration} - Sending input to the model...")
 
         response = client.responses.create(
             model = model_name,
-            input = followup_input,
+            input = messages,
             tools = tools)
 
-        # Check if the model returned a final message
         messages_in_output = [item for item in response.output if item.type == "message"]
         if messages_in_output:
             final_text = messages_in_output[0].content[0].text
             return f"\n🤖 Agent:\n{final_text}"
 
         # If no final message, append the model's tool calls to the history
-        followup_input.extend(response.output)
+        messages.extend(response.output)
         # Execute the tool calls
         for item in response.output:
             if item.type == "function_call":
                 tool_result_msg = tool_execution(item)
-                followup_input.append(tool_result_msg)
-    else:
-        print("\n⚠️ Agent reached the maximum number of iterations without providing a final answer.")
+                messages.append(tool_result_msg)
 
-run_agent(messages)
+        if iteration == max_iterations:
+            last_call(FINAL_PROMPT, messages)
+            break
