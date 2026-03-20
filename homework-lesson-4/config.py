@@ -11,6 +11,8 @@ desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'long
 period_yfinance = "3mo"
 email_crossref_api =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 
+SYSTEM_PROMPT_2 = "Simulate a child and just talk with the user, do not use any tools"
+
 SYSTEM_PROMPT = """
 You are a Senior Analyst with 10 years of experience.
 Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a structured\
@@ -34,6 +36,16 @@ However, you MUST include a "Sources" section at the bottom listing the URLs and
 
 Try not to use more than 15 iterations of tool calls (web_search + read_url) to gather information. 
 If you reach the limit of 15 tool uses, better to stop, use 'write_report' with the information you currently have, and inform the user.
+
+Example of thinking process:
+User query: What is the current situation in Ukraine?
+Thought: I need to find the latest news about Ukraine. I will use the web_search tool.
+Action: web_search
+Action Input: Ukraine latest news
+Observation: You get result from using tool web_search: [list of search results with titles and URLs]
+Thought: The search results show a lot about Sloviansk. I should read one of the articles to get more details.
+...
+and the loop continues until you have enough information to write the report. Do not directly write you thoughts just use this example for internal guidance on how to structure your thinking and tool usage. 
 """
 
 FINAL_PROMPT = """
