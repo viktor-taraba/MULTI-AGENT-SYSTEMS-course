@@ -63,7 +63,7 @@ def last_call(final_prompt_text, messages):
     messages_in_output = [item for item in response.output if item.type == "message"]
     if messages_in_output:
         final_text = messages_in_output[0].content[0].text
-        return f"\n🤖 Agent:\n{final_text}"
+        print(f"\n🤖 Agent:\n{final_text}")
 
     messages.extend(response.output)
     for item in response.output:
@@ -74,6 +74,7 @@ def last_call(final_prompt_text, messages):
                 return f"\n✅ Finished: report generated. You can continue dialog with our agent: this conversation is not forgotten!"
             else:
                 return f"\n🤖 Oh no... Something is not right. Please try again. Do not worry: this conversation is not forgotten, try to continue it"
+    return ""
 
 
 def run_agent(messages): # debug: bool = True # додати debug mode - виводити повний текст усіх запусків, ітерації, т. д.

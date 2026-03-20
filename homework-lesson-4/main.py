@@ -23,7 +23,10 @@ def main():
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_input},
         ]
-        run_agent(messages)
+
+        agent_response = run_agent(messages)
+        if agent_response:
+            print(agent_response)
 
         # to delete
         print("")
