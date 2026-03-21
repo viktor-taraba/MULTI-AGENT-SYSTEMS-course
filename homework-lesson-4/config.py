@@ -10,6 +10,7 @@ desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'long
                 'freeCashflow','operatingCashflow','earningsGrowth','revenueGrowth','grossMargins','ebitdaMargins','operatingMargins','shortName','longName']
 period_yfinance = "3mo"
 email_crossref_api =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
+memory_database_name = "agent_memory.db"
 
 SYSTEM_PROMPT_2 = "Simulate a child and just talk with the user, do not use any tools"
 
