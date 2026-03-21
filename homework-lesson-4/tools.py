@@ -11,6 +11,9 @@ from config import max_search_results, max_url_content_length, output_dir, desir
 from typing import List, Dict
 from pypdf import PdfReader
 
+def search_past_conversation():
+    pass
+
 web_search_tool_schema = {
     "type": "function",
     "name": "web_search",
