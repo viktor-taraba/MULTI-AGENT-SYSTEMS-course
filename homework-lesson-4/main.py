@@ -1,11 +1,12 @@
-from agent import (
-    tool_execution, 
+from agent import ( 
     run_agent, 
     create_database_if_not_exist, 
     insert_session_database, 
     insert_memory_database, 
     truncate_database, 
-    summarize_memory_database
+    summarize_memory_database,
+    ensure_previous_session_summarized,
+    get_memory_database_summary
 )
 from config import SYSTEM_PROMPT, model_name_for_summary
 
@@ -17,8 +18,19 @@ def main():
 
     create_database_if_not_exist();
     session_id = insert_session_database()
+    ensure_previous_session_summarized(session_id)
 
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    past_summaries = get_memory_database_summary(session_id)
+
+    dynamic_system_prompt = SYSTEM_PROMPT
+    if past_summaries:
+        dynamic_system_prompt += "\n\n--- MEMORY OF PAST CONVERSATIONS ---\n"
+        for i, summary in enumerate(past_summaries, 1):
+            dynamic_system_prompt += f"Session {i}: {summary}\n"
+
+    messages = [
+        {"role": "system", "content": dynamic_system_prompt}
+    ]
 
     while True:
         try:
