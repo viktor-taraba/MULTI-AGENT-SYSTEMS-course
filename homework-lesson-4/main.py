@@ -1,9 +1,10 @@
-from agent import tool_execution, run_agent, create_database_if_not_exist, insert_session_database, insert_memory_database
+from agent import tool_execution, run_agent, create_database_if_not_exist, insert_session_database, insert_memory_database, truncate_database
 from config import SYSTEM_PROMPT
 
 def main():
     print("Research Agent")
-    print("type 'exit' or 'quit' to quit, 'delete history' to delete full conversation history (including previous conversations)")
+    print("type 'exit' or 'quit' to quit")
+    print("'delete history' to delete full conversation history (including previous conversations) and exit")
     print("-" * 40)
 
     create_database_if_not_exist();
@@ -26,7 +27,8 @@ def main():
             break
 
         if user_input.lower() in ("delete history"):
-            pass # тут очистити всі таблиці в БД, але зберегти структуру
+            print(truncate_database())
+            break
 
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT},
@@ -41,8 +43,6 @@ def main():
         # to delete
         # print("")
         # print(messages)
-
-        # дати юзеру опцію видалити всю історію
 
 
 if __name__ == "__main__":
