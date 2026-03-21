@@ -75,9 +75,6 @@ def insert_memory_database(session_id, session_message, response_obj):
     
     prompt_tokens, result_tokens, total_tokens, raw_json = 0, 0, 0, ""
     
-    # to delete
-    # print(response_obj)
-    
     if response_obj and hasattr(response_obj, "usage") and response_obj.usage:
         prompt_tokens = response_obj.usage.input_tokens
         result_tokens = response_obj.usage.output_tokens
@@ -85,12 +82,21 @@ def insert_memory_database(session_id, session_message, response_obj):
         raw_json = response_obj.model_dump_json()
         
     cursor.execute('''
-        INSERT INTO tb_agent_history 
+        insert into tb_agent_history 
         (session_id, role, content, raw_json, prompt_tokens, result_tokens, total_tokens)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        values (?, ?, ?, ?, ?, ?, ?)
     ''', (session_id, role, content, raw_json, prompt_tokens, result_tokens, total_tokens))
     conn.commit()
     conn.close()
+
+def truncate_database():
+    conn = sqlite3.connect(memory_database_name)
+    conn.execute("pragma foreign_keys = 1;")
+    cursor = conn.cursor()
+    cursor.execute("delete from tb_sessions")
+    conn.commit()
+    conn.close()
+    return "✅ Database truncated: all conversation history has been deleted."
 
 def get_memory_database():
     pass
