@@ -1,6 +1,14 @@
 from openai import OpenAI
 from tools import tool_registry, tools, write_report_tool_schema
-from config import FINAL_PROMPT, SUMMARY_PROMPT, max_iterations, model_name, memory_database_name, model_name_for_summary
+from config import (
+    FINAL_PROMPT, 
+    SUMMARY_PROMPT, 
+    max_iterations, 
+    model_name, 
+    memory_database_name, 
+    model_name_for_summary,
+    previous_conversations_to_remember
+)
 import json
 import sqlite3
 from dotenv import load_dotenv
@@ -181,8 +189,8 @@ def get_memory_database_summary(session_id):
         SELECT summary_text 
         FROM tb_sessions 
         WHERE session_id < ? AND summary_text IS NOT NULL 
-        ORDER BY session_id DESC LIMIT 1
-    """, (session_id,))
+        ORDER BY session_id DESC LIMIT ?
+    """, (session_id, previous_conversations_to_remember))
 
     past_summaries = [row[0] for row in cursor.fetchall()]
     conn.close()
