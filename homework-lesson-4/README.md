@@ -31,7 +31,7 @@
 
 Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та створений файл .env з вказаним ключем: `OPENAI_API_KEY=<тут_ваш_ключ>`
 
-Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS/blob/main/homework-lesson-3/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS/blob/main/homework-lesson-4/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
 ### Опис тулів для агента:
 |Назва|Параметри|Опис|
