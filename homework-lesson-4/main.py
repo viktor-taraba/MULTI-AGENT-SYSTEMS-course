@@ -2,7 +2,8 @@ from agent import tool_execution, run_agent, create_database_if_not_exist, inser
 from config import SYSTEM_PROMPT
 
 def main():
-    print("Research Agent (type 'exit' to quit)")
+    print("Research Agent")
+    print("type 'exit' or 'quit' to quit, 'delete history' to delete full conversation history (including previous conversations)")
     print("-" * 40)
 
     create_database_if_not_exist();
