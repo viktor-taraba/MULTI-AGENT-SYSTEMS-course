@@ -64,62 +64,187 @@ homework-lesson-4/
 ### Блок-схема роботи агента
 
 ```mermaid
-graph LR
-    User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
+graph TD
+    User((👨‍💻 Користувач)) -->|Input| Main[main.py: CLI Loop]
+    
+    subgraph Initialization [Ініціалізація сесії]
+        Main -->|1. Create/Connect| DB[(SQLite: agent_memory.db)]
+        Main -->|2. New Session| Session[tb_sessions]
+        Main -->|3. Get Summaries| History[tb_agent_history]
+        History -->|Past Context| Summarizer[LLM Summarizer]
+        Summarizer -->|Last 5 Summaries| DynPrompt[Dynamic SYSTEM_PROMPT]
+    end
 
-    Config[⚙️ config.py<br/>SYSTEM_PROMPT, Налаштування, Ліміти] -->|Задає правила поведінки| Agent
-    Main -->|Передає запит| Agent{agent.py<br/>Research Agent}
+    subgraph ReAct_Loop [Custom ReAct Loop]
+        Main -->|4. User Message| Agent{agent.py: run_agent}
+        DynPrompt -->|Rules & Context| Agent
+        
+        Agent -->|5. Thought / Call| LLM[🤖 OpenAI API]
+        LLM -->|Tool Schema| Agent
+        
+        Agent -->|6. Execute| Tools[🔧 tools.py]
+        
+        Tools -->|web_search| Web[DuckDuckGo]
+        Tools -->|read_url| URL[Trafilatura / PyPDF]
+        Tools -->|stock_info| Fin[Yahoo Finance]
+        Tools -->|crossref| Sci[Academic API]
+        Tools -->|write_report| Save[💾 Local Disk]
+        
+        Tools -->|Raw Output| Agent
+        Agent -->|7. Log Interaction| DB
+    end
+
+    subgraph Persistence [Збереження та Очищення]
+        DB -.->|Exclude Errors| Cleanup[Logic: to_exclude=1]
+        Main -->|'exit' / 'quit'| SummarizeNow[Final Summarization]
+        SummarizeNow -->|Update summary_text| Session
+    end
+
+    Agent -->|8. Final Answer| Main
+    Main -->|Display| User
+
+    classDef database fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    classDef logic fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
+    classDef external fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
     
-    Agent <-->|Читає/Записує стан| Memory[(MemorySaver<br/>Пам'ять сесії)]
-    Agent <-->|Reasoning / Планування| LLM[🤖 OpenAI LLM]
-    
-    Agent -->|Виклик інструменту| Tools[🔧 tools.py]
-    
-    Tools -->|web_search| Web[DuckDuckGo]
-    Tools -->|read_url| URL[Trafilatura / PyPDF]
-    Tools -->|stock_company_info| Fin[Yahoo Finance API]
-    Tools -->|find_articles_crossref| Sci[Crossref API]
-    Tools -->|write_report| Save[💾 Файлова система]
-    
-    Web -->|Результати пошуку| Agent
-    URL -->|Текст сторінки| Agent
-    Fin -->|Фінансові дані| Agent
-    Sci -->|Анотації статей| Agent
-    Save -->|Шлях до файлу| Agent
-    
-    Agent -->|Стримінг думок/відповіді| Main
-    Main -->|Вивід у термінал| User
-    
-    Fallback[⚠️ Recursion Limit Reached] -.->|Примусовий FINAL_PROMPT| Agent
-    
-    classDef core fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
-    classDef io fill:#bbdefb,stroke:#1976d2,stroke-width:1px;
-    classDef tool fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
-    class Agent,LLM core;
-    class User,Main io;
-    class Tools,Web,URL,Fin,Sci,Save tool;
-    class Config conf;
+    class DB,Session,History database;
+    class Agent,LLM,Summarizer logic;
+    class Web,URL,Fin,Sci,Save external;
 ```
 
 ---
 
 Приклад логу в консолі:
 ```
-You: Порівняй naive RAG та sentence-window retrieval
+Research Agent
+type 'exit' or 'quit' to quit
+'delete history' to delete full conversation history (including previous conversations) and exit
+----------------------------------------------------------------------------------------------------
 
-🔧 Tool call: web_search(query="naive RAG approach explained")
-📎 Result: Found 5 results...
+You: compare available databases for RAG for custom llm agent
 
-🔧 Tool call: web_search(query="sentence window retrieval RAG")
-📎 Result: Found 5 results...
+🔄 Iteration 1 - Thinking...
+🔧 Tool called -> web_search({'query': 'vector database comparison RAG Pinecone Weaviate Milvus Qdrant Chroma FAISS Redis compari...)
+✅ Result (web_search): [{"title": "Vector Stores for RAG Comparison - Rost Glukhov | Personal ...", "url": "https://www.glu...
 
-🔧 Tool call: read_url(url="https://example.com/rag-comparison")
-📎 Result: [5000 chars] Article about RAG approaches...
+🔄 Iteration 2 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://www.glukhov.org/rag/vector-stores/vector-stores-for-rag-comparison/'})
+✅ Result (read_url): Vector Stores for RAG Comparison
+Pick the right vector DB for your RAG stack
+Choosing the right vect...
 
-🔧 Tool call: write_report(filename="rag_comparison.md", content="# RAG Comparison...")
-📎 Result: Report saved to output/rag_comparison.md
+🔄 Iteration 3 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://jishulabs.com/blog/vector-database-comparison-2026'})
+✅ Result (read_url): Vector databases have become essential infrastructure for AI applications, powering everything from ...
 
-Agent: Звіт збережено у output/rag_comparison.md. Ось основні відмінності: ...
+🔄 Iteration 4 - Thinking...
+🔧 Tool called -> write_report({'filename': 'rag_vector_db_comparison.md', 'content': '# Comparative Guide: Vector Databases for RA...)
+✅ Result (write_report): Success: Report successfully saved to C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homewo...
+
+🔄 Iteration 5 - Thinking...
+
+🤖 Agent:
+I saved the comparative RAG vector-database report to rag_vector_db_comparison.md. Summary: Managed providers (Pinecone) are fastest to deploy but costlier; open-source servers (Weaviate, Milvus, Qdrant) offer stronger control, hybrid search or extreme scale depending on needs; embedded options (FAISS, Chroma, pgvector) are best for prototyping or when you must stay in-process.
+
+You: Continue researching the same topic but add scientific articles, not just some random links
+
+🔄 Iteration 1 - Thinking...
+🔧 Tool called -> find_articles_crossref({'query': 'retrieval augmented generation'})
+✅ Result (find_articles_crossref): [{'title': 'Efficient Information Retrieval and Response Generation with Retrieval-Augmented Generat...
+
+🔄 Iteration 2 - Thinking...
+🔧 Tool called -> find_articles_crossref({'query': 'RAG Lewis 2020'})
+✅ Result (find_articles_crossref): [{'title': 'Safe RAG by RAG: Untying the Bell That RAG Rang with the RAG Hand', 'abstract': 'Retriev...
+
+🔄 Iteration 3 - Thinking...
+🔧 Tool called -> web_search({'query': 'Retrieval-Augmented Generation Lewis 2020 RAG arXiv PDF'})
+✅ Result (web_search): [{"title": "Retrieval-augmented generation - Wikipedia", "url": "https://en.wikipedia.org/wiki/Retri...
+
+🔄 Iteration 4 - Thinking...
+🔧 Tool called -> web_search({'query': "Retrieval-Augmented Generation Lewis et al. 2020 'Retrieval-Augmented Generation for Know...)
+✅ Result (web_search): [{"title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", "url": "https://arxiv...
+
+🔄 Iteration 5 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://arxiv.org/abs/2005.11401'})
+✅ Result (read_url): Computer Science > Computation and Language
+[Submitted on 22 May 2020 (v1), last revised 12 Apr 2021...
+
+🔄 Iteration 6 - Thinking...
+🔧 Tool called -> web_search({'query': 'Hierarchical Navigable Small World Malkov Yashunin 2018 HNSW arXiv PDF'})
+✅ Result (web_search): [{"title": "Transaction / Regular Paper Title - arXiv.org", "url": "https://arxiv.org/pdf/1603.09320...
+
+🔄 Iteration 7 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://arxiv.org/abs/1603.09320'})
+✅ Result (read_url): Computer Science > Data Structures and Algorithms
+[Submitted on 30 Mar 2016 (v1), last revised 14 Au...
+
+🔄 Iteration 8 - Thinking...
+🔧 Tool called -> web_search({'query': 'Product Quantization for Nearest Neighbor Search J\x169gou 2011 product quantization arXi...)
+✅ Result (web_search): [{"title": "Product Quantization for Nearest Neighbor Search - IEEE Xplore", "url": "https://ieeexpl...
+
+🔄 Iteration 9 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://inria.hal.science/file/index/docid/514462/filename/paper_hal.pdf'})
+✅ Result (read_url): --- Page 1 ---
+HAL Id: inria-00514462
+https://inria.hal.science/inria-00514462v1
+Submitted on 23 Mar...
+
+🔄 Iteration 10 - Thinking...
+🔧 Tool called -> web_search({'query': "Dense Passage Retrieval Karpukhin 2020 arXiv 'Dense Passage Retrieval for Open-Domain Que...)
+✅ Result (web_search): [{"title": "Dense Passage Retrieval for Open-Domain Question Answering", "url": "https://arxiv.org/a...
+
+🔄 Iteration 11 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://arxiv.org/abs/2004.04906'})
+✅ Result (read_url): Computer Science > Computation and Language
+[Submitted on 10 Apr 2020 (v1), last revised 30 Sep 2020...
+
+🔄 Iteration 12 - Thinking...
+🔧 Tool called -> web_search({'query': "BEIR benchmark Thakur 2021 'BEIR: A Heterogeneous Benchmark for Information Retrieval' ar...)
+✅ Result (web_search): [{"title": "Beir (benchmark suite) - ir_datasets", "url": "https://ir-datasets.com/beir.html", "snip...
+
+🔄 Iteration 13 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://arxiv.org/abs/2104.08663'})
+✅ Result (read_url): Computer Science > Information Retrieval
+[Submitted on 17 Apr 2021 (v1), last revised 21 Oct 2021 (t...
+
+🔄 Iteration 14 - Thinking...
+🔧 Tool called -> web_search({'query': "ScaNN Google 'Scalable Nearest Neighbors' Guo ScaNN 2020 arXiv 'ScaNN: Efficient Vector S...)
+✅ Result (web_search): [{"title": "Announcing ScaNN: Efficient Vector Similarity Search", "url": "https://research.google/b...
+
+🔄 Iteration 15 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://research.google/blog/announcing-scann-efficient-vector-similarity-search/'})
+✅ Result (read_url): Announcing ScaNN: Efficient Vector Similarity Search
+July 28, 2020
+Posted by Philip Sun, Software En...
+
+🔄 Iteration 16 - Thinking...
+🔧 Tool called -> web_search({'query': "DiskANN 'DiskANN: Fast, Accurate, and Efficient Disk-based ANN' Microsoft arXiv 2021"})
+✅ Result (web_search): [{"title": "Scalable Disk-Based Approximate Nearest Neighbor Search with", "url": "https://arxiv.org...
+
+🔄 Iteration 17 - Thinking...
+🔧 Tool called -> web_search({'query': "DiskANN Subramanya 'DiskANN' 'Subramanya' 'arXiv' 'DiskANN Microsoft'"})
+✅ Result (web_search): [{"title": "DiskANN: Fast Accurate Billion-point Nearest Neighbor Search ...", "url": "https://www.m...
+
+🔄 Iteration 18 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://suhasjs.github.io/files/diskann_neurips19.pdf'})
+✅ Result (read_url): --- Page 1 ---
+DiskANN: Fast Accurate Billion-point Nearest
+Neighbor Search on a Single Node
+Suhas J...
+
+🔄 Iteration 19 - Thinking...
+🔧 Tool called -> web_search({'query': "Billion-scale similarity search with GPUs Johnson Douze J\x169gou 2017 FAISS paper arXiv ...)
+✅ Result (web_search): [{"title": "[1702.08734] Billion-scale similarity search with GPUs - arXiv.org", "url": "https://arx...
+
+🔄 Iteration 20 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://arxiv.org/abs/1702.08734'})
+✅ Result (read_url): Computer Science > Computer Vision and Pattern Recognition
+[Submitted on 28 Feb 2017]
+Title:Billion-...
+
+⚠️ Agent stopped: Reached the maximum limit of iterations. Generating final report from gathered data...
+🔧 Tool called -> write_report({'filename': 'rag_vector_db_scientific_report.md', 'content': '# Comparative Technical Report — Vect...)
+✅ Result (write_report): Success: Report successfully saved to C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homewo...
 ```
 
 ---
