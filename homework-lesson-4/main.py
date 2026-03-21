@@ -36,6 +36,7 @@ def main():
         try:
             user_input = input("\nYou: ").strip()
         except (EOFError, KeyboardInterrupt):
+            print("\nSaving summary pf our conversation...")
             summarize_memory_database(model_name_for_summary, session_id)
             print("\nGoodbye!")
             break
@@ -44,6 +45,7 @@ def main():
             continue
 
         if user_input.lower() in ("exit", "quit"):
+            print("\nSaving summary pf our conversation...")
             summarize_memory_database(model_name_for_summary, session_id)
             print("Goodbye!")
             break
