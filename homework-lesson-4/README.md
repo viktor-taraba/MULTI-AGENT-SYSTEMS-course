@@ -64,52 +64,49 @@ homework-lesson-4/
 ### Блок-схема роботи агента
 
 ```mermaid
-graph TD
-    User((👨‍💻 Користувач)) -->|Input| Main[main.py: CLI Loop]
+graph LR
+    User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
+
+    Config[⚙️ config.py<br/>SYSTEM_PROMPT, Налаштування, Ліміти] -->|Задає правила поведінки| Agent
+    Main -->|Передає запит| Agent{agent.py<br/>Research Agent}
     
-    subgraph Initialization [Ініціалізація сесії]
-        Main -->|1. Create/Connect| DB[(SQLite: agent_memory.db)]
-        Main -->|2. New Session| Session[tb_sessions]
-        Main -->|3. Get Summaries| History[tb_agent_history]
-        History -->|Past Context| Summarizer[LLM Summarizer]
-        Summarizer -->|Last 5 Summaries| DynPrompt[Dynamic SYSTEM_PROMPT]
+    %% Оновлений блок пам'яті
+    subgraph Memory_System [Custom SQLite Memory]
+        DB[(agent_memory.db)] <-->|SQL History| Agent
+        Summary[LLM Summarizer] -->|Update summary_text| DB
+        DB -->|Короткий підсумок попередніх розмов| Agent
     end
 
-    subgraph ReAct_Loop [Custom ReAct Loop]
-        Main -->|4. User Message| Agent{agent.py: run_agent}
-        DynPrompt -->|Rules & Context| Agent
-        
-        Agent -->|5. Thought / Call| LLM[🤖 OpenAI API]
-        LLM -->|Tool Schema| Agent
-        
-        Agent -->|6. Execute| Tools[🔧 tools.py]
-        
-        Tools -->|web_search| Web[DuckDuckGo]
-        Tools -->|read_url| URL[Trafilatura / PyPDF]
-        Tools -->|stock_info| Fin[Yahoo Finance]
-        Tools -->|crossref| Sci[Academic API]
-        Tools -->|write_report| Save[💾 Local Disk]
-        
-        Tools -->|Raw Output| Agent
-        Agent -->|7. Log Interaction| DB
-    end
-
-    subgraph Persistence [Збереження та Очищення]
-        DB -.->|Exclude Errors| Cleanup[Logic: to_exclude=1]
-        Main -->|'exit' / 'quit'| SummarizeNow[Final Summarization]
-        SummarizeNow -->|Update summary_text| Session
-    end
-
-    Agent -->|8. Final Answer| Main
-    Main -->|Display| User
-
-    classDef database fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
-    classDef logic fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
-    classDef external fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
+    Agent <-->|Reasoning / Планування| LLM[🤖 OpenAI LLM]
     
-    class DB,Session,History database;
-    class Agent,LLM,Summarizer logic;
-    class Web,URL,Fin,Sci,Save external;
+    Agent -->|Виклик інструменту| Tools[🔧 tools.py]
+    
+    Tools -->|web_search| Web[DuckDuckGo]
+    Tools -->|read_url| URL[Trafilatura / PyPDF]
+    Tools -->|stock_company_info| Fin[Yahoo Finance API]
+    Tools -->|find_articles_crossref| Sci[Crossref API]
+    Tools -->|write_report| Save[💾 Файлова система]
+    
+    Web -->|Результати пошуку| Agent
+    URL -->|Текст сторінки| Agent
+    Fin -->|Фінансові дані| Agent
+    Sci -->|Анотації статей| Agent
+    Save -->|Шлях до файлу| Agent
+    
+    Agent -->|Стримінг думок/відповіді| Main
+    Main -->|Вивід у термінал| User
+    
+    Fallback[⚠️ Iteration Limit Reached] -.->|Примусовий FINAL_PROMPT| Agent
+    
+    classDef core fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
+    classDef io fill:#bbdefb,stroke:#1976d2,stroke-width:1px;
+    classDef tool fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
+    classDef db_style fill:#fff9c4,stroke:#fbc02d,stroke-width:1px;
+    
+    class Agent,LLM core;
+    class User,Main io;
+    class Tools,Web,URL,Fin,Sci,Save tool;
+    class DB,Summary db_style;
 ```
 
 ---
