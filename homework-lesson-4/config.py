@@ -3,7 +3,7 @@ model_name_for_summary: str = "gpt-4o-mini"
 max_search_results: int = 7
 max_url_content_length: int = 6000
 output_dir: str = "output"
-max_iterations: int = 5
+max_iterations: int = 20
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',
                 'twoHundredDayAverage', 'trailingEps', 'forwardEps', 'recommendationKey', 'numberOfAnalystOpinions', 'totalCash','totalCashPerShare','ebitda',
@@ -13,8 +13,6 @@ period_yfinance = "3mo"
 email_crossref_api =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 memory_database_name = "agent_memory.db"
 previous_conversations_to_remember = 5
-
-SYSTEM_PROMPT_2 = "Simulate a child and just talk with the user, do not use any tools"
 
 SYSTEM_PROMPT = """
 You are a Senior Analyst with 10 years of experience.
