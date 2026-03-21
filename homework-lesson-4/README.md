@@ -1,8 +1,97 @@
 # Завдання: Research Agent з власним ReAct Loop
 
-Розширте свого Research Agent з homework-lesson-3 — **замініть `create_react_agent` на власну реалізацію ReAct-циклу** та **покращіть system prompt**, застосувавши техніки промптингу з лекції.
+![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
+![yfinance](https://img.shields.io/badge/yfinance-1.2.0+-orange.svg)
+![trafilatura](https://img.shields.io/badge/trafilatura-2.0.0+-orange.svg)
+![pypdf](https://img.shields.io/badge/pypdf-6.9.1+-orange.svg)
+![pandas](https://img.shields.io/badge/pandas-3.0.1+-orange.svg)
+![ddgs](https://img.shields.io/badge/ddgs-9.11.4+-orange.svg)
+![requests](https://img.shields.io/badge/requests-2.32.5+-orange.svg)
 
-**Мета:** зрозуміти, як працює ReAct loop зсередини — без "магії" фреймворків — та навчитися писати ефективні промпти, які суттєво впливають на поведінку агента.
+### Що змінилося порівняно з homework-lesson-3
+
+### Приклад:
+
+![Demo](/homework-lesson-4/gif%20example/agent_example.gif)
+
+Приклади згенерованих звітів - в [output](/homework-lesson-4/output)
+
+### Загальний опис
+
+Агент запускається з терміналу (python3 main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
+Агент підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії.
+
+Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та створений файл .env з вказаним ключем: `OPENAI_API_KEY=<тут_ваш_ключ>`
+
+Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS/blob/main/homework-lesson-3/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+
+### Опис тулів для агента:
+|Назва|Параметри|Опис|
+|--|--|--|
+|`web_search`|`query: str`|Шукає актуальну інформацію в інтернеті через DuckDuckGo. Повертає перелік знайдених посилань з даними про заголовок, URL, фрагмент тексту. Використовується як перший крок пошуку.|
+|`read_url`|`url: str`|Отримує основний текст із вебсторінки (або PDF, якщо це пряме посилання на pdf-звіт чи статтю).|
+|`stock_company_info`|`stock_ticker: str, result_type: str`|Отримує фінансові дані або загальний профіль компанії через Yahoo Finance API.|
+|`find_articles_crossref`|`query: str`|Шукає наукові статті в базі Crossref. Повертає відфільтрований список записів із валідною анотацією (назва, анотація, DOI, рік).|
+|`write_report`|`filename: str, content: str`|Зберігає фінальний звіт у форматі Markdown, використовується як останній крок для видачі результату.|
+
+### Структура проєкту
+
+```
+homework-lesson-4/
+├── main.py              # Entry point
+├── agent.py             # Agent setup (LLM, tools, memory, create_agent)
+├── tools.py             # Tool definitions and implementations
+├── config.py            # System prompt, settings, constants
+├── agent_memory.py      # SQLite database for cross-sesion memory and logging
+├── requirements.txt     # Libraries list + min version for each library
+├── output/
+│   └── context_window_agentic_systems_comparison.md   # Example generated report (#1)
+│   └── dividend_policy_literature.md                  # Example generated report (#2)
+│   └── news_ukraine_last_week_14-21_Mar_2026.md       # Example generated report (#3)
+│   └── superortikon_report.md                         # Example generated report (#4)
+│   └── test_finans_2kurs.md                           # Example generated report (#5)
+└── README.md            # Setup instructions, architecture overview
+```
+
+### Блок-схема роботи агента
+
+```mermaid
+graph LR
+    User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
+
+    Config[⚙️ config.py<br/>SYSTEM_PROMPT, Налаштування, Ліміти] -->|Задає правила поведінки| Agent
+    Main -->|Передає запит| Agent{agent.py<br/>Research Agent}
+    
+    Agent <-->|Читає/Записує стан| Memory[(MemorySaver<br/>Пам'ять сесії)]
+    Agent <-->|Reasoning / Планування| LLM[🤖 OpenAI LLM]
+    
+    Agent -->|Виклик інструменту| Tools[🔧 tools.py]
+    
+    Tools -->|web_search| Web[DuckDuckGo]
+    Tools -->|read_url| URL[Trafilatura / PyPDF]
+    Tools -->|stock_company_info| Fin[Yahoo Finance API]
+    Tools -->|find_articles_crossref| Sci[Crossref API]
+    Tools -->|write_report| Save[💾 Файлова система]
+    
+    Web -->|Результати пошуку| Agent
+    URL -->|Текст сторінки| Agent
+    Fin -->|Фінансові дані| Agent
+    Sci -->|Анотації статей| Agent
+    Save -->|Шлях до файлу| Agent
+    
+    Agent -->|Стримінг думок/відповіді| Main
+    Main -->|Вивід у термінал| User
+    
+    Fallback[⚠️ Recursion Limit Reached] -.->|Примусовий FINAL_PROMPT| Agent
+    
+    classDef core fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
+    classDef io fill:#bbdefb,stroke:#1976d2,stroke-width:1px;
+    classDef tool fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
+    class Agent,LLM core;
+    class User,Main io;
+    class Tools,Web,URL,Fin,Sci,Save tool;
+    class Config conf;
+```
 
 ---
 
@@ -10,36 +99,12 @@
 
 | homework-lesson-3 | homework-lesson-4 |
 |---|---|
-| `create_react_agent` з LangChain | Власна реалізація ReAct loop |
-| LangChain керує циклом tool calling | Ви самі керуєте циклом |
-| Фреймворк парсить відповіді LLM | Ви самі обробляєте `tool_calls` з відповіді API |
-| `MemorySaver` для памʼяті | Ви самі керуєте списком `messages` |
+| LangChain | Власна реалізація |
+| `MemorySaver` для памʼяті | | `MemorySaver` для памʼяті | Список `messages` + БД на SQLite з summary попередніх розмов (дял поточної сесії пам'ятає 50 останніх повідомлень + 1 повідомлення, для попередніх 5 розмов - коротке summary з БД) | |
 | `@tool` декоратор LangChain | Tools описані як JSON Schema для API |
 | Базовий system prompt | Покращений prompt із застосуванням технік промптингу |
-
+||Користувач може видалити збережені дані про попередні розмови|
 ---
-
-### Що потрібно реалізувати
-
-1. **Власний ReAct Loop** — замініть `create_react_agent` на власний цикл, який відправляє повідомлення в LLM API з tool definitions, обробляє відповідь, виконує tool calls, і повторює до фінальної відповіді
-2. **Tools як JSON Schema** — опишіть tools (`web_search`, `read_url`, `write_report`) у форматі tool calling API вашого провайдера замість `@tool` декоратора LangChain
-3. **Памʼять діалогу** — реалізуйте збереження контексту між запитами без `MemorySaver`
-4. **System Prompt** — напишіть осмислений system prompt, що керує поведінкою агента. Експериментуйте з формулюваннями — це і є промпт-інжиніринг на практиці
-5. **Логування кроків** — виводьте в консоль, який tool викликається, з якими аргументами, та який результат
-6. **Обробка помилок** — tool errors не повинні крашити агента; ліміт ітерацій, щоб агент не зациклився
-7. **Покращений System Prompt** — перепишіть system prompt з homework-lesson-3, застосувавши практики промпт-інжинірингу з лекції (чітка роль, структуровані інструкції, приклади, обмеження поведінки тощо).
-
----
-
-### Очікуваний результат
-
-1. **Працюючий агент** — запускається через `python main.py`, працює в інтерактивному режимі
-2. **Власний ReAct loop** — без `create_react_agent`, `AgentExecutor`, або інших агентних абстракцій фреймворків
-3. **Tool calling через API** — tools описані як JSON Schema, LLM сам вирішує, коли їх викликати
-4. **Логування** — в консолі видно кожен крок: який tool викликано, з якими параметрами, який результат
-5. **Multi-step reasoning** — агент робить 3-5+ tool calls на один запит
-6. **Памʼять діалогу** — агент памʼятає попередні повідомлення в межах сесії
-7. **Звіт** — агент генерує та зберігає Markdown-звіт через `write_report`
 
 Приклад логу в консолі:
 ```
