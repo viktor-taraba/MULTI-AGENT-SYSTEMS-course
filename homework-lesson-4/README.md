@@ -71,7 +71,7 @@ graph LR
     
     %% Оновлений блок пам'яті
     subgraph Memory_System [Custom SQLite Memory]
-        DB[(agent_memory.db)] <-->|SQL History| Agent
+        DB[(agent_memory.db)] <-->|SQL| Agent
         Summary[🤖 LLM Summarizer] -->|Update summary_text| DB
         DB -->|Короткий підсумок попередніх розмов| Agent
     end
@@ -100,10 +100,10 @@ graph LR
     classDef tool fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
     classDef db_style fill:#fff9c4,stroke:#fbc02d,stroke-width:1px;
     
-    class Agent,LLM core;
+    class Agent,LLM,Summary core;
     class User,Main io;
     class Tools,Web,URL,Fin,Sci,Save tool;
-    class DB,Summary db_style;
+    class DB db_style;
 ```
 
 ---
