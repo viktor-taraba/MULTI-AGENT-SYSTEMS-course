@@ -67,7 +67,7 @@ homework-lesson-4/
 graph LR
     User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
 
-    Config[⚙️ config.py<br/>SYSTEM_PROMPT, Налаштування, Ліміти] -->|Задає правила поведінки| Agent
+    Config[⚙️ config.py<br/>SYSTEM_PROMPT, налаштування, ліміт ітерацій ...] -->|Задає правила поведінки| Agent
     Main -->|Передає запит| Agent{agent.py<br/>Research Agent}
     
     %% Оновлений блок пам'яті
@@ -95,9 +95,7 @@ graph LR
     
     Agent -->|Стримінг думок/відповіді| Main
     Main -->|Вивід у термінал| User
-    
-    Fallback[⚠️ Iteration Limit Reached] -.->|Примусовий FINAL_PROMPT| Agent
-    
+  
     classDef core fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
     classDef io fill:#bbdefb,stroke:#1976d2,stroke-width:1px;
     classDef tool fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
