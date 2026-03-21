@@ -163,10 +163,9 @@ def last_call(final_prompt_text, messages, session_id):
                 return f"\n🤖 Oh no... Something is not right. Please try again. Do not worry: this conversation is not forgotten, try to continue it"
     return ""
 
-
 def run_agent(messages, session_id): # debug: bool = True # додати debug mode - виводити повний текст усіх запусків, ітерації, т. д.
     for iteration in range(1, max_iterations + 1):
-        print(f"\n🔄 Iteration {iteration} - Sending input to the model...")
+        print(f"\n🔄 Iteration {iteration} - Thinking...")
 
         response = client.responses.create(
             model = model_name,
@@ -184,7 +183,7 @@ def run_agent(messages, session_id): # debug: bool = True # додати debug m
         # Execute the tool calls
         for item in response.output:
             if item.type == "function_call":
-                insert_memory_database(session_id, {"role": "assistant", "content": f"Tool called: {item.name}"}, response)
+                insert_memory_database(session_id, {"role": "assistant", "content": f"Tool called: {item.name}({item.arguments})"}, response)
                 tool_result_msg = tool_execution(item)
                 messages.append(tool_result_msg)
                 insert_memory_database(session_id, {"role": "tool", "content": tool_result_msg["output"]}, None)
