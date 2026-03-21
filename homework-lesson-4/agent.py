@@ -1,17 +1,12 @@
 from openai import OpenAI
 from tools import tool_registry, tools, write_report_tool_schema
-from config import FINAL_PROMPT, max_iterations, model_name, memory_database_name
+from config import FINAL_PROMPT, SUMMARY_PROMPT, max_iterations, model_name, memory_database_name, model_name_for_summary
 import json
 import sqlite3
 from dotenv import load_dotenv
 load_dotenv()
 
 client = OpenAI()
-
-# memory
-    # ідея для пам'яті - зберігати такий же результат в БД, можливо з додатковою інфою
-    # перед тим як знову давати користувачу можлмивість введення, зберегти в БД в окремій таблиці самарі розмови з таким-то ід
-    # і потім при наступному виклику передавати агенту самарі цієї розмови з таблиці як контекст для наступних відповідей
 
 def create_database_if_not_exist():
     conn = sqlite3.connect(memory_database_name)
@@ -21,7 +16,6 @@ def create_database_if_not_exist():
         create table if not exists tb_sessions(
             session_id      integer primary key autoincrement,
             model_name      text not null,
-            summary_header  text null,
             summary_text    text null,
             created_at      datetime default current_timestamp
         );
@@ -32,6 +26,7 @@ def create_database_if_not_exist():
             id              integer primary key autoincrement,
             session_id      integer not null,
             role            text not null,
+            to_exclude      integer default 0,
             content         text,
             raw_json        text,
             prompt_tokens   integer,
@@ -98,11 +93,85 @@ def truncate_database():
     conn.close()
     return "✅ Database truncated: all conversation history has been deleted."
 
-def get_memory_database():
-    pass
+def ensure_previous_session_summarized(session_id):
+    """
+    Checks if the previous conversation was abruptly closed without summarizing.
+    If so, it runs the summarizer on it before we start the new conversation.
+    """
+    conn = sqlite3.connect(memory_database_name)
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT session_id, summary_text 
+        FROM tb_sessions 
+        WHERE session_id < ? 
+        ORDER BY session_id DESC LIMIT 1
+    """, (session_id,))
+    
+    row = cursor.fetchone()
+    conn.close()
+    
+    if row:
+        prev_session_id, summary = row
+        if not summary:
+            summarize_memory_database(model_name_for_summary, prev_session_id)
 
-def summarize_memory_database():
-    pass
+def summarize_memory_database(model, session_id):
+    conn = sqlite3.connect(memory_database_name)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        update tb_agent_history 
+        set to_exclude = 1
+        where substr(content, 1, 6) = '"Error'
+        and session_id = ?
+    """, (session_id,))
+    conn.commit()
+    cursor.execute("""
+        update tb_agent_history 
+        set to_exclude = 1
+        where id in (
+            select id - 1 
+            from tb_agent_history 
+            where substr(content, 1, 6) = '"Error' 
+            and session_id = ?
+        )
+        and session_id = ?
+    """, (session_id, session_id))
+    conn.commit()
+
+    cursor.execute("""
+        select role, content 
+        from tb_agent_history 
+        where session_id = ? and role in ('user', 'assistant', 'tool')
+        and to_exclude = 0
+    """, (session_id,))
+    
+    history = cursor.fetchall()
+    if not history:
+        return ""
+    chat_log = "\n".join([f"{role}: {content}" for role, content in history])
+    
+    response = client.responses.create(
+            model = model,
+            input=[
+            {"role": "system", "content": SUMMARY_PROMPT},
+            {"role": "user", "content": f"Dialogue to summarize:\n{chat_log}"}
+        ]
+    )
+    messages_in_output = [item for item in response.output if item.type == "message"]
+    if messages_in_output:
+        summary_text = messages_in_output[0].content[0].text
+    else:
+        summary_text = "Failed to generate summary."
+
+    cursor.execute("""
+        UPDATE tb_sessions 
+        SET summary_text = ? 
+        WHERE session_id = ?
+    """, (summary_text, session_id))
+    conn.commit()
+    conn.close()
 
 def tool_execution(item):
     tool_name = tool_registry.get(item.name)
@@ -132,7 +201,7 @@ def last_call(final_prompt_text, messages, session_id):
 
     messages.append({
         "role": "user",
-        "content": FINAL_PROMPT
+        "content": final_prompt_text
     })
     
     response = client.responses.create(
@@ -151,7 +220,7 @@ def last_call(final_prompt_text, messages, session_id):
 
     for item in response.output:
         if item.type == "function_call":
-            insert_memory_database(session_id, {"role": "assistant", "content": f"Tool called: {item.name}"}, response)
+            insert_memory_database(session_id, {"role": "assistant", "content": f"Tool called: {item.name}({item.arguments})"}, response)
 
             if item.name == "write_report":
                 tool_result_msg = tool_execution(item)
@@ -163,7 +232,7 @@ def last_call(final_prompt_text, messages, session_id):
                 return f"\n🤖 Oh no... Something is not right. Please try again. Do not worry: this conversation is not forgotten, try to continue it"
     return ""
 
-def run_agent(messages, session_id): # debug: bool = True # додати debug mode - виводити повний текст усіх запусків, ітерації, т. д.
+def run_agent(messages, session_id):
     for iteration in range(1, max_iterations + 1):
         print(f"\n🔄 Iteration {iteration} - Thinking...")
 
