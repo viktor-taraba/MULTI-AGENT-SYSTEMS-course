@@ -204,13 +204,13 @@ def tool_execution(item):
 
     args = json.loads(item.arguments)
     args_str = str(args)
-    args_str = args_str[:150] + "..." if len(args_str) > 150 else args_str
+    args_str = args_str[:100] + "..." if len(args_str) > 100 else args_str
     print(f"🔧 Tool called -> {item.name}({args_str})")
 
     result = tool_name(**args)
             
     content_str = str(result)
-    content_str = content_str[:150] + "..." if len(content_str) > 150 else content_str
+    content_str = content_str[:100] + "..." if len(content_str) > 100 else content_str
     print(f"✅ Result ({item.name}): {content_str}")
 
     return {
