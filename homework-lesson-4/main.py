@@ -1,20 +1,30 @@
-from agent import tool_execution, run_agent, create_database_if_not_exist, insert_session_database, insert_memory_database, truncate_database
-from config import SYSTEM_PROMPT
+from agent import (
+    tool_execution, 
+    run_agent, 
+    create_database_if_not_exist, 
+    insert_session_database, 
+    insert_memory_database, 
+    truncate_database, 
+    summarize_memory_database
+)
+from config import SYSTEM_PROMPT, model_name_for_summary
 
 def main():
     print("Research Agent")
     print("type 'exit' or 'quit' to quit")
     print("'delete history' to delete full conversation history (including previous conversations) and exit")
-    print("-" * 40)
+    print("-" * 100)
 
     create_database_if_not_exist();
     session_id = insert_session_database()
+
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     while True:
         try:
             user_input = input("\nYou: ").strip()
         except (EOFError, KeyboardInterrupt):
-            # тут зберігати самарі розмови (summary text and detail) + додати вивід по типу хвилинку, зберігаємо розмову
+            summarize_memory_database(model_name_for_summary, session_id)
             print("\nGoodbye!")
             break
 
@@ -22,7 +32,7 @@ def main():
             continue
 
         if user_input.lower() in ("exit", "quit"):
-            # тут зберігати самарі розмови (summary text and detail) + додати вивід по типу хвилинку, зберігаємо розмову
+            summarize_memory_database(model_name_for_summary, session_id)
             print("Goodbye!")
             break
 
@@ -30,20 +40,15 @@ def main():
             print(truncate_database())
             break
 
-        messages = [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_input},
-        ]
         insert_memory_database(session_id, {"role": "user", "content": user_input}, 0)
+        messages.append({"role": "user", "content": user_input})
+
+        if len(messages) > 51:
+            messages = [messages[0]] + messages[-50:]
 
         agent_response = run_agent(messages,session_id)
         if agent_response:
             print(agent_response)
-
-        # to delete
-        # print("")
-        # print(messages)
-
 
 if __name__ == "__main__":
     main()
