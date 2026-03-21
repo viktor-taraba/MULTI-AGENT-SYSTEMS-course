@@ -69,8 +69,6 @@ def main():
         
             messages = [system_message] + recent_messages
 
-        print(len(messages))
-
         agent_response = run_agent(messages,session_id)
         if agent_response:
             print(agent_response)
