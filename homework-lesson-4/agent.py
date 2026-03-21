@@ -173,6 +173,22 @@ def summarize_memory_database(model, session_id):
     conn.commit()
     conn.close()
 
+def get_memory_database_summary(session_id):
+    conn = sqlite3.connect(memory_database_name)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT summary_text 
+        FROM tb_sessions 
+        WHERE session_id < ? AND summary_text IS NOT NULL 
+        ORDER BY session_id DESC LIMIT 1
+    """, (session_id,))
+
+    past_summaries = [row[0] for row in cursor.fetchall()]
+    conn.close()
+
+    return past_summaries
+
 def tool_execution(item):
     tool_name = tool_registry.get(item.name)
     if tool_name is None:
