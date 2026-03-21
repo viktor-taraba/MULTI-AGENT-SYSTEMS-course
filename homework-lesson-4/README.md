@@ -67,13 +67,12 @@ homework-lesson-4/
 graph LR
     User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
 
-    Config[⚙️ config.py<br/>SYSTEM_PROMPT, налаштування, ліміт ітерацій ...] -->|Задає правила поведінки| Agent
-    Main -->|Передає запит| Agent{agent.py<br/>Research Agent}
+    Config[⚙️ config.py<br/>SYSTEM_PROMPT, налаштування, ліміт ітерацій ...] -->|Задає правила поведінки| Agent{agent.py<br/>Research Agent}
     
     %% Оновлений блок пам'яті
     subgraph Memory_System [Custom SQLite Memory]
         DB[(agent_memory.db)] <-->|SQL History| Agent
-        Summary[LLM Summarizer] -->|Update summary_text| DB
+        Summary[🤖 LLM Summarizer] -->|Update summary_text| DB
         DB -->|Короткий підсумок попередніх розмов| Agent
     end
 
