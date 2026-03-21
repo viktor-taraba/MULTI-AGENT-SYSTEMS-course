@@ -1,4 +1,5 @@
 model_name: str = "gpt-5-mini"
+model_name_for_summary: str = "gpt-4o-mini"
 max_search_results: int = 7
 max_url_content_length: int = 6000
 output_dir: str = "output"
@@ -16,7 +17,7 @@ SYSTEM_PROMPT_2 = "Simulate a child and just talk with the user, do not use any 
 
 SYSTEM_PROMPT = """
 You are a Senior Analyst with 10 years of experience.
-Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a structured\
+Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a structured
 comprehensive Markdown report.
 When you receive a complex query, you must decompose it into smaller, logical research steps before using your search tools.
 Use minimum amount of data (tools usage) if it is enough for requested information.
@@ -53,4 +54,10 @@ FINAL_PROMPT = """
 STOP. You have reached your limit. Do not use tools. 
 Based ONLY on the info already gathered, write a detailed final report. 
 You MUST use the 'write_report' tool to submit your detailed final report.
+"""
+
+SUMMARY_PROMPT = """
+You are an professional assistant that summarizes conversations.
+Extract the most important facts, user preferences, and final conclusions from the following dialogue.
+Keep it concise but detailed enough to be used as context for future conversations.
 """
