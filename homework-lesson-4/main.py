@@ -58,7 +58,18 @@ def main():
         messages.append({"role": "user", "content": user_input})
 
         if len(messages) > 51:
-            messages = [messages[0]] + messages[-50:]
+            system_message = messages[0]
+            recent_messages = messages[-50:]
+    
+            while recent_messages and (
+                isinstance(recent_messages[0], dict) and 
+                recent_messages[0].get("type") == "function_call_output"
+            ):
+                recent_messages.pop(0)
+        
+            messages = [system_message] + recent_messages
+
+        print(len(messages))
 
         agent_response = run_agent(messages,session_id)
         if agent_response:
