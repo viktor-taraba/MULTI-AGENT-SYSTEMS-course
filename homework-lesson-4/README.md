@@ -31,7 +31,7 @@
 
 Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та створений файл .env з вказаним ключем: `OPENAI_API_KEY=<тут_ваш_ключ>`
 
-Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS/blob/main/homework-lesson-3/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-4/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
 ### Опис тулів для агента:
 |Назва|Параметри|Опис|
@@ -104,6 +104,24 @@ graph LR
     class User,Main io;
     class Tools,Web,URL,Fin,Sci,Save tool;
     class DB db_style;
+```
+
+### Схема даних (SQLite)
+
+```mermaid
+graph LR
+    subgraph Database_Schema [Research Agent Memory]
+    direction LR
+    
+    A["<div align='left'><b>tb_sessions</b><hr/>ID: INT (PK)<br/>Model: TEXT<br/>Summary: TEXT<br/>Created: DATETIME</div>"] 
+    
+    B["<div align='left'><b>tb_agent_history</b><hr/>ID: INT (PK)<br/>Session_ID: INT (FK)<br/>Role: TEXT<br/>Content: TEXT<br/>Tokens: INT<br/>Created: DATETIME</div>"]
+    
+    A -->|1:N| B
+    end
+    
+    style A fill:#fff9c4,stroke:#fbc02d,text-align:left
+    style B fill:#fff9c4,stroke:#fbc02d,text-align:left
 ```
 
 ---
