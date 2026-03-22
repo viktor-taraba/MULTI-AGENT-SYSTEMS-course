@@ -12,7 +12,7 @@
 | homework-lesson-3 | homework-lesson-4 |
 |---|---|
 | LangChain | Власна реалізація |
-| `MemorySaver` для памʼяті | Список `messages` (для поточної сесії пам'ятає 50 останніх + перше повідомлення) |
+| `MemorySaver` для памʼяті | Список `messages` (для поточної сесії пам'ятає max_steps_to_remember (config.py) останніх кроків + перше повідомлення) |
 | Памя'ять між різними сесіями відсутня | БД на SQLite з summary та повними логами попередніх розмов, для попередніх 5 розмов передаємо коротке summary з БД |
 | `@tool` декоратор LangChain | Tools описані як JSON Schema для API |
 | Базовий system prompt | Покращений prompt із застосуванням технік промптингу |
@@ -33,6 +33,34 @@
 
 Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-4/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
+При підрізці messages враховуємо послідовність ResponseReasoningItem -> ResponseFunctionToolCall -> function_call_output. Рекомендується задавати значення max_steps_to_remember з розрахунком на максимально можливу тривалість діалогу, тобто таким чином, щоб воно було не менше за 2+(max_iterations+1)*3 (перше повідомлення з системним повідомленням + запит користувача + максимальна кількість ітерацій + додаткова ітерація на формування звіту).
+
+Приклад кроків при розрахунку к-ті повідомлень для пам'яті:
+```
+ ResponseReasoningItem(
+        id="rs_01524c199f411aad0069bfe24771848191b6a8b30304df4eac",
+        summary=[],
+        type="reasoning",
+        content=None,
+        encrypted_content=None,
+        status=None,
+    ),
+ResponseFunctionToolCall(
+        arguments='{"query":"BERT 2018 arXiv \'BERT: Pre-training of Deep Bidirectional Transformers\' pdf"}',
+        call_id="call_lZfO3ET79puJhldRPp5i2hy4",
+        name="web_search",
+        type="function_call",
+        id="fc_01524c199f411aad0069bfe247bebc81918e38e7dddb7991d8",
+        namespace=None,
+        status="completed",
+    ),
+    {
+        "type": "function_call_output",
+        "call_id": "call_lZfO3ET79puJhldRPp5i2hy4",
+        "output": '"[{\\"title\\": \\"[1810.04805] BERT: Pre-training of Deep Bidirectional\\", \\"url\\": \\"https://arxiv.org/abs/1810.04805\\", \\"snippet\\": \\"View aPDFofthe paper titledBERT:Pre-trainingofDeepBidirectionalTransformersfor Language Understanding, by Jacob Devlin and 3 other authors\\"}, {\\"title\\": \\"Toward structuring real-world data: Deep learning for\\", \\"url\\": \\"https://www.cell.com/patterns/fulltext/S2666-3899(23)00066-1\\", \\"snippet\\": \\"... in medical registries, which are often readily available and capture patient information, as the basis for patient-level supervision totraindeep...\\"}, {\\"title\\": \\"BERT (Language Model)\\", \\"url\\": \\"https://devopedia.org/bert-language-model\\", \\"snippet\\": \\"...pdfRedirected URLs: Discussion: https://arxiv.org/pdf/1810.04805.pdf\\\\u2192 http://arxiv.org/pdf/1810.04805 Discussion: ...\\"}, {\\"title\\": \\"Application and Effectiveness of BERT in Question and Answer\\", \\"url\\": \\"https://www.itm-conferences.org/articles/itmconf/ref/2025/04/itmconf_iwadi2024_02007/itmconf_iwadi2024_02007.html\\", \\"snippet\\": \\"Devlin,BERT:Pre-trainingofdeepbidirectionaltransformersfor language understanding. ...BidirectionalEncoder Representations fromTransformers...\\"}, {\\"title\\": \\"Chapter | Papers We Love\\", \\"url\\": \\"https://paperswelove.org/chapter/toronto/\\", \\"snippet\\": \\"Arun Raja will be presenting \\\\u201cBERT:Pre-trainingofDeepBidirectionalTransformersfor Language Understanding\\\\u201d by Jacob Devlin, et al.\\"}, {\\"title\\": \\"Themen\\", \\"url\\": \\"https://www.mnm-team.org/teaching/Seminare/2022ws/Hauptseminar/Themen.html\\", \\"snippet\\": \\"Devlin et al.,BERT:Pre-trainingofDeepBidirectionalTransformersfor Language Understanding , 2019 ... Latent Diffusion Models, https://arxiv...\\"}, {\\"title\\": \\"Themen\\", \\"url\\": \\"https://www.mnm-team.org/teaching/Seminare/2022ws/Hauptseminar/Themen/\\", \\"snippet\\": \\"Devlin et al.,BERT:Pre-trainingofDeepBidirectionalTransformersfor Language Understanding , 2019 ... Latent Diffusion Models, https://arxiv...\\"}]"',
+    },
+```
+
 ### Опис тулів для агента:
 |Назва|Параметри|Опис|
 |--|--|--|
@@ -50,7 +78,7 @@ homework-lesson-4/
 ├── agent.py             # Agent setup (LLM, tools, memory, create_agent)
 ├── tools.py             # Tool definitions and implementations
 ├── config.py            # System prompt, settings, constants
-├── agent_memory.py      # SQLite database for cross-sesion memory and logging
+├── agent_memory.db      # SQLite database for cross-sesion memory and logging
 ├── requirements.txt     # Libraries list + min version for each library
 ├── output/
 │   └── context_window_agentic_systems_comparison.md   # Example generated report (#1)
