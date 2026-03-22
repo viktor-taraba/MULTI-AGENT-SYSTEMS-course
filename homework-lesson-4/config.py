@@ -4,7 +4,7 @@ max_search_results: int = 7
 max_url_content_length: int = 6000
 output_dir: str = "output"
 max_iterations: int = 20
-max_steps_to_remember: int = 2+max_iterations*3+(max_iterations/2)*3
+max_steps_to_remember: int = 2+(max_iterations+1)*3+(max_iterations/2)*3
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',
                 'twoHundredDayAverage', 'trailingEps', 'forwardEps', 'recommendationKey', 'numberOfAnalystOpinions', 'totalCash','totalCashPerShare','ebitda',
