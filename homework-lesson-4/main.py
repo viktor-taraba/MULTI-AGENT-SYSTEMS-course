@@ -57,18 +57,6 @@ def main():
         insert_memory_database(session_id, {"role": "user", "content": user_input}, 0)
         messages.append({"role": "user", "content": user_input})
 
-        if len(messages) > 51:
-            system_message = messages[0]
-            recent_messages = messages[-50:]
-    
-            while recent_messages and (
-                isinstance(recent_messages[0], dict) and 
-                recent_messages[0].get("type") == "function_call_output"
-            ):
-                recent_messages.pop(0)
-        
-            messages = [system_message] + recent_messages
-
         agent_response = run_agent(messages,session_id)
         if agent_response:
             print(agent_response)

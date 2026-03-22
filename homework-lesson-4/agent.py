@@ -7,7 +7,8 @@ from config import (
     model_name, 
     memory_database_name, 
     model_name_for_summary,
-    previous_conversations_to_remember
+    previous_conversations_to_remember,
+    max_steps_to_remember
 )
 import json
 import sqlite3
@@ -280,7 +281,48 @@ def run_agent(messages, session_id):
                 tool_result_msg = tool_execution(item)
                 messages.append(tool_result_msg)
                 insert_memory_database(session_id, {"role": "tool", "content": tool_result_msg["output"]}, None)
+ 
+        messages = truncate_history_safely(messages)
 
         if iteration == max_iterations:
             last_call(FINAL_PROMPT, messages, session_id)
             break
+
+def get_msg_type(msg):
+    """Safely extracts the message type whether it's a dict or an object."""
+    if isinstance(msg, dict):
+        return msg.get("type", "")
+    return getattr(msg, "type", "")
+
+def truncate_history_safely(messages, max_messages=max_steps_to_remember):
+    if len(messages) <= max_messages:
+        return messages
+
+    system_message = messages[0]
+    working_list = messages[1:]
+
+    while len(working_list) > (max_messages - 1):
+        first_msg = working_list[0]
+        msg_type = get_msg_type(first_msg)
+        
+        # SCENARIO 1: The block starts with Reasoning
+        if msg_type == "reasoning":
+            working_list.pop(0) 
+           
+            if working_list and get_msg_type(working_list[0]) == "function_call":
+                working_list.pop(0)
+                
+            if working_list and get_msg_type(working_list[0]) == "function_call_output":
+                working_list.pop(0)
+
+        # SCENARIO 2: The block starts with a Function Call (no reasoning)
+        elif msg_type == "function_call":
+            working_list.pop(0)
+            
+            if working_list and get_msg_type(working_list[0]) == "function_call_output":
+                working_list.pop(0)
+                
+        else:
+            working_list.pop(0)
+
+    return [system_message] + working_list
