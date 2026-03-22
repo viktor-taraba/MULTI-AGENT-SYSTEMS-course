@@ -12,8 +12,8 @@
 | homework-lesson-3 | homework-lesson-4 |
 |---|---|
 | LangChain | Власна реалізація |
-| `MemorySaver` для памʼяті | Список `messages` (для поточної сесії пам'ятає max_steps_to_remember (config.py) останніх кроків + перше повідомлення) |
-| Памя'ять між різними сесіями відсутня | БД на SQLite з summary та повними логами попередніх розмов, для попередніх 5 розмов передаємо коротке summary з БД |
+| `MemorySaver` для памʼяті | Список `messages` (для поточної сесії пам'ятає max_steps_to_remember ([config.py](/homework-lesson-4/config.py)) останніх кроків + перше повідомлення) |
+| Памя'ять між різними сесіями відсутня | [БД на SQLite](/homework-lesson-4/agent_memory.db) з summary та повними логами попередніх розмов, для попередніх 5 розмов передаємо коротке summary з БД |
 | `@tool` декоратор LangChain | Tools описані як JSON Schema для API |
 | Базовий system prompt | Покращений prompt із застосуванням технік промптингу |
 |-|Користувач може видалити збережені дані про попередні розмови (delete history)|
@@ -33,7 +33,7 @@
 
 Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-4/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
-При підрізці messages враховуємо послідовність ResponseReasoningItem -> ResponseFunctionToolCall -> function_call_output. Рекомендується задавати значення max_steps_to_remember з розрахунком на максимально можливу тривалість діалогу, тобто таким чином, щоб воно було не менше за 2+(max_iterations+1)*3 (перше повідомлення з системним повідомленням + запит користувача + максимальна кількість ітерацій + додаткова ітерація на формування звіту).
+При підрізці messages враховуємо послідовність ResponseReasoningItem -> ResponseFunctionToolCall -> function_call_output. Рекомендується задавати значення [max_steps_to_remember](/homework-lesson-4/config.py) з розрахунком на максимально можливу тривалість діалогу, тобто таким чином, щоб воно було не менше за 2+(max_iterations+1)*3 (перше повідомлення з системним повідомленням + запит користувача + максимальна кількість ітерацій + додаткова ітерація на формування звіту).
 
 Приклад кроків при розрахунку к-ті повідомлень для пам'яті:
 ```
