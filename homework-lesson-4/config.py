@@ -4,15 +4,16 @@ max_search_results: int = 7
 max_url_content_length: int = 6000
 output_dir: str = "output"
 max_iterations: int = 20
+max_steps_to_remember: int = 2+max_iterations*3+(max_iterations/2)*3
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',
                 'twoHundredDayAverage', 'trailingEps', 'forwardEps', 'recommendationKey', 'numberOfAnalystOpinions', 'totalCash','totalCashPerShare','ebitda',
                 'totalDebt','quickRatio','currentRatio','totalRevenue','debtToEquity','revenuePerShare','returnOnAssets','returnOnEquity','grossProfits',
                 'freeCashflow','operatingCashflow','earningsGrowth','revenueGrowth','grossMargins','ebitdaMargins','operatingMargins','shortName','longName']
-period_yfinance = "3mo"
-email_crossref_api =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
-memory_database_name = "agent_memory.db"
-previous_conversations_to_remember = 5
+period_yfinance: str = "3mo"
+email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
+memory_database_name: str = "agent_memory.db"
+previous_conversations_to_remember: int = 5
 
 SYSTEM_PROMPT = """
 You are a Senior Analyst with 10 years of experience.
