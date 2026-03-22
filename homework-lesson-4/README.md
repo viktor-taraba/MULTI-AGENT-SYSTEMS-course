@@ -141,9 +141,9 @@ graph LR
     subgraph Database_Schema [Research Agent Memory]
     direction LR
     
-    A["<div align='left'><b>tb_sessions</b><hr/>ID: INT (PK)<br/>Model: TEXT<br/>Summary: TEXT<br/>Created: DATETIME</div>"] 
+    A["<div align='left'><b>tb_sessions</b><hr/>session_id: INT (PK)<br/>model_name: TEXT<br/>summary_text: TEXT<br/>created_at: DATETIME</div>"] 
     
-    B["<div align='left'><b>tb_agent_history</b><hr/>ID: INT (PK)<br/>Session_ID: INT (FK)<br/>Role: TEXT<br/>Content: TEXT<br/>Tokens: INT<br/>Created: DATETIME</div>"]
+    B["<div align='left'><b>tb_agent_history</b><hr/>id: INT (PK)<br/>session_id: INT (FK)<br/>role: TEXT<br/>to_exclude: TEXT<br/>content: TEXT<br/>raw_json: TEXT<br/>prompt_tokens: INT<br/>result_tokens: INT<br/>total_tokens: INT<br/>created_at: DATETIME</div>"]
     
     A -->|1:N| B
     end
