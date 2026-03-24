@@ -12,8 +12,8 @@
 | homework-lesson-3 | homework-lesson-4 |
 |---|---|
 | LangChain | Власна реалізація |
-| `MemorySaver` для памʼяті | Список `messages` (для поточної сесії пам'ятає max_steps_to_remember (config.py) останніх кроків + перше повідомлення) |
-| Памя'ять між різними сесіями відсутня | БД на SQLite з summary та повними логами попередніх розмов, для попередніх 5 розмов передаємо коротке summary з БД |
+| `MemorySaver` для памʼяті | Список `messages` (для поточної сесії пам'ятає max_steps_to_remember ([config.py](/homework-lesson-4/config.py)) останніх кроків + перше повідомлення) |
+| Памя'ять між різними сесіями відсутня | [БД на SQLite](/homework-lesson-4/agent_memory.db) з summary та повними логами попередніх розмов, для попередніх 5 розмов передаємо коротке summary з БД |
 | `@tool` декоратор LangChain | Tools описані як JSON Schema для API |
 | Базовий system prompt | Покращений prompt із застосуванням технік промптингу |
 |-|Користувач може видалити збережені дані про попередні розмови (delete history)|
@@ -33,7 +33,7 @@
 
 Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-4/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
-При підрізці messages враховуємо послідовність ResponseReasoningItem -> ResponseFunctionToolCall -> function_call_output. Рекомендується задавати значення max_steps_to_remember з розрахунком на максимально можливу тривалість діалогу, тобто таким чином, щоб воно було не менше за 2+(max_iterations+1)*3 (перше повідомлення з системним повідомленням + запит користувача + максимальна кількість ітерацій + додаткова ітерація на формування звіту).
+При підрізці messages (лише для поточної розмови, для попередніх зберігаємо усі повідомлення та на їх основі робимо короткий підсумок) враховуємо послідовність ResponseReasoningItem -> ResponseFunctionToolCall -> function_call_output. Рекомендується задавати значення [max_steps_to_remember](/homework-lesson-4/config.py) з розрахунком на максимально можливу тривалість діалогу, тобто таким чином, щоб воно було не менше за 2+(max_iterations+1)*3 (перше повідомлення з системним повідомленням + запит користувача + максимальна кількість ітерацій + додаткова ітерація на формування звіту).
 
 Приклад кроків при розрахунку к-ті повідомлень для пам'яті:
 ```
@@ -141,9 +141,9 @@ graph LR
     subgraph Database_Schema [Research Agent Memory]
     direction LR
     
-    A["<div align='left'><b>tb_sessions</b><hr/>ID: INT (PK)<br/>Model: TEXT<br/>Summary: TEXT<br/>Created: DATETIME</div>"] 
+    A["<div align='left'><b>tb_sessions</b><hr/>session_id: INT (PK)<br/>model_name: TEXT<br/>summary_text: TEXT<br/>created_at: DATETIME</div>"] 
     
-    B["<div align='left'><b>tb_agent_history</b><hr/>ID: INT (PK)<br/>Session_ID: INT (FK)<br/>Role: TEXT<br/>Content: TEXT<br/>Tokens: INT<br/>Created: DATETIME</div>"]
+    B["<div align='left'><b>tb_agent_history</b><hr/>id: INT (PK)<br/>session_id: INT (FK)<br/>role: TEXT<br/>to_exclude: TEXT<br/>content: TEXT<br/>raw_json: TEXT<br/>prompt_tokens: INT<br/>result_tokens: INT<br/>total_tokens: INT<br/>created_at: DATETIME</div>"]
     
     A -->|1:N| B
     end
