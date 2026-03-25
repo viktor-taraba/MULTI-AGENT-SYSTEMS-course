@@ -5,6 +5,7 @@ from config import data_dir, chunk_size, chunk_overlap, embedding_model, index_d
 from langchain_chroma import Chroma
 import os
 from dotenv import load_dotenv
+import chromadb
 load_dotenv()
 
 """
@@ -83,6 +84,18 @@ def ingest():
     lc_embeddings = OpenAIEmbeddings(model=embedding_model)
     #print(lc_embeddings)
 
+    # to delete
+    print(chunks[0])
+    texts = [chunk.page_content for chunk in chunks]
+    print("")
+    texts[0]
+    vectors = lc_embeddings.embed_documents(texts)
+    print("")
+    print(texts[0])
+    print("")
+    print(f"count vectors: {len(vectors)}")
+    print(f"first vector: {vectors[0][:10]}")
+
     """
     sample_chunks = [
     "Ось перший шматок тексту з нашого PDF.",
@@ -109,7 +122,58 @@ def ingest():
         collection_name="test_collection"
     )
 
+    # тут чекнути чи будуть дублювання, якщо запускати кілька разів
+    # якщо так, то додавати id
+    # заембеддити лише нові документи (або не робити нічого, якщо нових файлів немає).
+
+    """
+    import hashlib
+
+    # Генеруємо унікальний ID для кожного чанка на основі його тексту
+    ids = [hashlib.md5(chunk.page_content.encode("utf-8")).hexdigest() for chunk in chunks]
+
+    # Передаємо ці ID у Chroma
+    vectorstore = Chroma.from_documents(
+        documents=chunks,
+        embedding=lc_embeddings,
+        persist_directory=index_dir,
+        collection_name="test_collection",
+        ids=ids # <--- ВАЖЛИВО!
+    )
+    """
+
     # 6. Save chunks for BM25 retriever (pickle or JSON)
    
 if __name__ == "__main__":
     ingest()
+
+    db_path = "index" 
+    client = chromadb.PersistentClient(path=db_path)
+
+    # 2. Отримуємо вашу колекцію
+    collection_name = "test_collection"
+    collection = client.get_collection(collection_name)
+
+    # 3. Витягуємо дані з бази! 
+    # ВАЖЛИВО: за замовчуванням Chroma не повертає вектори для економії пам'яті. 
+    # Ми маємо явно вказати include=["embeddings"]
+    data = collection.get(
+        include=["documents", "metadatas", "embeddings"]
+    )
+
+    # Перевіряємо, чи є щось у базі
+    if not data["ids"]:
+        print("Колекція порожня!")
+    else:
+        print(f"📊 Всього чанків у базі: {len(data['ids'])}\n")
+
+        # Беремо перший чанк для інспекції
+        first_doc = data["documents"][0]
+        first_embedding = data["embeddings"][0]
+
+        print("=== Текст першого чанку ===")
+        print(first_doc) # Друкуємо перші 200 символів
+
+        print("=== Вектор першого чанку ===")
+        print(f"Розмірність вектора: {len(first_embedding)}") # Для OpenAI це зазвичай 1536
+        print(f"Перші 10 чисел вектора: {first_embedding[:10]}")
