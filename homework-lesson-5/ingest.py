@@ -9,7 +9,7 @@ import os
 from dotenv import load_dotenv
 import chromadb
 import hashlib
-import pickle
+import json
 load_dotenv()
 
 """
@@ -33,8 +33,6 @@ def load_documents():
         for file in files:
             filepath = os.path.join(root, file)
 
-            print(filepath)
-
             try:
                 if file.lower().endswith(".pdf"):
                     loader = PyPDFLoader(filepath)
@@ -45,11 +43,8 @@ def load_documents():
             except Exception as e:
                 print(f"Error loading {filepath}: {e}")
 
-    for doc in documents:
-        print(f"  Page: {doc.metadata['page']} | Length: {len(doc.page_content)} chars")
-
     if documents:
-        print(f"STEP 1. Load documents from config.data_dir (PDF, TXT, MD) - FINISHED ({len(documents)} documents)\n")
+        print(f"STEP 1. Load documents from config.data_dir (PDF, TXT, MD) - FINISHED ({len(documents)} pages)\n")
 
     return documents
 
@@ -63,13 +58,6 @@ def documents_splitter(documents):
     )
     recursive_chunks = recursive_splitter.split_documents(documents)
 
-    """
-    for i, chunk in enumerate(recursive_chunks):
-        print(f"Chunk {i} ({len(chunk.page_content)} chars)")
-        print(chunk.page_content.strip())
-        print("")
-    """
-
     if recursive_chunks:
         print(f"STEP 2. Split into chunks using TextSplitter - FINISHED ({len(recursive_chunks)} chunks)\n")
 
@@ -78,12 +66,20 @@ def documents_splitter(documents):
 def save_chunks_for_BM25(chunks):
     """ # 6. Save chunks for BM25 retriever """
     os.makedirs(chunks_dir, exist_ok=True)
-    bm25_file_path = os.path.join(chunks_dir, "bm25_chunks.pkl")
+    bm25_file_path = os.path.join(chunks_dir, "bm25_chunks.json")
     
-    with open(bm25_file_path, "wb") as f:
-        pickle.dump(chunks, f)
+    chunks_dict = [
+        {
+            "page_content": chunk.page_content,
+            "metadata": chunk.metadata
+        } 
+        for chunk in chunks
+    ]
 
-    print(f"STEP 6. Save chunks for BM25 retriever (pickle) - FINISHED ({len(chunks)} chunks)\n")
+    with open(bm25_file_path, "w", encoding="utf-8") as f:
+        json.dump(chunks_dict, f, ensure_ascii=False, indent=4)
+
+    print(f"STEP 6. Save chunks for BM25 retriever (json) - FINISHED ({len(chunks)} chunks)\n")
 
 def ingest():
     # 1. Load documents from config.data_dir (PDF, TXT, MD)
@@ -125,6 +121,7 @@ def ingest():
     ids_to_delete = existing_ids - current_ids
     if ids_to_delete:
         vectorstore.delete(ids=list(ids_to_delete))
+    print(new_ids)
     
     if new_chunks:
         vectorstore.add_documents(documents=new_chunks, ids=new_ids)
@@ -135,9 +132,8 @@ def ingest():
     print("STEP 4. Build vector store (Chroma) - FINISHED\n")
     print(f"STEP 5. Save index, chunks and metadata to {index_dir}) - FINISHED ({len(new_chunks)} new chunks added, {len(ids_to_delete)} deleted)\n")
 
-    # 6. Save chunks for BM25 retriever (pickle)
+    # 6. Save chunks for BM25 retriever (json)
     save_chunks_for_BM25(chunks)
-
 
 if __name__ == "__main__":
     ingest()
