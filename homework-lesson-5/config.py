@@ -25,6 +25,7 @@ embedding_model: str = "text-embedding-3-small"
 data_dir: str = "data"
 index_dir: str = "index"
 chunks_dir: str = "chunks"
+chunks_json_name: str = "bm25_chunks.json"
 chunk_size: int = 500
 chunk_overlap: int = 100
 retrieval_top_k: int = 10
