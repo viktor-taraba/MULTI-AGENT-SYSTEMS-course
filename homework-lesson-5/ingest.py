@@ -1,7 +1,7 @@
-from langchain_community.document_loaders import PyPDFLoader, TextLoader
+from langchain_community.document_loaders import PyPDFLoader, TextLoader, PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from config import data_dir, chunk_size, chunk_overlap, embedding_model, index_dir, chunks_dir
+from config import data_dir, chunk_size, chunk_overlap, embedding_model, index_dir, chunks_dir, chunks_json_name
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import YoutubeLoader 
 # pip install youtube-transcript-api
@@ -32,14 +32,33 @@ def load_documents():
     for root, dirs, files in os.walk(data_dir): # dirs - на випадок вкладених папок в data_dir
         for file in files:
             filepath = os.path.join(root, file)
+            file_docs = []
 
             try:
                 if file.lower().endswith(".pdf"):
                     loader = PyPDFLoader(filepath)
-                    documents.extend(loader.load())
+                    file_docs = loader.load()
+
+                    total_text_length = sum(len(doc.page_content.strip()) for doc in file_docs)
+
+                    # try with PyMuPDFLoader if no text found with PyPDFLoader
+                    if total_text_length == 0:
+                        fallback_loader = PyMuPDFLoader(filepath)
+                        file_docs = fallback_loader.load()
+                        
                 elif file.lower().endswith((".txt", ".md")):
                     loader = TextLoader(filepath, encoding="utf-8")
-                    documents.extend(loader.load())
+                    file_docs = loader.load()
+
+                # other formets
+                else:
+                    continue
+
+                # exclude empty pages
+                for doc in file_docs:
+                    if doc.page_content.strip(): 
+                        documents.append(doc)
+               
             except Exception as e:
                 print(f"Error loading {filepath}: {e}")
 
@@ -66,7 +85,7 @@ def documents_splitter(documents):
 def save_chunks_for_BM25(chunks):
     """ # 6. Save chunks for BM25 retriever """
     os.makedirs(chunks_dir, exist_ok=True)
-    bm25_file_path = os.path.join(chunks_dir, "bm25_chunks.json")
+    bm25_file_path = os.path.join(chunks_dir, chunks_json_name)
     
     chunks_dict = [
         {
@@ -121,7 +140,6 @@ def ingest():
     ids_to_delete = existing_ids - current_ids
     if ids_to_delete:
         vectorstore.delete(ids=list(ids_to_delete))
-    print(new_ids)
     
     if new_chunks:
         vectorstore.add_documents(documents=new_chunks, ids=new_ids)
