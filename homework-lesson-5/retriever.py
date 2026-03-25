@@ -48,7 +48,7 @@ def get_retriever():
     )
 
     # 2. Create semantic retriever from vector store
-    vector_retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
+    vector_retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
 
     # 3. Load chunks and create BM25 retriever
     chunks = load_bm25_chunks_from_json(chunks_dir+"/"+chunks_json_name)
@@ -59,22 +59,37 @@ def get_retriever():
     print(f"BM25 search: '{query}'\n")
 
     results = bm25_retriever.invoke(query)
-    for i, doc in enumerate(results[:3]):
+    for i, doc in enumerate(results[:10]):
         print(f"Result {i+1}:")
         print(f"  Source: {doc.metadata.get('source', 'unknown')}")
         print(f"  Content: {doc.page_content[:150]}...")
         print()
 
+    print("---------------------------------------------------")
     print(f"\nSemantic search: '{query}'\n")
 
     results_vector = vector_retriever.invoke(query)
-    for i, doc in enumerate(results_vector[:3]):
+    for i, doc in enumerate(results_vector[:10]):
         print(f"Result {i+1}:")
         print(f"  Source: {doc.metadata.get('source', 'unknown')}")
         print(f"  Content: {doc.page_content[:150]}...")
         print()
 
     # 4. Combine into ensemble retriever (semantic + BM25)
+    ensemble_retriever = EnsembleRetriever(
+    retrievers=[bm25_retriever, vector_retriever],
+    weights=[0.4, 0.6]  # 40% BM25 + 60% Vector
+    )
+
+    print("---------------------------------------------------")
+    print(f"\nEnsemble search: '{query}'\n")
+
+    results = ensemble_retriever.invoke(query)
+    for i, doc in enumerate(results[:10]):
+        print(f"Result {i+1}:")
+        print(f"  Source: {doc.metadata.get('source', 'unknown')}")
+        print(f"  Content: {doc.page_content[:150]}...")
+        print()
 
     # 5. Add cross-encoder reranker on top
 
