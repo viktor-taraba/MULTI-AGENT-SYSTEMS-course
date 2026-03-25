@@ -1,11 +1,15 @@
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from config import data_dir, chunk_size, chunk_overlap, embedding_model, index_dir
+from config import data_dir, chunk_size, chunk_overlap, embedding_model, index_dir, chunks_dir
 from langchain_chroma import Chroma
+from langchain_community.document_loaders import YoutubeLoader 
+# pip install youtube-transcript-api
 import os
 from dotenv import load_dotenv
 import chromadb
+import hashlib
+import pickle
 load_dotenv()
 
 """
@@ -44,16 +48,10 @@ def load_documents():
     for doc in documents:
         print(f"  Page: {doc.metadata['page']} | Length: {len(doc.page_content)} chars")
 
+    if documents:
+        print(f"STEP 1. Load documents from config.data_dir (PDF, TXT, MD) - FINISHED ({len(documents)} documents)\n")
+
     return documents
-
-    # ConfluenceLoader
-    # YoutubeLoader
-    # Docx2txtLoader - ms word
-    # UnstructuredLoader - try for OCR for pdf
-
-    # додати якусь обробку для битих пдф та чи треба для кирилиці?
-
-    # метадані звідси теж зберігати
 
 def documents_splitter(documents):
     """ 2. Split into chunks using TextSplitter """
@@ -64,14 +62,28 @@ def documents_splitter(documents):
         separators=["\n\n", "\n", ". ", " ", ""]
     )
     recursive_chunks = recursive_splitter.split_documents(documents)
-    print(f"Recursive splitter: {len(recursive_chunks)} chunks\n")
 
+    """
     for i, chunk in enumerate(recursive_chunks):
         print(f"Chunk {i} ({len(chunk.page_content)} chars)")
         print(chunk.page_content.strip())
         print("")
+    """
+
+    if recursive_chunks:
+        print(f"STEP 2. Split into chunks using TextSplitter - FINISHED ({len(recursive_chunks)} chunks)\n")
 
     return recursive_chunks
+
+def save_chunks_for_BM25(chunks):
+    """ # 6. Save chunks for BM25 retriever """
+    os.makedirs(chunks_dir, exist_ok=True)
+    bm25_file_path = os.path.join(chunks_dir, "bm25_chunks.pkl")
+    
+    with open(bm25_file_path, "wb") as f:
+        pickle.dump(chunks, f)
+
+    print(f"STEP 6. Save chunks for BM25 retriever (pickle) - FINISHED ({len(chunks)} chunks)\n")
 
 def ingest():
     # 1. Load documents from config.data_dir (PDF, TXT, MD)
@@ -80,100 +92,73 @@ def ingest():
     # 2. Split into chunks using TextSplitter
     chunks = documents_splitter(documents)
     
+    # це винести в окрему функцію
     # 3. Generate embeddings
-    lc_embeddings = OpenAIEmbeddings(model=embedding_model)
-    #print(lc_embeddings)
-
-    # to delete
-    print(chunks[0])
-    texts = [chunk.page_content for chunk in chunks]
-    print("")
-    texts[0]
-    vectors = lc_embeddings.embed_documents(texts)
-    print("")
-    print(texts[0])
-    print("")
-    print(f"count vectors: {len(vectors)}")
-    print(f"first vector: {vectors[0][:10]}")
-
-    """
-    sample_chunks = [
-    "Ось перший шматок тексту з нашого PDF.",
-    "А це вже другий шматок тексту."
-    ]
-
-    vectors = lc_embeddings.embed_documents(sample_chunks)
-
-    print("=== vectors ===")
-    print(f"count vectors: {len(vectors)}")
-    print(vectors)
-
-    print(f"first vector: {vectors[0]}")
-    print(f"second vector: {vectors[1]}")
-    """
-
-    # 4. Build vector store (FAISS, Qdrant, Chroma, etc.)
+    # 4. Build vector store (Qdrant)
     # 5. Save index, chunks and metadata to config.index_dir
+    lc_embeddings = OpenAIEmbeddings(model=embedding_model)
+
     os.makedirs(index_dir, exist_ok=True)
-    vectorstore = Chroma.from_documents(
-        documents=chunks,
-        embedding=lc_embeddings,
+    vectorstore = Chroma(
         persist_directory=index_dir,
-        collection_name="test_collection"
+        embedding_function=lc_embeddings,
+        collection_name="documents_collection"
     )
 
-    # тут чекнути чи будуть дублювання, якщо запускати кілька разів
-    # якщо так, то додавати id
-    # заембеддити лише нові документи (або не робити нічого, якщо нових файлів немає).
+    # solving duplicates problems with hash ids
+    existing_items = vectorstore.get()
+    existing_ids = set(existing_items["ids"])
+    new_chunks, new_ids  = [], []
+    current_ids = set()
 
-    """
-    import hashlib
+    for chunk in chunks:
+        source = chunk.metadata.get("source", "unknown_source")
+        unique_string = f"{source}::{chunk.page_content}"
 
-    # Генеруємо унікальний ID для кожного чанка на основі його тексту
-    ids = [hashlib.md5(chunk.page_content.encode("utf-8")).hexdigest() for chunk in chunks]
+        chunk_hash = hashlib.sha256(unique_string.encode("utf-8")).hexdigest()
+        current_ids.add(chunk_hash)
 
-    # Передаємо ці ID у Chroma
-    vectorstore = Chroma.from_documents(
-        documents=chunks,
-        embedding=lc_embeddings,
-        persist_directory=index_dir,
-        collection_name="test_collection",
-        ids=ids # <--- ВАЖЛИВО!
-    )
-    """
+        if chunk_hash not in existing_ids:
+            new_chunks.append(chunk)
+            new_ids.append(chunk_hash)
 
-    # 6. Save chunks for BM25 retriever (pickle or JSON)
-   
+    ids_to_delete = existing_ids - current_ids
+    if ids_to_delete:
+        vectorstore.delete(ids=list(ids_to_delete))
+    
+    if new_chunks:
+        vectorstore.add_documents(documents=new_chunks, ids=new_ids)
+    else:
+        print("All documents are already in the index, no need to repeat embedding\n")
+
+    print("STEP 3. Generate embeddings - FINISHED\n")
+    print("STEP 4. Build vector store (Chroma) - FINISHED\n")
+    print(f"STEP 5. Save index, chunks and metadata to {index_dir}) - FINISHED ({len(new_chunks)} new chunks added, {len(ids_to_delete)} deleted)\n")
+
+    # 6. Save chunks for BM25 retriever (pickle)
+    save_chunks_for_BM25(chunks)
+
+
 if __name__ == "__main__":
     ingest()
 
-    db_path = "index" 
-    client = chromadb.PersistentClient(path=db_path)
 
-    # 2. Отримуємо вашу колекцію
-    collection_name = "test_collection"
-    collection = client.get_collection(collection_name)
-
-    # 3. Витягуємо дані з бази! 
-    # ВАЖЛИВО: за замовчуванням Chroma не повертає вектори для економії пам'яті. 
-    # Ми маємо явно вказати include=["embeddings"]
-    data = collection.get(
-        include=["documents", "metadatas", "embeddings"]
+def YoutubeText_loader(video_url):
+    """load text (subtitles) from YouTube videos"""
+    loader = YoutubeLoader.from_youtube_url(
+        video_url, 
+        add_video_info=False # Ставимо False, якщо нам потрібен ТІЛЬКИ текст (працює швидше)
     )
+    docs = loader.load()
 
-    # Перевіряємо, чи є щось у базі
-    if not data["ids"]:
-        print("Колекція порожня!")
-    else:
-        print(f"📊 Всього чанків у базі: {len(data['ids'])}\n")
+    print(f"Завантажено документів: {len(docs)}")
+    print("\n--- Фрагмент тексту відео ---")
+    print(docs[0].page_content[:500])
 
-        # Беремо перший чанк для інспекції
-        first_doc = data["documents"][0]
-        first_embedding = data["embeddings"][0]
+    # YoutubeText_loader("https://www.youtube.com/watch?v=53blGRa45V0")
 
-        print("=== Текст першого чанку ===")
-        print(first_doc) # Друкуємо перші 200 символів
-
-        print("=== Вектор першого чанку ===")
-        print(f"Розмірність вектора: {len(first_embedding)}") # Для OpenAI це зазвичай 1536
-        print(f"Перші 10 чисел вектора: {first_embedding[:10]}")
+    # ConfluenceLoader
+    # YoutubeLoader
+    # Docx2txtLoader - ms word
+    # UnstructuredLoader - try for OCR for pdf
+    # позагортати в try except
