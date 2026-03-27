@@ -1,5 +1,5 @@
 # Agent
-model_name: str = "gpt-5o-mini"
+model_name: str = "gpt-5-mini"
 model_name_for_summary: str = "gpt-4o-mini"
 output_dir: str = "output"
 max_iterations: int = 20
