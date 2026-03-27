@@ -46,7 +46,7 @@ def knowledge_search(query: str) -> str:
         else:
             return results
     except Exception as e:
-        return f"Error searching local knowledge base from {url}. Details: {e}."
+        return f"Error searching local knowledge base. Details: {e}."
 
 web_search_tool_schema = {
     "type": "function",
