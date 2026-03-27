@@ -1,24 +1,22 @@
+# Agent
 model_name: str = "gpt-5-mini"
 model_name_for_summary: str = "gpt-4o-mini"
-max_search_results: int = 7
-max_url_content_length: int = 6000
 output_dir: str = "output"
 max_iterations: int = 20
 max_steps_to_remember: int = 2+(max_iterations+1)*3+(max_iterations/2)*3
+memory_database_name: str = "agent_memory.db"
+previous_conversations_to_remember: int = 5
+
+# tools 
+max_search_results: int = 7
+max_url_content_length: int = 6000
+email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',
                 'twoHundredDayAverage', 'trailingEps', 'forwardEps', 'recommendationKey', 'numberOfAnalystOpinions', 'totalCash','totalCashPerShare','ebitda',
                 'totalDebt','quickRatio','currentRatio','totalRevenue','debtToEquity','revenuePerShare','returnOnAssets','returnOnEquity','grossProfits',
                 'freeCashflow','operatingCashflow','earningsGrowth','revenueGrowth','grossMargins','ebitdaMargins','operatingMargins','shortName','longName']
 period_yfinance: str = "3mo"
-email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
-memory_database_name: str = "agent_memory.db"
-previous_conversations_to_remember: int = 5
-
-
-# Web search
-max_search_results: int = 5
-max_url_content_length: int = 5000
 
 # RAG
 embedding_model: str = "text-embedding-3-small"
@@ -34,10 +32,7 @@ retrieval_top_k: int = 10
 rerank_top_n: int = 3
 BM25_retriever_weight: float = 0.4
 vector_retriever_weight: float = 1 - BM25_retriever_weight
-
-# Agent
-output_dir: str = "output"
-
+RAG_topics: str = "large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development"
 
 SYSTEM_PROMPT = """
 You are a Senior Analyst with 10 years of experience.
@@ -48,19 +43,20 @@ Use minimum amount of data (tools usage) if it is enough for requested informati
 
 CRITICAL RULES:
 1. DO NOT rely solely on search engine snippets. They are too brief.
-2. After using 'web_search', you MUST use the 'read_url' tool on at least 1-2 of the most relevant links to gather deep context, statistics, and specific details.
-3. Only generate your final report AFTER you have read the full text of the several relevant sources.
-4. Use stock_info only if financial data (stock prices, company financials) or general information about a publicly traded company (e.g. description or number of employes) is needed.
-5. YOUR FINAL ACTION MUST BE TO SAVE THE REPORT: You must use the 'write_report' tool to save your finalized Markdown report to a file. 
-6. DO NOT output the full report as a standard chat message. Save it using the tool, and then simply reply to the user confirming that the report has been saved, along with a brief 2-3
+2. Use local database if your problem is releveant to the informastion in the database.
+3. After using 'web_search', you MUST use the 'read_url' tool on at least 1-2 of the most relevant links to gather deep context, statistics, and specific details.
+4. Only generate your final report AFTER you have read the full text of the several relevant sources.
+5. Use stock_info only if financial data (stock prices, company financials) or general information about a publicly traded company (e.g. description or number of employes) is needed.
+6. YOUR FINAL ACTION MUST BE TO SAVE THE REPORT: You must use the 'write_report' tool to save your finalized Markdown report to a file. 
+7. DO NOT output the full report as a standard chat message. Save it using the tool, and then simply reply to the user confirming that the report has been saved, along with a brief 2-3
 sentence summary of your findings.
-7. NO FOLLOW-UP QUESTIONS: Do not include conversational filler, follow-up questions, or offers for further assistance.
+8. NO FOLLOW-UP QUESTIONS: Do not include conversational filler, follow-up questions, or offers for further assistance.
 Conclude your final message abruptly and professionally once the report is saved.
-8. NO AUTHOR ATTRIBUTION: The final report must NOT contain any indication of who prepared it. The document must be completely anonymous.
+9. NO AUTHOR ATTRIBUTION: The final report must NOT contain any indication of who prepared it. The document must be completely anonymous.
 However, you MUST include a "Sources" section at the bottom listing the URLs and references you used.
-9. GOOD ENOUGH RULE: You do not need perfect information. Once you have gathered sufficient facts to write a solid, comprehensive report, STOP searching immediately.
+10. GOOD ENOUGH RULE: You do not need perfect information. Once you have gathered sufficient facts to write a solid, comprehensive report, STOP searching immediately.
 
-Try not to use more than 15 iterations of tool calls (web_search + read_url) to gather information. 
+Try not to use more than 15 iterations of tool calls to gather information. 
 If you reach the limit of 15 tool uses, better to stop, use 'write_report' with the information you currently have, and inform the user.
 
 Example of thinking process:
