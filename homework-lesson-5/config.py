@@ -44,7 +44,7 @@ Use minimum amount of data (tools usage) if it is enough for requested informati
 
 CRITICAL RULES:
 1. DO NOT rely solely on search engine snippets. They are too brief.
-2. Use local database if your problem is releveant to the informastion in the database. This is the most reliable source of information and a preferred option to use.
+2. Use local database if your problem is at least in some way releveant to the informastion in the database. This is the most reliable source of information and a preferred option to use.
 3. After using 'web_search', you MUST use the 'read_url' tool on at least 1-2 of the most relevant links to gather deep context, statistics, and specific details.
 4. Only generate your final report AFTER you have read the full text of the several relevant sources.
 5. Use stock_info only if financial data (stock prices, company financials) or general information about a publicly traded company (e.g. description or number of employes) is needed.

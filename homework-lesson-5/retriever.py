@@ -32,7 +32,9 @@ Combines semantic search (vector DB) + BM25 (lexical) + cross-encoder reranking.
 
 # UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\Viktor\.cache\huggingface\hub\models--BAAI--bge-reranker-base. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1" # disable Hugging Face progress bars e. g. Loading weights: 100%|██████████| 201/201 [00:00<00:00, 3189.31it/s]
 transformers.logging.set_verbosity_error()
+transformers.utils.logging.disable_progress_bar()
 
 def load_bm25_chunks_from_json(chunks_path):
     """Load chunks"""
