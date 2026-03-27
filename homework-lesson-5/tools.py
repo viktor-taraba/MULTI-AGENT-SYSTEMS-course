@@ -7,7 +7,15 @@ import requests
 import logging
 import re
 from ddgs import DDGS
-from config import max_search_results, max_url_content_length, output_dir, desired_keys_yfinance, period_yfinance, email_crossref_api
+from config import (
+    max_search_results, 
+    max_url_content_length, 
+    output_dir, 
+    desired_keys_yfinance, 
+    period_yfinance, 
+    email_crossref_api,
+    RAG_topics
+    )
 from typing import List, Dict
 from pypdf import PdfReader
 from retriever import get_retriever
@@ -15,7 +23,7 @@ from retriever import get_retriever
 knowledge_search_tool_schema = {
     "type": "function",
     "name": "knowledge_search",
-    "description": "Search the local knowledge base which have information about following topucs: large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development. Returns top 3 releveant search results.",
+    "description": f"Search the local knowledge base which have information about following topucs: {RAG_topics}. Returns top 3 releveant search results.",
     "parameters": {
         "type": "object",
         "properties": {
