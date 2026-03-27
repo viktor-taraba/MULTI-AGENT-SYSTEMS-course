@@ -8,7 +8,8 @@ from config import (
     embedding_model, 
     index_dir, 
     chunks_dir, 
-    chunks_json_name
+    chunks_json_name,
+    collection_name
 )
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import YoutubeLoader 
@@ -125,7 +126,7 @@ def ingest():
     vectorstore = Chroma(
         persist_directory=index_dir,
         embedding_function=lc_embeddings,
-        collection_name="documents_collection"
+        collection_name=collection_name
     )
 
     # solving duplicates problems with hash ids
