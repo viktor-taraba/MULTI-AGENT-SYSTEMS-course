@@ -11,6 +11,7 @@
 ![youtube-transcript-api](https://img.shields.io/badge/youtube--transcript--api-1.2.4+-orange.svg)
 ![transformers](https://img.shields.io/badge/transformers-5.4.0+-orange.svg)
 ![docx2txt](https://img.shields.io/badge/docx2txt-0.9+-orange.svg)
+![rank_bm25](https://img.shields.io/badge/rank_bm25-0.2.2+-orange.svg)
 
 ### Що змінилося порівняно з homework-lesson-4
 
