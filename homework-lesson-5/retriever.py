@@ -19,6 +19,7 @@ from config import (
 from dotenv import load_dotenv
 import os
 import json
+import transformers
 load_dotenv()
 # pip install rank_bm25
 # pip install sentence-transformerss
@@ -30,9 +31,10 @@ Combines semantic search (vector DB) + BM25 (lexical) + cross-encoder reranking.
 
 # UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\Viktor\.cache\huggingface\hub\models--BAAI--bge-reranker-base. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+transformers.logging.set_verbosity_error()
 
 def load_bm25_chunks_from_json(chunks_path):
-    """Load chunks and create BM25 retriever"""
+    """Load chunks"""
     if not os.path.exists(chunks_path):
         raise FileNotFoundError(f"Path {chunks_path} does not exist")
         
@@ -45,7 +47,7 @@ def load_bm25_chunks_from_json(chunks_path):
     ]
     return chunks
 
-def get_retriever():
+def get_retriever(query_text: str):
     # 1. Load vector store from disk (config.index_dir)
     lc_embeddings = OpenAIEmbeddings(model=embedding_model)
 
@@ -59,7 +61,7 @@ def get_retriever():
     vector_retriever = vectorstore.as_retriever(search_kwargs={"k": retrieval_top_k})
 
     # 3. Load chunks and create BM25 retriever
-    chunks = load_bm25_chunks_from_json(chunks_dir+"/"+chunks_json_name)
+    chunks = load_bm25_chunks_from_json(os.path.join(chunks_dir,chunks_json_name))
     bm25_retriever = BM25Retriever.from_documents(chunks)
     bm25_retriever.k = retrieval_top_k
 
@@ -81,18 +83,14 @@ def get_retriever():
         base_retriever=ensemble_retriever
     )
 
-    # Test
-    print("\n🔍 Reranking search: 'What loss function is used to train RAG?'\n")
-    results = reranking_retriever.invoke("What loss function is used to train RAG?")
+    # 6. Return the final retriever
+    results = reranking_retriever.invoke(query_text)
     for i, doc in enumerate(results):
         print(f"Result {i+1}:")
         print(f"  {doc.page_content[:150]}...")
         print()
 
-    print("💡 Only the most relevant documents remain after reranking!")
+    return results
 
-    # 6. Return the final retriever
-
-    pass
-
-get_retriever()
+results = get_retriever("What is DAX?")
+print(results)
