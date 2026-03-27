@@ -77,7 +77,7 @@ ResponseFunctionToolCall(
 |`read_url`|`url: str`|Отримує основний текст із вебсторінки (або PDF, якщо це пряме посилання на pdf-звіт чи статтю).|
 |`stock_company_info`|`stock_ticker: str, result_type: str`|Отримує фінансові дані або загальний профіль компанії через Yahoo Finance API.|
 |`find_articles_crossref`|`query: str`|Шукає наукові статті в базі Crossref. Повертає відфільтрований список записів із валідною анотацією (назва, анотація, DOI, рік).|
-|`knowledge_search`|query: str|Пошук у локальній базі знань за допомогою гібридного пошуку (hybrid retrieval) та реранкінгу.|
+|`knowledge_search`|`query: str`|Пошук у локальній базі знань за допомогою гібридного пошуку (hybrid retrieval) та реранкінгу.|
 |`write_report`|`filename: str, content: str`|Зберігає фінальний звіт у форматі Markdown, використовується як останній крок для видачі результату.|
 
 ### Структура проєкту
@@ -98,7 +98,7 @@ homework-lesson-4/
 │   └── RAG_and_retrieval_approaches.md   # Example generated report (#3)
 ├── data/                # Документи для ingestion
 │   └── Tips and tricks for creating reports in Power BI Desktop.docx
-│   └── Youtube_links.txt                 #перелік посилань на відео для завантаження субтитрів
+│   └── Youtube_links.txt                 # Перелік посилань на відео для завантаження субтитрів
 │   └── PBIR Format Reference.md
 │   └── Power BI Report Design.md
 │   └── DAX COUNT.pdf
@@ -111,6 +111,12 @@ homework-lesson-4/
 │   └── langchain.pdf
 │   └── large-language-model.pdf
 │   └── retrieval-augmented-generation.pdf
+├── chunks/              # Результат роботи ingestion.py (JSON файл зі збереженими чанками)
+│   └── bm25_chunks.json         # JSON файл зі збереженими чанками
+├── index/               # Векторна БД
+│   └──... (.bin, .pickle, .sqlite3 files)
+├── gif example/         # Приклад роботи агента
+│   └── agent_example.gif
 └── README.md            # Setup instructions, architecture overview
 ```
 
