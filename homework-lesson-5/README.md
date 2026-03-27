@@ -117,6 +117,7 @@ homework-lesson-4/
 │   └──... (.bin, .pickle, .sqlite3 files)
 ├── gif example/         # Приклад роботи агента
 │   └── agent_example.gif
+├── .env                 # API ключі
 └── README.md            # Setup instructions, architecture overview
 ```
 
@@ -182,24 +183,6 @@ graph LR
     style A fill:#fff9c4,stroke:#fbc02d,text-align:left
     style B fill:#fff9c4,stroke:#fbc02d,text-align:left
 ```
-
-
-### Структура проекту
-
-```
-homework-lesson-5/
-├── main.py              # Entry point (з homework-lesson-3/4, адаптований)
-├── agent.py             # Agent setup з новим knowledge_search tool
-├── tools.py             # web_search, read_url, write_report, knowledge_search
-├── retriever.py         # Hybrid retrieval + reranking logic
-├── ingest.py            # Ingestion pipeline: docs → chunks → embeddings → vector DB
-├── config.py            # Settings
-├── requirements.txt     # Залежності
-├── data/                # Документи для ingestion
-│   └── (ваші PDF/TXT файли)
-└── .env                 # API ключі (не комітити!)
-```
-
 ---
 
 Приклад логу в консолі:
