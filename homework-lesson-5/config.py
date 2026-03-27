@@ -22,8 +22,10 @@ max_url_content_length: int = 5000
 
 # RAG
 embedding_model: str = "text-embedding-3-small"
+cross_encoder_model: str = "BAAI/bge-reranker-base"
 data_dir: str = "data"
 index_dir: str = "index"
+collection_name: str = "documents_collection"
 chunks_dir: str = "chunks"
 chunks_json_name: str = "bm25_chunks.json"
 chunk_size: int = 500
