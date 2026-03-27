@@ -10,10 +10,31 @@ from ddgs import DDGS
 from config import max_search_results, max_url_content_length, output_dir, desired_keys_yfinance, period_yfinance, email_crossref_api
 from typing import List, Dict
 from pypdf import PdfReader
+from retriever import get_retriever
+
+knowledge_search_tool_schema = {
+    "type": "function",
+    "name": "knowledge_search",
+    "description": "Search the local knowledge base which have information about following topucs: large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development. Returns top 3 releveant search results.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "Search query or question to look up., e.g. 'DAX measures' or 'LLM monitoring'"
+            }
+        },
+        "required": ["query"]
+    }
+}
 
 def knowledge_search(query: str) -> str:
     """Search the local knowledge base using hybrid retrieval + reranking."""
-    pass
+    try:
+        results = get_retriever(query)
+        return results
+    except Exception as e:
+        return f"Error searching local knowledge base from {url}. Details: {e}."
 
 web_search_tool_schema = {
     "type": "function",
@@ -333,6 +354,7 @@ def write_report(filename: str, content: str) -> str:
 tool_registry = {
     "web_search": web_search, 
     "read_url": read_url, 
+    "knowledge_search": knowledge_search,
     "write_report": write_report, 
     "stock_company_info": stock_company_info,
     "find_articles_crossref": find_articles_crossref}
@@ -340,6 +362,7 @@ tool_registry = {
 tools = [
     web_search_tool_schema, 
     read_url_tool_schema, 
+    knowledge_search_tool_schema,
     write_report_tool_schema, 
     stock_company_info_tool_schema, 
     find_articles_crossref_tool_schema
