@@ -87,15 +87,30 @@ homework-lesson-4/
 ├── main.py              # Entry point
 ├── agent.py             # Agent setup (LLM, tools, memory, create_agent)
 ├── tools.py             # Tool definitions and implementations
+├── retriever.py         # Hybrid retrieval + reranking logic
+├── ingest.py            # Ingestion pipeline: docs → chunks → embeddings → vector DB
 ├── config.py            # System prompt, settings, constants
 ├── agent_memory.db      # SQLite database for cross-sesion memory and logging
 ├── requirements.txt     # Libraries list + min version for each library
 ├── output/
-│   └── context_window_agentic_systems_comparison.md   # Example generated report (#1)
-│   └── dividend_policy_literature.md                  # Example generated report (#2)
-│   └── news_ukraine_last_week_14-21_Mar_2026.md       # Example generated report (#3)
-│   └── superortikon_report.md                         # Example generated report (#4)
-│   └── test_finans_2kurs.md                           # Example generated report (#5)
+│   └── dax_functions_intro.md            # Example generated report (#1)
+│   └── agentic_development_power_bi.md   # Example generated report (#2)
+│   └── RAG_and_retrieval_approaches.md   # Example generated report (#3)
+├── data/                # Документи для ingestion
+│   └── Tips and tricks for creating reports in Power BI Desktop.docx
+│   └── Youtube_links.txt                 #перелік посилань на відео для завантаження субтитрів
+│   └── PBIR Format Reference.md
+│   └── Power BI Report Design.md
+│   └── DAX COUNT.pdf
+│   └── DAX AVERAGEX.pdf
+│   └── DAX AVERAGEA.pdf
+│   └── DAX AVERAGE.pdf
+│   └── powerbi-intro.pdf
+│   └── introducing-calendar-based-time-intelligence-in-dax.pdf
+│   └── ai-and-agentic-development-for-business-intelligence.pdf
+│   └── langchain.pdf
+│   └── large-language-model.pdf
+│   └── retrieval-augmented-generation.pdf
 └── README.md            # Setup instructions, architecture overview
 ```
 
