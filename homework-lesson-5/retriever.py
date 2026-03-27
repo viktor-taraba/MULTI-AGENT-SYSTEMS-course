@@ -104,5 +104,3 @@ def get_retriever(query_text: str):
     # 6. Return the final retriever
     results = reranking_retriever.invoke(query_text)
     return format_docs_for_llm(results)
-
-get_retriever("Agentic development in Power BI")
