@@ -12,30 +12,30 @@
 
 | Було (homework-lesson-4)                        | Стає (homework-lesson-5) |
 |-------------------------------------------------|---|
-| Tools: `web_search`, `read_url`, `write_report` | + новий tool: `knowledge_search` (працює на основі retriever.py)|
+| Tools: `web_search`, `read_url`, `write_report` | + новий tool: `knowledge_search` (працює на основі [retriever.py](/homework-lesson-5/retriever.py))|
 | Агент шукає лише в інтернеті                    | Агент шукає і в інтернеті, і в локальній базі знань |
-|                                                 | Є pipeline ingest.py для розбиття на чанки+ембедінги+завантаження та збереження документів у векторну БД (допустимі формати PDF, TXT, MD, youtube videos links (config.Youtube_links_file_name), DOCX); з використанням зеш-функцій уникаємо дублювання даних при оновленні файлів, також підтримується видалення даних файлу за умови що його видалили з папки data|
-|                                                 | Hybrid search (semantic + BM25) з cross-encoder reranking (retriever.py)|
+|                                                 | Є pipeline [ingest.py](/homework-lesson-5/ingest.py) для розбиття на чанки+ембедінги+завантаження та збереження документів у векторну БД (допустимі формати PDF, TXT, MD, субтитри з youtube відео, DOCX); з використанням хеш-функцій уникаємо дублювання даних при оновленні файлів, також підтримується видалення даних файлу за умови що його видалили з папки data|
+|                                                 | Hybrid search (semantic + BM25) з cross-encoder reranking ([retriever.py](/homework-lesson-5/retriever.py))|
 
 ---
 
 
 ### Приклад:
 
-![Demo](/homework-lesson-4/gif%20example/agent_example.gif)
+![Demo](/homework-lesson-5/gif%20example/agent_example.gif)
 
-Приклади згенерованих звітів - в [output](/homework-lesson-4/output)
+Приклади згенерованих звітів - в [output](/homework-lesson-5/output)
 
 ### Загальний опис
 
 Агент запускається з терміналу (python3 main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
 Агент підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії.
 
-Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та створений файл .env з вказаним ключем: `OPENAI_API_KEY=<тут_ваш_ключ>`
+Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>` та `HF_TOKEN=<тут_ваш_ключ>`
 
-Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-4/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-5/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
-При підрізці messages (лише для поточної розмови, для попередніх зберігаємо усі повідомлення та на їх основі робимо короткий підсумок) враховуємо послідовність ResponseReasoningItem -> ResponseFunctionToolCall -> function_call_output. Рекомендується задавати значення [max_steps_to_remember](/homework-lesson-4/config.py) з розрахунком на максимально можливу тривалість діалогу, тобто таким чином, щоб воно було не менше за 2+(max_iterations+1)*3 (перше повідомлення з системним повідомленням + запит користувача + максимальна кількість ітерацій + додаткова ітерація на формування звіту).
+При підрізці messages (лише для поточної розмови, для попередніх зберігаємо усі повідомлення та на їх основі робимо короткий підсумок) враховуємо послідовність ResponseReasoningItem -> ResponseFunctionToolCall -> function_call_output. Рекомендується задавати значення [max_steps_to_remember](/homework-lesson-5/config.py) з розрахунком на максимально можливу тривалість діалогу, тобто таким чином, щоб воно було не менше за 2+(max_iterations+1)*3 (перше повідомлення з системним повідомленням + запит користувача + максимальна кількість ітерацій + додаткова ітерація на формування звіту).
 
 Приклад кроків при розрахунку к-ті повідомлень для пам'яті:
 ```
