@@ -1,9 +1,5 @@
 # Завдання: Research Agent з RAG-системою
 
-Розширте свого Research Agent з `homework-lesson-3` — додайте **RAG-інструмент** з гібридним пошуком та reranking, щоб агент міг шукати не лише в інтернеті, а й у локальній базі знань.
-
----
-
 ### Що змінюється порівняно з попередніми homework
 
 | Було (homework-lesson-3)                        | Стає (homework-lesson-5) |
@@ -85,22 +81,46 @@ homework-lesson-5/
 
 Приклад логу в консолі:
 ```
+Research Agent
+type 'exit' or 'quit' to quit
+'delete history' to delete full conversation history (including previous conversations) and exit
+----------------------------------------------------------------------------------------------------
+
 You: Що таке RAG і які є підходи до retrieval?
 
-🔧 Tool call: knowledge_search(query="RAG retrieval approaches")
-📎 Result: [3 documents found]
-   - [Page 2] Retrieval-augmented generation combines...
-   - [Page 5] Hybrid search approaches include...
-   - [Page 3] Dense retrieval using bi-encoders...
+🔄 Iteration 1 - Thinking...
+🔧 Tool called -> knowledge_search({'query': 'RAG retrieval augmentation generation approaches retrieval types'})
+Loading weights: 100%|██████████| 201/201 [00:00<00:00, 8243.34it/s]
+✅ Result (knowledge_search): --- Document 1 ---
+Source: retrieval-augmented-generation.pdf (Page: 0)
+Content:
+Retrieval-augmented...
 
-🔧 Tool call: web_search(query="RAG retrieval techniques 2026")
-📎 Result: Found 5 results...
+🔄 Iteration 2 - Thinking...
+🔧 Tool called -> web_search({'query': 'Retrieval-augmented generation RAG approaches to retrieval vector dense sparse BM25 hybri...)
+✅ Result (web_search): [{"title": "Retrieval-augmented generation - Wikipedia", "url": "https://en.wikipedia.org/wiki/Retri...
 
-🔧 Tool call: read_url(url="https://example.com/advanced-rag")
-📎 Result: [5000 chars] Latest RAG techniques...
+🔄 Iteration 3 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://en.wikipedia.org/wiki/Retrieval-augmented_generation'})
+✅ Result (read_url): Retrieval-augmented generation
+Retrieval-augmented generation (RAG) is a technique that enables larg...
 
-🔧 Tool call: write_report(filename="rag_approaches.md", content="# RAG Approaches...")
-📎 Result: Report saved to output/rag_approaches.md
+🔄 Iteration 4 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://medium.com/@yashwanths_29644/retrieval-augmented-generation-rag-06-bm25-retriever-w...)
+✅ Result (read_url): Error: Unable to fetch content from 'https://medium.com/@yashwanths_29644/retrieval-augmented-genera...
 
-Agent: RAG — це техніка, де...
+🔄 Iteration 5 - Thinking...
+🔧 Tool called -> read_url({'url': 'https://watercrawl.dev/blog/Building-on-RAG'})
+✅ Result (read_url): 🎬 Episode 2 : 🔍 Building on RAG: Exploring BM25 and Semantic Search
+Ai engineer
+Retrieval-Augmented ...
+
+🔄 Iteration 6 - Thinking...
+🔧 Tool called -> write_report({'filename': 'RAG_and_retrieval_approaches.md', 'content': '# RAG (Retrieval‑Augmented Generation) —...)
+✅ Result (write_report): Success: Report successfully saved to C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homewo...
+
+🔄 Iteration 7 - Thinking...
+
+🤖 Agent:
+Звіт успішно збережено як RAG_and_retrieval_approaches.md. Коротко: RAG — це поєднання LLM і механізму витягування зовнішніх документів для підвищення актуальності й точності відповідей; основні підходи до retrieval — sparse (BM25), dense (embedding‑based), hybrid (sparse+dense), а також neural retrievers із поділом на bi‑encoder і cross‑encoder та reranking. Документ містить рекомендації, архітектурний приклад, метрики оцінки й посилання на джерела.
 ```
