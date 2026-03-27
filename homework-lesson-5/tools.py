@@ -23,7 +23,7 @@ from retriever import get_retriever
 knowledge_search_tool_schema = {
     "type": "function",
     "name": "knowledge_search",
-    "description": f"Search the local knowledge base which have information about following topucs: {RAG_topics}. Returns top 3 releveant search results.",
+    "description": f"Search the local knowledge database which have information about following topucs: {RAG_topics}. Returns top 3 releveant search results.",
     "parameters": {
         "type": "object",
         "properties": {
