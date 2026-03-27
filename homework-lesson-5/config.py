@@ -30,6 +30,8 @@ chunk_size: int = 500
 chunk_overlap: int = 100
 retrieval_top_k: int = 10
 rerank_top_n: int = 3
+BM25_retriever_weight: float = 0.4
+vector_retriever_weight: float = 1 - BM25_retriever_weight
 
 # Agent
 output_dir: str = "output"
