@@ -14,7 +14,8 @@ from config import (
     desired_keys_yfinance, 
     period_yfinance, 
     email_crossref_api,
-    RAG_topics
+    RAG_topics,
+    rerank_top_n
     )
 from typing import List, Dict
 from pypdf import PdfReader
@@ -23,7 +24,7 @@ from retriever import get_retriever
 knowledge_search_tool_schema = {
     "type": "function",
     "name": "knowledge_search",
-    "description": f"Search the local knowledge database which have information about following topucs: {RAG_topics}. Returns top 3 releveant search results. Automatically filters out irrelevant noise via reranking.",
+    "description": f"Search the local knowledge database which have information about following topucs: {RAG_topics}. Returns top {rerank_top_n} releveant search results. Automatically filters out irrelevant noise via reranking.",
     "parameters": {
         "type": "object",
         "properties": {
