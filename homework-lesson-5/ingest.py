@@ -13,7 +13,6 @@ from config import (
 )
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import YoutubeLoader 
-# pip install youtube-transcript-api
 import os
 from dotenv import load_dotenv
 import chromadb
@@ -110,57 +109,61 @@ def save_chunks_for_BM25(chunks):
     print(f"STEP 6. Save chunks for BM25 retriever (json) - FINISHED ({len(chunks)} chunks)\n")
 
 def ingest():
-    # 1. Load documents from config.data_dir (PDF, TXT, MD)
-    documents = load_documents()
+    try:
+        # 1. Load documents from config.data_dir (PDF, TXT, MD)
+        documents = load_documents()
 
-    # 2. Split into chunks using TextSplitter
-    chunks = documents_splitter(documents)
+        # 2. Split into chunks using TextSplitter
+        chunks = documents_splitter(documents)
     
-    # це винести в окрему функцію
-    # 3. Generate embeddings
-    # 4. Build vector store (Qdrant)
-    # 5. Save index, chunks and metadata to config.index_dir
-    lc_embeddings = OpenAIEmbeddings(model=embedding_model)
+        # це винести в окрему функцію
+        # 3. Generate embeddings
+        # 4. Build vector store (Qdrant)
+        # 5. Save index, chunks and metadata to config.index_dir
+        lc_embeddings = OpenAIEmbeddings(model=embedding_model)
 
-    os.makedirs(index_dir, exist_ok=True)
-    vectorstore = Chroma(
-        persist_directory=index_dir,
-        embedding_function=lc_embeddings,
-        collection_name=collection_name
-    )
+        os.makedirs(index_dir, exist_ok=True)
+        vectorstore = Chroma(
+            persist_directory=index_dir,
+            embedding_function=lc_embeddings,
+            collection_name=collection_name
+        )
 
-    # solving duplicates problems with hash ids
-    existing_items = vectorstore.get()
-    existing_ids = set(existing_items["ids"])
-    new_chunks, new_ids  = [], []
-    current_ids = set()
+        # solving duplicates problems with hash ids
+        existing_items = vectorstore.get()
+        existing_ids = set(existing_items["ids"])
+        new_chunks, new_ids  = [], []
+        current_ids = set()
 
-    for chunk in chunks:
-        source = chunk.metadata.get("source", "unknown_source")
-        unique_string = f"{source}::{chunk.page_content}"
+        for chunk in chunks:
+            source = chunk.metadata.get("source", "unknown_source")
+            unique_string = f"{source}::{chunk.page_content}"
 
-        chunk_hash = hashlib.sha256(unique_string.encode("utf-8")).hexdigest()
-        current_ids.add(chunk_hash)
+            chunk_hash = hashlib.sha256(unique_string.encode("utf-8")).hexdigest()
+            current_ids.add(chunk_hash)
 
-        if chunk_hash not in existing_ids:
-            new_chunks.append(chunk)
-            new_ids.append(chunk_hash)
+            if chunk_hash not in existing_ids:
+                new_chunks.append(chunk)
+                new_ids.append(chunk_hash)
 
-    ids_to_delete = existing_ids - current_ids
-    if ids_to_delete:
-        vectorstore.delete(ids=list(ids_to_delete))
+        ids_to_delete = existing_ids - current_ids
+        if ids_to_delete:
+            vectorstore.delete(ids=list(ids_to_delete))
     
-    if new_chunks:
-        vectorstore.add_documents(documents=new_chunks, ids=new_ids)
-    else:
-        print("All documents are already in the index, no need to repeat embedding\n")
+        if new_chunks:
+            vectorstore.add_documents(documents=new_chunks, ids=new_ids)
+        else:
+            print("All documents are already in the index, no need to repeat embedding\n")
 
-    print("STEP 3. Generate embeddings - FINISHED\n")
-    print("STEP 4. Build vector store (Chroma) - FINISHED\n")
-    print(f"STEP 5. Save index, chunks and metadata to {index_dir}) - FINISHED ({len(new_chunks)} new chunks added, {len(ids_to_delete)} deleted)\n")
+        print("STEP 3. Generate embeddings - FINISHED\n")
+        print("STEP 4. Build vector store (Chroma) - FINISHED\n")
+        print(f"STEP 5. Save index, chunks and metadata to {index_dir}) - FINISHED ({len(new_chunks)} new chunks added, {len(ids_to_delete)} deleted)\n")
 
-    # 6. Save chunks for BM25 retriever (json)
-    save_chunks_for_BM25(chunks)
+        # 6. Save chunks for BM25 retriever (json)
+        save_chunks_for_BM25(chunks)
+
+    except Exception as e:
+        return f"Error loading documents. Details: {e}."
 
 if __name__ == "__main__":
     ingest()
@@ -180,7 +183,6 @@ def YoutubeText_loader(video_url):
 
     # YoutubeText_loader("https://www.youtube.com/watch?v=53blGRa45V0")
 
-    # ConfluenceLoader
     # YoutubeLoader
     # Docx2txtLoader - ms word
     # позагортати в try except

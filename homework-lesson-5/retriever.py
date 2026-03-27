@@ -23,8 +23,7 @@ import os
 import json
 import transformers
 load_dotenv()
-# pip install rank_bm25
-# pip install sentence-transformerss
+
 """
 Hybrid retrieval module.
 
