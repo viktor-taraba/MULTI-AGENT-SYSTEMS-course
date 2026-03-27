@@ -85,11 +85,6 @@ def get_retriever(query_text: str):
 
     # 6. Return the final retriever
     results = reranking_retriever.invoke(query_text)
-    for i, doc in enumerate(results):
-        print(f"Result {i+1}:")
-        print(f"  {doc.page_content[:150]}...")
-        print()
-
     return results
 
 results = get_retriever("What is DAX?")
