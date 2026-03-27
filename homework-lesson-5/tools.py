@@ -23,7 +23,7 @@ from retriever import get_retriever
 knowledge_search_tool_schema = {
     "type": "function",
     "name": "knowledge_search",
-    "description": f"Search the local knowledge database which have information about following topucs: {RAG_topics}. Returns top 3 releveant search results.",
+    "description": f"Search the local knowledge database which have information about following topucs: {RAG_topics}. Returns top 3 releveant search results. Automatically filters out irrelevant noise via reranking.",
     "parameters": {
         "type": "object",
         "properties": {
@@ -40,7 +40,10 @@ def knowledge_search(query: str) -> str:
     """Search the local knowledge base using hybrid retrieval + reranking."""
     try:
         results = get_retriever(query)
-        return results
+        if not results:
+            return "No documents found for this query. Try rephrasing."
+        else:
+            return results
     except Exception as e:
         return f"Error searching local knowledge base from {url}. Details: {e}."
 
