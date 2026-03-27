@@ -1,7 +1,15 @@
 from langchain_community.document_loaders import PyPDFLoader, TextLoader, PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from config import data_dir, chunk_size, chunk_overlap, embedding_model, index_dir, chunks_dir, chunks_json_name
+from config import (
+    data_dir, 
+    chunk_size, 
+    chunk_overlap, 
+    embedding_model, 
+    index_dir, 
+    chunks_dir, 
+    chunks_json_name
+)
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import YoutubeLoader 
 # pip install youtube-transcript-api
@@ -29,7 +37,7 @@ def load_documents():
         return ""
     
     documents = []
-    for root, dirs, files in os.walk(data_dir): # dirs - на випадок вкладених папок в data_dir
+    for root, dirs, files in os.walk(data_dir): # dirs - if there are additional folder in data_dir
         for file in files:
             filepath = os.path.join(root, file)
             file_docs = []
@@ -174,5 +182,4 @@ def YoutubeText_loader(video_url):
     # ConfluenceLoader
     # YoutubeLoader
     # Docx2txtLoader - ms word
-    # UnstructuredLoader - try for OCR for pdf
     # позагортати в try except
