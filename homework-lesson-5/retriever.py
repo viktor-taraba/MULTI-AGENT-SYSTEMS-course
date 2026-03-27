@@ -73,8 +73,7 @@ def get_retriever(query_text: str):
     global _cached_retriever
 
     if _cached_retriever is None:
-        print("🔄 Ініціалізація RAG (Chroma, BM25, Cross-Encoder)... Це відбудеться лише раз.")
-
+        
         lc_embeddings = OpenAIEmbeddings(model=embedding_model)
 
         vectorstore = Chroma(
