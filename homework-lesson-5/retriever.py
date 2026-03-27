@@ -14,7 +14,9 @@ from config import (
     retrieval_top_k,
     BM25_retriever_weight, 
     vector_retriever_weight,
-    rerank_top_n
+    rerank_top_n,
+    cross_encoder_model,
+    collection_name
 )
 from dotenv import load_dotenv
 import os
@@ -47,14 +49,30 @@ def load_bm25_chunks_from_json(chunks_path):
     ]
     return chunks
 
+def format_docs_for_llm(results):
+    """Formatting output"""
+    formatted_texts = []
+    for i, doc in enumerate(results):
+        source = doc.metadata.get('source', 'Unknown').split('\\')[-1]
+        page = doc.metadata.get('page', 'Unknown')
+        
+        doc_string = f"--- Document {i+1} ---\n"
+        doc_string += f"Source: {source} (Page: {page})\n"
+        doc_string += f"Content:\n{doc.page_content.strip()}\n"
+        
+        formatted_texts.append(doc_string)
+        
+    return "\n".join(formatted_texts)
+
 def get_retriever(query_text: str):
+    """Main retriever function"""
     # 1. Load vector store from disk (config.index_dir)
     lc_embeddings = OpenAIEmbeddings(model=embedding_model)
 
     vectorstore = Chroma(
         persist_directory=index_dir,
         embedding_function=lc_embeddings,
-        collection_name="documents_collection"
+        collection_name=collection_name
     )
 
     # 2. Create semantic retriever from vector store
@@ -72,7 +90,7 @@ def get_retriever(query_text: str):
     )
 
     # 5. Add cross-encoder reranker on top
-    reranker_model = HuggingFaceCrossEncoder(model_name="BAAI/bge-reranker-base")
+    reranker_model = HuggingFaceCrossEncoder(model_name=cross_encoder_model)
     compressor = CrossEncoderReranker(
         model=reranker_model,
         top_n=rerank_top_n
@@ -85,7 +103,6 @@ def get_retriever(query_text: str):
 
     # 6. Return the final retriever
     results = reranking_retriever.invoke(query_text)
-    return results
+    return format_docs_for_llm(results)
 
-results = get_retriever("What is DAX?")
-print(results)
+get_retriever("Agentic development in Power BI")
