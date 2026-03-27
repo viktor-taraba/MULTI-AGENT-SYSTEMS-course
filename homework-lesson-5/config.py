@@ -1,5 +1,5 @@
 # Agent
-model_name: str = "gpt-5-mini"
+model_name: str = "gpt-4"
 model_name_for_summary: str = "gpt-4o-mini"
 output_dir: str = "output"
 max_iterations: int = 20
@@ -32,7 +32,8 @@ retrieval_top_k: int = 10
 rerank_top_n: int = 3
 BM25_retriever_weight: float = 0.4
 vector_retriever_weight: float = 1 - BM25_retriever_weight
-RAG_topics: str = "large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development"
+RAG_topics: str = "large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development, changes in Power BI with he new version"
+Youtube_links_file_name = "Youtube_links.txt"
 
 SYSTEM_PROMPT = """
 You are a Senior Analyst with 10 years of experience.
