@@ -3,13 +3,12 @@ langchain-core>=1.2.0
 langchain-openai>=0.4
 langchain-community>=0.4
 langchain-classic>=1.0
-faiss-cpu
-rank_bm25
-sentence-transformers
-# pip install youtube-transcript-api
-# pip install pytube
-# pip install transformers
-# pip install docx2txt
+chromadb>=1.5.5
+rank_bm25>=0.2.2
+sentence-transformers>=5.3.0
+youtube-transcript-api>=1.2.4
+transformers>=5.4.0
+docx2txt>=0.9
 ddgs>=9.11.4
 trafilatura>=2.0.0
 pydantic>=2.12.5
