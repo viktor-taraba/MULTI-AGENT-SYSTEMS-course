@@ -129,7 +129,6 @@ graph LR
 
     Config[⚙️ config.py<br/>SYSTEM_PROMPT, налаштування, ліміт ітерацій ...] -->|Задає правила поведінки| Agent{agent.py<br/>Research Agent}
     
-    %% Оновлений блок пам'яті
     subgraph Memory_System [Custom SQLite Memory]
         DB[(agent_memory.db)] <-->|SQL| Agent
         Summary[🤖 LLM Summarizer] -->|Update summary_text| DB
@@ -145,12 +144,20 @@ graph LR
     Tools -->|stock_company_info| Fin[Yahoo Finance API]
     Tools -->|find_articles_crossref| Sci[Crossref API]
     Tools -->|write_report| Save[💾 Файлова система]
+    Tools -->|knowledge_search| KnowSearch[🔍 knowledge_search<br/>Пошук у локальній базі]
     
     Web -->|Результати пошуку| Agent
     URL -->|Текст сторінки| Agent
     Fin -->|Фінансові дані| Agent
     Sci -->|Анотації статей| Agent
     Save -->|Шлях до файлу| Agent
+    KnowSearch -->|Знайдені релевантні фрагменти| Agent
+
+    subgraph RAG_System [RAG Pipeline & Knowledge Base]
+        Ingest[📥 ingest.py<br/>Docs → Chunks → Embeddings] -->|Індексація даних| VectorDB[(Vector DB)]
+        KnowSearch -->|Передає query| Retriever[⚙️ retriever.py<br/>Hybrid Retrieval + Reranking]
+        Retriever <-->|Векторний/Лексичний пошук| VectorDB
+    end
     
     Agent -->|Стримінг думок/відповіді| Main
     Main -->|Вивід у термінал| User
@@ -159,11 +166,13 @@ graph LR
     classDef io fill:#bbdefb,stroke:#1976d2,stroke-width:1px;
     classDef tool fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
     classDef db_style fill:#fff9c4,stroke:#fbc02d,stroke-width:1px;
+    classDef rag fill:#ffe0b2,stroke:#f57c00,stroke-width:1px;
     
     class Agent,LLM,Summary core;
     class User,Main io;
-    class Tools,Web,URL,Fin,Sci,Save tool;
-    class DB db_style;
+    class Tools,Web,URL,Fin,Sci,Save,KnowSearch tool;
+    class DB,VectorDB db_style;
+    class Ingest,Retriever rag;
 ```
 
 ### Схема даних (SQLite)
