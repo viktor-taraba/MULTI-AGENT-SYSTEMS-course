@@ -3,23 +3,33 @@ from langchain_classic.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
+from langchain_community.cross_encoders import HuggingFaceCrossEncoder
+from langchain_classic.retrievers.document_compressors import CrossEncoderReranker
+from langchain_classic.retrievers import ContextualCompressionRetriever
 from config import (
     chunks_json_name, 
     chunks_dir, 
     embedding_model, 
-    index_dir
+    index_dir,
+    retrieval_top_k,
+    BM25_retriever_weight, 
+    vector_retriever_weight,
+    rerank_top_n
 )
 from dotenv import load_dotenv
 import os
 import json
 load_dotenv()
 # pip install rank_bm25
-
+# pip install sentence-transformerss
 """
 Hybrid retrieval module.
 
 Combines semantic search (vector DB) + BM25 (lexical) + cross-encoder reranking.
 """
+
+# UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\Viktor\.cache\huggingface\hub\models--BAAI--bge-reranker-base. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 def load_bm25_chunks_from_json(chunks_path):
     """Load chunks and create BM25 retriever"""
@@ -36,8 +46,6 @@ def load_bm25_chunks_from_json(chunks_path):
     return chunks
 
 def get_retriever():
-    # TODO:
-
     # 1. Load vector store from disk (config.index_dir)
     lc_embeddings = OpenAIEmbeddings(model=embedding_model)
 
@@ -48,50 +56,40 @@ def get_retriever():
     )
 
     # 2. Create semantic retriever from vector store
-    vector_retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
+    vector_retriever = vectorstore.as_retriever(search_kwargs={"k": retrieval_top_k})
 
     # 3. Load chunks and create BM25 retriever
     chunks = load_bm25_chunks_from_json(chunks_dir+"/"+chunks_json_name)
     bm25_retriever = BM25Retriever.from_documents(chunks)
-    bm25_retriever.k = 10
-
-    query = "Power development"
-    print(f"BM25 search: '{query}'\n")
-
-    results = bm25_retriever.invoke(query)
-    for i, doc in enumerate(results[:10]):
-        print(f"Result {i+1}:")
-        print(f"  Source: {doc.metadata.get('source', 'unknown')}")
-        print(f"  Content: {doc.page_content[:150]}...")
-        print()
-
-    print("---------------------------------------------------")
-    print(f"\nSemantic search: '{query}'\n")
-
-    results_vector = vector_retriever.invoke(query)
-    for i, doc in enumerate(results_vector[:10]):
-        print(f"Result {i+1}:")
-        print(f"  Source: {doc.metadata.get('source', 'unknown')}")
-        print(f"  Content: {doc.page_content[:150]}...")
-        print()
+    bm25_retriever.k = retrieval_top_k
 
     # 4. Combine into ensemble retriever (semantic + BM25)
     ensemble_retriever = EnsembleRetriever(
-    retrievers=[bm25_retriever, vector_retriever],
-    weights=[0.4, 0.6]  # 40% BM25 + 60% Vector
+        retrievers=[bm25_retriever, vector_retriever],
+        weights=[BM25_retriever_weight, vector_retriever_weight]
     )
 
-    print("---------------------------------------------------")
-    print(f"\nEnsemble search: '{query}'\n")
+    # 5. Add cross-encoder reranker on top
+    reranker_model = HuggingFaceCrossEncoder(model_name="BAAI/bge-reranker-base")
+    compressor = CrossEncoderReranker(
+        model=reranker_model,
+        top_n=rerank_top_n
+    )
 
-    results = ensemble_retriever.invoke(query)
-    for i, doc in enumerate(results[:10]):
+    reranking_retriever = ContextualCompressionRetriever(
+        base_compressor=compressor,
+        base_retriever=ensemble_retriever
+    )
+
+    # Test
+    print("\n🔍 Reranking search: 'What loss function is used to train RAG?'\n")
+    results = reranking_retriever.invoke("What loss function is used to train RAG?")
+    for i, doc in enumerate(results):
         print(f"Result {i+1}:")
-        print(f"  Source: {doc.metadata.get('source', 'unknown')}")
-        print(f"  Content: {doc.page_content[:150]}...")
+        print(f"  {doc.page_content[:150]}...")
         print()
 
-    # 5. Add cross-encoder reranker on top
+    print("💡 Only the most relevant documents remain after reranking!")
 
     # 6. Return the final retriever
 
