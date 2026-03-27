@@ -1,56 +1,159 @@
 # Завдання: Research Agent з RAG-системою
 
-### Що змінюється порівняно з попередніми homework
+![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
+![yfinance](https://img.shields.io/badge/yfinance-1.2.0+-orange.svg)
+![trafilatura](https://img.shields.io/badge/trafilatura-2.0.0+-orange.svg)
+![pypdf](https://img.shields.io/badge/pypdf-6.9.1+-orange.svg)
+![pandas](https://img.shields.io/badge/pandas-3.0.1+-orange.svg)
+![ddgs](https://img.shields.io/badge/ddgs-9.11.4+-orange.svg)
+![requests](https://img.shields.io/badge/requests-2.32.5+-orange.svg)
 
-| Було (homework-lesson-3)                        | Стає (homework-lesson-5) |
+### Що змінилося порівняно з homework-lesson-4
+
+| Було (homework-lesson-4)                        | Стає (homework-lesson-5) |
 |-------------------------------------------------|---|
-| Tools: `web_search`, `read_url`, `write_report` | + новий tool: `knowledge_search` |
+| Tools: `web_search`, `read_url`, `write_report` | + новий tool: `knowledge_search` (працює на основі retriever.py)|
 | Агент шукає лише в інтернеті                    | Агент шукає і в інтернеті, і в локальній базі знань |
-|                                                 | Є pipeline для завантаження документів у векторну БД |
-|                                                 | Hybrid search (semantic + BM25) з cross-encoder reranking |
+|                                                 | Є pipeline ingest.py для розбиття на чанки+ембедінги+завантаження та збереження документів у векторну БД (допустимі формати PDF, TXT, MD, youtube videos links (config.Youtube_links_file_name), DOCX); з використанням зеш-функцій уникаємо дублювання даних при оновленні файлів, також підтримується видалення даних файлу за умови що його видалили з папки data|
+|                                                 | Hybrid search (semantic + BM25) з cross-encoder reranking (retriever.py)|
 
 ---
 
-### Що потрібно реалізувати
 
-#### 1. Knowledge Ingestion Pipeline (`ingest.py`)
+### Приклад:
 
-Скрипт, який завантажує документи у векторну базу даних:
+![Demo](/homework-lesson-4/gif%20example/agent_example.gif)
 
-- **Завантаження документів** — PDF файли з директорії `./data/`
-- **Chunking** — розбиття на чанки з `RecursiveCharacterTextSplitter` (або semantic chunking — за бажанням)
-- **Embeddings** — використайте `text-embedding-3-small` або `text-embedding-3-large`
-- **Векторна БД** — оберіть одну з: FAISS (для простоти), Qdrant, Chroma, або pgvector
-- **Збереження індексу** — індекс повинен зберігатися на диск і перезавантажуватися без повторного embedding
+Приклади згенерованих звітів - в [output](/homework-lesson-4/output)
 
-Скрипт запускається окремо: `python ingest.py` — і створює/оновлює індекс.
+### Загальний опис
 
-#### 2. Hybrid Retrieval з Reranking (`retriever.py`)
+Агент запускається з терміналу (python3 main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
+Агент підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії.
 
-Модуль, що реалізує пошук по базі знань:
+Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та створений файл .env з вказаним ключем: `OPENAI_API_KEY=<тут_ваш_ключ>`
 
-- **Semantic search** — пошук за cosine similarity у векторній БД
-- **BM25 search** — лексичний пошук за ключовими словами
-- **Ensemble** — об'єднання результатів semantic + BM25 (наприклад, через `EnsembleRetriever` або вручну)
-- **Reranking** — cross-encoder reranker (наприклад, `BAAI/bge-reranker-base`) для фільтрації шуму
+Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-4/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
-#### 3. RAG Tool для агента (`tools.py`)
+При підрізці messages (лише для поточної розмови, для попередніх зберігаємо усі повідомлення та на їх основі робимо короткий підсумок) враховуємо послідовність ResponseReasoningItem -> ResponseFunctionToolCall -> function_call_output. Рекомендується задавати значення [max_steps_to_remember](/homework-lesson-4/config.py) з розрахунком на максимально можливу тривалість діалогу, тобто таким чином, щоб воно було не менше за 2+(max_iterations+1)*3 (перше повідомлення з системним повідомленням + запит користувача + максимальна кількість ітерацій + додаткова ітерація на формування звіту).
 
-Новий tool `knowledge_search`, який агент використовує поряд з `web_search`, `read_url`, `write_report`:
-
-```python
-def knowledge_search(query: str) -> str:
-    """Search the local knowledge base. Use for questions about ingested documents."""
-    ...
+Приклад кроків при розрахунку к-ті повідомлень для пам'яті:
+```
+ ResponseReasoningItem(
+        id="rs_01524c199f411aad0069bfe24771848191b6a8b30304df4eac",
+        summary=[],
+        type="reasoning",
+        content=None,
+        encrypted_content=None,
+        status=None,
+    ),
+ResponseFunctionToolCall(
+        arguments='{"query":"BERT 2018 arXiv \'BERT: Pre-training of Deep Bidirectional Transformers\' pdf"}',
+        call_id="call_lZfO3ET79puJhldRPp5i2hy4",
+        name="web_search",
+        type="function_call",
+        id="fc_01524c199f411aad0069bfe247bebc81918e38e7dddb7991d8",
+        namespace=None,
+        status="completed",
+    ),
+    {
+        "type": "function_call_output",
+        "call_id": "call_lZfO3ET79puJhldRPp5i2hy4",
+        "output": '"[{\\"title\\": \\"[1810.04805] BERT: Pre-training of Deep Bidirectional\\", \\"url\\": \\"https://arxiv.org/abs/1810.04805\\", \\"snippet\\": \\"View aPDFofthe paper titledBERT:Pre-trainingofDeepBidirectionalTransformersfor Language Understanding, by Jacob Devlin and 3 other authors\\"}, {\\"title\\": \\"Toward structuring real-world data: Deep learning for\\", \\"url\\": \\"https://www.cell.com/patterns/fulltext/S2666-3899(23)00066-1\\", \\"snippet\\": \\"... in medical registries, which are often readily available and capture patient information, as the basis for patient-level supervision totraindeep...\\"}, {\\"title\\": \\"BERT (Language Model)\\", \\"url\\": \\"https://devopedia.org/bert-language-model\\", \\"snippet\\": \\"...pdfRedirected URLs: Discussion: https://arxiv.org/pdf/1810.04805.pdf\\\\u2192 http://arxiv.org/pdf/1810.04805 Discussion: ...\\"}, {\\"title\\": \\"Application and Effectiveness of BERT in Question and Answer\\", \\"url\\": \\"https://www.itm-conferences.org/articles/itmconf/ref/2025/04/itmconf_iwadi2024_02007/itmconf_iwadi2024_02007.html\\", \\"snippet\\": \\"Devlin,BERT:Pre-trainingofdeepbidirectionaltransformersfor language understanding. ...BidirectionalEncoder Representations fromTransformers...\\"}, {\\"title\\": \\"Chapter | Papers We Love\\", \\"url\\": \\"https://paperswelove.org/chapter/toronto/\\", \\"snippet\\": \\"Arun Raja will be presenting \\\\u201cBERT:Pre-trainingofDeepBidirectionalTransformersfor Language Understanding\\\\u201d by Jacob Devlin, et al.\\"}, {\\"title\\": \\"Themen\\", \\"url\\": \\"https://www.mnm-team.org/teaching/Seminare/2022ws/Hauptseminar/Themen.html\\", \\"snippet\\": \\"Devlin et al.,BERT:Pre-trainingofDeepBidirectionalTransformersfor Language Understanding , 2019 ... Latent Diffusion Models, https://arxiv...\\"}, {\\"title\\": \\"Themen\\", \\"url\\": \\"https://www.mnm-team.org/teaching/Seminare/2022ws/Hauptseminar/Themen/\\", \\"snippet\\": \\"Devlin et al.,BERT:Pre-trainingofDeepBidirectionalTransformersfor Language Understanding , 2019 ... Latent Diffusion Models, https://arxiv...\\"}]"',
+    },
 ```
 
-Агент сам вирішує, коли шукати в інтернеті (`web_search`), а коли — в локальній базі (`knowledge_search`).
+### Опис тулів для агента:
+|Назва|Параметри|Опис|
+|--|--|--|
+|`web_search`|`query: str`|Шукає актуальну інформацію в інтернеті через DuckDuckGo. Повертає перелік знайдених посилань з даними про заголовок, URL, фрагмент тексту. Використовується як перший крок пошуку.|
+|`read_url`|`url: str`|Отримує основний текст із вебсторінки (або PDF, якщо це пряме посилання на pdf-звіт чи статтю).|
+|`stock_company_info`|`stock_ticker: str, result_type: str`|Отримує фінансові дані або загальний профіль компанії через Yahoo Finance API.|
+|`find_articles_crossref`|`query: str`|Шукає наукові статті в базі Crossref. Повертає відфільтрований список записів із валідною анотацією (назва, анотація, DOI, рік).|
+|`write_report`|`filename: str, content: str`|Зберігає фінальний звіт у форматі Markdown, використовується як останній крок для видачі результату.|
 
-#### 4. Тестові дані (`data/`)
+### Структура проєкту
 
-У `./data/` вже є декілька документів для тестування. За бажанням, додайте ще для перевірки роботи системи з різними типами.
+```
+homework-lesson-4/
+├── main.py              # Entry point
+├── agent.py             # Agent setup (LLM, tools, memory, create_agent)
+├── tools.py             # Tool definitions and implementations
+├── config.py            # System prompt, settings, constants
+├── agent_memory.db      # SQLite database for cross-sesion memory and logging
+├── requirements.txt     # Libraries list + min version for each library
+├── output/
+│   └── context_window_agentic_systems_comparison.md   # Example generated report (#1)
+│   └── dividend_policy_literature.md                  # Example generated report (#2)
+│   └── news_ukraine_last_week_14-21_Mar_2026.md       # Example generated report (#3)
+│   └── superortikon_report.md                         # Example generated report (#4)
+│   └── test_finans_2kurs.md                           # Example generated report (#5)
+└── README.md            # Setup instructions, architecture overview
+```
 
----
+### Блок-схема роботи агента
+
+```mermaid
+graph LR
+    User((👨‍💻 Користувач)) -->|Текстовий запит| Main[main.py<br/>CLI Інтерфейс]
+
+    Config[⚙️ config.py<br/>SYSTEM_PROMPT, налаштування, ліміт ітерацій ...] -->|Задає правила поведінки| Agent{agent.py<br/>Research Agent}
+    
+    %% Оновлений блок пам'яті
+    subgraph Memory_System [Custom SQLite Memory]
+        DB[(agent_memory.db)] <-->|SQL| Agent
+        Summary[🤖 LLM Summarizer] -->|Update summary_text| DB
+        DB -->|Короткий підсумок попередніх розмов| Agent
+    end
+
+    Agent <-->|Reasoning / Планування| LLM[🤖 OpenAI LLM]
+    
+    Agent -->|Виклик інструменту| Tools[🔧 tools.py]
+    
+    Tools -->|web_search| Web[DuckDuckGo]
+    Tools -->|read_url| URL[Trafilatura / PyPDF]
+    Tools -->|stock_company_info| Fin[Yahoo Finance API]
+    Tools -->|find_articles_crossref| Sci[Crossref API]
+    Tools -->|write_report| Save[💾 Файлова система]
+    
+    Web -->|Результати пошуку| Agent
+    URL -->|Текст сторінки| Agent
+    Fin -->|Фінансові дані| Agent
+    Sci -->|Анотації статей| Agent
+    Save -->|Шлях до файлу| Agent
+    
+    Agent -->|Стримінг думок/відповіді| Main
+    Main -->|Вивід у термінал| User
+  
+    classDef core fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
+    classDef io fill:#bbdefb,stroke:#1976d2,stroke-width:1px;
+    classDef tool fill:#c8e6c9,stroke:#388e3c,stroke-width:1px;
+    classDef db_style fill:#fff9c4,stroke:#fbc02d,stroke-width:1px;
+    
+    class Agent,LLM,Summary core;
+    class User,Main io;
+    class Tools,Web,URL,Fin,Sci,Save tool;
+    class DB db_style;
+```
+
+### Схема даних (SQLite)
+
+```mermaid
+graph LR
+    subgraph Database_Schema [Research Agent Memory]
+    direction LR
+    
+    A["<div align='left'><b>tb_sessions</b><hr/>session_id: INT (PK)<br/>model_name: TEXT<br/>summary_text: TEXT<br/>created_at: DATETIME</div>"] 
+    
+    B["<div align='left'><b>tb_agent_history</b><hr/>id: INT (PK)<br/>session_id: INT (FK)<br/>role: TEXT<br/>to_exclude: TEXT<br/>content: TEXT<br/>raw_json: TEXT<br/>prompt_tokens: INT<br/>result_tokens: INT<br/>total_tokens: INT<br/>created_at: DATETIME</div>"]
+    
+    A -->|1:N| B
+    end
+    
+    style A fill:#fff9c4,stroke:#fbc02d,text-align:left
+    style B fill:#fff9c4,stroke:#fbc02d,text-align:left
+```
+
 
 ### Структура проекту
 
@@ -69,15 +172,6 @@ homework-lesson-5/
 ```
 
 ---
-
-### Очікуваний результат
-
-1. **Ingestion працює** — `python ingest.py` завантажує документи з `./data/` та створює індекс
-2. **Hybrid search** — пошук використовує і semantic, і BM25, результати об'єднуються
-3. **Reranking** — cross-encoder фільтрує нерелевантні результати
-4. **Агент використовує RAG** — агент самостійно вирішує, коли шукати в базі знань, а коли в інтернеті
-5. **Multi-step reasoning** — агент комбінує результати з різних джерел (web + knowledge base)
-6. **Звіт** — агент генерує Markdown-звіт з посиланнями на джерела
 
 Приклад логу в консолі:
 ```
