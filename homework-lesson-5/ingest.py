@@ -1,4 +1,10 @@
-from langchain_community.document_loaders import PyPDFLoader, TextLoader, PyMuPDFLoader
+from langchain_community.document_loaders import (
+    PyPDFLoader, 
+    TextLoader, 
+    PyMuPDFLoader,
+    Docx2txtLoader,
+    YoutubeLoader
+)
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from config import (
@@ -9,15 +15,16 @@ from config import (
     index_dir, 
     chunks_dir, 
     chunks_json_name,
-    collection_name
+    collection_name,
+    Youtube_links_file_name
 )
 from langchain_chroma import Chroma
-from langchain_community.document_loaders import YoutubeLoader 
 import os
 from dotenv import load_dotenv
 import chromadb
 import hashlib
 import json
+import docx2txt
 load_dotenv()
 
 """
@@ -30,12 +37,13 @@ Usage: python ingest.py
 """
 
 def load_documents():
-    """ 1. Load documents from config.data_dir (PDF, TXT, MD) """
+    """ 1. Load documents from config.data_dir (PDF, TXT, MD, youtube videos links (config.Youtube_links_file_name), DOCX) """
 
     if not os.path.exists(data_dir):
         print(f"Path not exist {data_dir}")
         return ""
     
+    print("Loading documents...")
     documents = []
     for root, dirs, files in os.walk(data_dir): # dirs - if there are additional folder in data_dir
         for file in files:
@@ -53,9 +61,31 @@ def load_documents():
                     if total_text_length == 0:
                         fallback_loader = PyMuPDFLoader(filepath)
                         file_docs = fallback_loader.load()
-                        
+                
+                # YouTube videos subtitles
+                elif file == Youtube_links_file_name:
+                        with open(filepath, "r", encoding="utf-8") as f:
+                            for line in f:
+                                url = line.strip()
+
+                                if url:
+                                    try:
+                                        yt_loader = YoutubeLoader.from_youtube_url(url, add_video_info=False)
+                                        loaded_docs = yt_loader.load()
+                                        for doc in loaded_docs:
+                                            doc.metadata["source"] = url
+                                        
+                                        file_docs.extend(loaded_docs)
+
+                                    except Exception as yt_e:
+                                        print(f"Error loading YouTube URL {url}: {yt_e}")
+
                 elif file.lower().endswith((".txt", ".md")):
                     loader = TextLoader(filepath, encoding="utf-8")
+                    file_docs = loader.load()
+
+                elif file.lower().endswith(".docx"):
+                    loader = Docx2txtLoader(filepath)
                     file_docs = loader.load()
 
                 # other formets
@@ -116,7 +146,6 @@ def ingest():
         # 2. Split into chunks using TextSplitter
         chunks = documents_splitter(documents)
     
-        # це винести в окрему функцію
         # 3. Generate embeddings
         # 4. Build vector store (Qdrant)
         # 5. Save index, chunks and metadata to config.index_dir
@@ -163,26 +192,7 @@ def ingest():
         save_chunks_for_BM25(chunks)
 
     except Exception as e:
-        return f"Error loading documents. Details: {e}."
+        print(f"Error loading documents. Details: {e}.")
 
 if __name__ == "__main__":
     ingest()
-
-
-def YoutubeText_loader(video_url):
-    """load text (subtitles) from YouTube videos"""
-    loader = YoutubeLoader.from_youtube_url(
-        video_url, 
-        add_video_info=False # Ставимо False, якщо нам потрібен ТІЛЬКИ текст (працює швидше)
-    )
-    docs = loader.load()
-
-    print(f"Завантажено документів: {len(docs)}")
-    print("\n--- Фрагмент тексту відео ---")
-    print(docs[0].page_content[:500])
-
-    # YoutubeText_loader("https://www.youtube.com/watch?v=53blGRa45V0")
-
-    # YoutubeLoader
-    # Docx2txtLoader - ms word
-    # позагортати в try except
