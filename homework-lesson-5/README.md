@@ -70,6 +70,7 @@ ResponseFunctionToolCall(
 |`read_url`|`url: str`|Отримує основний текст із вебсторінки (або PDF, якщо це пряме посилання на pdf-звіт чи статтю).|
 |`stock_company_info`|`stock_ticker: str, result_type: str`|Отримує фінансові дані або загальний профіль компанії через Yahoo Finance API.|
 |`find_articles_crossref`|`query: str`|Шукає наукові статті в базі Crossref. Повертає відфільтрований список записів із валідною анотацією (назва, анотація, DOI, рік).|
+|`knowledge_search`|query: str|Пошук у локальній базі знань за допомогою гібридного пошуку (hybrid retrieval) та реранкінгу.|
 |`write_report`|`filename: str, content: str`|Зберігає фінальний звіт у форматі Markdown, використовується як останній крок для видачі результату.|
 
 ### Структура проєкту
@@ -184,7 +185,6 @@ You: Що таке RAG і які є підходи до retrieval?
 
 🔄 Iteration 1 - Thinking...
 🔧 Tool called -> knowledge_search({'query': 'RAG retrieval augmentation generation approaches retrieval types'})
-Loading weights: 100%|██████████| 201/201 [00:00<00:00, 8243.34it/s]
 ✅ Result (knowledge_search): --- Document 1 ---
 Source: retrieval-augmented-generation.pdf (Page: 0)
 Content:
