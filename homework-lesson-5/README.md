@@ -7,6 +7,10 @@
 ![pandas](https://img.shields.io/badge/pandas-3.0.1+-orange.svg)
 ![ddgs](https://img.shields.io/badge/ddgs-9.11.4+-orange.svg)
 ![requests](https://img.shields.io/badge/requests-2.32.5+-orange.svg)
+![chromadb](https://img.shields.io/badge/chromadb-1.5.5+-orange.svg)
+![youtube-transcript-api](https://img.shields.io/badge/youtube--transcript--api-1.2.4+-orange.svg)
+![transformers](https://img.shields.io/badge/transformers-5.4.0+-orange.svg)
+![docx2txt](https://img.shields.io/badge/docx2txt-0.9+-orange.svg)
 
 ### Що змінилося порівняно з homework-lesson-4
 
