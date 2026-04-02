@@ -1,3 +1,4 @@
+from langchain_core.tools import tool
 import os
 import trafilatura
 import yfinance  as yf
@@ -21,24 +22,19 @@ from typing import List, Dict
 from pypdf import PdfReader
 from retriever import get_retriever
 
-knowledge_search_tool_schema = {
-    "type": "function",
-    "name": "knowledge_search",
-    "description": f"Search the local knowledge database which have information about following topucs: {RAG_topics}. Returns top {rerank_top_n} releveant search results. Automatically filters out irrelevant noise via reranking.",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "query": {
-                "type": "string",
-                "description": "Search query or question to look up., e.g. 'DAX measures' or 'LLM monitoring'"
-            }
-        },
-        "required": ["query"]
-    }
-}
-
+@tool
 def knowledge_search(query: str) -> str:
-    """Search the local knowledge base using hybrid retrieval + reranking."""
+    f""""
+    Search the local knowledge database which has information about the following topics: {RAG_topics}.
+    Returns top {rerank_top_n} releveant search results.
+    Automatically filters out irrelevant noise via reranking.
+
+    Args:
+        query (str): Search query or question to look up, e.g. 'DAX measures' or 'LLM monitoring'.
+
+    Returns:
+        str: Most relevant document fragments (Content + Source).
+    """
     try:
         results = get_retriever(query)
         if not results:
@@ -48,22 +44,7 @@ def knowledge_search(query: str) -> str:
     except Exception as e:
         return f"Error searching local knowledge base. Details: {e}."
 
-web_search_tool_schema = {
-    "type": "function",
-    "name": "web_search",
-    "description": "Search the web to find up-to-date information. Returns list of search results containing 'title', 'url', and 'snippet'. Use this FIRST to find relevant URLs and basic summaries. Do not base your final answer solely on these short snippets.",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "query": {
-                "type": "string",
-                "description": "Search query or question to look up., e.g. 'Dynamic pricing models'"
-            }
-        },
-        "required": ["query"]
-    }
-}
-
+@tool
 def web_search(query: str) -> str:
     """
     Search the web to find up-to-date information.
@@ -73,7 +54,7 @@ def web_search(query: str) -> str:
         query (str): The search query or question to look up.
 
     Returns:
-        List[Dict[str, str]]: A list of search results containing 'title', 'url', and 'snippet'.
+        str: A JSON-formatted string containing list of search results containing 'title', 'url', and 'snippet'.
     """
     processed_results: List[Dict[str, str]] = []
 
@@ -130,24 +111,7 @@ def read_url_pdf(url: str):
     except Exception as e:
         return f"Error extracting PDF from {url}. Details: {e}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
-read_url_tool_schema = {
-    "type": "function",
-    "name": "read_url",
-    "description": "Fetches and extracts the main text content from a given URL. Use this AFTER a web search to read the full, in-depth content of\
-    a webpage. Essential for gathering detailed facts, examples, and deep context for your final report. This function acts as a tool for an LLM\
-    agent to read the full content of a webpage. It deliberately truncates the output to prevent blowing up the LLM's context window (context engineering). It also catches errors so the agent can recover.",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "url": {
-                "type": "string",
-                "description": "The URL of the webpage to read., e.g. 'https://...'"
-            }
-        },
-        "required": ["url"]
-    }
-}
-
+@tool 
 def read_url(url: str) -> str:
     """
     Fetches and extracts the main text content from a given URL.
@@ -186,30 +150,7 @@ def read_url(url: str) -> str:
     except Exception as e:
         return f"An unexpected error occurred while reading '{url}': {str(e)}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
-stock_company_info_tool_schema = {
-    "type": "function",
-    "name": "stock_company_info",
-    "description": "Fetches financial data or company profile information for a given ticker (stock, ETF). Use this tool ONLY if financial data\
-    (stock prices, company financials) or general information about a publicly traded company or about ETF or other financial instrument which a\
-    ticker is needed, AND the specific stock ticker symbol is known. This tool queries the Yahoo Finance API to retrieve either 3 months of daily\
-    historical price data or a filtered dictionary of general company information. The output is returned as a JSON-formatted string.",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "stock_ticker": {
-                "type": "string",
-                "description": "The standard stock ticker symbol to query (e.g., MSFT, AAPL)"
-            },
-            "result_type": {
-                "type": "string",
-                "description": "Determines the type of data to return. Use 'stock_data' to retrieve the last 3 months of historical market data.\
-                Use 'info' (or any other string) to retrieve the companys general profile."
-            }
-        },
-        "required": ["stock_ticker", "result_type"]
-    }
-}
-
+@tool
 def stock_company_info(stock_ticker: str, result_type: str) -> str:
     """
     Fetches financial data or company profile information for a given ticker (stock, ETF).
@@ -229,7 +170,7 @@ def stock_company_info(stock_ticker: str, result_type: str) -> str:
             - Use "info" (or any other string) to retrieve the company's general profile.
 
     Returns:
-        json: A JSON-formatted string containing the requested data. If an error occurs 
+        str:  A JSON-formatted string containing the requested data. If an error occurs 
               during the API call, it returns a string detailing the exception.
     """
 
@@ -250,24 +191,7 @@ def stock_company_info(stock_ticker: str, result_type: str) -> str:
     except Exception as e:
         return f"Error using function stock_info. Details: {e}"
 
-find_articles_crossref_tool_schema = {
-    "type": "function",
-    "name": "find_articles_crossref",
-    "description": "Searches the Crossref database for scientific articles, journals, and conference papers. Use this tool when you need to find\
-    peer-reviewed research, metadata, or summaries for specific academic topics or information from scientific articles on the specific topic.",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "query": {
-                "type": "string",
-                "description": "A specific short search string containing keywords, topics, or paper titles (e.g., 'llm banking' or 'dividend policy').\
-                Do not use more than 2-3 words for one query."
-            }
-        },
-        "required": ["query"]
-    }
-}
-
+@tool
 def find_articles_crossref(query: str) -> str:
     """
     Searches the Crossref database for scientific articles, journals, and conference papers.
@@ -279,9 +203,9 @@ def find_articles_crossref(query: str) -> str:
                (e.g., "llm banking" or "dividend policy"). Do not use more than 2-3 words for one query.
 
     Returns:
-        A list of dictionaries containing 'title', 'abstract', 'doi', and 'year'.
-        Only records that contain a valid summary (abstract) are returned. 
-        Returns an error string if the API call fails.
+        str: A json-formatted list of dictionaries containing 'title', 'abstract', 'doi', and 'year'.
+             Only records that contain a valid summary (abstract) are returned. 
+             Returns an error string if the API call fails.
     """
 
     # We request more than the limit (limit * 2) because many records in Crossref lack abstracts; this increases the chance of hitting target.
@@ -311,33 +235,14 @@ def find_articles_crossref(query: str) -> str:
                 if len(filtered_articles) >= max_search_results:
                     break
                     
-            return filtered_articles
+            return json.dumps(filtered_articles)
         else:
             return f"Error: {response.status_code}"
             
     except Exception as e:
         return f"An error occurred: {e}"
 
-write_report_tool_schema = {
-    "type": "function",
-    "name": "write_report",
-    "description": "Saves the final Markdown report to the local disk. Use this tool ONLY when the report is completely finished and you are ready to give the final answer.",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "filename": {
-                "type": "string",
-                "description": "The name of the file to save (e.g., 'report.md')."
-            },
-            "content": {
-                "type": "string",
-                "description": "The full Markdown text of the report."
-            }
-        },
-        "required": ["filename","content"]
-    }
-}
-
+@tool
 def write_report(filename: str, content: str) -> str:
     """
     Saves the final Markdown report to the local disk.
@@ -363,19 +268,11 @@ def write_report(filename: str, content: str) -> str:
     except Exception as e:
         return f"Error: Could not save the report. Details: {e}"
 
-tool_registry = {
-    "web_search": web_search, 
-    "read_url": read_url, 
-    "knowledge_search": knowledge_search,
-    "write_report": write_report, 
-    "stock_company_info": stock_company_info,
-    "find_articles_crossref": find_articles_crossref}
-
 tools = [
-    web_search_tool_schema, 
-    read_url_tool_schema, 
-    knowledge_search_tool_schema,
-    write_report_tool_schema, 
-    stock_company_info_tool_schema, 
-    find_articles_crossref_tool_schema
+    web_search, 
+    read_url, 
+    knowledge_search,
+    write_report, 
+    stock_company_info, 
+    find_articles_crossref
     ]
