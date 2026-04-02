@@ -1,11 +1,7 @@
 # Agent
 model_name: str = "gpt-5-mini"
-model_name_for_summary: str = "gpt-4o-mini"
 output_dir: str = "output"
 max_iterations: int = 20
-max_steps_to_remember: int = 2+(max_iterations+1)*3+(max_iterations/2)*3
-memory_database_name: str = "agent_memory.db"
-previous_conversations_to_remember: int = 5
 
 # tools 
 max_search_results: int = 7
@@ -76,10 +72,4 @@ FINAL_PROMPT = """
 STOP. You have reached your limit. Do not use tools. 
 Based ONLY on the info already gathered, write a detailed final report. 
 You MUST use the 'write_report' tool to submit your detailed final report.
-"""
-
-SUMMARY_PROMPT = """
-You are an professional assistant that summarizes conversations.
-Extract the most important facts, user preferences, and final conclusions from the following dialogue.
-Keep it concise but detailed enough to be used as context for future conversations.
 """
