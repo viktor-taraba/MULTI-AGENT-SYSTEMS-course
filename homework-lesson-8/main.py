@@ -1,31 +1,15 @@
-from agent import ( 
-    run_agent, 
-    create_database_if_not_exist, 
-    insert_session_database, 
-    insert_memory_database, 
-    truncate_database, 
-    summarize_memory_database,
-    ensure_previous_session_summarized,
-    get_memory_database_summary
-)
-from config import SYSTEM_PROMPT, model_name_for_summary
+from agent import agent, config, print_tool_call
+from config import FINAL_PROMPT
 
 def main():
     print("Research Agent")
     print("type 'exit' or 'quit' to quit")
     print("-" * 100)
 
-    dynamic_system_prompt = SYSTEM_PROMPT
-    messages = [
-        {"role": "system", "content": dynamic_system_prompt}
-    ]
-
     while True:
         try:
             user_input = input("\nYou: ").strip()
         except (EOFError, KeyboardInterrupt):
-            print("\nSaving summary pf our conversation...")
-            summarize_memory_database(model_name_for_summary, session_id)
             print("\nGoodbye!")
             break
 
@@ -33,16 +17,68 @@ def main():
             continue
 
         if user_input.lower() in ("exit", "quit"):
-            print("\nSaving summary pf our conversation...")
-            summarize_memory_database(model_name_for_summary, session_id)
             print("Goodbye!")
             break
 
-        messages.append({"role": "user", "content": user_input})
+        try:
+            for chunk in agent.stream(
+                {"messages": [("user", user_input)]},config=config
+            ):
+                print(f"\n🔄 Thinking...")
 
-        agent_response = run_agent(messages,session_id)
-        if agent_response:
-            print(agent_response)
+                if "model" in chunk and "messages" in chunk["model"]:
+                    for msg in chunk["model"]["messages"]:
+                        
+                        if hasattr(msg, "content") and msg.content:
+                            print("")
+                            print(f"\n🤖 Agent:\n{msg.content}")
+
+                        # Extract information about the tool being called and its parameters
+                        if hasattr(msg, "tool_calls") and msg.tool_calls:
+                            for tool_call in msg.tool_calls:
+                                tool_name = tool_call.get("name")
+                                tool_args = str(tool_call.get("args"))
+                                print_tool_call(tool_name,tool_args)
+
+                # Tools Node: The tool has finished running and returned data
+                elif "tools" in chunk and "messages" in chunk["tools"]:
+                    for msg in chunk["tools"]["messages"]:
+                        tool_name = msg.name
+                        content_str = str(msg.content)
+                        preview = content_str[:150] + "..." if len(content_str) > 150 else content_str
+                        
+                        print(f"✅ Result ({tool_name}): {preview}")
+                        
+        except Exception as e:
+            if "Recursion limit" in str(e):
+                print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Generating final report from gathered data...")
+                
+                # Trigger a final "Report" prompt
+                current_state = agent.get_state(config)
+                messages = current_state.values.get("messages", [])
+                
+                recovery_messages = []
+                
+                if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
+                    for tc in messages[-1].tool_calls:
+                        recovery_messages.append({
+                            "role": "tool",
+                            "tool_call_id": tc["id"],
+                            "name": tc["name"],
+                            "content": "System Abort: Tool execution cancelled because iteration limit was reached."
+                        })
+
+                recovery_messages.append(("user", FINAL_PROMPT))
+                report_instruction = {"messages": recovery_messages}
+                              
+                for chunk in agent.stream(report_instruction, config=config):
+                    if "model" in chunk and "messages" in chunk["model"]:
+                        for msg in chunk["model"]["messages"]:
+                            if hasattr(msg, "content") and msg.content:
+                                print(f"\n📊 FINAL REPORT:\n{msg.content}")
+
+            else:
+                print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversatio with you!")
 
 if __name__ == "__main__":
     main()

@@ -14,9 +14,7 @@ from config import (
     output_dir, 
     desired_keys_yfinance, 
     period_yfinance, 
-    email_crossref_api,
-    RAG_topics,
-    rerank_top_n
+    email_crossref_api
     )
 from typing import List, Dict
 from pypdf import PdfReader
@@ -24,9 +22,9 @@ from retriever import get_retriever
 
 @tool
 def knowledge_search(query: str) -> str:
-    f""""
-    Search the local knowledge database which has information about the following topics: {RAG_topics}.
-    Returns top {rerank_top_n} releveant search results.
+    """
+    Search the local knowledge database which has information about the following topics: large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development, changes in Power BI with he new version.
+    Returns top releveant search results.
     Automatically filters out irrelevant noise via reranking.
 
     Args:
@@ -267,6 +265,14 @@ def write_report(filename: str, content: str) -> str:
         
     except Exception as e:
         return f"Error: Could not save the report. Details: {e}"
+
+tool_registry = {
+    "web_search": web_search, 
+    "read_url": read_url, 
+    "knowledge_search": knowledge_search,
+    "write_report": write_report, 
+    "stock_company_info": stock_company_info,
+    "find_articles_crossref": find_articles_crossref}
 
 tools = [
     web_search, 
