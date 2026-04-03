@@ -14,10 +14,15 @@ from tools import write_report
 from langgraph.errors import GraphRecursionError
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langgraph.checkpoint.memory import InMemorySaver
-import warnings
-warnings.filterwarnings("ignore", message=".*Deserializing unregistered type.*")
 
 revision_counter = 0
+
+# додати HITL
+
+# дописати
+def run_agent_with_recovery(agent, request: str, thread_id: str, limit: int, final_prompt: str):
+    config = {"recursion_limit": limit, "configurable": {"thread_id": thread_id}}
+    pass
 
 @tool
 def research_planner(request: str) -> str:
@@ -55,7 +60,8 @@ def reseacrh_execution(request: str) -> str:
     """
     config = {
         "recursion_limit": max_iterations_research, 
-        "configurable": {"thread_id": "research_thread"}}
+        "configurable": {"thread_id": "research_thread"}
+    }
     
     try:
         result = research_agent.invoke(
