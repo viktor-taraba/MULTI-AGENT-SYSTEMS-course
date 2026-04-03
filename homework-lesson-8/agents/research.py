@@ -1,18 +1,32 @@
 from langchain.agents import create_agent
 
 # to delete
-import os, sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+#import os, sys
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from config import research_model_name, SYSTEM_PROMPT_research, max_iterations_research
+from config import (
+    research_model_name, 
+    SYSTEM_PROMPT_research, 
+    max_iterations_research
+)
 from schemas import ResearchResult
-from tools import web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref
+from tools import (
+    web_search, 
+    read_url, 
+    knowledge_search, 
+    stock_company_info, 
+    find_articles_crossref
+)
+from langgraph.checkpoint.memory import InMemorySaver
+
+memory = InMemorySaver()
 
 research_agent = create_agent(
     model=research_model_name,
     tools=[web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref],
     system_prompt=SYSTEM_PROMPT_research,
-    response_format=ResearchResult
+    response_format=ResearchResult,
+    checkpointer=memory
 )
 
 """
