@@ -15,3 +15,6 @@ class ResearchPlan(BaseModel):
     search_queries: list[str] = Field(description="Specific queries to execute")
     sources_to_check: list[str] = Field(description="'web_search', 'read_url', 'knowledge_search', 'stock_company_info', 'find_articles_crossref' or several tools (e.g. 'web_search and read_url')")
     output_format: str = Field(description="What the final report should look like")
+
+class ResearchResult(BaseModel):
+    research_output: str = Field(description="Prepared research")
