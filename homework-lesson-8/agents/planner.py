@@ -15,12 +15,13 @@ planner_agent = create_agent(
     response_format=ResearchPlan,
 )
 
+"""
 # Test Planner Agent in isolation
 for step in planner_agent.stream({
     "messages": [
         {
             "role": "user",
-            "content": f"pbir files validation"
+            "content": "pbir files validation"
         }
     ]
 }):
@@ -35,3 +36,4 @@ result = planner_agent.invoke({
 
 plan = result["structured_response"]
 print(plan.model_dump_json(indent=4))
+"""
