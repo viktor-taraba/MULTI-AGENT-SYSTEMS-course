@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field, max_items_critic
+from pydantic import BaseModel, Field
+from config import max_items_critic
 from typing import List, Literal
 
 class CritiqueResult(BaseModel):
