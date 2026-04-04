@@ -18,6 +18,10 @@ from langgraph.checkpoint.memory import InMemorySaver
 revision_counter = 0
 
 # додати HITL
+# додати [Supervisor → Critic]
+# переписати промт для критика, щось він занадто критичний вийшов
+# подумати над лімітом ітерацій для критика, там зараз виходить 3 замість 2
+# читабельний виклика тулів та їх результату (в принципі це в мене вже є, але просто загорнути в функцію) - може краще на рівні main
 
 # дописати
 def run_agent_with_recovery(agent, request: str, thread_id: str, limit: int, final_prompt: str):
@@ -153,7 +157,7 @@ print("  └── write_report       → File System")
 
 # Test 1: Simple single-domain request
 for step in supervisor.stream(
-    {"messages": [{"role": "user", "content": "What is PBIR?"}]},
+    {"messages": [{"role": "user", "content": "dividend policy types"}]},
     config=config
 ):
     for update in step.values():
