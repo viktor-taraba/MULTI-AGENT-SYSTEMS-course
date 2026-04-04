@@ -17,10 +17,12 @@ from tools import (
     stock_company_info, 
     find_articles_crossref
 )
+from langgraph.checkpoint.memory import InMemorySaver
 
 critic_agent = create_agent(
     model=critic_model_name,
     tools=[web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref],
     system_prompt=SYSTEM_PROMPT_critic,
     response_format=CritiqueResult,
+    checkpointer=InMemorySaver()
 )
