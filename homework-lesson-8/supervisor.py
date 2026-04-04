@@ -19,9 +19,13 @@ from tools import save_report, tool_registry
 from langgraph.errors import GraphRecursionError
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.types import Command, Interrupt
+import json
 import uuid
 
 revision_counter = 0
+global current_research_session
+current_research_session = str(uuid.uuid4())
 
 # додати HITL
 # подумати над лімітом ітерацій для критика, там зараз виходить 3 замість 2 - і чекнути вплив global
@@ -29,7 +33,8 @@ revision_counter = 0
 # додати обробку для max_iterations_critic щоб не було помилки
 
 def print_tool_call(tool_name, tool_args, indent=""):
-    tool_args = tool_args[:100] + "..." if len(tool_args) > 100 else tool_args
+    message_len = len(tool_args) if tool_name in ["research_planner","reseacrh_execution","research_critic"] else 150 
+    tool_args = tool_args[:message_len] + "..." if len(tool_args) > message_len else tool_args
     print(f"{indent}🔧 Tool called -> {tool_name}({tool_args})")
 
     tool_name = tool_registry.get(tool_name)
@@ -55,7 +60,8 @@ def print_agent_step(msg, agent_name="Supervisor"):
     elif msg.type == "tool":
         tool_name = msg.name
         content_str = str(msg.content)
-        preview = content_str[:150] + "..." if len(content_str) > 150 else content_str
+        message_len = len(content_str) if tool_name in ["research_planner","reseacrh_execution","research_critic"] else 150 
+        preview = content_str[:message_len] + "..." if len(content_str) > message_len else content_str
         print(f"{indent}✅ Result ({tool_name}): {preview}")
 
 def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str, agent_name: str):
@@ -151,7 +157,8 @@ def reseacrh_execution(request: str) -> str:
     """
     print("\n[Supervisor → Researcher]")
 
-    unique_researcher_thread_id = f"research_internal_thread{uuid.uuid4()}"
+    global current_research_session
+    unique_researcher_thread_id = f"research_internal_thread{current_research_session}"
     config = {
         "recursion_limit": max_iterations_research, 
         "configurable": {"thread_id": unique_researcher_thread_id}
@@ -222,14 +229,84 @@ supervisor = create_agent(
     model=supervisor_model_name,
     tools=[research_planner, reseacrh_execution, research_critic, save_report],
     system_prompt=SUPERVISOR_PROMPT,
-    checkpointer=InMemorySaver()
+    checkpointer=InMemorySaver(),
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "save_report": True,
+                "research_planner": False, 
+                "reseacrh_execution": False,
+                "research_critic": False
+            }
+        ),
+    ],
 )
 
-for step in supervisor.stream(
-    {"messages": [{"role": "user", "content": "dividend policy types"}]},
-    config=config
-):
-    for update in step.values():
-        for message in update.get("messages", []):
-            #message.pretty_print()
-            print_agent_step(message)
+def resume_graph(interrupt, decision_payload):
+    """Resume the graph after an interrupt with the given decision."""
+    resume_data = {interrupt.id: {"decisions": [decision_payload]}} if hasattr(interrupt, 'id') else {"decisions": [decision_payload]}
+    return Command(resume=resume_data)
+
+while True:
+    interrupted = False
+
+    for step in supervisor.stream(
+        {"messages": [{"role": "user", "content": "dividend policy types"}]},
+        config=config
+    ):
+        for update in step.values():
+
+            # --- А. ОБРОБКА ПЕРЕРИВАННЯ (HITL) ---
+            if isinstance(update, tuple) and len(update) > 0 and isinstance(update[0], Interrupt):
+                interrupt = update[0]
+                interrupted = True
+                
+                print(f"\n{'=' * 60}")
+                print(f" ⏸️  ACTION REQUIRES APPROVAL")
+                print(f"{'=' * 60}")
+                
+                # Друкуємо інформацію про інструмент
+                for request in interrupt.value.get("action_requests", []):
+                    tool_name = request.get('action', 'N/A')
+                    print(f"   Tool:  {tool_name}")
+                    
+                    # Форматуємо аргументи для зручного читання
+                    args_str = json.dumps(request.get('args', {}), ensure_ascii=False)
+                    preview = args_str[:150] + "..." if len(args_str) > 150 else args_str
+                    print(f"   Args:  {preview}")
+                print()
+                
+                # user input
+                choice = ""
+                while choice not in ["approve", "edit", "reject"]:
+                    choice = input(" 👉 approve / edit / reject: ").strip().lower()
+
+                if choice == "approve":
+                    print("\n ✅ Approved! Saving report...\n")
+                    decision_payload = {"type": "approve"}
+                    current_research_session = str(uuid.uuid4()) # clearing research agent memory
+                    
+                elif choice == "edit":
+                    feedback = input(" ✏️  Your feedback: ").strip()
+                    print("\n 🔄 Supervisor revises report based on feedback...\n")
+                    decision_payload = {"type": "edit", "edited_action": {"feedback": feedback}}
+                    
+                elif choice == "reject":
+                    reason = input(" 🛑 Reason for rejection: ").strip() or "User rejected."
+                    print("\n ❌ Rejected! Returning to Supervisor...\n")
+                    decision_payload = {"type": "reject", "message": reason}
+
+                current_input = resume_graph(interrupt, decision_payload)
+                break
+                
+            # usual agent messages
+            elif isinstance(update, dict):
+                for message in update.get("messages", []):
+                    print_agent_step(message)
+        
+        if interrupted:
+            break
+
+    if not interrupted:
+        print("\n🏁 Process finished successfully!")
+        break
