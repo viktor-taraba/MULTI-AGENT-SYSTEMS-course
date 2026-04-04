@@ -70,7 +70,8 @@ CRITICAL INSTRUCTIONS:
 
 # research agent
 research_model_name: str = "gpt-5-mini"
-max_iterations_research: int = 50
+max_iterations_research: int = 40
+ToolCallLimit_research: int = 10
 SYSTEM_PROMPT_research: str = """
 You are a Senior Analyst with 10 years of experience.
 Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a text report.
