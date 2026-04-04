@@ -20,7 +20,7 @@ Coordination Workflow (STRICT):
 4. REVISE: If the critique verdict is "REVISE", you MUST call 'reseacrh_execution' and provide both the full text of the report and the specific 'revision_requests' from the critic.
 5. APPROVE: Repeat the Critique -> Revise loop until 'research_critic' returns "APPROVE". 
 The 'research_critic' tool is programmed to force an "APPROVE" after 2 rounds to prevent infinite loops. When you see "APPROVE", you MUST proceed to step 6.
-6. DELIVER: Once approved, use 'write_report' to save the Markdown report.
+6. DELIVER: Once approved, use 'save_report' to save the Markdown report.
 
 Rules:
 - Do NOT perform research or write the report yourself. You are strictly a manager. Delegate all heavy lifting to your tools.
@@ -30,6 +30,7 @@ Rules:
 """
 
 # critic agent
+revision_counter_max: int = 2
 critic_model_name: str = "gpt-5-mini"
 max_iterations_critic: int = 10
 max_items_critic: int = 5
