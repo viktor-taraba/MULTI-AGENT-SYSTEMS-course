@@ -2,25 +2,17 @@ from langchain_core.tools import tool
 from agents.planner import planner_agent
 from agents.critic import critic_agent
 from agents.research import research_agent
-from config import (
-    SUPERVISOR_PROMPT, 
-    supervisor_model_name, 
+from config import ( 
     FINAL_PROMPT_research,
     FINAL_PROMPT_critic,
     FINAL_PROMPT_planner,
     max_iterations_planner,
     max_iterations_research,
-    max_iterations_supervisor,
     max_iterations_critic,
     revision_counter_max
 )
-from langchain.agents import create_agent
 from tools import save_report, tool_registry
 from langgraph.errors import GraphRecursionError
-from langchain.agents.middleware import HumanInTheLoopMiddleware
-from langgraph.checkpoint.memory import InMemorySaver
-from langgraph.types import Command, Interrupt
-import json
 import uuid
 
 revision_counter = 0
@@ -42,9 +34,7 @@ def print_tool_call(tool_name, tool_args, indent=""):
         print(f"{indent}❌ Unknown tool: {tool_name}")
 
 def print_agent_step(msg, agent_name="Supervisor"):
-    """
-    Parses a single LangChain message object and prints it in a clean format.
-    """
+    """Parses a single LangChain message object and prints it in a clean format."""
     indent = "    " if agent_name != "Supervisor" else ""
 
     if msg.type == "ai":
@@ -84,6 +74,10 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
         print(f"{indent}⚠️ Agent {agent_name} stopped: Reached max iterations. Forcing final output...")
         
         current_state = agent.get_state(config)
+        recovery_config = config.copy()
+        # Increase the limit slightly to allow one last "Final Prompt" pass
+        recovery_config["recursion_limit"] = config["recursion_limit"] + 2
+
         messages = current_state.values.get("messages", [])
         recovery_messages = []
         
@@ -100,7 +94,7 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
         try:
             final_result = agent.invoke(
                 {"messages": recovery_messages},
-                config=config
+                config=recovery_config
             )
             return final_result.get("structured_response")
 
@@ -112,7 +106,7 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
         return None
 
 @tool
-def research_planner(request: str) -> str:
+def plan(request: str) -> str:
     """Create structured, step-by-step research plans from user requests.
 
     Usage:
@@ -140,7 +134,7 @@ def research_planner(request: str) -> str:
     return plan.model_dump_json(indent=2) if plan else "Error: Could not generate research plan."
 
 @tool
-def reseacrh_execution(request: str) -> str:
+def research(plan: str) -> str:
     """Execute deep-dive research and generate a comprehensive Markdown report.
 
     Usage:
@@ -166,7 +160,7 @@ def reseacrh_execution(request: str) -> str:
     
     res = run_agent_with_recovery(
             agent=research_agent, 
-            request=request, 
+            request=plan, 
             config=config,
             final_prompt=FINAL_PROMPT_research,
             agent_name="Researcher")
@@ -176,7 +170,7 @@ def reseacrh_execution(request: str) -> str:
     return "Error: Could not generate report."
 
 @tool
-def research_critic(request: str) -> str:
+def critique(findings: str) -> str:
     """Independently review, fact-check, and evaluate a drafted research report.
 
     Usage:
@@ -200,7 +194,7 @@ def research_critic(request: str) -> str:
 
     critique = run_agent_with_recovery(
         agent=critic_agent, 
-        request=request, 
+        request=findings,
         config=config,
         final_prompt=FINAL_PROMPT_critic,
         agent_name="Critic")
@@ -216,97 +210,7 @@ def research_critic(request: str) -> str:
     return f"--- CRITIQUE ROUND {revision_counter}/2 ---\n" + critique.model_dump_json(indent=2)
 
 tool_registry.update({
-    "research_planner": research_planner,
-    "reseacrh_execution": reseacrh_execution,
-    "research_critic": research_critic
+    "plan": plan,
+    "research": research,
+    "critique": critique
 })
-
-config = {
-    "configurable": {"thread_id": "supervisor_thread"}, 
-    "recursion_limit": max_iterations_supervisor}
-
-supervisor = create_agent(
-    model=supervisor_model_name,
-    tools=[research_planner, reseacrh_execution, research_critic, save_report],
-    system_prompt=SUPERVISOR_PROMPT,
-    checkpointer=InMemorySaver(),
-    middleware=[
-        HumanInTheLoopMiddleware(
-            interrupt_on={
-                "save_report": True,
-                "research_planner": False, 
-                "reseacrh_execution": False,
-                "research_critic": False
-            }
-        ),
-    ],
-)
-
-def resume_graph(interrupt, decision_payload):
-    """Resume the graph after an interrupt with the given decision."""
-    resume_data = {interrupt.id: {"decisions": [decision_payload]}} if hasattr(interrupt, 'id') else {"decisions": [decision_payload]}
-    return Command(resume=resume_data)
-
-while True:
-    interrupted = False
-
-    for step in supervisor.stream(
-        {"messages": [{"role": "user", "content": "dividend policy types"}]},
-        config=config
-    ):
-        for update in step.values():
-
-            # --- А. ОБРОБКА ПЕРЕРИВАННЯ (HITL) ---
-            if isinstance(update, tuple) and len(update) > 0 and isinstance(update[0], Interrupt):
-                interrupt = update[0]
-                interrupted = True
-                
-                print(f"\n{'=' * 60}")
-                print(f" ⏸️  ACTION REQUIRES APPROVAL")
-                print(f"{'=' * 60}")
-                
-                # Друкуємо інформацію про інструмент
-                for request in interrupt.value.get("action_requests", []):
-                    tool_name = request.get('action', 'N/A')
-                    print(f"   Tool:  {tool_name}")
-                    
-                    # Форматуємо аргументи для зручного читання
-                    args_str = json.dumps(request.get('args', {}), ensure_ascii=False)
-                    preview = args_str[:150] + "..." if len(args_str) > 150 else args_str
-                    print(f"   Args:  {preview}")
-                print()
-                
-                # user input
-                choice = ""
-                while choice not in ["approve", "edit", "reject"]:
-                    choice = input(" 👉 approve / edit / reject: ").strip().lower()
-
-                if choice == "approve":
-                    print("\n ✅ Approved! Saving report...\n")
-                    decision_payload = {"type": "approve"}
-                    current_research_session = str(uuid.uuid4()) # clearing research agent memory
-                    
-                elif choice == "edit":
-                    feedback = input(" ✏️  Your feedback: ").strip()
-                    print("\n 🔄 Supervisor revises report based on feedback...\n")
-                    decision_payload = {"type": "edit", "edited_action": {"feedback": feedback}}
-                    
-                elif choice == "reject":
-                    reason = input(" 🛑 Reason for rejection: ").strip() or "User rejected."
-                    print("\n ❌ Rejected! Returning to Supervisor...\n")
-                    decision_payload = {"type": "reject", "message": reason}
-
-                current_input = resume_graph(interrupt, decision_payload)
-                break
-                
-            # usual agent messages
-            elif isinstance(update, dict):
-                for message in update.get("messages", []):
-                    print_agent_step(message)
-        
-        if interrupted:
-            break
-
-    if not interrupted:
-        print("\n🏁 Process finished successfully!")
-        break

@@ -1,5 +1,30 @@
-from agent import agent, config, print_tool_call
-from config import FINAL_PROMPT
+from langgraph.types import Command, Interrupt
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langgraph.checkpoint.memory import InMemorySaver
+from supervisor import (
+    plan,
+    research,
+    critique,
+    print_agent_step
+    )
+from config import (
+    SUPERVISOR_PROMPT, 
+    supervisor_model_name, 
+    max_iterations_supervisor
+    )
+from tools import save_report
+import json
+import uuid
+
+def resume_graph(interrupt, decision_payload):
+    """Resume the graph after an interrupt with the given decision."""
+    resume_data = {interrupt.id: {"decisions": [decision_payload]}} if hasattr(interrupt, 'id') else {"decisions": [decision_payload]}
+    return Command(resume=resume_data)
+
+config = {
+    "configurable": {"thread_id": "supervisor_thread"}, 
+    "recursion_limit": max_iterations_supervisor}
 
 def main():
     print("Research Agent")
@@ -15,70 +40,94 @@ def main():
 
         if not user_input:
             continue
-
         if user_input.lower() in ("exit", "quit"):
             print("Goodbye!")
             break
 
         try:
-            for chunk in agent.stream(
-                {"messages": [("user", user_input)]},config=config
-            ):
-                print(f"\n🔄 Thinking...")
+            current_input = {"messages": [{"role": "user", "content": user_input}]}
 
-                if "model" in chunk and "messages" in chunk["model"]:
-                    for msg in chunk["model"]["messages"]:
-                        
-                        if hasattr(msg, "content") and msg.content:
-                            print("")
-                            print(f"\n🤖 Agent:\n{msg.content}")
+            supervisor = create_agent(
+                model=supervisor_model_name,
+                tools=[plan, research, critique, save_report],
+                system_prompt=SUPERVISOR_PROMPT,
+                checkpointer=InMemorySaver(),
+                middleware=[
+                    HumanInTheLoopMiddleware(
+                        interrupt_on={
+                            "save_report": True,
+                            "research_planner": False, 
+                            "reseacrh_execution": False,
+                            "research_critic": False
+                        }),],)
 
-                        # Extract information about the tool being called and its parameters
-                        if hasattr(msg, "tool_calls") and msg.tool_calls:
-                            for tool_call in msg.tool_calls:
-                                tool_name = tool_call.get("name")
-                                tool_args = str(tool_call.get("args"))
-                                print_tool_call(tool_name,tool_args)
+            while True:
+                interrupted = False
 
-                # Tools Node: The tool has finished running and returned data
-                elif "tools" in chunk and "messages" in chunk["tools"]:
-                    for msg in chunk["tools"]["messages"]:
-                        tool_name = msg.name
-                        content_str = str(msg.content)
-                        preview = content_str[:150] + "..." if len(content_str) > 150 else content_str
-                        
-                        print(f"✅ Result ({tool_name}): {preview}")
-                        
+                for step in supervisor.stream(
+                    current_input,
+                    config=config
+                ):
+                    for update in step.values():
+
+                        # --- А. ОБРОБКА ПЕРЕРИВАННЯ (HITL) ---
+                        if isinstance(update, tuple) and len(update) > 0 and isinstance(update[0], Interrupt):
+                            interrupt = update[0]
+                            interrupted = True
+                
+                            print(f"\n{'=' * 60}")
+                            print(f" ⏸️  ACTION REQUIRES APPROVAL")
+                            print(f"{'=' * 60}")
+                
+                            # Друкуємо інформацію про інструмент
+                            for request in interrupt.value.get("action_requests", []):
+                                tool_name = request.get('action', 'N/A')
+                                print(f"   Tool:  {tool_name}")
+                    
+                                # Форматуємо аргументи для зручного читання
+                                args_str = json.dumps(request.get('args', {}), ensure_ascii=False)
+                                preview = args_str[:150] + "..." if len(args_str) > 150 else args_str
+                                print(f"   Args:  {preview}")
+                            print()
+                
+                            # user input
+                            choice = ""
+                            while choice not in ["approve", "edit", "reject"]:
+                                choice = input(" 👉 approve / edit / reject: ").strip().lower()
+
+                            if choice == "approve":
+                                print("\n ✅ Approved! Saving report...\n")
+                                decision_payload = {"type": "approve"}
+                                global current_research_session
+                                current_research_session = str(uuid.uuid4()) # clearing research agent memory
+                    
+                            elif choice == "edit":
+                                feedback = input(" ✏️  Your feedback: ").strip()
+                                print("\n 🔄 Supervisor revises report based on feedback...\n")
+                                decision_payload = {"type": "edit", "edited_action": {"feedback": feedback}}
+                    
+                            elif choice == "reject":
+                                reason = input(" 🛑 Reason for rejection: ").strip() or "User rejected."
+                                print("\n ❌ Rejected! Returning to Supervisor...\n")
+                                decision_payload = {"type": "reject", "message": reason}
+
+                            current_input = resume_graph(interrupt, decision_payload)
+                            break
+                
+                        # usual agent messages
+                        elif isinstance(update, dict):
+                            for message in update.get("messages", []):
+                                print_agent_step(message)
+        
+                    if interrupted:
+                        break
+
+                if not interrupted:
+                    print("\n🏁 Process finished successfully!")
+                    break
+
         except Exception as e:
-            if "Recursion limit" in str(e):
-                print(f"\n⚠️ Agent stopped: Reached the maximum limit of iterations. Generating final report from gathered data...")
-                
-                # Trigger a final "Report" prompt
-                current_state = agent.get_state(config)
-                messages = current_state.values.get("messages", [])
-                
-                recovery_messages = []
-                
-                if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
-                    for tc in messages[-1].tool_calls:
-                        recovery_messages.append({
-                            "role": "tool",
-                            "tool_call_id": tc["id"],
-                            "name": tc["name"],
-                            "content": "System Abort: Tool execution cancelled because iteration limit was reached."
-                        })
-
-                recovery_messages.append(("user", FINAL_PROMPT))
-                report_instruction = {"messages": recovery_messages}
-                              
-                for chunk in agent.stream(report_instruction, config=config):
-                    if "model" in chunk and "messages" in chunk["model"]:
-                        for msg in chunk["model"]["messages"]:
-                            if hasattr(msg, "content") and msg.content:
-                                print(f"\n📊 FINAL REPORT:\n{msg.content}")
-
-            else:
-                print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversatio with you!")
+            print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversatio with you!")
 
 if __name__ == "__main__":
     main()
