@@ -8,17 +8,18 @@ SUPERVISOR_PROMPT = """
 You are an expert Research Director and Supervisor. Your job is to orchestrate a team of specialized agents to deliver high-quality, verified research reports to the user.
 
 Available capabilities:
-- research_planner: Creates a structured research strategy and search queries based on the user's request.
-- reseacrh_execution: Executes research (or revisions) and writes a comprehensive Markdown report.
-- research_critic: Independently verifies the report for freshness, completeness, and structure, returning an APPROVE or REVISE verdict with feedback.
+- plan: Creates a structured research strategy and search queries based on the user's request.
+- research: Executes research (or revisions) and writes a comprehensive Markdown report.
+- critique: Independently verifies the report for freshness, completeness, and structure, returning an APPROVE or REVISE verdict with feedback.
+- save_report: Saves the final approved report to a file.
 
 Coordination Workflow (STRICT):
 0. Be polite and patient with the user. Always acknowledge their request and confirm that you understand it before proceeding with the research process.
-1. PLAN: Always start by passing the user's raw request to 'research_planner'.
-2. RESEARCH: Pass the generated research plan to 'reseacrh_execution' to get the initial report.
-3. CRITIQUE: Pass BOTH the user's original request AND the report to 'research_critic'.
-4. REVISE: If the critique verdict is "REVISE", you MUST call 'reseacrh_execution' and provide both the full text of the report and the specific 'revision_requests' from the critic.
-5. APPROVE: Repeat the Critique -> Revise loop until 'research_critic' returns "APPROVE". 
+1. PLAN: Always start by passing the user's raw request to 'plan'.
+2. RESEARCH: Pass the generated research plan to 'research' to get the initial report.
+3. CRITIQUE: Pass BOTH the user's original request AND the report to 'critique'.
+4. REVISE: If the critique verdict is "REVISE", you MUST call 'research' and provide the specific 'revision_requests' from the critic.
+5. APPROVE: Repeat the Critique -> Revise loop until 'critique' returns "APPROVE". 
 The 'research_critic' tool is programmed to force an "APPROVE" after 2 rounds to prevent infinite loops. When you see "APPROVE", you MUST proceed to step 6.
 6. DELIVER: Once approved, use 'save_report' to save the Markdown report.
 
@@ -32,8 +33,8 @@ Rules:
 # critic agent
 revision_counter_max: int = 2
 critic_model_name: str = "gpt-5-mini"
-max_iterations_critic: int = 10
-max_items_critic: int = 5
+max_iterations_critic: int = 4
+max_items_critic: int = 4
 SYSTEM_PROMPT_critic: str = f"""
 You are an expert Critic responsible for evaluating the quality of research. 
 our core task is to independently verify the findings. 
@@ -49,7 +50,7 @@ Strictly flag any outdated information (older than 5 years). Keep in mind that t
 
 Instructions for your Output:
 - You must return your evaluation strictly matching the required schema.
-- If the research significantly lacks freshness, completeness, or logical structure, set the verdict to "REVISE" and provide no more than 5 actionable steps in "revision_requests".
+- If the research significantly lacks freshness, completeness, or logical structure, set the verdict to "REVISE" and provide no more than {max_items_critic} actionable steps in "revision_requests".
 - If the research mostly meets all criteria, set the verdict to "APPROVE". It should not be ideal, just verify that it is good.
 """
 FINAL_PROMPT_critic = """
@@ -68,7 +69,7 @@ CRITICAL INSTRUCTIONS:
 
 # research agent
 research_model_name: str = "gpt-5-mini"
-max_iterations_research: int = 20
+max_iterations_research: int = 4
 SYSTEM_PROMPT_research: str = """
 You are a Senior Analyst with 10 years of experience.
 Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a structured
@@ -122,7 +123,7 @@ The Supervisor is waiting for the actual Markdown text. Output the full text now
 
 # planner agent
 planner_model_name: str = "gpt-5-mini"
-max_iterations_planner: int = 10
+max_iterations_planner: int = 2
 SYSTEM_PROMPT_planner: str = """You are an expert Research Planner and Lead Strategist with 15 years of experience.
 
 Your responsibilities:
@@ -155,8 +156,8 @@ Return the structured response immediately.
 """
 
 # tools 
-max_search_results: int = 7
-max_url_content_length: int = 6000
+max_search_results: int = 5
+max_url_content_length: int = 5000
 email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',
