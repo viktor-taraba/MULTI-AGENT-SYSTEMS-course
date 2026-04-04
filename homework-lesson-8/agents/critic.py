@@ -1,14 +1,8 @@
 from langchain.agents import create_agent
-
-# to delete
-#import os, sys
-#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from schemas import CritiqueResult
 from config import (
     critic_model_name, 
-    SYSTEM_PROMPT_critic, 
-    max_iterations_critic
+    SYSTEM_PROMPT_critic
 )
 from tools import (
     web_search, 
