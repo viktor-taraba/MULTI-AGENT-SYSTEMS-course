@@ -7,10 +7,11 @@ from config import (
     supervisor_model_name, 
     FINAL_PROMPT_research,
     max_iterations_research,
-    max_iterations_supervisor
+    max_iterations_supervisor,
+    revision_counter_max
 )
 from langchain.agents import create_agent
-from tools import write_report
+from tools import save_report
 from langgraph.errors import GraphRecursionError
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langgraph.checkpoint.memory import InMemorySaver
@@ -129,7 +130,7 @@ def research_critic(request: str) -> str:
     if not critique:
         return str(result)
 
-    if revision_counter > 2 and critique.verdict == "REVISE":
+    if revision_counter > revision_counter_max and critique.verdict == "REVISE":
         print(f"\n⚠️ Critic Tool: Reached maximum revisions ({revision_counter}). Forcing APPROVE.")
         critique.verdict = "APPROVE"
         critique.revision_requests = ["Achieved max number of iterations. Report is approved, it is the final version, save it."]
@@ -142,7 +143,7 @@ config = {
 
 supervisor = create_agent(
     model=supervisor_model_name,
-    tools=[research_planner, reseacrh_execution, research_critic, write_report],
+    tools=[research_planner, reseacrh_execution, research_critic, save_report],
     system_prompt=SUPERVISOR_PROMPT,
     checkpointer=InMemorySaver()
 )
