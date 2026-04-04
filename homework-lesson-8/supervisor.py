@@ -13,16 +13,16 @@ from config import (
 )
 from tools import save_report, tool_registry
 from langgraph.errors import GraphRecursionError
+from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
 import uuid
 
 revision_counter = 0
 global current_research_session
 current_research_session = str(uuid.uuid4())
 
-# додати HITL
+# для тулів агентів повністю виводити результат
+# перевірити чи працює HITL
 # подумати над лімітом ітерацій для критика, там зараз виходить 3 замість 2 - і чекнути вплив global
-# для тулів агентів повністю виводити результат та не виводити наяпрму звичайни виклик тула, друкувати його вже з функції (з параметрами)
-# додати обробку для max_iterations_critic щоб не було помилки
 
 def print_tool_call(tool_name, tool_args, indent=""):
     message_len = len(tool_args) if tool_name in ["research_planner","reseacrh_execution","research_critic"] else 150 
@@ -37,19 +37,28 @@ def print_agent_step(msg, agent_name="Supervisor"):
     """Parses a single LangChain message object and prints it in a clean format."""
     indent = "    " if agent_name != "Supervisor" else ""
 
-    if msg.type == "ai":
-        if hasattr(msg, "content") and msg.content:
-            print(f"\n{indent}🤖 Agent:\n{msg.content}")
+    msg_type = getattr(msg, "type", None)
+    msg_content = getattr(msg, "content", "")
 
-        if hasattr(msg, "tool_calls") and msg.tool_calls:
-            for tool_call in msg.tool_calls:
-                tool_name = tool_call.get("name")
-                tool_args = str(tool_call.get("args"))
-                print_tool_call(tool_name,tool_args,indent=indent)
+    if msg_type == "ai":
+        if msg_content:
+            print(f"\n{indent}🤖 Agent:\n{msg_content}")
+        
+        tool_calls = getattr(msg, "tool_calls", [])
+        if tool_calls:
+            for tool_call in tool_calls:
+                if isinstance(tool_call, dict):
+                    tool_name = tool_call.get("name")
+                    tool_args = str(tool_call.get("args"))
+                else:
+                    tool_name = getattr(tool_call, "name", "Unknown")
+                    tool_args = str(getattr(tool_call, "args", "{}"))
+                if tool_name:
+                    print_tool_call(tool_name,tool_args,indent=indent)
 
-    elif msg.type == "tool":
-        tool_name = msg.name
-        content_str = str(msg.content)
+    elif msg_type == "tool":
+        tool_name = getattr(msg, "name", "unknown_tool")
+        content_str = str(msg_content)
         message_len = len(content_str) if tool_name in ["research_planner","reseacrh_execution","research_critic"] else 150 
         preview = content_str[:message_len] + "..." if len(content_str) > message_len else content_str
         print(f"{indent}✅ Result ({tool_name}): {preview}")
@@ -63,14 +72,23 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
             config=config
         ):
             for update in step.values():
-                for message in update.get("messages", []):
-                    print_agent_step(message, agent_name=agent_name)
+                if isinstance(update, dict):
+                    for message in update.get("messages", []):
+                        print_agent_step(message, agent_name=agent_name)
 
         current_state = agent.get_state(config)
         result = current_state.values
-        return result.get("structured_response")
         
-    except GraphRecursionError:
+        # Pydantic structured response
+        if "structured_response" in result and result["structured_response"]:
+            return result["structured_response"]
+        # simplified fallback: raw text
+        messages = result.get("messages", [])
+        if messages and hasattr(messages[-1], "content") and messages[-1].content:
+            return messages[-1].content
+        return None
+        
+    except (GraphRecursionError, ToolCallLimitExceededError) as e:
         print(f"{indent}⚠️ Agent {agent_name} stopped: Reached max iterations. Forcing final output...")
         
         current_state = agent.get_state(config)
@@ -96,13 +114,21 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
                 {"messages": recovery_messages},
                 config=recovery_config
             )
-            return final_result.get("structured_response")
+            
+            if "structured_response" in final_result and final_result["structured_response"]:
+                return final_result["structured_response"]
+            messages = final_result.get("messages", [])
+            if messages and hasattr(messages[-1], "content") and messages[-1].content:
+                return messages[-1].content
+            return None
 
         except Exception as inner_e:
             print(f"{indent}❌ {agent_name} failed during recovery: {inner_e}")
             return None
     except Exception as e:
         print(f"{indent}❌ {agent_name} encountered an unexpected error: {e}")
+        print(messages)
+        print(recovery_messages)
         return None
 
 @tool
