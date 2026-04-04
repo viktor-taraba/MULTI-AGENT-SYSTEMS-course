@@ -18,8 +18,13 @@ from tools import (
     find_articles_crossref
 )
 from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 
-memory = InMemorySaver()
+custom_serializer = JsonPlusSerializer(
+    allowed_msgpack_modules=[('schemas', 'ResearchResult')]
+)
+
+memory = InMemorySaver(serde=custom_serializer)
 
 research_agent = create_agent(
     model=research_model_name,
