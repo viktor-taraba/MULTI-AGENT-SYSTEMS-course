@@ -6,8 +6,12 @@ from config import (
     SUPERVISOR_PROMPT, 
     supervisor_model_name, 
     FINAL_PROMPT_research,
+    FINAL_PROMPT_critic,
+    FINAL_PROMPT_planner,
+    max_iterations_planner,
     max_iterations_research,
     max_iterations_supervisor,
+    max_iterations_critic,
     revision_counter_max
 )
 from langchain.agents import create_agent
@@ -20,13 +24,9 @@ import uuid
 revision_counter = 0
 
 # додати HITL
-# подумати над лімітом ітерацій для критика, там зараз виходить 3 замість 2
-# читабельний виклика тулів та їх результату (в принципі це в мене вже є, але просто загорнути в функцію) - може краще на рівні main
-
-# дописати
-def run_agent_with_recovery(agent, request: str, thread_id: str, limit: int, final_prompt: str):
-    config = {"recursion_limit": limit, "configurable": {"thread_id": thread_id}}
-    pass
+# подумати над лімітом ітерацій для критика, там зараз виходить 3 замість 2 - і чекнути вплив global
+# для тулів агентів повністю виводити результат та не виводити наяпрму звичайни виклик тула, друкувати його вже з функції (з параметрами)
+# додати обробку для max_iterations_critic щоб не було помилки
 
 def print_tool_call(tool_name, tool_args, indent=""):
     tool_args = tool_args[:100] + "..." if len(tool_args) > 100 else tool_args
@@ -58,6 +58,53 @@ def print_agent_step(msg, agent_name="Supervisor"):
         preview = content_str[:150] + "..." if len(content_str) > 150 else content_str
         print(f"{indent}✅ Result ({tool_name}): {preview}")
 
+def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str, agent_name: str):
+    indent = "    " if agent_name != "Supervisor" else ""
+    
+    try:
+        for step in agent.stream(
+            {"messages": [{"role": "user", "content": request}]},
+            config=config
+        ):
+            for update in step.values():
+                for message in update.get("messages", []):
+                    print_agent_step(message, agent_name=agent_name)
+
+        current_state = agent.get_state(config)
+        result = current_state.values
+        return result.get("structured_response")
+        
+    except GraphRecursionError:
+        print(f"{indent}⚠️ Agent {agent_name} stopped: Reached max iterations. Forcing final output...")
+        
+        current_state = agent.get_state(config)
+        messages = current_state.values.get("messages", [])
+        recovery_messages = []
+        
+        if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
+            for tc in messages[-1].tool_calls:
+                recovery_messages.append({
+                    "role": "tool",
+                    "tool_call_id": tc["id"],
+                    "name": tc["name"],
+                    "content": "System Abort: Tool execution cancelled because iteration limit was reached."
+                })             
+        recovery_messages.append({"role": "user", "content": final_prompt})
+   
+        try:
+            final_result = agent.invoke(
+                {"messages": recovery_messages},
+                config=config
+            )
+            return final_result.get("structured_response")
+
+        except Exception as inner_e:
+            print(f"{indent}❌ {agent_name} failed during recovery: {inner_e}")
+            return None
+    except Exception as e:
+        print(f"{indent}❌ {agent_name} encountered an unexpected error: {e}")
+        return None
+
 @tool
 def research_planner(request: str) -> str:
     """Create structured, step-by-step research plans from user requests.
@@ -72,20 +119,19 @@ def research_planner(request: str) -> str:
     """
     print("\n[Supervisor → Planner]")
     unique_planner_thread_id = f"planner_internal_thread{uuid.uuid4()}"
-    config = {"configurable": {"thread_id": unique_planner_thread_id}}
+    config = {
+        "recursion_limit": max_iterations_planner, 
+        "configurable": {"thread_id": unique_planner_thread_id}
+    }
 
-    for step in planner_agent.stream(
-        {"messages": [{"role": "user", "content": request}]},
-        config=config
-    ):
-        for update in step.values():
-            for message in update.get("messages", []):
-                print_agent_step(message, agent_name="Planner")
+    plan = run_agent_with_recovery(
+        agent=planner_agent, 
+        request=request, 
+        config=config,
+        final_prompt=FINAL_PROMPT_planner,
+        agent_name="Planner")
 
-    current_state = planner_agent.get_state(config)
-    result = current_state.values
-    plan = result.get("structured_response")
-    return plan.model_dump_json(indent=2) if plan else str(result)
+    return plan.model_dump_json(indent=2) if plan else "Error: Could not generate research plan."
 
 @tool
 def reseacrh_execution(request: str) -> str:
@@ -111,49 +157,16 @@ def reseacrh_execution(request: str) -> str:
         "configurable": {"thread_id": unique_researcher_thread_id}
     }
     
-    try:
-        for step in research_agent.stream(
-            {"messages": [{"role": "user", "content": request}]},
-            config=config
-        ):
-            for update in step.values():
-                for message in update.get("messages", []):
-                    print_agent_step(message, agent_name="Researcher")
+    res = run_agent_with_recovery(
+            agent=research_agent, 
+            request=request, 
+            config=config,
+            final_prompt=FINAL_PROMPT_research,
+            agent_name="Researcher")
 
-        current_state = planner_agent.get_state(config)
-        result = current_state.values
-        res = result.get("structured_response")
-        return res.research_output if res else str(result)
-        
-    except GraphRecursionError as e:
-        print("\n⚠️ Agent stopped: Reached the maximum limit of iterations. Generating final report from gathered data...")
-        # Trigger a final "Report" prompt
-        current_state = research_agent.get_state(config)
-        messages = current_state.values.get("messages", [])
-        recovery_messages = []
-        
-        if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
-            for tc in messages[-1].tool_calls:
-                recovery_messages.append({
-                    "role": "tool",
-                    "tool_call_id": tc["id"],
-                    "name": tc["name"],
-                    "content": "System Abort: Tool execution cancelled because iteration limit was reached."
-                })
-        recovery_messages.append({"role": "user", "content": FINAL_PROMPT_research})
-       
-        try:
-            final_result = research_agent.invoke(
-                {"messages": recovery_messages},
-                config=config
-            )
-            res = final_result.get("structured_response")
-            return res.research_output if res else str(final_result)
-
-        except Exception as inner_e:
-            return f"Research Agent failed critically during recovery: {inner_e}"
-    except Exception as e:
-        return f"Research Agent encountered an unexpected error: {e}"
+    if res and hasattr(res, 'research_output'):
+        return res.research_output
+    return "Error: Could not generate report."
 
 @tool
 def research_critic(request: str) -> str:
@@ -173,22 +186,20 @@ def research_critic(request: str) -> str:
     global revision_counter
     revision_counter += 1
     unique_critic_thread_id = f"critic_internal_thread{uuid.uuid4()}"
-    config = {"configurable": {"thread_id": unique_critic_thread_id}}
+    config = {
+        "recursion_limit": max_iterations_critic, 
+        "configurable": {"thread_id": unique_critic_thread_id}
+    }
 
-    for step in critic_agent.stream(
-        {"messages": [{"role": "user", "content": request}]},
-        config=config
-    ):
-        for update in step.values():
-            for message in update.get("messages", []):
-                print_agent_step(message, agent_name="Critic")
-
-    current_state = critic_agent.get_state(config)
-    result = current_state.values
-    critique = result.get("structured_response")
+    critique = run_agent_with_recovery(
+        agent=critic_agent, 
+        request=request, 
+        config=config,
+        final_prompt=FINAL_PROMPT_critic,
+        agent_name="Critic")
 
     if not critique:
-        return str(result)
+        return "Error: Could not generate response."
 
     if revision_counter > revision_counter_max and critique.verdict == "REVISE":
         print(f"\n⚠️ Critic Tool: Reached maximum revisions ({revision_counter}). Forcing APPROVE.")
