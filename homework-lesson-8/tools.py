@@ -241,7 +241,7 @@ def find_articles_crossref(query: str) -> str:
         return f"An error occurred: {e}"
 
 @tool
-def write_report(filename: str, content: str) -> str:
+def save_report(filename: str, content: str) -> str:
     """
     Saves the final Markdown report to the local disk.
     Use this tool ONLY when the report is completely finished and you are ready to give the final answer.
@@ -270,7 +270,7 @@ tool_registry = {
     "web_search": web_search, 
     "read_url": read_url, 
     "knowledge_search": knowledge_search,
-    "write_report": write_report, 
+    "save_report": save_report, 
     "stock_company_info": stock_company_info,
     "find_articles_crossref": find_articles_crossref}
 
@@ -278,7 +278,7 @@ tools = [
     web_search, 
     read_url, 
     knowledge_search,
-    write_report, 
+    save_report, 
     stock_company_info, 
     find_articles_crossref
     ]
