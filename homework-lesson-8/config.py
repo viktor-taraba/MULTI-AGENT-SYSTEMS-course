@@ -15,6 +15,7 @@ Available capabilities:
 
 Coordination Workflow (STRICT):
 0. Be polite and patient with the user. Always acknowledge their request and confirm that you understand it before proceeding with the research process.
+Clarify user request if necessary (ask additional questions and wait for user response.
 1. PLAN: Always start by passing the user's raw request to 'plan'.
 2. RESEARCH: Pass the generated research plan to 'research' to get the initial report.
 3. CRITIQUE: Pass BOTH the user's original request AND the report to 'critique'.
@@ -33,8 +34,8 @@ Rules:
 # critic agent
 revision_counter_max: int = 2
 critic_model_name: str = "gpt-5-mini"
-max_iterations_critic: int = 4
-max_items_critic: int = 4
+max_iterations_critic: int = 5
+max_items_critic: int = 5
 SYSTEM_PROMPT_critic: str = f"""
 You are an expert Critic responsible for evaluating the quality of research. 
 our core task is to independently verify the findings. 
@@ -69,11 +70,10 @@ CRITICAL INSTRUCTIONS:
 
 # research agent
 research_model_name: str = "gpt-5-mini"
-max_iterations_research: int = 4
+max_iterations_research: int = 50
 SYSTEM_PROMPT_research: str = """
 You are a Senior Analyst with 10 years of experience.
-Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a structured
-comprehensive Markdown report.
+Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a text report.
 When you receive a complex query, you must decompose it into smaller, logical research steps before using your search tools.
 Use minimum amount of data (tools usage) if it is enough for requested information.
 
@@ -84,11 +84,9 @@ CRITICAL RULES:
 4. Only generate your final answer AFTER you have read the full text of the several relevant sources.
 5. Use stock_info only if financial data (stock prices, company financials) or general information about a publicly traded company (e.g. description or number of employes) is needed.
 6. YOUR FINAL ACTION MUST BE TO PREPARE THE REPORT: detailed text answering user question (formatting: markdown). 
-7. DO NOT output the full report as a standard chat message. Save it using the tool, and then simply reply to the user confirming that the report has been saved, along with a brief 2-3
-sentence summary of your findings.
+7. Output the full report as a standard chat message.
 8. NO FOLLOW-UP QUESTIONS: Do not include conversational filler, follow-up questions, or offers for further assistance.
-Conclude your final message abruptly and professionally once the report is saved.
-9. NO AUTHOR ATTRIBUTION: The final report must NOT contain any indication of who prepared it. The document must be completely anonymous.
+9. NO AUTHOR ATTRIBUTION: The final report must NOT contain any indication of who prepared it. The text must be completely anonymous.
 However, you MUST include a "Sources" section at the bottom listing the URLs and references you used.
 10. GOOD ENOUGH RULE: You do not need perfect information. Once you have gathered sufficient facts to write a solid, comprehensive report, STOP searching immediately.
 11. Make sure the final report is well-formatted and visually appealing.
@@ -123,7 +121,7 @@ The Supervisor is waiting for the actual Markdown text. Output the full text now
 
 # planner agent
 planner_model_name: str = "gpt-5-mini"
-max_iterations_planner: int = 2
+max_iterations_planner: int = 10
 SYSTEM_PROMPT_planner: str = """You are an expert Research Planner and Lead Strategist with 15 years of experience.
 
 Your responsibilities:
