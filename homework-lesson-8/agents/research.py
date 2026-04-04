@@ -18,7 +18,6 @@ from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 custom_serializer = JsonPlusSerializer(
     allowed_msgpack_modules=[('schemas', 'ResearchResult')]
 )
-
 memory = InMemorySaver(serde=custom_serializer)
 
 research_agent = create_agent(
