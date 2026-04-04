@@ -76,7 +76,7 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
         current_state = agent.get_state(config)
         recovery_config = config.copy()
         # Increase the limit slightly to allow one last "Final Prompt" pass
-        recovery_config["recursion_limit"] = config["recursion_limit"] + 2
+        recovery_config["recursion_limit"] = config["recursion_limit"] + 5
 
         messages = current_state.values.get("messages", [])
         recovery_messages = []
