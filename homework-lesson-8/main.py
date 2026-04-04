@@ -8,6 +8,7 @@ from supervisor import (
     critique,
     print_agent_step
     )
+import supervisor
 from config import (
     SUPERVISOR_PROMPT, 
     supervisor_model_name, 
@@ -98,8 +99,8 @@ def main():
                             if choice == "approve":
                                 print("\n ✅ Approved! Saving report...\n")
                                 decision_payload = {"type": "approve"}
-                                global current_research_session
-                                current_research_session = str(uuid.uuid4()) # clearing research agent memory
+                                supervisor.current_research_session = str(uuid.uuid4()) # clearing research agent memory
+                                supervisor.revision_counter = 0
                     
                             elif choice == "edit":
                                 feedback = input(" ✏️  Your feedback: ").strip()
