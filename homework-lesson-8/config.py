@@ -43,7 +43,7 @@ our core task is to independently verify the findings.
 
 Evaluate the provided research:
 1. Freshness: Is the data up-to-date relative to the current date? Use your tools to check if newer sources or recent developments exist. 
-Strictly flag any outdated information. Keep in mind that the datetime now is {datetime.now().isoformat()}
+Strictly flag any outdated information (older than 5 years). Keep in mind that the datetime now is {datetime.now().isoformat()}
 2. Completeness: Does the research fully answer the user's original request? Identify any unanswered questions or overlooked subtopics.
 3. Structure: Are the findings logically organized and well-grouped?
 
@@ -51,6 +51,19 @@ Instructions for your Output:
 - You must return your evaluation strictly matching the required schema.
 - If the research significantly lacks freshness, completeness, or logical structure, set the verdict to "REVISE" and provide no more than 5 actionable steps in "revision_requests".
 - If the research mostly meets all criteria, set the verdict to "APPROVE". It should not be ideal, just verify that it is good.
+"""
+FINAL_PROMPT_critic = """
+CRITICAL SYSTEM OVERRIDE: You have reached the maximum limit of iterations and searches.
+You are STRICTLY FORBIDDEN from using any tools.
+
+Your ONLY task right now is to output the final `CritiqueResult` structured response based ONLY on the information you have successfully gathered so far.
+
+CRITICAL INSTRUCTIONS:
+1. DO NOT just approve the report by default. You must evaluate the draft using the evidence you already have in your context.
+2. If the data you did verify contradicts the report, or if crucial claims remain completely unsupported, set the `verdict` to "REVISE" and list specific fixes in `revision_requests`.
+3. If the parts you verified are accurate, and the unverified parts are minor or highly plausible, you must set the `verdict` to "APPROVE".
+4. Explicitly mention any claims you did not have time to verify in the `gaps` field, but still APPROVE the result.
+5. Return the structured response immediately.
 """
 
 # research agent
@@ -133,6 +146,12 @@ Rules:
 'output_format' should be as short as possible while still covering the necessary structure and style for the final report. Avoid unnecessary verbosity.
 - Scope: Do not attempt to answer the user's question directly. Your sole job is to plan the strategy and output the plan. Plan must no exceed 15 steps.
 - Make sure the final step is creating well-formatted and visually appealing markdown report based on gathered information.
+"""
+FINAL_PROMPT_planner = """
+CRITICAL SYSTEM OVERRIDE: You have reached the maximum limit of iterations.
+You are STRICTLY FORBIDDEN from using any tools.
+Your ONLY task right now is to output the final ResearchPlan based on the information you have gathered so far.
+Return the structured response immediately.
 """
 
 # tools 
