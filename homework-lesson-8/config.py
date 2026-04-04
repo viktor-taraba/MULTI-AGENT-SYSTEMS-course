@@ -93,8 +93,18 @@ Thought: The search results show a lot about Sloviansk. I should read one of the
 and the loop continues until you have enough information to write the report. Do not directly write you thoughts just use this example for internal guidance on how to structure your thinking and tool usage. 
 """
 FINAL_PROMPT_research = """
-STOP. You have reached your limit. Do not use tools. 
-Based ONLY on the info already gathered, write a detailed final report..
+CRITICAL SYSTEM OVERRIDE: You have reached the maximum limit of iterations and searches.
+You are STRICTLY FORBIDDEN from using any tools.
+
+Your ONLY task right now is to generate the final, comprehensive Markdown report based on the information you have gathered so far. 
+
+CRITICAL INSTRUCTIONS:
+1. You MUST return the FULL text of the Markdown report directly in your response.
+2. Place the entire report inside the `research_output` field of your structured response (ResearchResult schema).
+3. DO NOT attempt to save the report to a file. 
+4. DO NOT output placeholder messages like "Report saved", "I have finished", or a short summary. 
+
+The Supervisor is waiting for the actual Markdown text. Output the full text now.
 """
 
 # planner agent
