@@ -18,4 +18,5 @@ class ResearchPlan(BaseModel):
     output_format: str = Field(description="What the final report should look like")
 
 class ResearchResult(BaseModel):
+    report_title: str = Field(description="Title of the research report")
     research_output: str = Field(description="Prepared research")
