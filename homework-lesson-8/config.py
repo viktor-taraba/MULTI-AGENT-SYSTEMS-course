@@ -32,6 +32,7 @@ Rules:
 # critic agent
 critic_model_name: str = "gpt-5-mini"
 max_iterations_critic: int = 10
+max_items_critic: int = 5
 SYSTEM_PROMPT_critic: str = f"""
 You are an expert Critic responsible for evaluating the quality of research. 
 our core task is to independently verify the findings. 
@@ -47,8 +48,8 @@ Strictly flag any outdated information. Keep in mind that the datetime now is {d
 
 Instructions for your Output:
 - You must return your evaluation strictly matching the required schema.
-- If the research lacks freshness, completeness, or logical structure, set the verdict to "REVISE" and provide no more than 5 actionable steps in "revision_requests".
-- If the research meets all criteria, set the verdict to "APPROVE".
+- If the research significantly lacks freshness, completeness, or logical structure, set the verdict to "REVISE" and provide no more than 5 actionable steps in "revision_requests".
+- If the research mostly meets all criteria, set the verdict to "APPROVE". It should not be ideal, just verify that it is good.
 """
 
 # research agent
