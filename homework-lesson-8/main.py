@@ -71,7 +71,7 @@ def main():
                 ):
                     for update in step.values():
 
-                        # --- А. ОБРОБКА ПЕРЕРИВАННЯ (HITL) ---
+                        # HITL
                         if isinstance(update, tuple) and len(update) > 0 and isinstance(update[0], Interrupt):
                             interrupt = update[0]
                             interrupted = True
@@ -80,15 +80,37 @@ def main():
                             print(f" ⏸️  ACTION REQUIRES APPROVAL")
                             print(f"{'=' * 60}")
                 
-                            # Друкуємо інформацію про інструмент
                             for request in interrupt.value.get("action_requests", []):
                                 tool_name = request.get('name', request.get('action', 'N/A'))
                                 print(f"   Tool:  {tool_name}")
                     
-                                # Форматуємо аргументи для зручного читання
-                                args_str = json.dumps(request.get('args', {}), ensure_ascii=False)
+                                tool_args = request.get('args', {})
+                                args_str = str(tool_args)
                                 preview = args_str[:150] + "..." if len(args_str) > 150 else args_str
                                 print(f"   Args:  {preview}\n")
+
+                                if isinstance(tool_args, dict) and 'content' in tool_args:
+                                    report_text = tool_args['content']
+                                elif isinstance(tool_args, dict):
+                                    # Fallback: Pretty print the JSON if it's a dict but has no 'content' key
+                                    report_text = json.dumps(tool_args, indent=2, ensure_ascii=False)
+                                else:
+                                    report_text = str(tool_args)
+
+                                # report preview and general information
+                                lines = report_text.splitlines()
+                                total_lines = len(lines)
+                                total_symbols = len(report_text)
+                                print(f"   Total lines in the report:  {total_lines}\n")
+                                print(f"   Total symbols in the report:  {total_symbols}\n")
+                                indented_content = "\n".join(f"   │ {line}" for line in lines[:25])
+                                if len(lines) > 25:
+                                    indented_content += f"\n   │ ... (25/{len(lines)} rows) ..."
+                                
+                                formatted_name = "REPORT PREVIEW"
+                                print(f"\n   ╭─── 📄 {formatted_name} {'─' * (40 - len(formatted_name))}")
+                                print(indented_content)
+                                print(f"   ╰{'─' * 46}\n")
                 
                             # user input
                             choice = ""
