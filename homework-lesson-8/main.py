@@ -87,7 +87,7 @@ def main():
                                 tool_args = request.get('args', {})
                                 args_str = str(tool_args)
                                 preview = args_str[:150] + "..." if len(args_str) > 150 else args_str
-                                print(f"   Args:  {preview}\n")
+                                print(f"   Args:  {preview}")
 
                                 if isinstance(tool_args, dict) and 'content' in tool_args:
                                     report_text = tool_args['content']
@@ -101,16 +101,16 @@ def main():
                                 lines = report_text.splitlines()
                                 total_lines = len(lines)
                                 total_symbols = len(report_text)
-                                print(f"   Total lines in the report:  {total_lines}\n")
+                                print(f"   Total lines in the report:  {total_lines}")
                                 print(f"   Total symbols in the report:  {total_symbols}\n")
                                 indented_content = "\n".join(f"   │ {line}" for line in lines[:25])
                                 if len(lines) > 25:
-                                    indented_content += f"\n   │ ... (25/{len(lines)} rows) ..."
+                                    indented_content += f"\n│ ... (25/{len(lines)} rows) ..."
                                 
                                 formatted_name = "REPORT PREVIEW"
-                                print(f"\n   ╭─── 📄 {formatted_name} {'─' * (40 - len(formatted_name))}")
+                                print(f"\n╭─── 📄 {formatted_name} {'─' * (40 - len(formatted_name))}")
                                 print(indented_content)
-                                print(f"   ╰{'─' * 46}\n")
+                                print(f"╰{'─' * 46}\n")
                 
                             # user input
                             choice = ""
