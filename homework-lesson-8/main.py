@@ -32,6 +32,20 @@ def main():
     print("type 'exit' or 'quit' to quit")
     print("-" * 100)
 
+    supervisor = create_agent(
+                model=supervisor_model_name,
+                tools=[plan, research, critique, save_report],
+                system_prompt=SUPERVISOR_PROMPT,
+                checkpointer=InMemorySaver(),
+                middleware=[
+                    HumanInTheLoopMiddleware(
+                        interrupt_on={
+                            "save_report": True,
+                            "research_planner": False, 
+                            "reseacrh_execution": False,
+                            "research_critic": False
+                        }),],)
+
     while True:
         try:
             user_input = input("\nYou: ").strip()
@@ -47,20 +61,6 @@ def main():
 
         try:
             current_input = {"messages": [{"role": "user", "content": user_input}]}
-
-            supervisor = create_agent(
-                model=supervisor_model_name,
-                tools=[plan, research, critique, save_report],
-                system_prompt=SUPERVISOR_PROMPT,
-                checkpointer=InMemorySaver(),
-                middleware=[
-                    HumanInTheLoopMiddleware(
-                        interrupt_on={
-                            "save_report": True,
-                            "research_planner": False, 
-                            "reseacrh_execution": False,
-                            "research_critic": False
-                        }),],)
 
             while True:
                 interrupted = False
@@ -82,14 +82,13 @@ def main():
                 
                             # Друкуємо інформацію про інструмент
                             for request in interrupt.value.get("action_requests", []):
-                                tool_name = request.get('action', 'N/A')
+                                tool_name = request.get('name', request.get('action', 'N/A'))
                                 print(f"   Tool:  {tool_name}")
                     
                                 # Форматуємо аргументи для зручного читання
                                 args_str = json.dumps(request.get('args', {}), ensure_ascii=False)
                                 preview = args_str[:150] + "..." if len(args_str) > 150 else args_str
-                                print(f"   Args:  {preview}")
-                            print()
+                                print(f"   Args:  {preview}\n")
                 
                             # user input
                             choice = ""
@@ -124,7 +123,6 @@ def main():
                         break
 
                 if not interrupted:
-                    print("\n🏁 Process finished successfully!")
                     break
 
         except Exception as e:
