@@ -20,12 +20,24 @@ revision_counter = 0
 global current_research_session
 current_research_session = str(uuid.uuid4())
 
-# для тулів агентів повністю виводити результат
-# перевірити чи працює HITL
-# подумати над лімітом ітерацій для критика, там зараз виходить 3 замість 2 - і чекнути вплив global
+# розібратися з варіантом edit - може тут викликати research
+"""
+        if choice == "approve":
+            cmd = Command(resume={"decisions": [{"type": "approve"}]})
+        elif choice == "reject":
+            reason = input("Причина (опційно): ").strip() or "User rejected save_report"
+            cmd = Command(
+                resume={"decisions": [{"type": "reject", "message": reason}]}
+            )
+        else:
+            fb = input("✏️  Ваш фідбек (буде додано до кінця звіту перед повторним збереженням): ").strip()
+"""
+# перевірити чи працює HITL з усіма опціями
+# При виникненні interrupt покажіть запропонований звіт (ім'я файлу + превʼю вмісту) - це перед approve, там просто взяти і викоремити заголовок + перші 30 рядків
+# форматування по аналогії + додати к-ть рядків та к-ть символів у звіті
 
 def print_tool_call(tool_name, tool_args, indent=""):
-    message_len = len(tool_args) if tool_name in ["research_planner","reseacrh_execution","research_critic"] else 150 
+    message_len = 150
     tool_args = tool_args[:message_len] + "..." if len(tool_args) > message_len else tool_args
     print(f"{indent}🔧 Tool called -> {tool_name}({tool_args})")
 
@@ -41,7 +53,7 @@ def print_agent_step(msg, agent_name="Supervisor"):
     msg_content = getattr(msg, "content", "")
 
     if msg_type == "ai":
-        if msg_content:
+        if msg_content and agent_name == "Supervisor":
             print(f"\n{indent}🤖 Agent:\n{msg_content}")
         
         tool_calls = getattr(msg, "tool_calls", [])
@@ -59,9 +71,24 @@ def print_agent_step(msg, agent_name="Supervisor"):
     elif msg_type == "tool":
         tool_name = getattr(msg, "name", "unknown_tool")
         content_str = str(msg_content)
-        message_len = len(content_str) if tool_name in ["research_planner","reseacrh_execution","research_critic"] else 150 
+        message_len = len(content_str) if tool_name in ["plan","research","critique"] else 150 
         preview = content_str[:message_len] + "..." if len(content_str) > message_len else content_str
-        print(f"{indent}✅ Result ({tool_name}): {preview}")
+        if tool_name in ["plan","research","critique"]:
+
+            print(f"{indent}✅ Result ({tool_name}):")
+            formatted_name = tool_name.replace("_", " ").title()
+            lines = content_str.splitlines()
+            if tool_name == "research":
+                indented_content += f"\n{indent}│ ... (20/{len(lines)} rows) ..."
+                indented_content = "\n".join(f"{indent}│ {line}" for line in lines[:25])
+            else:
+                indented_content = "\n".join(f"{indent}│ {line}" for line in lines)
+            print(f"\n{indent}╭─── 📄 {formatted_name} {'─' * (40 - len(formatted_name))}")
+            print(indented_content)
+            print(f"{indent}╰{'─' * 46}\n")
+
+        else:
+            print(f"{indent}✅ Result ({tool_name}): {preview}")
 
 def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str, agent_name: str):
     indent = "    " if agent_name != "Supervisor" else ""
@@ -127,8 +154,6 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
             return None
     except Exception as e:
         print(f"{indent}❌ {agent_name} encountered an unexpected error: {e}")
-        print(messages)
-        print(recovery_messages)
         return None
 
 @tool
@@ -212,6 +237,21 @@ def critique(findings: str) -> str:
 
     global revision_counter
     revision_counter += 1
+
+    if revision_counter > revision_counter_max:
+        print(f"\n⚠️ Critic Tool: Reached maximum revisions ({revision_counter}). Forcing APPROVE without calling agent.")
+        import json
+        mock_critique = {
+            "verdict": "APPROVE",
+            "is_fresh": True,
+            "is_complete": True,
+            "is_well_structured": True,
+            "strengths": ["Achieved max number of iterations. Report is approved"],
+            "gaps": ["No gaps"],
+            "revision_requests": ["Achieved max number of iterations. Report is approved, it is the final version, save it."]
+        }
+        return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n" + json.dumps(mock_critique, indent=2)
+
     unique_critic_thread_id = f"critic_internal_thread{uuid.uuid4()}"
     config = {
         "recursion_limit": max_iterations_critic, 
@@ -226,14 +266,9 @@ def critique(findings: str) -> str:
         agent_name="Critic")
 
     if not critique:
-        return "Error: Could not generate response."
+        return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n Error: Could not generate response."
 
-    if revision_counter > revision_counter_max and critique.verdict == "REVISE":
-        print(f"\n⚠️ Critic Tool: Reached maximum revisions ({revision_counter}). Forcing APPROVE.")
-        critique.verdict = "APPROVE"
-        critique.revision_requests = ["Achieved max number of iterations. Report is approved, it is the final version, save it."]
-
-    return f"--- CRITIQUE ROUND {revision_counter}/2 ---\n" + critique.model_dump_json(indent=2)
+    return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n" + critique.model_dump_json(indent=2)
 
 tool_registry.update({
     "plan": plan,
