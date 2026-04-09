@@ -9,7 +9,8 @@ from config import (
     max_iterations_planner,
     max_iterations_research,
     max_iterations_critic,
-    revision_counter_max
+    revision_counter_max,
+    tool_preview_len
 )
 from tools import save_report, tool_registry
 from langgraph.errors import GraphRecursionError
@@ -25,31 +26,8 @@ current_research_session = str(uuid.uuid4())
 best ways to write system prompts for multi-agentic llm system which consists of 3 agents (business analyst, developer, and reviewer) and is designed to automate Power BI reports visual layer development using new pbir format
 """
 
-# розібратися з варіантом edit - може тут викликати research
-"""
-        if choice == "approve":
-            cmd = Command(resume={"decisions": [{"type": "approve"}]})
-        elif choice == "reject":
-            reason = input("Причина (опційно): ").strip() or "User rejected save_report"
-            cmd = Command(
-                resume={"decisions": [{"type": "reject", "message": reason}]}
-            )
-        else:
-            fb = input("✏️  Ваш фідбек (буде додано до кінця звіту перед повторним збереженням): ").strip()
-"""
-# перевірити чи працює HITL з усіма опціями
-# чекнути повторювані помилки
-"""
-✅ Result (knowledge_search): Error searching local knowledge base. Details: 'RustBindingsAPI' object has no attribute 'bindings'.
-    ✅ Result (knowledge_search): Error searching local knowledge base. Details: 'index'.
-або
-✅ Result (knowledge_search): Error searching local knowledge base. Details: Could not connect to tenant default_tenant. Are you sure it exists?.
-"""
-
-
 def print_tool_call(tool_name, tool_args, indent=""):
-    message_len = 150
-    tool_args = tool_args[:message_len] + "..." if len(tool_args) > message_len else tool_args
+    tool_args = tool_args[:tool_preview_len] + "..." if len(tool_args) > tool_preview_len else tool_args
     print(f"{indent}🔧 Tool called -> {tool_name}({tool_args})")
 
     tool_name = tool_registry.get(tool_name)
@@ -82,7 +60,7 @@ def print_agent_step(msg, agent_name="Supervisor"):
     elif msg_type == "tool":
         tool_name = getattr(msg, "name", "unknown_tool")
         content_str = str(msg_content)
-        message_len = len(content_str) if tool_name in ["plan","research","critique"] else 150 
+        message_len = len(content_str) if tool_name in ["plan","research","critique"] else tool_preview_len 
         preview = content_str[:message_len] + "..." if len(content_str) > message_len else content_str
         if tool_name in ["plan","research","critique"]:
 
