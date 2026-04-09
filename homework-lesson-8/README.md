@@ -1,5 +1,20 @@
 # Завдання: мультиагентна дослідницька система (розширення hw5)
 
+![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
+![langchain](https://img.shields.io/badge/langchain-1.2.0+-orange.svg)
+![langgraph](https://img.shields.io/badge/langgraph-1.1.2+-orange.svg)
+![yfinance](https://img.shields.io/badge/yfinance-1.2.0+-orange.svg)
+![trafilatura](https://img.shields.io/badge/trafilatura-2.0.0+-orange.svg)
+![pypdf](https://img.shields.io/badge/pypdf-6.9.1+-orange.svg)
+![pandas](https://img.shields.io/badge/pandas-3.0.1+-orange.svg)
+![ddgs](https://img.shields.io/badge/ddgs-9.11.4+-orange.svg)
+![requests](https://img.shields.io/badge/requests-2.32.5+-orange.svg)
+![chromadb](https://img.shields.io/badge/chromadb-1.5.5+-orange.svg)
+![youtube-transcript-api](https://img.shields.io/badge/youtube--transcript--api-1.2.4+-orange.svg)
+![transformers](https://img.shields.io/badge/transformers-5.4.0+-orange.svg)
+![docx2txt](https://img.shields.io/badge/docx2txt-0.9+-orange.svg)
+![rank_bm25](https://img.shields.io/badge/rank_bm25-0.2.2+-orange.svg)
+
 ### Що змінилося порівняно з homework-5
 
 | Було (homework-lesson-5) | Стає (homework-lesson-8) |
