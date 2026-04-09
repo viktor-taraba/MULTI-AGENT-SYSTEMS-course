@@ -89,6 +89,10 @@ homework-lesson-8/
 ├── gif example/         # Приклад роботи агента
 │   └── agent_example.gif
 ├── .env                 # API ключі
+├── output/
+│   └── dividend_policy_factors_report.md       # Example generated report (#1)
+│   └── pbir_multi_agent_prompting_report.md    # Example generated report (#2)
+│   └── pbir_tmdl_validator_report.md           # Example generated report (#3)
 └── README.md            # Setup instructions, architecture overview
 ```
 
