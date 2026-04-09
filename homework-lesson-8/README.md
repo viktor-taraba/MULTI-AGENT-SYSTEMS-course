@@ -76,7 +76,7 @@ homework-lesson-8/
 │   ├── research.py      # Research Agent (reuses hw5 tools)
 │   └── critic.py        # Critic Agent (uses CritiqueResult from schemas.py)
 ├── schemas.py           # Pydantic models: ResearchPlan, CritiqueResult
-├── tools.py             # Reused from hw5: web_search, read_url, knowledge_search + save_report
+├── tools.py             # Reused from hw5: web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref + save_report
 ├── retriever.py         # Reused from hw5
 ├── ingest.py            # Reused from hw5
 ├── config.py            # Prompts + settings
