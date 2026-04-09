@@ -111,7 +111,7 @@ homework-lesson-8/
 └── README.md            # Setup instructions, architecture overview
 ```
 
-Приклад консольного виводу:
+Приклад консольного виводу (фрагмент):
 
 ```
 Research Agent
