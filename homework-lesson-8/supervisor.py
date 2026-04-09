@@ -21,11 +21,6 @@ revision_counter = 0
 global current_research_session
 current_research_session = str(uuid.uuid4())
 
-# prompt idea for testing
-"""
-best ways to write system prompts for multi-agentic llm system which consists of 3 agents (business analyst, developer, and reviewer) and is designed to automate Power BI reports visual layer development using new pbir format
-"""
-
 def print_tool_call(tool_name, tool_args, indent=""):
     tool_args = tool_args[:tool_preview_len] + "..." if len(tool_args) > tool_preview_len else tool_args
     print(f"{indent}🔧 Tool called -> {tool_name}({tool_args})")
