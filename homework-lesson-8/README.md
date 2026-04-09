@@ -1,20 +1,49 @@
-# Домашнє завдання: мультиагентна дослідницька система (розширення hw5)
+# Завдання: мультиагентна дослідницька система (розширення hw5)
 
-Розширте свого Research Agent з `homework-lesson-5` до **мультиагентної системи** з Supervisor, який координує трьох спеціалізованих суб-агентів за патерном **Plan → Research → Critique**.
-
----
-
-### Що змінюється порівняно з homework-5
+### Що змінилося порівняно з homework-5
 
 | Було (homework-lesson-5) | Стає (homework-lesson-8) |
 |-|-|
-| Один Research Agent з 4 інструментами | Supervisor + 3 суб-агенти |
+| Один Research Agent | Supervisor + 3 суб-агенти |
 | Агент робить усе одразу | Planner досліджує домен і декомпозує задачу, Researcher виконує, Critic перевіряє |
 | Одноразове дослідження | Ітеративне: Critic може повернути Researcher на доопрацювання |
 | Без потоку затвердження | HITL: операції запису потребують підтвердження користувача |
 | Лише вільний текст | Planner і Critic повертають структурований вивід (Pydantic) |
 
----
+### Приклад:
+
+![Demo](/homework-lesson-8/gif%20example/agent_example.gif)
+
+Приклади згенерованих звітів - в [output](/homework-lesson-8/output)
+
+### Загальний опис
+
+Агент запускається з терміналу (python3 main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
+Агент підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії.
+
+Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>` та `HF_TOKEN=<тут_ваш_ключ>`
+
+Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-8/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+
+Підтримувані формати файлів для RAG (для збереження використовуєьтся chromadb):
+- `PDF-файли (.pdf)` — спочатку намагаємося витягнути текст через `PyPDFLoader`. Якщо сторінки виявляються "порожніми" (наприклад, це скани або складний формат), використовуємо резервний `PyMuPDFLoader`.
+- `Текстові файли (.txt)` — зчитуються як звичайний текст у кодуванні UTF-8 за допомогою `TextLoader`.
+- `Markdown-файли (.md)` — також обробляються базовим TextLoader як звичайний текст.
+- `Документи Microsoft Word (.docx)` — завантажуються за допомогою `Docx2txtLoader`
+- `Субтитри YouTube-відео` — необхідний окремий файл `(.txt)` з переліком посилань (назва файлу задана у змінній `Youtube_links_file_name`), зчитаємо з нього посилання і отримуємо субтитри через `YoutubeLoader`, автоматично додаючи URL як джерело в метадані.
+
+### Опис тулів для агентів:
+|Назва|Параметри|Опис|
+|--|--|--|
+|`web_search`|`query: str`|Шукає актуальну інформацію в інтернеті через DuckDuckGo. Повертає перелік знайдених посилань з даними про заголовок, URL, фрагмент тексту. Використовується як перший крок пошуку.|
+|`read_url`|`url: str`|Отримує основний текст із вебсторінки (або PDF, якщо це пряме посилання на pdf-звіт чи статтю).|
+|`stock_company_info`|`stock_ticker: str, result_type: str`|Отримує фінансові дані або загальний профіль компанії через Yahoo Finance API.|
+|`find_articles_crossref`|`query: str`|Шукає наукові статті в базі Crossref. Повертає відфільтрований список записів із валідною анотацією (назва, анотація, DOI, рік).|
+|`knowledge_search`|`query: str`|Пошук у локальній базі знань за допомогою гібридного пошуку (hybrid retrieval) та реранкінгу.|
+|`write_report`|`filename: str, content: str`|Зберігає фінальний звіт у форматі Markdown, використовується як останній крок для видачі результату.|
+|`plan`|`request: str`|Субагент Planner (агент як tool для Supervisor)|
+|`research`|`plan: str`|Субагент Research (агент як tool для Supervisor)|
+|`critique`|`findings: str`|Субагент Research (агент як tool для Supervisor)|
 
 ### Архітектура
 
@@ -24,162 +53,17 @@ User (REPL)
   ▼
 Supervisor Agent
   │
-  ├── 1. plan(request)       → Planner Agent      → structured ResearchPlan
+  ├── 1. plan(request)       → Planner Agent      → [web_search, knowledge_search]  → structured ResearchPlan
   │
-  ├── 2. research(plan)      → Research Agent     → [web_search, read_url, knowledge_search]
+  ├── 2. research(plan)      → Research Agent     → [web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref]   → structured ResearchResult
   │
-  ├── 3. critique(findings)  → Critic Agent       → structured CritiqueResult
+  ├── 3. critique(findings)  → Critic Agent       → [web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref]   → structured CritiqueResult
   │       │
   │       ├── verdict: "APPROVE"  → go to step 4
   │       └── verdict: "REVISE"   → back to step 2 with feedback
   │
   └── 4. write_report(...)   → save_report tool   → HITL gated
 ```
-
-**Ключовий патерн:** Supervisor оркеструє ітеративний цикл — Critic може відхилити дослідження і повернути його з конкретним зворотним зв'язком. Це патерн **evaluator-optimizer** з Лекції 7.
-
----
-
-### Що потрібно реалізувати
-
-#### 1. Planner Agent (новий)
-
-Декомпозує запит користувача у структурований план дослідження:
-
-- Використовує параметр `response_format` функції `create_agent` для створення Pydantic-моделі:
-
-```python
-from langchain.agents import create_agent
-
-class ResearchPlan(BaseModel):
-    goal: str = Field(description="What we are trying to answer")
-    search_queries: list[str] = Field(description="Specific queries to execute")
-    sources_to_check: list[str] = Field(description="'knowledge_base', 'web', or both")
-    output_format: str = Field(description="What the final report should look like")
-
-planner_agent = create_agent(
-    model="...",
-    tools=[web_search, knowledge_search],
-    system_prompt="...",
-    response_format=ResearchPlan,
-)
-# result["structured_response"] → validated ResearchPlan instance
-```
-
-- **Інструменти:** `web_search`, `knowledge_search` — Planner робить попередній пошук, щоб зрозуміти домен перед декомпозицією задачі
-- Обгорніть як `@tool`-функцію `plan(request: str)` для Supervisor
-
-#### 2. Research Agent (перевикористання з hw5)
-
-Візьміть свого Research Agent з hw5 і обгорніть як суб-агент:
-
-- **Інструменти:** `web_search`, `read_url`, `knowledge_search` (з hw5)
-- Створіть через `create_agent` (з `langchain.agents`), задайте `system_prompt`
-- Обгорніть як `@tool`-функцію `research(request: str)` для Supervisor
-- RAG-пайплайн (`ingest.py`, `retriever.py`) перевикористовується як є
-
-#### 3. Critic Agent (новий)
-
-Оцінює якість дослідження шляхом **незалежної верифікації** знахідок через ті самі джерела:
-
-- **Інструменти:** `web_search`, `read_url`, `knowledge_search` (ті самі, що й у Research Agent)
-- Critic не просто рецензує текст — він може **перевіряти факти**, шукати пропущену інформацію та верифікувати, що джерела підтримують висновки
-- Critic оцінює три виміри:
-  1. **Freshness** — чи базуються знахідки на актуальних даних? Чи є новіші джерела? Позначає застарілу інформацію
-  2. **Completeness** — чи повністю дослідження покриває запит користувача? Чи є непокриті аспекти або пропущені підтеми?
-  3. **Structure** — чи добре організовані знахідки, чи логічно структуровані, чи готові стати звітом?
-- Використовує параметр `response_format` функції `create_agent` для створення Pydantic-моделі (працює разом з інструментами — агент спочатку викликає інструменти, потім повертає структурований вивід):
-
-```python
-class CritiqueResult(BaseModel):
-    verdict: Literal["APPROVE", "REVISE"]
-    is_fresh: bool = Field(description="Is the data up-to-date and based on recent sources?")
-    is_complete: bool = Field(description="Does the research fully cover the user's original request?")
-    is_well_structured: bool = Field(description="Are findings logically organized and ready for a report?")
-    strengths: list[str] = Field(description="What is good about the research")
-    gaps: list[str] = Field(description="What is missing, outdated, or poorly structured")
-    revision_requests: list[str] = Field(description="Specific things to fix if verdict is REVISE")
-
-critic_agent = create_agent(
-    model="...",
-    tools=[web_search, read_url, knowledge_search],
-    system_prompt="...",
-    response_format=CritiqueResult,
-)
-# result["structured_response"] → validated CritiqueResult instance
-```
-
-- Обгорніть як `@tool`-функцію `critique(findings: str)` для Supervisor
-- System prompt має наголошувати: перевіряти freshness відносно поточної дати, перевіряти покриття відносно оригінального запиту, забезпечити логічну структуру
-
-#### 4. Supervisor Agent
-
-Координатор, що оркеструє цикл Plan → Research → Critique:
-
-- **Інструменти:** `plan`, `research`, `critique`, `save_report` (визначені в `tools.py`, захищені HITL)
-- System prompt з правилами координації:
-  1. Завжди починати з `plan` для декомпозиції запиту
-  2. Викликати `research` з планом
-  3. Викликати `critique` для оцінки знахідок
-  4. Якщо verdict — `REVISE` — викликати `research` знову зі зворотним зв'язком від Critic (максимум 2 раунди доопрацювання)
-  5. Якщо verdict — `APPROVE` — скласти фінальний markdown-звіт і викликати `save_report` для збереження
-- Checkpointer: `InMemorySaver` (необхідний для HITL interrupt/resume)
-
-#### 5. HITL на save_report (`main.py`)
-
-`save_report` — це **операція запису** в Supervisor — вона потребує затвердження користувача:
-
-- Використовуйте `HumanInTheLoopMiddleware` (з `langchain.agents.middleware`) для захисту операцій запису:
-
-```python
-from langchain.agents.middleware import HumanInTheLoopMiddleware
-from langgraph.types import Command
-
-supervisor = create_agent(
-    model="...",
-    tools=[plan, research, critique, save_report],
-    system_prompt="...",
-    middleware=[
-        HumanInTheLoopMiddleware(interrupt_on={"save_report": True}),
-    ],
-    checkpointer=InMemorySaver(),
-)
-```
-
-- Стрімте відповіді Supervisor у REPL
-- При виникненні interrupt покажіть запропонований звіт (ім'я файлу + превʼю вмісту)
-- Приймайте від користувача одну з трьох дій:
-  - `approve` — зберегти звіт як є
-  - `edit` — користувач вводить свій фідбек (що змінити/доповнити), Supervisor переробляє звіт і знову запитує затвердження
-  - `reject` — скасувати збереження повністю
-- Відновлюйте граф зі структурованим форматом рішення:
-
-```python
-# Approve:
-supervisor.invoke(
-    Command(resume={"decisions": [{"type": "approve"}]}),
-    config={"configurable": {"thread_id": thread_id}},
-)
-
-# Edit — user provides feedback, Supervisor revises and calls save_report again:
-supervisor.invoke(
-    Command(resume={"decisions": [{"type": "edit", "edited_action": {"feedback": user_feedback}}]}),
-    config={"configurable": {"thread_id": thread_id}},
-)
-
-# Reject:
-supervisor.invoke(
-    Command(resume={"decisions": [{"type": "reject", "message": "reason"}]}),
-    config={"configurable": {"thread_id": thread_id}},
-)
-```
-
-#### 6. Промпти та конфігурація
-
-- System prompts для всіх 4 агентів винесені в `config.py`
-- Конфігурація (API-ключі, назва моделі, шляхи, параметри RAG) в `config.py` / `.env`
-
----
 
 ### Структура проєкту
 
@@ -188,7 +72,6 @@ homework-lesson-8/
 ├── main.py              # REPL with HITL interrupt/resume loop
 ├── supervisor.py        # Supervisor agent + agent-as-tool wrappers
 ├── agents/
-│   ├── __init__.py
 │   ├── planner.py       # Planner Agent (uses ResearchPlan from schemas.py)
 │   ├── research.py      # Research Agent (reuses hw5 tools)
 │   └── critic.py        # Critic Agent (uses CritiqueResult from schemas.py)
@@ -199,109 +82,100 @@ homework-lesson-8/
 ├── config.py            # Prompts + settings
 ├── requirements.txt     # Dependencies (add langgraph to hw5 deps)
 ├── data/                # Documents for RAG (from hw5)
-└── .env                 # API keys (do not commit!)
+├── chunks/              # Результат роботи ingestion.py (JSON файл зі збереженими чанками)
+│   └── bm25_chunks.json         # JSON файл зі збереженими чанками
+├── index/               # Векторна БД
+│   └──... (.bin, .pickle, .sqlite3 files)
+├── gif example/         # Приклад роботи агента
+│   └── agent_example.gif
+├── .env                 # API ключі
+└── README.md            # Setup instructions, architecture overview
 ```
-
----
-
-### Очікуваний результат
-
-1. **Ingestion працює** — `python ingest.py` будує FAISS-індекс (так само як у hw5)
-2. **Planner декомпозує** — запит користувача розбивається у структурований `ResearchPlan`
-3. **Researcher виконує** — слідує плану, використовує web + knowledge base
-4. **Critic оцінює** — повертає структурований `CritiqueResult` з verdict
-5. **Ітерація працює** — якщо Critic каже `REVISE`, Researcher повертається з конкретним зворотним зв'язком
-6. **HITL працює** — коли Supervisor викликає `save_report`, користувач бачить звіт і затверджує/відхиляє
-7. **Звіт збережено** — після затвердження звіт зберігається у `./output/`
 
 Приклад консольного виводу:
 
 ```
-You: Compare RAG approaches: naive, sentence-window, and parent-child. Write a report.
+Research Agent
+type 'exit' or 'quit' to quit
+----------------------------------------------------------------------------------------------------
 
-[Supervisor → Planner]
-🔧 plan("Compare RAG approaches: naive, sentence-window, parent-child")
-  📎 ResearchPlan(
-       goal="Compare three RAG retrieval strategies",
-       search_queries=["naive RAG approach", "sentence-window retrieval", "parent-child RAG"],
-       sources_to_check=["knowledge_base", "web"],
-       output_format="comparison table + pros/cons for each approach"
-     )
+You: Фактори, що впливають на дивідендну політику компанії
+🔧 Tool called -> plan({'request': 'Фактори, що впливають на дивідендну політику компанії — створити план дослідження. Вклю...)
 
-[Supervisor → Researcher]  (round 1)
-🔧 research("Research these topics: 1) naive RAG approach 2) sentence-window ...")
-  🔧 knowledge_search("RAG retrieval approaches")
-  📎 [3 documents found]
-  🔧 web_search("sentence-window vs parent-child RAG retrieval")
-  📎 [5 results found]
+╭──────────────────────────────
+│   [Supervisor → Planner]
+╰──────────────────────────────
+    🔧 Tool called -> web_search({'query': 'factors affecting dividend policy academic literature determinants of dividends empirical...)
+    🔧 Tool called -> web_search({'query': 'signaling theory dividends empirical evidence study 2010 2020 signalling dividends resear...)
+    🔧 Tool called -> web_search({'query': 'residual dividend theory explanation and empirical tests'})
+    🔧 Tool called -> web_search({'query': 'bird-in-hand theory dividends empirical evidence Jensen Miller Modigliani 1961 critique'})
+    🔧 Tool called -> web_search({'query': 'dividend policy determinants cross-country study emerging markets Ukraine dividends resea...)
+    🔧 Tool called -> web_search({'query': 'Ukrainian companies dividend policy examples 2020 2023 PrivatBank Ukrnafta Kernel dividen...)
+    🔧 Tool called -> web_search({'query': 'agency theory and dividends empirical evidence payout policy as mitigation tool'})
+    🔧 Tool called -> web_search({'query': 'taxation impact on dividend policy empirical study corporate taxes dividends'})
+    🔧 Tool called -> web_search({'query': 'practical recommendations for corporate dividend policy managers best practices white pap...)
+    🔧 Tool called -> web_search({'query': "recommended sources academic books corporate finance dividend policy Lintner 'dividend po...)
+    ✅ Result (web_search): [{"title": "Determinants of Dividend Payout Policy: More Evidence From ...", "url": "https://onlinel...
+    ✅ Result (web_search): [{"title": "Dividend Policy: A Review of Theories and Empirical Evidence", "url": "https://www.resea...
+    ✅ Result (web_search): [{"title": "Dividend policy - Wikipedia", "url": "https://en.wikipedia.org/wiki/Dividend_policy", "s...
+    ✅ Result (web_search): [{"title": "PDFAnalysis Of Dividend Policies, Theories, And Models", "url": "https://www.seahipublic...
+    ✅ Result (web_search): [{"title": "Impact of Taxation on Dividend Policy | UKDiss.com", "url": "https://ukdiss.com/intro/th...
+    ✅ Result (web_search): [{"title": "Imperfect information, dividend policy, and \"the bird in the hand\" fallacy", "url": "h...
+    ✅ Result (web_search): [{"title": "Dividend Payments Complete for 2023 | Ukrnafta", "url": "https://www.ukrnafta.com/en/div...
+    ✅ Result (web_search): [{"title": "Lintner's model of dividend payments - Macquarie UniversityTHE LINTNER MODEL AND DIVIDEN...
+    ✅ Result (web_search): [{"title": "A Systematic Literature Review of Factors Influencing the Dividend Policy", "url": "http...
+    ✅ Result (web_search): [{"title": "Efficient-market hypothesis - Wikipedia", "url": "https://en.wikipedia.org/wiki/Efficien...
+✅ Result (plan):
 
-[Supervisor → Critic]
-🔧 critique("Findings: ... [research results] ...")
-  🔧 web_search("parent-child chunking RAG 2025 2026")  ← checking freshness
-  📎 [3 results — newer approaches exist]
-  🔧 web_search("RAG retrieval benchmarks 2026")        ← verifying data is current
-  📎 [2 results — research used outdated 2023 benchmarks]
-  📎 CritiqueResult(
-       verdict="REVISE",
-       is_fresh=False,
-       is_complete=False,
-       is_well_structured=True,
-       strengths=["Good coverage of naive and sentence-window", "Well-structured comparison"],
-       gaps=["Benchmarks from 2023 — outdated", "Parent-child approach barely covered",
-             "Missing recent developments in parent-child chunking"],
-       revision_requests=["Find 2025-2026 benchmarks comparing the three approaches",
-                          "More detail on parent-child chunking strategy"]
-     )
+╭─── 📄 Plan ────────────────────────────────────
+│ {
+│   "goal": "Підготувати структурований план дослідження на тему «Фактори, що впливають на дивідендну політику компанії», який охоплює: ключові внутрішні та зовнішні фактори, теоретичні моделі (signaling, residual, bird‑in‑hand, Lintner тощо), емпіричні докази, приклади (міжнародні та українські), практичні рекомендації для менеджменту, конкретні пошукові запити та рекомендовані джерела; а також визначити структуру фінального звіту у форматі Markdown і формат цитування.",
+│   "search_queries": [
+│     "factors affecting dividend policy determinants of dividends empirical review 2015..2025",
+│     "dividend signaling theory empirical evidence meta-analysis Bhattacharya 1979 signalling dividends",
+│     "residual dividend theory empirical tests 'residual dividend' study",
+│     "bird-in-hand theory Gordon Lintner empirical evidence 'bird in the hand' dividends",
+│     "Lintner model dividend partial adjustment tests emerging markets 'Lintner 1956'",
+│     "agency theory dividends 'dividends agency costs' empirical evidence",
+│     "taxation effect on dividend policy 'dividend taxes' corporate behavior 2003 tax cut NBER",
+│     "dividend policy determinants emerging markets panel data 'payout ratio' 'free cash flow' 'leverage' 'growth opportunities'",
+│     "dividend policy Ukraine case study Ukrnafta Kernel 'dividend payments 2023' 'investor relations'",
+│     "country risk geopolitical risk effect on dividends 'geopolitical risk' dividend policy emerging markets",
+│     "dividend smoothing and ownership structure 'foreign ownership' dividends emerging markets",
+│     "practical corporate guidelines dividend policy 'dividend policy best practices' white paper 'investor relations'",
+│     "major literature reviews dividend policy 'bibliometric review' 'systematic literature review' 2020..2024",
+│     "datasets for dividend research 'Compustat' 'Orbis' 'Worldscope' Ukraine listed firms financials"
+│   ],
+│   "sources_to_check": [
+│     "web_search (Google Scholar, SSRN, JSTOR, ScienceDirect, Wiley Online Library, NBER, ResearchGate)",
+│     "Google Scholar searches and export of key PDFs",
+│     "Company investor-relations pages (Ukrnafta, Kernel, Naftogaz, PrivatBank, major international firms) via corporate websites",
+│     "Ukrainian regulators and institutions: National Securities and Stock Market Commission of Ukraine, Ministry of Finance of Ukraine, Ukrainian Exchange (UX) publications and reports",
+│     "International institutions: World Bank, IMF country reports (Ukraine), OECD corporate governance working papers",
+│     "Major academic sources and classic papers: Miller & Modigliani (1961), Lintner (1956), Gordon (1959), Bhattacharya (1979), Jensen & Meckling (1976) — locate via JSTOR/NBER",
+│     "Recent empirical papers and reviews: 'A bibliometric review of dividend policy literature' (2023), 'Determinants of Dividend Payout Policy: More Evidence From Emerging Markets' (2024), and NBER/CEPR working papers on dividend taxation",
+│     "Databases for firm-level data: Compustat, Worldscope/Orbis, Bloomberg, Refinitiv Eikon — and local sources for Ukrainian firms' financial statements",
+│     "Worked examples and case notes from business schools (NYU Stern/Aswath Damodaran notes on chapter about dividends)"
+│   ],
+│   "output_format": "Формат та план фінального звіту (Markdown). Фінальний документ — звіт у Markdown, візуально привабливий, ~20–40 сторінок еквіваленту. Формат цитування: APA 7th edition. Приклади цитат: стаття — (Автор, рік); книга — Автор (рік); веб-сторінка — Автор/Організація (рік). Структура звіту та покроковий план дослідження (не більше 15 кроків):\n\n1) Титул і метадані — назва, автор, дата, коротка інструкція для читача.\n2) Виконавче резюме (2 абзаци) — основні висновки і рекомендації для менеджменту.\n3) Зміст.\n4) Вступ — мета дослідження, питання, обмеження, методологія пошуку (ключові запити, критерії включення/виключення).\n5) Теоретична частина — короткі ..."
+│ }
+╰──────────────────────────────────────────────
 
-[Supervisor → Researcher]  (round 2)
-🔧 research("Find: 1) benchmarks comparing RAG approaches 2) parent-child chunking details")
-  🔧 web_search("RAG retrieval benchmarks naive vs sentence-window vs parent-child")
-  📎 [4 results found]
-  🔧 read_url("https://example.com/rag-benchmarks")
-  📎 [3200 chars]
+🔧 Tool called -> research({'plan': 'Execute this research plan: Goal: Prepare a comprehensive Markdown report on "Factors affe...)
 
-[Supervisor → Critic]
-🔧 critique("Updated findings: ... [round 1 + round 2 results] ...")
-  🔧 web_search("RAG retrieval accuracy benchmarks 2026")   ← spot-checking updated data
-  📎 [2 results — confirms benchmark numbers are current]
-  📎 CritiqueResult(
-       verdict="APPROVE",
-       is_fresh=True,
-       is_complete=True,
-       is_well_structured=True,
-       strengths=["Up-to-date benchmarks", "All three approaches covered in depth",
-                  "Clear structure with comparison table"],
-       gaps=[],
-       revision_requests=[]
-     )
-
-[Supervisor → save_report]
-🔧 save_report(filename="rag_comparison.md", content="# Comparison of RAG Approaches...")
-
-  ============================================================
-  ⏸️  ACTION REQUIRES APPROVAL
-  ============================================================
-    Tool:  save_report
-    Args:  {"filename": "rag_comparison.md", "content": "# Comparison of RAG..."}
-
-  👉 approve / edit / reject: edit
-  ✏️  Your feedback: Add a summary table at the top and include latency benchmarks
-
-[Supervisor revises report based on feedback]
-🔧 save_report(filename="rag_comparison.md", content="# Comparison of RAG Approaches\n\n| Approach | ...")
-
-  ============================================================
-  ⏸️  ACTION REQUIRES APPROVAL
-  ============================================================
-    Tool:  save_report
-    Args:  {"filename": "rag_comparison.md", "content": "# Comparison of RAG..."}
-
-  👉 approve / edit / reject: approve
-
-  ✅ Approved! Report saved to output/rag_comparison.md
-
-Agent: I've completed the research with 2 rounds of investigation. The Critic
-       identified gaps in parent-child coverage and benchmarks, which were
-       addressed in round 2. After your feedback I added a summary table and
-       latency benchmarks. Report saved to output/rag_comparison.md.
+╭──────────────────────────────
+│   [Supervisor → Researcher]
+╰──────────────────────────────
+    🔧 Tool called -> web_search({'query': 'Lintner 1956 dividend model Lintner 1956 dividend policy paper DOI'})
+    ✅ Result (web_search): [{"title": "The Lintner model revisited: Dividends versus total payouts", "url": "https://www.scienc...
+    🔧 Tool called -> web_search({'query': "meta-analysis determinants of dividend policy review 2015 2025 'dividend policy' 'meta-an...)
+    ✅ Result (web_search): [{"title": "Western Energy Services Corp. Releases Third Quarter 2015", "url": "https://finance.yaho...
+    🔧 Tool called -> web_search({'query': "meta-analysis determinants of dividend policy review 2010 2022 'dividend determinants' 'm...)
+    ✅ Result (web_search): [{"title": "Dividend Policy and Firm Performance of Listed Consumer Goods", "url": "https://dj.univ-...
+    🔧 Tool called -> web_search({'query': "review of empirical literature on dividend policy determinants 'literature review' 'divid...)
+    ✅ Result (web_search): [{"title": "A bibliometric review of dividend policy literature", "url": "https://www.sciencedirect....
+    🔧 Tool called -> web_search({'query': "Bhattacharya 1979 'imperfect information and dividend policy' PDF Bhattacharya 1979 divid...)
+    ✅ Result (web_search): [{"title": "Imperfect information, dividend policy, and \"the bird in the ... - JSTOR", "url": "http...
+    🔧 Tool called -> web_search({'query': "Miller Modigliani 1961 dividend policy 'irrelevance' paper PDF 'The Cost of Capital, Corp...)
+    ...
 ```
