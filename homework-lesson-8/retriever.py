@@ -22,6 +22,7 @@ from dotenv import load_dotenv
 import os
 import json
 import transformers
+import threading
 load_dotenv()
 
 """
@@ -66,48 +67,50 @@ def format_docs_for_llm(results):
     return "\n".join(formatted_texts)
 
 _cached_retriever = None
+_retriever_lock = threading.Lock()
 
 def get_retriever(query_text: str):
     """Main retriever function"""
     # 1. Load vector store from disk (config.index_dir)
     global _cached_retriever
 
-    if _cached_retriever is None:
+    with _retriever_lock:
+        if _cached_retriever is None:
         
-        lc_embeddings = OpenAIEmbeddings(model=embedding_model)
+            lc_embeddings = OpenAIEmbeddings(model=embedding_model)
 
-        vectorstore = Chroma(
-            persist_directory=index_dir,
-            embedding_function=lc_embeddings,
-            collection_name=collection_name
-        )
+            vectorstore = Chroma(
+                persist_directory=index_dir,
+                embedding_function=lc_embeddings,
+                collection_name=collection_name
+            )
 
-        # 2. Create semantic retriever from vector store
-        vector_retriever = vectorstore.as_retriever(search_kwargs={"k": retrieval_top_k})
+            # 2. Create semantic retriever from vector store
+            vector_retriever = vectorstore.as_retriever(search_kwargs={"k": retrieval_top_k})
 
-        # 3. Load chunks and create BM25 retriever
-        chunks = load_bm25_chunks_from_json(os.path.join(chunks_dir,chunks_json_name))
-        bm25_retriever = BM25Retriever.from_documents(chunks)
-        bm25_retriever.k = retrieval_top_k
+            # 3. Load chunks and create BM25 retriever
+            chunks = load_bm25_chunks_from_json(os.path.join(chunks_dir,chunks_json_name))
+            bm25_retriever = BM25Retriever.from_documents(chunks)
+            bm25_retriever.k = retrieval_top_k
 
-        # 4. Combine into ensemble retriever (semantic + BM25)
-        ensemble_retriever = EnsembleRetriever(
-            retrievers=[bm25_retriever, vector_retriever],
-            weights=[BM25_retriever_weight, vector_retriever_weight]
-        )
+            # 4. Combine into ensemble retriever (semantic + BM25)
+            ensemble_retriever = EnsembleRetriever(
+                retrievers=[bm25_retriever, vector_retriever],
+                weights=[BM25_retriever_weight, vector_retriever_weight]
+            )
 
-        # 5. Add cross-encoder reranker on top
-        reranker_model = HuggingFaceCrossEncoder(model_name=cross_encoder_model)
-        compressor = CrossEncoderReranker(
-            model=reranker_model,
-            top_n=rerank_top_n
-        )
+            # 5. Add cross-encoder reranker on top
+            reranker_model = HuggingFaceCrossEncoder(model_name=cross_encoder_model)
+            compressor = CrossEncoderReranker(
+                model=reranker_model,
+                top_n=rerank_top_n
+            )
 
-        _cached_retriever = ContextualCompressionRetriever(
-            base_compressor=compressor,
-            base_retriever=ensemble_retriever
-        )
+            _cached_retriever = ContextualCompressionRetriever(
+                base_compressor=compressor,
+                base_retriever=ensemble_retriever
+            )
 
-    # 6. Return the final retriever
-    results = _cached_retriever.invoke(query_text)
-    return format_docs_for_llm(results)
+        # 6. Return the final retriever
+        results = _cached_retriever.invoke(query_text)
+        return format_docs_for_llm(results)
