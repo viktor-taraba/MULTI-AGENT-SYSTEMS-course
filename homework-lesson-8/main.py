@@ -12,7 +12,8 @@ import supervisor
 from config import (
     SUPERVISOR_PROMPT, 
     supervisor_model_name, 
-    max_iterations_supervisor
+    max_iterations_supervisor,
+    tool_preview_len
     )
 from tools import save_report
 import json
@@ -86,7 +87,7 @@ def main():
                     
                                 tool_args = request.get('args', {})
                                 args_str = str(tool_args)
-                                preview = args_str[:150] + "..." if len(args_str) > 150 else args_str
+                                preview = args_str[:tool_preview_len] + "..." if len(args_str) > tool_preview_len else args_str
                                 print(f"   Args:  {preview}")
 
                                 if isinstance(tool_args, dict) and 'content' in tool_args:
@@ -103,7 +104,7 @@ def main():
                                 total_symbols = len(report_text)
                                 print(f"   Total lines in the report:  {total_lines}")
                                 print(f"   Total symbols in the report:  {total_symbols}\n")
-                                indented_content = "\n".join(f"   │ {line}" for line in lines[:25])
+                                indented_content = "\n".join(f"│ {line}" for line in lines[:25])
                                 if len(lines) > 25:
                                     indented_content += f"\n│ ... (25/{len(lines)} rows) ..."
                                 
@@ -126,7 +127,11 @@ def main():
                             elif choice == "edit":
                                 feedback = input(" ✏️  Your feedback: ").strip()
                                 print("\n 🔄 Supervisor revises report based on feedback...\n")
-                                decision_payload = {"type": "edit", "edited_action": {"feedback": feedback}}
+                                decision_payload = {
+                                    "type": "reject", 
+                                    "message": f"User requested revisions before saving. Please update the report and try saving again. User feedback: {feedback}"
+                                }
+                                supervisor.revision_counter = 0
                     
                             elif choice == "reject":
                                 reason = input(" 🛑 Reason for rejection: ").strip() or "User rejected."
