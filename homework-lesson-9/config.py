@@ -1,5 +1,10 @@
 from datetime import datetime
 
+#ports
+port_search_mcp: int = 8901
+port_report_mcp: int = 8902
+port_acp_server: int = 8903
+
 #supervisor agent
 supervisor_model_name: str = "gpt-5-mini"
 output_dir: str = "output"
