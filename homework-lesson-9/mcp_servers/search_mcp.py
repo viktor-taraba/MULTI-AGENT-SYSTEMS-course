@@ -18,30 +18,9 @@ from config import (
 import asyncio
 import threading
 import time
-
-from pathlib import Path
-OUTPUT_PATH = Path(r"C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-9\output")
+import requests
 
 mcp_server = FastMCP(name="SearchMCP")
-
-@mcp_server.resource("resource://output-dir//{output_dir}")
-def get_output_dir(output_dir: str = output_dir) -> str:
-    """
-    Returns the directory path and a list of saved reports.
-    """
-    try:
-        # Get all files in the output directory
-        saved_reports = [file.name for file in OUTPUT_PATH.iterdir() if file.is_file()]
-    except Exception as e:
-        return json.dumps({"error": f"Failed to read directory: {str(e)}"})
-
-    return json.dumps({
-        "directory_path": str(OUTPUT_PATH.absolute()),
-        "saved_reports": saved_reports,
-        "total_files": len(saved_reports)
-    }, indent=2)
-
-print("✅ Resources: resource://output-dir")
 
 @mcp_server.tool
 def web_search(query: str, max_search_results: int = max_search_results) -> str:
@@ -74,21 +53,111 @@ def web_search(query: str, max_search_results: int = max_search_results) -> str:
 
     return json.dumps(processed_results)
 
-print("✅ Tools")
+@mcp_server.tool
+def find_articles_crossref(query: str, max_search_results: int = max_search_results, email_crossref_api: str = email_crossref_api) -> str:
+    """
+    Searches the Crossref database for scientific articles, journals, and conference papers.
+    Use this tool when you need to find peer-reviewed research, metadata, or summaries 
+    for specific academic topics or information from scientific articles on the specific topic.
+
+    Args:
+        query: A specific short search string containing keywords, topics, or paper titles 
+               (e.g., "llm banking" or "dividend policy"). Do not use more than 2-3 words for one query.
+
+    Returns:
+        str: A json-formatted list of dictionaries containing 'title', 'abstract', 'doi', and 'year'.
+             Only records that contain a valid summary (abstract) are returned. 
+             Returns an error string if the API call fails.
+    """
+
+    # We request more than the limit (limit * 2) because many records in Crossref lack abstracts; this increases the chance of hitting target.
+    url = f"https://api.crossref.org/works?query={query.replace(' ', '+')}&rows={max_search_results * 2}"
+    headers = {"User-Agent": f"ResearchScript/1.0 (mailto:{email_crossref_api})"}
+    
+    try:
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            items = response.json()['message']['items']
+
+            filtered_articles = []
+            for i in items:
+                abstract = i.get('abstract')
+                
+                if abstract and len(abstract.strip()) > 0:
+                    clean_abstract = re.sub(r'<[^>]+>', '', abstract)
+                    
+                    filtered_articles.append({
+                        "title": i.get('title', ['No Title'])[0],
+                        "abstract": clean_abstract.strip(),
+                        "doi": i.get('DOI'),
+                        "year": i.get('created', {}).get('date-parts', [[None]])[0][0]
+                    })
+                
+                if len(filtered_articles) >= max_search_results:
+                    break
+                    
+            return json.dumps(filtered_articles)
+        else:
+            return f"Error: {response.status_code}"
+            
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+@mcp_server.tool
+def stock_company_info(stock_ticker: str, result_type: str, desired_keys_yfinance: str = desired_keys_yfinance) -> str:
+    """
+    Fetches financial data or company profile information for a given ticker (stock, ETF).
+
+    Use this tool ONLY if financial data (stock prices, company financials) or 
+    general information about a publicly traded company or about ETF or other financial instrument which a ticker
+    is needed, AND the specific stock ticker symbol is known.
+
+    This tool queries the Yahoo Finance API to retrieve either 3 months of daily 
+    historical price data or a filtered dictionary of general company information. 
+    The output is returned as a JSON-formatted string.
+
+    Args:
+        stock_ticker (str): The standard stock ticker symbol to query (e.g., "MSFT", "AAPL").
+        result_type (str): Determines the type of data to return. 
+            - Use "stock_data" to retrieve the last 3 months of historical market data.
+            - Use "info" (or any other string) to retrieve the company's general profile.
+
+    Returns:
+        str:  A JSON-formatted string containing the requested data. If an error occurs 
+              during the API call, it returns a string detailing the exception.
+    """
+
+    try:
+        company = yf.Ticker(stock_ticker)
+
+        if result_type == "stock_data":
+            df = company.history(period=period_yfinance)
+            df["Date"] = df.index.date
+
+            return df.to_json(orient='records', lines=True)
+        
+        else:
+            filtered_info = {key: company.info.get(key) for key in desired_keys_yfinance}
+
+            return json.dumps(filtered_info)
+
+    except Exception as e:
+        return f"Error using function stock_info. Details: {e}"
 
 def run_mcp_server():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(
-        mcp_server.run_async(transport="streamable-http", host="127.0.0.1", port=8902)
+        mcp_server.run_async(transport="streamable-http", host="127.0.0.1", port=8901)
     )
 
 server_thread = threading.Thread(target=run_mcp_server, daemon=True)
 server_thread.start()
 time.sleep(3)
-print("✅ MCP Server 'ProjectTracker' running at http://127.0.0.1:8902/mcp")
+print("✅ MCP Server 'ProjectTracker' running at http://127.0.0.1:8901/mcp")
 
-
+"""
 print("\n Testing tool call\n")
 result = web_search("Latest news about space exploration")
 print(result)
@@ -98,13 +167,13 @@ print("\n Testing resource\n")
 result = get_output_dir("test")
 print(result)
 print("\n Test finished\n")
-
+"""
 
 from fastmcp import Client
 import asyncio
 
 async def test_mcp_server():
-    async with Client("http://127.0.0.1:8902/mcp") as client:
+    async with Client("http://127.0.0.1:8901/mcp") as client:
         # 1. List available tools
         tools = await client.list_tools()
         print()
