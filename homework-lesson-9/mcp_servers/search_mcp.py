@@ -4,9 +4,17 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import trafilatura
 import yfinance  as yf
 import json
+import asyncio
+import threading
+import time
+import requests
+import logging
+import io
+import re
 from fastmcp import FastMCP
 from typing import List, Dict
 from ddgs import DDGS
+from pypdf import PdfReader
 from config import (
     max_search_results, 
     max_url_content_length, 
@@ -15,13 +23,6 @@ from config import (
     period_yfinance, 
     email_crossref_api
     )
-import asyncio
-import threading
-import time
-import requests
-import logging
-import io
-from pypdf import PdfReader
 
 mcp_server = FastMCP(name="SearchMCP")
 
