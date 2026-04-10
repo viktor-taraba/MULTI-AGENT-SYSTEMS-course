@@ -22,6 +22,8 @@ from config import (
 
 # resource://knowledge-base-stats — кількість документів, дата останнього оновлення
 
+# add knowledge_search
+
 mcp_server = FastMCP(name="SearchMCP")
 
 @mcp_server.tool
