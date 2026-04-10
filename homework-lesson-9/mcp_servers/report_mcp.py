@@ -12,8 +12,8 @@ OUTPUT_PATH = Path(r"C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\hom
 
 mcp_server = FastMCP(name="ReportMCP")
 
-@mcp_server.resource("resource://output-dir/{folder}")
-def get_output_dir(folder: str = "default") -> str:
+@mcp_server.resource("resource://output-dir")
+def get_output_dir() -> str:
     """
     Returns the directory path and a list of saved reports.
     """
@@ -64,7 +64,7 @@ def run_mcp_server():
 
 server_thread = threading.Thread(target=run_mcp_server, daemon=True)
 server_thread.start()
-print("✅ MCP Server 'ProjectTracker' running at http://127.0.0.1:8902/mcp")
+print("✅ MCP Server 'ReportMCP' running at http://127.0.0.1:8902/mcp")
 
 
 from fastmcp import Client
