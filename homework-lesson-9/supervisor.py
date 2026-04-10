@@ -10,7 +10,6 @@ from config import (
     revision_counter_max,
     tool_preview_len
 )
-from tools import save_report, tool_registry
 from langgraph.errors import GraphRecursionError
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
 import uuid
@@ -68,7 +67,7 @@ def print_agent_step(msg, agent_name="Supervisor"):
 
         else:
             print(f"{indent}✅ Result ({tool_name}): {preview}")
-
+"""
 def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str, agent_name: str):
     indent = "    " if agent_name != "Supervisor" else ""
     
@@ -134,8 +133,8 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
     except Exception as e:
         print(f"{indent}❌ {agent_name} encountered an unexpected error: {e}")
         return None
-
-@tool
+"""
+#@tool
 def plan(request: str) -> str:
     """Create structured, step-by-step research plans from user requests.
 
@@ -164,7 +163,7 @@ def plan(request: str) -> str:
 
     return plan.model_dump_json(indent=2) if plan else "Error: Could not generate research plan."
 
-@tool
+#@tool
 def research(plan: str) -> str:
     """Execute deep-dive research and generate a comprehensive Markdown report.
 
@@ -200,7 +199,7 @@ def research(plan: str) -> str:
         return res.research_output
     return "Error: Could not generate report."
 
-@tool
+#@tool
 def critique(findings: str) -> str:
     """Independently review, fact-check, and evaluate a drafted research report.
 
@@ -249,9 +248,3 @@ def critique(findings: str) -> str:
         return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n Error: Could not generate response."
 
     return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n" + critique.model_dump_json(indent=2)
-
-tool_registry.update({
-    "plan": plan,
-    "research": research,
-    "critique": critique
-})
