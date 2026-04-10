@@ -12,7 +12,6 @@ from supervisor import print_agent_step
 port_search = f"http://127.0.0.1:{port_search_mcp}/mcp"
 
 async def run_planner(user_text: str) -> str:
-    # Connect to your SearchMCP server (Change port if needed)
     async with Client(port_search) as mcp_client:
         
         # 1. Fetch and convert tools
@@ -27,11 +26,10 @@ async def run_planner(user_text: str) -> str:
             response_format=ResearchPlan
         )
 
-        # 3. Run the agent while the connection is still open!
+        # 3. Run the agent while the connection is still open
         result = await planner_agent.ainvoke({"messages": [("user", user_text)]})
              
-        # 4. Iterate through the message history to print the steps!
-        # (We use [1:] to skip the first message, which is just the user's input)
+        # 4. Iterate through the message history to print the steps
         for msg in result["messages"][1:]:
             print_agent_step(msg, agent_name="Planner")
 
