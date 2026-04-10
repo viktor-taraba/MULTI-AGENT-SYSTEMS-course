@@ -2,8 +2,6 @@ import os, sys #to delete
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from fastmcp import FastMCP
-import asyncio
-import threading
 import json
 from config import output_dir
 
@@ -55,38 +53,9 @@ def save_report(filename: str, content: str, output_dir: str = output_dir) -> st
     except Exception as e:
         return f"Error: Could not save the report. Details: {e}"
 
-def run_mcp_server():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(
-        mcp_server.run_async(transport="streamable-http", host="127.0.0.1", port=8902)
-    )
-
-server_thread = threading.Thread(target=run_mcp_server, daemon=True)
-server_thread.start()
-print("✅ MCP Server 'ReportMCP' running at http://127.0.0.1:8902/mcp")
-
-
-from fastmcp import Client
-import asyncio
-
-async def test_mcp_server():
-    async with Client("http://127.0.0.1:8902/mcp") as client:
-        # 1. List available tools
-        tools = await client.list_tools()
-        print()
-        print('-' * 50)
-        print("Available Tools:")
-        for t in tools: print(f"   - {t.name}: {(t.description or '')}")
-        print()
-
-        # 2. List available resources
-        resources = await client.list_resources()
-        print('-' * 50)
-        print("Available Resources:")
-        for r in resources: print(f"   - {r.uri}: {r.name}")
-        print()
-
-
 if __name__ == "__main__":
-    asyncio.run(test_mcp_server())
+    print("✅ Starting MCP Server 'SearchMCP' on http://127.0.0.1:8902/mcp")
+    try:
+        mcp_server.run(transport="streamable-http", host="127.0.0.1", port=8902)
+    except KeyboardInterrupt:
+        print("🛑 MCP Server 'SearchMCP' http://127.0.0.1:8902/mcp stopped")

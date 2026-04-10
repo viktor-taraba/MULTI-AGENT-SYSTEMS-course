@@ -4,9 +4,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import trafilatura
 import yfinance  as yf
 import json
-import asyncio
-import threading
-import time
 import requests
 import logging
 import io
@@ -17,12 +14,13 @@ from ddgs import DDGS
 from pypdf import PdfReader
 from config import (
     max_search_results, 
-    max_url_content_length, 
-    output_dir, 
+    max_url_content_length,  
     desired_keys_yfinance, 
     period_yfinance, 
     email_crossref_api
     )
+
+# resource://knowledge-base-stats — кількість документів, дата останнього оновлення
 
 mcp_server = FastMCP(name="SearchMCP")
 
@@ -224,50 +222,9 @@ def read_url(url: str) -> str:
     except Exception as e:
         return f"An unexpected error occurred while reading '{url}': {str(e)}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
-def run_mcp_server():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(
-        mcp_server.run_async(transport="streamable-http", host="127.0.0.1", port=8901)
-    )
-
-server_thread = threading.Thread(target=run_mcp_server, daemon=True)
-server_thread.start()
-time.sleep(3)
-print("✅ MCP Server 'SearchMCP' running at http://127.0.0.1:8901/mcp")
-
-"""
-print("\n Testing tool call\n")
-result = web_search("Latest news about space exploration")
-print(result)
-print("\n Tool call finished\n")
-
-print("\n Testing resource\n")
-result = get_output_dir("test")
-print(result)
-print("\n Test finished\n")
-"""
-
-from fastmcp import Client
-import asyncio
-
-async def test_mcp_server():
-    async with Client("http://127.0.0.1:8901/mcp") as client:
-        # 1. List available tools
-        tools = await client.list_tools()
-        print()
-        print('-' * 50)
-        print("Available Tools:")
-        for t in tools: print(f"   - {t.name}: {(t.description or '')}")
-        print()
-
-        # 2. List available resources
-        resources = await client.list_resources()
-        print('-' * 50)
-        print("Available Resources:")
-        for r in resources: print(f"   - {r.uri}: {r.name}")
-        print()
-
-
 if __name__ == "__main__":
-    asyncio.run(test_mcp_server())
+    print("✅ Starting MCP Server 'SearchMCP' on http://127.0.0.1:8901/mcp")
+    try:
+        mcp_server.run(transport="streamable-http", host="127.0.0.1", port=8901)
+    except KeyboardInterrupt:
+        print("🛑 MCP Server 'SearchMCP' http://127.0.0.1:8901/mcp stopped")
