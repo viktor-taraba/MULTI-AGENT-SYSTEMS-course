@@ -1,7 +1,5 @@
 from langchain_core.tools import tool
-from agents.planner import planner_agent
-from agents.critic import critic_agent
-from agents.research import research_agent
+
 from config import ( 
     FINAL_PROMPT_research,
     FINAL_PROMPT_critic,
@@ -24,10 +22,6 @@ current_research_session = str(uuid.uuid4())
 def print_tool_call(tool_name, tool_args, indent=""):
     tool_args = tool_args[:tool_preview_len] + "..." if len(tool_args) > tool_preview_len else tool_args
     print(f"{indent}🔧 Tool called -> {tool_name}({tool_args})")
-
-    tool_name = tool_registry.get(tool_name)
-    if tool_name is None:
-        print(f"{indent}❌ Unknown tool: {tool_name}")
 
 def print_agent_step(msg, agent_name="Supervisor"):
     """Parses a single LangChain message object and prints it in a clean format."""
