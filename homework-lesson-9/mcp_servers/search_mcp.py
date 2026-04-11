@@ -18,14 +18,51 @@ from config import (
     desired_keys_yfinance, 
     period_yfinance, 
     email_crossref_api,
-    port_search_mcp
+    port_search_mcp,
+    chunks_dir, 
+    chunks_json_name
     )
 from retriever import get_retriever
 
-# resource://knowledge-base-stats — кількість документів, дата останнього оновлення
-
 base_port = f"http://127.0.0.1:{port_search_mcp}/mcp"
 mcp_server = FastMCP(name="SearchMCP")
+
+@mcp_server.resource("resource://output-dir")
+def get_knowledge_base_stats() -> str:
+    """
+    Returns the number of documents in the local knowledge base and the date it was last updated.
+    """
+    try:
+        CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+        BASE_DIR = os.path.dirname(CURRENT_DIR)
+        absolute_chunks_path = os.path.join(BASE_DIR, chunks_dir, chunks_json_name)
+        
+        if not os.path.exists(absolute_chunks_path):
+             return json.dumps({"error": f"Knowledge base file not found at {absolute_chunks_path}"})
+
+        with open(absolute_chunks_path, "r", encoding="utf-8") as f:
+            chunks_data = json.load(f)
+            chunks_count = len(chunks_data)
+
+        unique_sources = set()
+        moddates = []
+        for chunk in chunks_data:
+            metadata = chunk.get("metadata", {})
+            source = metadata.get("source")
+            if source:
+                unique_sources.add(source)
+            moddate = metadata.get("moddate")
+            if moddate:
+                moddates.append(moddate)
+
+        return json.dumps({
+            "chunks_count": chunks_count,
+            "documents_count": len(unique_sources),
+            "last_updated": max(moddates) if moddates else "Unknown"
+        }, indent=2)
+
+    except Exception as e:
+        return json.dumps({"error": f"Failed to read knowledge base stats: {str(e)}"})
 
 @mcp_server.tool
 def web_search(query: str, max_search_results: int = max_search_results) -> str:
