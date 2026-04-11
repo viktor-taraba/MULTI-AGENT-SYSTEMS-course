@@ -77,10 +77,14 @@ def get_retriever(query_text: str):
     with _retriever_lock:
         if _cached_retriever is None:
         
+            BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+            absolute_index_dir = os.path.join(BASE_DIR, index_dir)
+            absolute_chunks_path = os.path.join(BASE_DIR, chunks_dir, chunks_json_name)
+
             lc_embeddings = OpenAIEmbeddings(model=embedding_model)
 
             vectorstore = Chroma(
-                persist_directory=index_dir,
+                persist_directory=absolute_index_dir,
                 embedding_function=lc_embeddings,
                 collection_name=collection_name
             )
@@ -89,7 +93,7 @@ def get_retriever(query_text: str):
             vector_retriever = vectorstore.as_retriever(search_kwargs={"k": retrieval_top_k})
 
             # 3. Load chunks and create BM25 retriever
-            chunks = load_bm25_chunks_from_json(os.path.join(chunks_dir,chunks_json_name))
+            chunks = load_bm25_chunks_from_json(absolute_chunks_path)
             bm25_retriever = BM25Retriever.from_documents(chunks)
             bm25_retriever.k = retrieval_top_k
 
