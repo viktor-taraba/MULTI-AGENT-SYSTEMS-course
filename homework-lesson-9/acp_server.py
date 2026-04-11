@@ -38,7 +38,6 @@ Planner і Critic використовують response_format для струк
  """
 
 acp_adress = f"http://127.0.0.1:{port_acp_server}"
-
 acp_server = Server()
 
 print("✅ ACP Server created (acp-sdk)")
@@ -64,6 +63,7 @@ async def critic_handler(input: list[Message]) -> Message:
 def run_acp():
     acp_server.run(port=port_acp_server)
 
+"""
 async def demo_acp():
     async with ACPClient(base_url=acp_adress, headers={"Content-Type": "application/json"}) as client:
         # Discovery
@@ -91,7 +91,7 @@ async def demo_acp():
         print("Calling 'researcher'...")
         run = await client.run_sync(
             agent="researcher",
-            input=[Message(role="user", parts=[MessagePart(content="What is PBIR format?")])],
+            input=[Message(role="user", parts=[MessagePart(content="Agentic development in power bi. Use only one tool 'knowledge search' several times")])],
         )
         output = run.output[-1].parts[0].content
         print(f"**Result:**\n{output}")
@@ -110,9 +110,16 @@ async def demo_acp():
         print()
         print('-' * 50)
 
-
 if __name__ == "__main__":
     threading.Thread(target=run_acp, daemon=True).start()
     time.sleep(2)
     print(f"✅ ACP Server running at http://127.0.0.1:{acp_adress}")
     asyncio.run(demo_acp())
+]"""
+
+if __name__ == "__main__":
+    print(f"✅ Starting ACP Server on {acp_adress}")
+    try:
+        acp_server.run(host="127.0.0.1", port=port_acp_server)
+    except KeyboardInterrupt:
+        print(f"🛑 ACP Server {acp_adress} stopped")
