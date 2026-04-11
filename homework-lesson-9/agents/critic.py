@@ -28,5 +28,5 @@ async def run_critic(user_text: str) -> str:
         result = await critic_agent.ainvoke({"messages": [("user", user_text)]})
 
         for msg in result["messages"][1:]:
-            print_agent_step(msg, agent_name="Planner")
+            print_agent_step(msg, agent_name="Critic")
         return result["messages"][-1].content

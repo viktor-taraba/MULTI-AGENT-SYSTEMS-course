@@ -39,6 +39,6 @@ async def run_research(user_text: str) -> str:
         result = await research_agent.ainvoke({"messages": [("user", user_text)]})
              
         for msg in result["messages"][1:]:
-            print_agent_step(msg, agent_name="Planner")
+            print_agent_step(msg, agent_name="Researcher")
 
         return result["messages"][-1].content
