@@ -1,22 +1,24 @@
 from langchain_core.tools import tool
-
+from acp_sdk.client import Client as ACPClient
+from acp_sdk.models import Message, MessagePart
 from config import ( 
-    FINAL_PROMPT_research,
-    FINAL_PROMPT_critic,
-    FINAL_PROMPT_planner,
     max_iterations_planner,
     max_iterations_research,
     max_iterations_critic,
     revision_counter_max,
-    tool_preview_len
+    tool_preview_len,
+    port_acp_server,
+    port_report_mcp
 )
 from langgraph.errors import GraphRecursionError
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
 import uuid
 
+acp_address = f"http://127.0.0.1:{port_acp_server}"
+mcp_report_address = f"http://127.0.0.1:{port_report_mcp}"
+
 revision_counter = 0
 global current_research_session
-current_research_session = str(uuid.uuid4())
 
 def print_tool_call(tool_name, tool_args, indent=""):
     tool_args = tool_args[:tool_preview_len] + "..." if len(tool_args) > tool_preview_len else tool_args
@@ -67,75 +69,9 @@ def print_agent_step(msg, agent_name="Supervisor"):
 
         else:
             print(f"{indent}✅ Result ({tool_name}): {preview}")
-"""
-def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str, agent_name: str):
-    indent = "    " if agent_name != "Supervisor" else ""
-    
-    try:
-        for step in agent.stream(
-            {"messages": [{"role": "user", "content": request}]},
-            config=config
-        ):
-            for update in step.values():
-                if isinstance(update, dict):
-                    for message in update.get("messages", []):
-                        print_agent_step(message, agent_name=agent_name)
 
-        current_state = agent.get_state(config)
-        result = current_state.values
-        
-        # Pydantic structured response
-        if "structured_response" in result and result["structured_response"]:
-            return result["structured_response"]
-        # simplified fallback: raw text
-        messages = result.get("messages", [])
-        if messages and hasattr(messages[-1], "content") and messages[-1].content:
-            return messages[-1].content
-        return None
-        
-    except (GraphRecursionError, ToolCallLimitExceededError) as e:
-        print(f"{indent}⚠️ Agent {agent_name} stopped: Reached max iterations. Forcing final output...")
-        
-        current_state = agent.get_state(config)
-        recovery_config = config.copy()
-        # Increase the limit slightly to allow one last "Final Prompt" pass
-        recovery_config["recursion_limit"] = config["recursion_limit"] + 5
-
-        messages = current_state.values.get("messages", [])
-        recovery_messages = []
-        
-        if messages and hasattr(messages[-1], "tool_calls") and messages[-1].tool_calls:
-            for tc in messages[-1].tool_calls:
-                recovery_messages.append({
-                    "role": "tool",
-                    "tool_call_id": tc["id"],
-                    "name": tc["name"],
-                    "content": "System Abort: Tool execution cancelled because iteration limit was reached."
-                })             
-        recovery_messages.append({"role": "user", "content": final_prompt})
-   
-        try:
-            final_result = agent.invoke(
-                {"messages": recovery_messages},
-                config=recovery_config
-            )
-            
-            if "structured_response" in final_result and final_result["structured_response"]:
-                return final_result["structured_response"]
-            messages = final_result.get("messages", [])
-            if messages and hasattr(messages[-1], "content") and messages[-1].content:
-                return messages[-1].content
-            return None
-
-        except Exception as inner_e:
-            print(f"{indent}❌ {agent_name} failed during recovery: {inner_e}")
-            return None
-    except Exception as e:
-        print(f"{indent}❌ {agent_name} encountered an unexpected error: {e}")
-        return None
-"""
-#@tool
-def plan(request: str) -> str:
+@tool
+async def plan(request: str) -> str:
     """Create structured, step-by-step research plans from user requests.
 
     Usage:
@@ -148,23 +84,21 @@ def plan(request: str) -> str:
     """
     print(f"\n╭{'─'*30}\n│   [Supervisor → Planner]\n╰{'─'*30}")
 
-    unique_planner_thread_id = f"planner_internal_thread{uuid.uuid4()}"
-    config = {
-        "recursion_limit": max_iterations_planner, 
-        "configurable": {"thread_id": unique_planner_thread_id}
-    }
+    try:
+        async with ACPClient(base_url=acp_address, headers={"Content-Type": "application/json"}) as client:
+            run = await client.run_sync(
+                agent="planner",
+                input=[Message(role="user", parts=[MessagePart(content=request)])]
+            )
+            if not run.output:
+                return "Error: The ACP Server encountered a fatal Python error and returned no output. Check the ACP Server terminal logs!"                
+            return run.output[-1].parts[0].content
+            
+    except Exception as e:
+        return f"Error: Could not communicate with ACP Planner. Details: {e}"
 
-    plan = run_agent_with_recovery(
-        agent=planner_agent, 
-        request=request, 
-        config=config,
-        final_prompt=FINAL_PROMPT_planner,
-        agent_name="Planner")
-
-    return plan.model_dump_json(indent=2) if plan else "Error: Could not generate research plan."
-
-#@tool
-def research(plan: str) -> str:
+@tool
+async def research(plan: str) -> str:
     """Execute deep-dive research and generate a comprehensive Markdown report.
 
     Usage:
@@ -181,26 +115,21 @@ def research(plan: str) -> str:
     """
     print(f"\n╭{'─'*30}\n│   [Supervisor → Researcher]\n╰{'─'*30}")
 
-    global current_research_session
-    unique_researcher_thread_id = f"research_internal_thread{current_research_session}"
-    config = {
-        "recursion_limit": max_iterations_research, 
-        "configurable": {"thread_id": unique_researcher_thread_id}
-    }
-    
-    res = run_agent_with_recovery(
-            agent=research_agent, 
-            request=plan, 
-            config=config,
-            final_prompt=FINAL_PROMPT_research,
-            agent_name="Researcher")
+    try:
+        async with ACPClient(base_url=acp_address, headers={"Content-Type": "application/json"}) as client:
+            run = await client.run_sync(
+                agent="researcher",
+                input=[Message(role="user", parts=[MessagePart(content=plan)])]
+            )
+            if not run.output:
+                return "Error: The ACP Server encountered a fatal Python error and returned no output. Check the ACP Server terminal logs!"                
+            return run.output[-1].parts[0].content
 
-    if res and hasattr(res, 'research_output'):
-        return res.research_output
-    return "Error: Could not generate report."
+    except Exception as e:
+        return f"Error: Could not communicate with ACP Researcher. Details: {e}"
 
-#@tool
-def critique(findings: str) -> str:
+@tool
+async def critique(findings: str) -> str:
     """Independently review, fact-check, and evaluate a drafted research report.
 
     Usage:
@@ -231,20 +160,129 @@ def critique(findings: str) -> str:
         }
         return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n" + json.dumps(mock_critique, indent=2)
 
-    unique_critic_thread_id = f"critic_internal_thread{uuid.uuid4()}"
-    config = {
-        "recursion_limit": max_iterations_critic, 
-        "configurable": {"thread_id": unique_critic_thread_id}
-    }
+    try:
+        async with ACPClient(base_url=acp_address, headers={"Content-Type": "application/json"}) as client:
+            run = await client.run_sync(
+                agent="critic",
+                input=[Message(role="user", parts=[MessagePart(content=findings)])]
+            )
+            if not run.output:
+                return "Error: The ACP Server encountered a fatal Python error and returned no output. Check the ACP Server terminal logs!"                
+            critique_result = run.output[-1].parts[0].content
 
-    critique = run_agent_with_recovery(
-        agent=critic_agent, 
-        request=findings,
-        config=config,
-        final_prompt=FINAL_PROMPT_critic,
-        agent_name="Critic")
+            return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n" + critique_result
+            
+    except Exception as e:
+        return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n Error: Could not communicate with ACP Critic. Details: {e}"
 
-    if not critique:
-        return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n Error: Could not generate response."
 
-    return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n" + critique.model_dump_json(indent=2)
+from acp_sdk.client import Client as ACPClient
+# TO DO
+# tool duplication? add direct access to ReportMCP? or keep it as a tool call?
+@tool
+async def save_report(filename: str, content: str) -> str:
+    """
+    Saves the final Markdown report to the local disk.
+    Use this tool ONLY when the report is completely finished and you are ready to give the final answer.
+    
+    Args:
+        filename (str): The name of the file to save (e.g., 'report.md').
+        content (str): The full Markdown text of the report.
+        
+    Returns:
+        str: A confirmation message with the full path to the saved file, or an error message.
+    """
+
+    print(f"\n╭{'─'*30}\n│   [Supervisor → ReportMCP (Save)]\n╰{'─'*30}")
+    
+    try:
+        async with ACPClient(mcp_report_address) as client:
+            result = await client.call_tool("save_report", {"filename": filename, "content": content})
+            
+            if hasattr(result, "content") and isinstance(result.content, list):
+                extracted_texts = [
+                    item.text for item in result.content 
+                    if getattr(item, "type", "") == "text"
+                ]
+                return "\n".join(extracted_texts)
+            return str(result)
+            
+    except Exception as e:
+        return f"Error: Could not communicate with ReportMCP. Details: {e}"
+
+# TO DELETE
+# test runs for supervisor
+import asyncio
+from langchain.agents import create_agent
+
+from config import (
+    SUPERVISOR_PROMPT, 
+    supervisor_model_name, 
+    max_iterations_supervisor,
+    tool_preview_len
+    )
+from langgraph.checkpoint.memory import InMemorySaver
+from dotenv import load_dotenv
+load_dotenv()
+
+# ============================================================
+# 1. Create the Local Supervisor Agent
+# ============================================================
+
+supervisor = create_agent(
+                model=supervisor_model_name,
+                tools=[plan, research, critique, save_report],
+                system_prompt=SUPERVISOR_PROMPT,
+                checkpointer=InMemorySaver())
+
+# ============================================================
+# 2. Async Test Function
+# ============================================================
+async def run_and_print_supervisor(query: str):
+    print(f"🚀 Starting Supervisor test...\nQuery: '{query}'\n" + "="*60)
+    
+    try:
+        final_response = None
+        
+        config = {"configurable": {"thread_id": "test_thread_1"}} 
+        
+        async for step in supervisor.astream({"messages": [("user", query)]}, config):
+            
+            for node_name, update in step.items():
+                if isinstance(update, dict) and "messages" in update:
+                    
+                    messages = update["messages"]
+                    if not isinstance(messages, list):
+                        messages = [messages]
+                        
+                    for msg in messages:
+                        print_agent_step(msg, agent_name="Supervisor")
+                        if getattr(msg, "type", None) == "ai" and getattr(msg, "content", ""):
+                            final_response = msg.content
+        
+    except Exception as e:
+        print(f"\n❌ Supervisor encountered an error: {e}")
+
+# ============================================================
+# 3. Execution Block
+# ============================================================
+if __name__ == "__main__":
+    test_query = "What is the difference between the BM25 algorithm and TF-IDF? Explain how they calculate relevance."
+    asyncio.run(run_and_print_supervisor(test_query))
+
+# TO DO:
+# помилка на save tool - пофіксити
+"""
+🔧 Tool called -> save_report({'filename': 'bm25_vs_tfidf_report.md', 'content': '# BM25 vs TF‑IDF — How each calculates relevance...)
+
+╭──────────────────────────────
+│   [Supervisor → ReportMCP (Save)]
+╰──────────────────────────────
+✅ Result (save_report): Error: Could not communicate with ReportMCP. Details: Client.__init__() takes 1 positional argument ...
+"""
+# додати обробку для випадку з помилкою при обмеженні к-ті виклику тулів
+# додати обмеження по тулах для планера та для критика замість обмеження по к-ті ітерацій
+# друк тулів має бути не лише у вікні де acp server, а й у вікні supervisor
+# друк тулів має бути real-time для субагентів, не просто зчитування з історії запусків в самому кінці
+# для якогось із серверів порт хардом прописаний, пофіксити
+# HITL + перенесети скрипт звідси в main
