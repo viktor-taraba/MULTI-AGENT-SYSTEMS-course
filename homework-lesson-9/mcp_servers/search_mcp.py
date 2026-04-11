@@ -17,13 +17,14 @@ from config import (
     max_url_content_length,  
     desired_keys_yfinance, 
     period_yfinance, 
-    email_crossref_api
+    email_crossref_api,
+    port_search_mcp
     )
+from retriever import get_retriever
 
 # resource://knowledge-base-stats — кількість документів, дата останнього оновлення
 
-# add knowledge_search
-
+base_port = f"http://127.0.0.1:{port_search_mcp}/mcp"
 mcp_server = FastMCP(name="SearchMCP")
 
 @mcp_server.tool
@@ -224,9 +225,31 @@ def read_url(url: str) -> str:
     except Exception as e:
         return f"An unexpected error occurred while reading '{url}': {str(e)}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
-if __name__ == "__main__":
-    print("✅ Starting MCP Server 'SearchMCP' on http://127.0.0.1:8901/mcp")
+@mcp_server.tool
+def knowledge_search(query: str) -> str:
+    """
+    Search the local knowledge database which has information about the following topics: large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development, changes in Power BI with he new version.
+    Returns top releveant search results.
+    Automatically filters out irrelevant noise via reranking.
+
+    Args:
+        query (str): Search query or question to look up, e.g. 'DAX measures' or 'LLM monitoring'.
+
+    Returns:
+        str: Most relevant document fragments (Content + Source).
+    """
     try:
-        mcp_server.run(transport="streamable-http", host="127.0.0.1", port=8901)
+        results = get_retriever(query)
+        if not results:
+            return "No documents found for this query. Try rephrasing."
+        else:
+            return results
+    except Exception as e:
+        return f"Error searching local knowledge base. Details: {e}."
+
+if __name__ == "__main__":
+    print(f"✅ Starting MCP Server 'SearchMCP' on {base_port}")
+    try:
+        mcp_server.run(transport="streamable-http", host="127.0.0.1", port=port_search_mcp)
     except KeyboardInterrupt:
-        print("🛑 MCP Server 'SearchMCP' http://127.0.0.1:8901/mcp stopped")
+        print(f"🛑 MCP Server 'SearchMCP' {base_port} stopped")
