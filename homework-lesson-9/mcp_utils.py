@@ -27,7 +27,18 @@ def mcp_tools_to_langchain(mcp_tools, mcp_client):
         _name, _client = tool.name, mcp_client
 
         async def _invoke(_name=_name, _client=_client, **kwargs):
-            return str(await _client.call_tool(_name, kwargs))
+            result = await _client.call_tool(_name, kwargs)
+            
+            # Extract the actual text from the MCP CallToolResult object
+            if hasattr(result, "content") and isinstance(result.content, list):
+                extracted_texts = [
+                    item.text for item in result.content 
+                    if getattr(item, "type", "") == "text"
+                ]
+                return "\n".join(extracted_texts)
+            
+            # Fallback if it's an unexpected format
+            return str(result)
 
         lc_tools.append(StructuredTool.from_function(
             coroutine=_invoke, name=tool.name,
