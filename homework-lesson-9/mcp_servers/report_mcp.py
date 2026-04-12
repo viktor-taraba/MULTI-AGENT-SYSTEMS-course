@@ -4,11 +4,13 @@ import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from config import (
     output_dir, 
-    port_report_mcp, 
-    output_path)
+    port_report_mcp)
 from pathlib import Path
 
-OUTPUT_PATH = Path(output_path)
+CURRENT_DIR = Path(__file__).resolve().parent
+BASE_DIR = CURRENT_DIR.parent
+OUTPUT_DIR = BASE_DIR / "output"
+OUTPUT_PATH = Path(OUTPUT_DIR)
 
 base_port = f"http://127.0.0.1:{port_report_mcp}/mcp"
 mcp_server = FastMCP(name="ReportMCP")
