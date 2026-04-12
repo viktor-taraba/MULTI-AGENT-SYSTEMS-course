@@ -55,8 +55,8 @@ def save_report(filename: str, content: str, output_dir: str = output_dir) -> st
         return f"Error: Could not save the report. Details: {e}"
 
 if __name__ == "__main__":
-    print(f"✅ Starting MCP Server 'SearchMCP' on {base_port}")
+    print(f"✅ Starting MCP Server 'ReportMCP' on {base_port}")
     try:
         mcp_server.run(transport="streamable-http", host="127.0.0.1", port=port_report_mcp)
     except KeyboardInterrupt:
-        print(f"🛑 MCP Server 'SearchMCP' {base_port} stopped")
+        print(f"🛑 MCP Server 'ReportMCP' {base_port} stopped")
