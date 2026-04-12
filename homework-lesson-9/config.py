@@ -39,10 +39,10 @@ Rules:
 """
 
 # critic agent
-revision_counter_max: int = 1
+revision_counter_max: int = 2
 critic_model_name: str = "gpt-5-mini"
 max_items_critic: int = 5
-ToolCallLimit_critic: int = 30
+ToolCallLimit_critic: int = 5
 SYSTEM_PROMPT_critic: str = f"""
 You are an expert Critic responsible for evaluating the quality of research. 
 our core task is to independently verify the findings. 
@@ -77,7 +77,7 @@ CRITICAL INSTRUCTIONS:
 
 # research agent
 research_model_name: str = "gpt-5-mini"
-ToolCallLimit_research: int = 25
+ToolCallLimit_research: int = 4
 SYSTEM_PROMPT_research: str = """
 You are a Senior Analyst with 10 years of experience.
 Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a text report.
@@ -128,7 +128,7 @@ The Supervisor is waiting for the actual Markdown text. Output the full text now
 
 # planner agent
 planner_model_name: str = "gpt-5-mini"
-ToolCallLimit_planner: int = 20
+ToolCallLimit_planner: int = 5
 SYSTEM_PROMPT_planner: str = """You are an expert Research Planner and Lead Strategist with 15 years of experience.
 
 Your responsibilities:
@@ -161,8 +161,8 @@ Return the structured response immediately.
 """
 
 # tools 
-max_search_results: int = 5
-max_url_content_length: int = 5000
+max_search_results: int = 4
+max_url_content_length: int = 4000
 email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',
