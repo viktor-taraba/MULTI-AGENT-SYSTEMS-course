@@ -2,9 +2,6 @@ from langchain_core.tools import tool
 from acp_sdk.client import Client as ACPClient
 from acp_sdk.models import Message, MessagePart
 from config import ( 
-    max_iterations_planner,
-    max_iterations_research,
-    max_iterations_critic,
     revision_counter_max,
     tool_preview_len,
     port_acp_server,
@@ -218,7 +215,6 @@ from langchain.agents import create_agent
 from config import (
     SUPERVISOR_PROMPT, 
     supervisor_model_name, 
-    max_iterations_supervisor,
     tool_preview_len
     )
 from langgraph.checkpoint.memory import InMemorySaver
@@ -240,25 +236,17 @@ supervisor = create_agent(
 # ============================================================
 async def run_and_print_supervisor(query: str):
     print(f"🚀 Starting Supervisor test...\nQuery: '{query}'\n" + "="*60)
-    
     try:
-        final_response = None
-        
         config = {"configurable": {"thread_id": "test_thread_1"}} 
-        
         async for step in supervisor.astream({"messages": [("user", query)]}, config):
-            
+
             for node_name, update in step.items():
                 if isinstance(update, dict) and "messages" in update:
-                    
                     messages = update["messages"]
                     if not isinstance(messages, list):
                         messages = [messages]
-                        
                     for msg in messages:
                         print_agent_step(msg, agent_name="Supervisor")
-                        if getattr(msg, "type", None) == "ai" and getattr(msg, "content", ""):
-                            final_response = msg.content
         
     except Exception as e:
         print(f"\n❌ Supervisor encountered an error: {e}")
@@ -269,6 +257,10 @@ async def run_and_print_supervisor(query: str):
 if __name__ == "__main__":
     test_query = "What is the difference between the BM25 algorithm and TF-IDF? Explain how they calculate relevance."
     asyncio.run(run_and_print_supervisor(test_query))
+
+# додати обмеження по тулах для планера та для критика замість обмеження по к-ті ітерацій
+# друк тулів має бути real-time для субагентів, не просто зчитування з історії запусків в самому кінці
+# для якогось із серверів порт хардом прописаний, пофіксити
 
 # TO DO:
 # помилка на save tool - пофіксити
@@ -281,9 +273,7 @@ if __name__ == "__main__":
 ✅ Result (save_report): Error: Could not communicate with ReportMCP. Details: Client.__init__() takes 1 positional argument ...
 """
 # додати обробку для випадку з помилкою при обмеженні к-ті виклику тулів
-# додати обмеження по тулах для планера та для критика замість обмеження по к-ті ітерацій
 # друк тулів має бути не лише у вікні де acp server, а й у вікні supervisor
-# друк тулів має бути real-time для субагентів, не просто зчитування з історії запусків в самому кінці
-# для якогось із серверів порт хардом прописаний, пофіксити
 # HITL + перенесети скрипт звідси в main
 # підправити принти щоб було як в прикладі до завддання (з MCP / ACP)
+# додати пару тулів по РВІ та звіти в папці, і додати це все до проекту
