@@ -1,6 +1,5 @@
 from acp_sdk.models import Message, MessagePart
 from acp_sdk.server import Server
-from acp_sdk.client import Client as ACPClient
 from acp_sdk.models import Message, MessagePart
 from agents.planner import run_planner
 from agents.critic import run_critic

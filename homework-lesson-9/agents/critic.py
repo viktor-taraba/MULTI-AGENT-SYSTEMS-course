@@ -11,13 +11,12 @@ from fastmcp import Client
 from mcp_utils import mcp_tools_to_langchain
 from supervisor import print_agent_step
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitMiddleware
+from langchain_core.messages import ToolMessage
 
 tool_limiter = ToolCallLimitMiddleware(
     run_limit=ToolCallLimit_critic, 
     exit_behavior="error"
 )
-
-from langchain_core.messages import ToolMessage
 
 port_search = f"http://127.0.0.1:{port_search_mcp}/mcp"
 

@@ -1,6 +1,4 @@
-import os, sys #to delete
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+import os, sys
 import trafilatura
 import yfinance  as yf
 import json
@@ -25,6 +23,7 @@ from config import (
 from retriever import get_retriever
 
 base_port = f"http://127.0.0.1:{port_search_mcp}/mcp"
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 mcp_server = FastMCP(name="SearchMCP")
 
 @mcp_server.resource("resource://output-dir")

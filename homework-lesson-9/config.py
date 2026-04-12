@@ -171,6 +171,7 @@ desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'long
                 'freeCashflow','operatingCashflow','earningsGrowth','revenueGrowth','grossMargins','ebitdaMargins','operatingMargins','shortName','longName']
 period_yfinance: str = "3mo"
 tool_preview_len: int = 100
+ouput_path: str = "C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-9\output"
 
 # RAG
 embedding_model: str = "text-embedding-3-small"

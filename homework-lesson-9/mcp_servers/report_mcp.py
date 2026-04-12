@@ -1,12 +1,14 @@
-import os, sys #to delete
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from fastmcp import FastMCP
 import json
-from config import output_dir, port_report_mcp
-
+import os, sys 
+from config import (
+    output_dir, 
+    port_report_mcp, 
+    output_path)
 from pathlib import Path
-OUTPUT_PATH = Path(r"C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-9\output")
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+OUTPUT_PATH = Path(output_path)
 
 base_port = f"http://127.0.0.1:{port_report_mcp}/mcp"
 mcp_server = FastMCP(name="ReportMCP")
