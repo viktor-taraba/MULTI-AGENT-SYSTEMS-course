@@ -3,35 +3,51 @@ from schemas import ResearchPlan
 from config import (
     planner_model_name, 
     SYSTEM_PROMPT_planner,
+    ToolCallLimit_planner,
     port_search_mcp
 )
 from fastmcp import Client
 from mcp_utils import mcp_tools_to_langchain
 from supervisor import print_agent_step
+from langchain.agents.middleware.tool_call_limit import ToolCallLimitMiddleware
+
+tool_limiter = ToolCallLimitMiddleware(
+    run_limit=ToolCallLimit_planner, 
+    exit_behavior="error"
+)
 
 port_search = f"http://127.0.0.1:{port_search_mcp}/mcp"
 
 async def run_planner(user_text: str) -> str:
     async with Client(port_search) as mcp_client:
         
-        # 1. Fetch and convert tools
+        # Fetch and convert tools
         mcp_tools = await mcp_client.list_tools()
         lc_tools = mcp_tools_to_langchain(mcp_tools, mcp_client)
 
-        # 2. Create the agent with the dynamically fetched tools
+        # Create the agent with the dynamically fetched tools
         planner_agent = create_agent(
             model=planner_model_name,
             tools=lc_tools, 
             system_prompt=SYSTEM_PROMPT_planner,
-            response_format=ResearchPlan
+            response_format=ResearchPlan,
+            middleware=[tool_limiter]
         )
 
-        # 3. Run the agent while the connection is still open
-        result = await planner_agent.ainvoke({"messages": [("user", user_text)]})
-             
-        # 4. Iterate through the message history to print the steps
-        for msg in result["messages"][1:]:
-            print_agent_step(msg, agent_name="Planner")
-
-        # 5. Return the final string to the ACP server
-        return result["messages"][-1].content
+        final_response = ""
+        # Use .astream() to stream graph updates in real-time
+        async for step in planner_agent.astream({"messages": [("user", user_text)]}):
+            
+            for node_name, update in step.items():
+                if isinstance(update, dict) and "messages" in update:
+                    
+                    messages = update["messages"]
+                    if not isinstance(messages, list):
+                        messages = [messages]
+                        
+                    for msg in messages:
+                        print_agent_step(msg, agent_name="Planner")
+                        # Capture the latest AI message content so we can return it at the end
+                        if getattr(msg, "type", None) == "ai" and getattr(msg, "content", ""):
+                            final_response = msg.content
+        return final_response
