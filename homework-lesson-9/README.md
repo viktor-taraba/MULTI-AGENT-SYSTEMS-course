@@ -14,6 +14,9 @@
 ![transformers](https://img.shields.io/badge/transformers-5.4.0+-orange.svg)
 ![docx2txt](https://img.shields.io/badge/docx2txt-0.9+-orange.svg)
 ![rank_bm25](https://img.shields.io/badge/rank_bm25-0.2.2+-orange.svg)
+![fastmcp](https://img.shields.io/badge/fastmcp-3.2.2-orange.svg)
+![uvicorn](https://img.shields.io/badge/rank_bm25-0.35.0-orange.svg)
+![acp_sdk](https://img.shields.io/badge/acp_sdk-1.0.3-orange.svg)
 
 ### Що змінилося порівняно з homework-8
 
