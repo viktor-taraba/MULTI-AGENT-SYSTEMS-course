@@ -75,9 +75,9 @@ python main.py
 |`find_articles_crossref`|`query: str`|Шукає наукові статті в базі Crossref. Повертає відфільтрований список записів із валідною анотацією (назва, анотація, DOI, рік).|
 |`knowledge_search`|`query: str`|Пошук у локальній базі знань за допомогою гібридного пошуку (hybrid retrieval) та реранкінгу.|
 |`write_report`|`filename: str, content: str`|Зберігає фінальний звіт у форматі Markdown, використовується як останній крок для видачі результату.|
-|`plan`|`request: str`|Субагент Planner (агент як tool для Supervisor)|
-|`research`|`plan: str`|Субагент Research (агент як tool для Supervisor)|
-|`critique`|`findings: str`|Субагент Research (агент як tool для Supervisor)|
+|`plan`|`request: str`|Субагент Planner (обгортка над ACP-викликами через acp_sdk.client.Client)|
+|`research`|`plan: str`|Субагент Research (обгортка над ACP-викликами через acp_sdk.client.Client)|
+|`critique`|`findings: str`|Субагент Research (обгортка над ACP-викликами через acp_sdk.client.Client)|
 
 MCP сервери для набору інструментів:
 
