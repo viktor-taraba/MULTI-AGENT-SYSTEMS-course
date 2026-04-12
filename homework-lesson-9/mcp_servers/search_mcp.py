@@ -1,4 +1,5 @@
 import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import trafilatura
 import yfinance  as yf
 import json
@@ -18,15 +19,13 @@ from config import (
     email_crossref_api,
     port_search_mcp,
     chunks_dir, 
-    chunks_json_name
-    )
+    chunks_json_name)
 from retriever import get_retriever
 
 base_port = f"http://127.0.0.1:{port_search_mcp}/mcp"
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 mcp_server = FastMCP(name="SearchMCP")
 
-@mcp_server.resource("resource://output-dir")
+@mcp_server.resource("resource://knowledge-base-stats")
 def get_knowledge_base_stats() -> str:
     """
     Returns the number of documents in the local knowledge base and the date it was last updated.

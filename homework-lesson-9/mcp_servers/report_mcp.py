@@ -1,13 +1,13 @@
 from fastmcp import FastMCP
 import json
 import os, sys 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from config import (
     output_dir, 
     port_report_mcp, 
     output_path)
 from pathlib import Path
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 OUTPUT_PATH = Path(output_path)
 
 base_port = f"http://127.0.0.1:{port_report_mcp}/mcp"
@@ -19,7 +19,6 @@ def get_output_dir() -> str:
     Returns the directory path and a list of saved reports.
     """
     try:
-        # Get all files in the output directory
         saved_reports = [file.name for file in OUTPUT_PATH.iterdir() if file.is_file()]
     except Exception as e:
         return json.dumps({"error": f"Failed to read directory: {str(e)}"})

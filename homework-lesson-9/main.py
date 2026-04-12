@@ -21,11 +21,6 @@ import asyncio
 from dotenv import load_dotenv
 load_dotenv()
 
-# TO DO:
-# апдейт в конфіг з запасом
-# оформити README, почистити зайві коменти
-# заповнити файл requirements
-
 class LogReceiver(asyncio.DatagramProtocol):
     def datagram_received(self, data, addr):
         print(data.decode('utf-8'))
