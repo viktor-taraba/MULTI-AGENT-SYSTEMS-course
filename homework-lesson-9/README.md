@@ -92,18 +92,21 @@ User (REPL)
   ▼
 Supervisor Agent (локальний, create_agent)
   │
-  ├── delegate_to_planner(request)      ──► ACP ──► Planner Agent  ──► MCP ──► SearchMCP
-  │                                                                             (web_search,
-  │                                                                              knowledge_search)
+  ├── plan(request)        ──► ACP ──► Planner Agent  ──► MCP ──► SearchMCP
+  │                                                                 (web_search,
+  │                                                                  read_url,
+  │                                                                  knowledge_search,
+  |                                                                  find_articles_crossref,
+  |                                                                  stock_company_info)
   │
-  ├── delegate_to_researcher(plan)      ──► ACP ──► Research Agent ──► MCP ──► SearchMCP
-  │                                                                             (web_search,
-  │                                                                              read_url,
-  │                                                                              knowledge_search,
-  |                                                                              find_articles_crossref,
-  |                                                                              stock_company_info)
+  ├── research(plan)       ──► ACP ──► Research Agent ──► MCP ──► SearchMCP
+  │                                                                 (web_search,
+  │                                                                  read_url,
+  │                                                                  knowledge_search,
+  |                                                                  find_articles_crossref,
+  |                                                                  stock_company_info)
   │
-  ├── delegate_to_critic(findings)      ──► ACP ──► Critic Agent   ──► MCP ──► SearchMCP
+  ├── critique(findings)   ──► ACP ──► Critic Agent   ──► MCP ──► SearchMCP
   │       │
   │       ├── verdict: "APPROVE" → go to save_report
   │       └── verdict: "REVISE"  → back to researcher with feedback
