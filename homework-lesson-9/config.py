@@ -4,6 +4,7 @@ from datetime import datetime
 port_search_mcp: int = 8901
 port_report_mcp: int = 8902
 port_acp_server: int = 8903
+udp_log_port: int = 9999
 
 #supervisor agent
 supervisor_model_name: str = "gpt-5-mini"
@@ -38,7 +39,7 @@ Rules:
 """
 
 # critic agent
-revision_counter_max: int = 2
+revision_counter_max: int = 1
 critic_model_name: str = "gpt-5-mini"
 max_items_critic: int = 5
 ToolCallLimit_critic: int = 30
