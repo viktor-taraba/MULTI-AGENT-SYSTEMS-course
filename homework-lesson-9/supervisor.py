@@ -5,28 +5,28 @@ from config import (
     revision_counter_max,
     tool_preview_len,
     port_acp_server,
-    port_report_mcp
+    port_report_mcp,
+    udp_log_port
 )
 from langgraph.errors import GraphRecursionError
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
 import uuid
 import socket
+import json
 
 acp_address = f"http://127.0.0.1:{port_acp_server}"
-mcp_report_address = f"http://127.0.0.1:{port_report_mcp}"
+mcp_report_address = f"http://127.0.0.1:{port_report_mcp}/mcp"
 
 revision_counter = 0
 global current_research_session
 
-UDP_LOG_PORT = 9999
 broadcast_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
 def cross_terminal_print(text, agent_name):
     """Prints locally, and if it's a sub-agent, broadcasts to the Supervisor terminal."""
     print(text) 
     if agent_name != "Supervisor":
         try:
-            broadcast_sock.sendto(text.encode('utf-8'), ('127.0.0.1', UDP_LOG_PORT))
+            broadcast_sock.sendto(text.encode('utf-8'), ('127.0.0.1', udp_log_port))
         except Exception:
             pass
 
@@ -60,8 +60,16 @@ def print_agent_step(msg, agent_name="Supervisor"):
     elif msg_type == "tool":
         tool_name = getattr(msg, "name", "unknown_tool")
         content_str = str(msg_content)
+
+        if tool_name in ["plan", "critique"]:
+            try:
+                parsed_json = json.loads(content_str)
+                content_str = json.dumps(parsed_json, indent=2, ensure_ascii=False)
+            except Exception:
+                pass
         message_len = len(content_str) if tool_name in ["plan","research","critique"] else tool_preview_len 
         preview = content_str[:message_len] + "..." if len(content_str) > message_len else content_str
+
         if tool_name in ["plan","research","critique"]:
 
             cross_terminal_print(f"{indent}✅ Result ({tool_name}):", agent_name=agent_name)
@@ -257,7 +265,7 @@ async def run_and_print_supervisor(query: str):
     
     transport, protocol = await loop.create_datagram_endpoint(
         lambda: LogReceiver(),
-        local_addr=('127.0.0.1', UDP_LOG_PORT)
+        local_addr=('127.0.0.1', udp_log_port)
     )
 
     print(f"🚀 Starting Supervisor test...\nQuery: '{query}'\n" + "="*60)
@@ -286,17 +294,9 @@ if __name__ == "__main__":
     asyncio.run(run_and_print_supervisor(test_query))
 
 # TO DO:
-# помилка на save tool - пофіксити
-"""
-🔧 Tool called -> save_report({'filename': 'bm25_vs_tfidf_report.md', 'content': '# BM25 vs TF‑IDF — How each calculates relevance...)
-
-╭──────────────────────────────
-│   [Supervisor → ReportMCP (Save)]
-╰──────────────────────────────
-✅ Result (save_report): Error: Could not communicate with ReportMCP. Details: Client.__init__() takes 1 positional argument ...
-"""
 # додати обробку для випадку з помилкою при обмеженні к-ті виклику тулів
-# HITL + перенесети скрипт звідси в main
-# для аутпуту research обмежувати к-ть символів
-# "красивий" вивід плану (форматування для json)
+# HITL 
+# перенесети скрипт звідси в main
+# додати один приклад нового аутпуту в папку output
+# оформити README
 # додати пару тулів по РВІ та звіти в папці, і додати це все до проекту
