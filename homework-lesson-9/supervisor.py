@@ -10,9 +10,9 @@ from config import (
 )
 from langgraph.errors import GraphRecursionError
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
-import uuid
 import socket
 import json
+from fastmcp import Client as MCPClient
 
 acp_address = f"http://127.0.0.1:{port_acp_server}"
 mcp_report_address = f"http://127.0.0.1:{port_report_mcp}/mcp"
@@ -21,6 +21,7 @@ revision_counter = 0
 global current_research_session
 
 broadcast_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
 def cross_terminal_print(text, agent_name):
     """Prints locally, and if it's a sub-agent, broadcasts to the Supervisor terminal."""
     print(text) 
@@ -193,11 +194,6 @@ async def critique(findings: str) -> str:
     except Exception as e:
         return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n Error: Could not communicate with ACP Critic. Details: {e}"
 
-
-from acp_sdk.client import Client as ACPClient
-from fastmcp import Client as MCPClient
-# TO DO
-# tool duplication? add direct access to ReportMCP? or keep it as a tool call?
 @tool
 async def save_report(filename: str, content: str) -> str:
     """
@@ -294,9 +290,9 @@ if __name__ == "__main__":
     asyncio.run(run_and_print_supervisor(test_query))
 
 # TO DO:
-# додати обробку для випадку з помилкою при обмеженні к-ті виклику тулів
-# HITL 
+# додати обробку для випадку з помилкою при обмеженні к-ті виклику тулів та суттєво скоротити ліміт тулів для тестування
 # перенесети скрипт звідси в main
+# HITL 
 # додати один приклад нового аутпуту в папку output
-# оформити README
+# оформити README, почистити зайві коменти
 # додати пару тулів по РВІ та звіти в папці, і додати це все до проекту
