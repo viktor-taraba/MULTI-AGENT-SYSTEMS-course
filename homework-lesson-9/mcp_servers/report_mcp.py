@@ -3,11 +3,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from fastmcp import FastMCP
 import json
-from config import output_dir
+from config import output_dir, port_report_mcp
 
 from pathlib import Path
 OUTPUT_PATH = Path(r"C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-9\output")
 
+base_port = f"http://127.0.0.1:{port_report_mcp}/mcp"
 mcp_server = FastMCP(name="ReportMCP")
 
 @mcp_server.resource("resource://output-dir")
@@ -54,8 +55,8 @@ def save_report(filename: str, content: str, output_dir: str = output_dir) -> st
         return f"Error: Could not save the report. Details: {e}"
 
 if __name__ == "__main__":
-    print("✅ Starting MCP Server 'SearchMCP' on http://127.0.0.1:8902/mcp")
+    print(f"✅ Starting MCP Server 'SearchMCP' on {base_port}")
     try:
-        mcp_server.run(transport="streamable-http", host="127.0.0.1", port=8902)
+        mcp_server.run(transport="streamable-http", host="127.0.0.1", port=port_report_mcp)
     except KeyboardInterrupt:
-        print("🛑 MCP Server 'SearchMCP' http://127.0.0.1:8902/mcp stopped")
+        print(f"🛑 MCP Server 'SearchMCP' {base_port} stopped")
