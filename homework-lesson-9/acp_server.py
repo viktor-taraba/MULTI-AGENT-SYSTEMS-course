@@ -12,31 +12,6 @@ import time
 from dotenv import load_dotenv
 load_dotenv()
 
-"""
-├── acp_server.py        # ACP server with 3 agents (planner, researcher, critic)
-├── agents/
-│   ├── __init__.py
-│   ├── planner.py       # Planner Agent definition (prompt + response_format)
-│   ├── research.py      # Research Agent definition
-│   └── critic.py        # Critic Agent definition
-"""
-"""
- 2. ACP Server (агенти)
-Створіть один ACP сервер (порт 8903) з трьома агентами. Кожен агент:
-
-Підключається до SearchMCP через fastmcp.Client
-Конвертує MCP tools у LangChain format (mcp_tools_to_langchain з лекції 9)
-Створений через create_agent з system prompt з homework-8
-Повертає Message(role="agent", ...)
-Planner і Critic використовують response_format для структурованого виводу (як у homework-8).
-
- 1 ACP сервер з 3 агентами (planner, researcher, critic)
- Кожен ACP агент підключається до SearchMCP через fastmcp.Client
- Кожен ACP агент створений через create_agent
- Supervisor оркеструє агентів через acp_sdk.client.Client
- 
- """
-
 acp_adress = f"http://127.0.0.1:{port_acp_server}"
 acp_server = Server()
 
