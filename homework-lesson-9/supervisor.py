@@ -8,10 +8,8 @@ from config import (
     port_report_mcp,
     udp_log_port
 )
-from langgraph.errors import GraphRecursionError
-from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
-import socket
 import json
+import socket
 from fastmcp import Client as MCPClient
 
 acp_address = f"http://127.0.0.1:{port_acp_server}"
@@ -21,6 +19,10 @@ revision_counter = 0
 global current_research_session
 
 broadcast_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+try:
+    broadcast_sock.bind(('127.0.0.1', 0))
+except Exception as e:
+    print(f"Failed to bind broadcast socket: {e}")
 
 def cross_terminal_print(text, agent_name):
     """Prints locally, and if it's a sub-agent, broadcasts to the Supervisor terminal."""
@@ -28,8 +30,8 @@ def cross_terminal_print(text, agent_name):
     if agent_name != "Supervisor":
         try:
             broadcast_sock.sendto(text.encode('utf-8'), ('127.0.0.1', udp_log_port))
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"\n⚠️ UDP Broadcast Error: {e}")
 
 def print_tool_call(tool_name, tool_args, indent="", agent_name="Supervisor"):
     tool_args = tool_args[:tool_preview_len] + "..." if len(tool_args) > tool_preview_len else tool_args
@@ -224,75 +226,3 @@ async def save_report(filename: str, content: str) -> str:
             
     except Exception as e:
         return f"Error: Could not communicate with ReportMCP. Details: {e}"
-
-# TO DELETE
-# test runs for supervisor
-import asyncio
-from langchain.agents import create_agent
-
-from config import (
-    SUPERVISOR_PROMPT, 
-    supervisor_model_name, 
-    tool_preview_len
-    )
-from langgraph.checkpoint.memory import InMemorySaver
-from dotenv import load_dotenv
-load_dotenv()
-
-# ============================================================
-# 1. Create the Local Supervisor Agent
-# ============================================================
-
-supervisor = create_agent(
-                model=supervisor_model_name,
-                tools=[plan, research, critique, save_report],
-                system_prompt=SUPERVISOR_PROMPT,
-                checkpointer=InMemorySaver())
-
-# ============================================================
-# 2. Async Test Function
-# ============================================================
-class LogReceiver(asyncio.DatagramProtocol):
-    def datagram_received(self, data, addr):
-        print(data.decode('utf-8'))
-
-async def run_and_print_supervisor(query: str):
-    loop = asyncio.get_running_loop()
-    
-    transport, protocol = await loop.create_datagram_endpoint(
-        lambda: LogReceiver(),
-        local_addr=('127.0.0.1', udp_log_port)
-    )
-
-    print(f"🚀 Starting Supervisor test...\nQuery: '{query}'\n" + "="*60)
-    try:
-        config = {"configurable": {"thread_id": "test_thread_1"}} 
-        async for step in supervisor.astream({"messages": [("user", query)]}, config):
-
-            for node_name, update in step.items():
-                if isinstance(update, dict) and "messages" in update:
-                    messages = update["messages"]
-                    if not isinstance(messages, list):
-                        messages = [messages]
-                    for msg in messages:
-                        print_agent_step(msg, agent_name="Supervisor")
-        
-    except Exception as e:
-        print(f"\n❌ Supervisor encountered an error: {e}")
-    finally:
-        transport.close()
-
-# ============================================================
-# 3. Execution Block
-# ============================================================
-if __name__ == "__main__":
-    test_query = "What is the difference between the BM25 algorithm and TF-IDF? Explain how they calculate relevance."
-    asyncio.run(run_and_print_supervisor(test_query))
-
-# TO DO:
-# додати обробку для випадку з помилкою при обмеженні к-ті виклику тулів та суттєво скоротити ліміт тулів для тестування
-# перенесети скрипт звідси в main
-# HITL 
-# додати один приклад нового аутпуту в папку output
-# оформити README, почистити зайві коменти
-# додати пару тулів по РВІ та звіти в папці, і додати це все до проекту
