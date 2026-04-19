@@ -1,0 +1,36 @@
+table FP
+	lineageTag: 4fe4a63a-204c-4f8b-8942-7dde73605075
+
+	column FP
+		dataType: string
+		lineageTag: 1d0376f2-f4c5-4863-80fd-4973450ffa24
+		summarizeBy: none
+		sourceColumn: FP
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column FPDesc
+		dataType: string
+		lineageTag: bd4fb9ac-d99e-436b-a738-c8301934b9c2
+		summarizeBy: none
+		sourceColumn: FPDesc
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition FP = m
+		source =
+				let
+				    Source = Sql.Database(".", "IP", [Query="SELECT [HR].[FP].*   FROM [HR].[FP]"]),
+				    #"Renamed Columns" = Table.RenameColumns(Source, {{"FP", "FP"}, {"FPDesc", "FPDesc"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"FP", type text}, {"FPDesc", type text}})
+				in
+				    #"Changed Type"
+

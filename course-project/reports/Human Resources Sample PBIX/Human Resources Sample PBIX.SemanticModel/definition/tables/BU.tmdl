@@ -1,0 +1,58 @@
+table BU
+	lineageTag: a9a4fdc0-fbf9-4f47-92fa-0b99eae0304c
+
+	measure 'Count of BU' = COUNTA('BU'[BU])
+		lineageTag: 4fbf8f67-5deb-43f5-9929-a9c5f05873d3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column BU
+		dataType: string
+		lineageTag: 24f572df-6be6-428a-ae25-5fd98ab32b50
+		summarizeBy: none
+		sourceColumn: BU
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionSeq
+		dataType: string
+		lineageTag: 62c1f2b9-0bd1-4fa5-8fcf-d4b81883536a
+		summarizeBy: none
+		sourceColumn: RegionSeq
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+	column VP
+		dataType: string
+		lineageTag: 260f1f24-b1d6-4d91-9bd9-efbdb0e84d3e
+		summarizeBy: none
+		sourceColumn: VP
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region = mid([RegionSeq], 3,15)
+		lineageTag: 4dc0b3ef-c0d4-4807-83de-bc82d77b802f
+		summarizeBy: none
+		sortByColumn: RegionSeq
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition BU = m
+		source =
+				let
+				    Source = Sql.Database(".", "IP", [Query="select distinct market BU,#(lf)  REGIONTITLE Region,#(lf)  MARKETDIRECTOR VP#(lf)from hr.bu"]),
+				    #"Renamed Columns" = Table.RenameColumns(Source, {{"BU", "BU"}, {"Region", "RegionSeq"}, {"VP", "VP"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"BU", type text}, {"RegionSeq", type text}, {"VP", type text}})
+				in
+				    #"Changed Type"
+

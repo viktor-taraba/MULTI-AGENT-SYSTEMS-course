@@ -1,0 +1,38 @@
+table AgeGroup
+	lineageTag: b4bdd411-d031-47b3-ae81-b482e6a227c4
+
+	column AgeGroupID
+		dataType: int64
+		isHidden
+		lineageTag: c9ee17e5-62c1-47c8-a3b8-4702361ea971
+		summarizeBy: none
+		sourceColumn: AgeGroupID
+
+		annotation DataTypeAtRefresh = Int64#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AgeGroup
+		dataType: string
+		lineageTag: 568bd199-1031-41d5-a584-7eafc079f56c
+		summarizeBy: none
+		sourceColumn: AgeGroup
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition AgeGroup = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlTSUYopNTAwTjY2UIrViVYyAgoYG+iaWIJ5xkCeqYG2UmwsAA==", BinaryEncoding.Base64), Compression.Deflate))),
+				    #"Renamed Columns" = Table.RenameColumns(Source, {{"Column1", "AgeGroupID"}, {"Column2", "AgeGroup"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"AgeGroupID", Int64.Type}, {"AgeGroup", type text}})
+				 in
+				    #"Changed Type"
+

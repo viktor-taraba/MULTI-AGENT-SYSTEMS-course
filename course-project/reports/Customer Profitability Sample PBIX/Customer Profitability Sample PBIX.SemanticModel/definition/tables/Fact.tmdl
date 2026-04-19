@@ -1,0 +1,444 @@
+table Fact
+	isHidden
+	lineageTag: 50e515da-420e-4104-9fdd-0192a7b8e215
+
+	measure 'Total Revenue' = SUM([Revenue])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 753e881e-2ae3-4e93-be84-dd6aa41ca35d
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sum of Material Costs' = SUM([Material Costs])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 98a69474-2ab4-4305-a641-985392a0f866
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sum of Labor Costs Variable' = SUM([Labor Costs Variable])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 9293d9a6-30be-4b10-939a-8ac2c900188b
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sum of Taxes' = SUM([Taxes])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: ac18423d-da35-48b5-b609-c31285ffb63d
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sum of Rev for Exp Travel' = SUM([Rev for Exp Travel])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: d74a5680-d311-4c09-9938-396f676598f0
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sum of Travel Expenses' = SUM([Travel Expenses])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: c2f99ce0-5ba3-4c02-b49a-d167304133da
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sum of Cost Third Party' = SUM([Cost Third Party])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: fa572c31-0b53-4388-ad25-45d359927775
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sum of Subscription Revenue' = SUM([Subscription Revenue])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 3d3cabfc-6703-4d54-b4b2-2d9cc7d96227
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Gross Margin' = [Total Revenue]-[Total COGS]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 3005cee5-2f82-44e9-b1db-1e8347c5300e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure GM% = DIVIDE([Gross Margin],[Total Revenue])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 7192c9fc-f20c-4d0f-b1aa-50c2cf92bd3c
+
+	measure 'YTD Revenue' = TOTALYTD(SUM([Revenue]),'Date'[Date])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: cdb4d3a5-8518-48e0-84e3-083b01e10e9e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total COGS' = [Sum of Material Costs]+[Sum of Labor Costs Variable]+[Sum of Taxes]+[Sum of Rev for Exp Travel]+[Sum of Travel Expenses]+[Sum of Cost Third Party]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: f36aa8fe-b83c-4727-82e6-73415b21bfad
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YTD COGS' = TOTALYTD([Total COGS],'Date'[Date])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: e3a3a46f-f6de-4b95-a7bc-ee057f30757e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YTD Gross Margin' = TOTALYTD([Gross Margin],'Date'[Date])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 683db474-df3a-4127-a17e-1c596c561af1
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue SPLY' = CALCULATE([Total Revenue],SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: e2917ab2-2c0f-4484-8fad-01851c8d471b
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Gross Margin SPLY' = CALCULATE([Gross Margin],SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 15a585c1-fd32-4171-b86d-9c34fae1b36b
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'GM% SPLY' = [Gross Margin SPLY]/[Revenue SPLY]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 97cd36b7-8d9e-4e74-8ea0-4e50fa560e30
+
+	measure 'YTD GM%' = [YTD Gross Margin]/[YTD Revenue]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c1855b7a-f950-4451-8cd6-0f50ad16e86e
+
+	measure 'YTD Revenue SPLY' = CALCULATE([YTD Revenue],SAMEPERIODLASTYEAR(DATESYTD('Date'[Date])))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: ff699bfa-4e93-4eb0-8b4c-fce7ee10a512
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'COGS SPLY' = CALCULATE([Total COGS],SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 98cb8da9-61fe-4a9b-abd9-6e241d717ba5
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YTD COGS SPLY' = CALCULATE([YTD COGS],SAMEPERIODLASTYEAR(DATESYTD('Date'[Date])))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: a5da971b-f409-4a88-b374-388e15c6a8cc
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YTD GM% SPLY' = [YTD GM SPLY]/[YTD Revenue SPLY]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 6ec013c2-7cba-4c4c-a83b-c21d4d7438c3
+
+	measure 'YTD GM SPLY' = CALCULATE([YTD Gross Margin],SAMEPERIODLASTYEAR(DATESYTD('Date'[Date])))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: e70dea7d-f1ef-4629-bcc2-7481edb60f94
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY Rev Var' = [Total Revenue]-[Revenue SPLY]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: de6f84e1-6bb4-4bf0-a74a-f32b03e8fd3d
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY GM Var' = [Gross Margin]-[Gross Margin SPLY]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 507d4e62-d28d-44f8-a380-43022ec52119
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY Rev Growth' = IF([Revenue SPLY],[YoY Rev Var]/[Revenue SPLY],BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e9d58e08-0ce3-4580-b5c5-dd2966d0c9b0
+
+	measure 'YoY GM Growth' = IF([Gross Margin SPLY],[YoY GM Var]/[Gross Margin SPLY],BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 13954c4a-3f44-4c45-bce4-eebd2c046ce5
+
+	measure 'YoY YTD Rev Var' = [YTD Revenue]-[YTD Revenue SPLY]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 2c8dce90-687b-4901-a2d4-2a5f8f3cb6cc
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY COGS Var' = [Total COGS]-[COGS SPLY]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 26bb9907-c629-401b-98eb-825187ceeb19
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY YTD COGS Var' = [YTD COGS]-[YTD COGS SPLY]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 8a0a10ba-c948-4ef8-91cd-9ff828920b96
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY YTD GM% Var' = [YTD GM%]-[YTD GM% SPLY]
+		formatString: #,0
+		lineageTag: 3fcbfad6-6a1a-4a00-9753-4c3712136336
+
+	measure 'YoY YTD GM Var' = [YTD Gross Margin]-[YTD GM SPLY]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 95209128-672c-473a-a6ea-d00594196ee0
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'YoY GM %Var' = [GM%]-[GM% SPLY]
+		lineageTag: d6e72303-831c-46b2-950e-d01fe4bcff1f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YoY YTD Rev Growth' = IF([YTD Revenue SPLY],[YoY YTD Rev Var]/[YTD Revenue SPLY],BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 4686c6fc-d96a-464d-a03b-fa6891238166
+
+	measure 'YoY COGS Growth' = IF([COGS SPLY],[YoY COGS Var]/[COGS SPLY],BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 2fb0c93e-7d99-4bd7-b67a-23914aacc134
+
+	measure 'YoY YTD COGS Growth' = IF([YTD COGS SPLY],[YoY YTD COGS Var]/[YTD COGS SPLY],BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d1e207e3-1719-4da3-b01b-90588a79f013
+
+	measure 'YoY YTD GM Growth' = IF([YTD GM SPLY],[YoY YTD GM Var]/[YTD GM SPLY],BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 8bd77644-9181-4ccd-a36b-8d549a4f2660
+
+	measure '# of Customers' = DISTINCTCOUNT([Customer Key])
+		lineageTag: 0b7ab3b6-721c-40b1-84f0-c29ae6b26247
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '# of Products' = DISTINCTCOUNT([Product Key])
+		lineageTag: 7a1f8078-60c0-46fb-a53c-6cacac5079cd
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	measure 'Revenue Budget' = CALCULATE([Total Revenue], FILTER(Scenario, Scenario[Scenario]="Budget"))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: ef85d1fa-cc74-4f62-b835-56b3d95a8fa4
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue Var to Budget' = [RevenueTY]-[Revenue Budget]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: cfee1c6c-3479-42c2-b644-70d0aea0a54a
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue Var % to Budget' = DIVIDE([Revenue Var to Budget], [RevenueTY])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 0c1b5d09-66fe-4992-8b84-9b35a8de1b3d
+
+	measure RevenueTY = CALCULATE([Total Revenue], FILTER(Scenario, Scenario[Scenario]="Actual"))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: b9aa3248-2d09-47b7-b9ed-2b8c5a0e1876
+
+		kpi
+			targetExpression = 'Fact'[Revenue Budget]
+			targetFormatString: \$#,0;(\$#,0);\$#,0
+			statusGraphic: Traffic Light - Single
+			statusExpression = ```
+				var x='Fact'[RevenueTY]/'Fact'[_RevenueTY Goal] return
+				if(ISBLANK(x),BLANK(),
+				        If(x<0.95,-1,
+					    If(x<1,0,1)
+				    )
+				)
+				
+				```
+
+			annotation GoalType = Measure
+
+			annotation KpiStatusType = Linear
+
+			annotation KpiThresholdType = Percentage
+
+			annotation KpiThresholdOrdering = Ascending
+
+			annotation KpiThresholdCount = 2
+
+			annotation KpiThreshold_0 = 95
+
+			annotation KpiThreshold_1 = 100
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sum of Revenue' = SUM('Fact'[Revenue])
+		lineageTag: c412b00e-1458-4116-ab4b-21569d6ac047
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Customer Key'
+		dataType: int64
+		isHidden
+		lineageTag: 4caf2747-1d47-40be-a382-35cb63f8224f
+		summarizeBy: none
+		sourceColumn: Customer Key
+
+		annotation DataTypeAtRefresh = Int64#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Product Key'
+		dataType: string
+		isHidden
+		lineageTag: 536e179e-3076-4caf-a06d-22c32b62ff58
+		summarizeBy: none
+		sourceColumn: Product Key
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'BU Key'
+		dataType: double
+		isHidden
+		lineageTag: 85bce99e-2505-4d77-83c3-45d0812793c5
+		summarizeBy: none
+		sourceColumn: BU Key
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Scenario Key'
+		dataType: int64
+		isHidden
+		lineageTag: e3aee948-9e59-4350-aac8-874088f103af
+		summarizeBy: none
+		sourceColumn: Scenario Key
+
+		annotation DataTypeAtRefresh = Int64#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Revenue
+		dataType: double
+		isHidden
+		lineageTag: 57b29b3b-79e3-48dd-9d99-e6efefde8fcf
+		summarizeBy: sum
+		sourceColumn: Revenue
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Material Costs'
+		dataType: double
+		isHidden
+		lineageTag: ea9e59df-986c-49f1-89d5-c87675389514
+		summarizeBy: sum
+		sourceColumn: Material Costs
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Labor Costs Variable'
+		dataType: double
+		isHidden
+		lineageTag: 4dad0b12-29f8-4b89-a6ed-313b6cd3d4e5
+		summarizeBy: sum
+		sourceColumn: Labor Costs Variable
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Taxes
+		dataType: double
+		isHidden
+		lineageTag: ecbe012f-7deb-472f-b2ea-b535bd9d1167
+		summarizeBy: sum
+		sourceColumn: Taxes
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Rev for Exp Travel'
+		dataType: double
+		isHidden
+		lineageTag: f75c8ef4-5910-44c2-a27e-32c388fc0c30
+		summarizeBy: sum
+		sourceColumn: Rev for Exp Travel
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Travel Expenses'
+		dataType: double
+		isHidden
+		lineageTag: e95b444b-084c-4c65-8d1b-654aa96f58f4
+		summarizeBy: sum
+		sourceColumn: Travel Expenses
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Cost Third Party'
+		dataType: double
+		isHidden
+		lineageTag: ce8700e1-60ee-43ae-a07b-ac58234ba042
+		summarizeBy: sum
+		sourceColumn: Cost Third Party
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Subscription Revenue'
+		dataType: double
+		isHidden
+		lineageTag: c74e90be-04d6-41e6-a9d6-217522d64a7e
+		summarizeBy: sum
+		sourceColumn: Subscription Revenue
+
+		annotation DataTypeAtRefresh = Double#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YearPeriod
+		dataType: string
+		isHidden
+		lineageTag: 4ef68f85-7ca4-4f49-be5a-41aeca31a1f3
+		summarizeBy: none
+		sourceColumn: YearPeriod
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact = m
+		source =
+				let
+				    Source = Sql.Database(".", "IP", [Query="SELECT #(lf)       concat([GJAHR] , substring([PERDE], 2, 2) ) + 400 YearPeriod#(lf)      ,[KNDNR] [Customer Key]#(lf)      --,[ARTNR] [Product]#(lf)      --,[FKART] [Billing Type]#(lf)      --,[FRWAE] [Currency Key]#(lf)      --,[VTWEG] [Distribution Channel]#(lf)   ,[VTWEG] [Product Key]#(lf)      --,[PRCTR] [Profit Center]#(lf)   ,pc.[Profit Center Key] [BU Key]#(lf)   ,1 [Scenario Key]#(lf)      --,[KMMAKL] [Material Group]#(lf)      ,[ERLOS]*1.20 [Revenue]#(lf)      ,[VVMAT] [Material Costs]#(lf)      ,[VVLCV] [Labor Costs Variable]#(lf)      ,[VVN30] [Taxes]#(lf)      ,[VV910] [Rev for Exp Travel]#(lf)      ,[VV950] [Travel Expenses]#(lf)      ,[VV970] [Cost Third Party]#(lf)      ,[VVYSV] [Subscription Revenue]#(lf)  FROM OSQ.[osq].[CE11010] f, mds.mdm.profitcenter pc#(lf)where  [MANDT]  = 210 and concat([GJAHR] , substring([PERDE], 2, 2) ) < 201012 and f.PRCTR = pc.PCName and [FRWAE] = 'USD'#(lf)union all #(lf)SELECT #(lf)       concat([GJAHR] , substring([PERDE], 2, 2) ) + 400 PeriodYear#(lf)      ,[KNDNR] [Customer]#(lf)      --,[ARTNR] [Product]#(lf)      --,[FKART] [Billing Type]#(lf)      --,[FRWAE] [Currency Key]#(lf)      --,[VTWEG] [Distribution Channel]#(lf)   ,[VTWEG] [Product Key]#(lf)      --,[PRCTR] [Profit Center]#(lf)   ,pc.[Profit Center Key] [BU Key]#(lf)   ,2 [Scenario Key]#(lf)      --,[KMMAKL] [Material Group]#(lf)      ,[ERLOS]*1.4 [Revenue]#(lf)      ,[VVMAT] [Material Costs]#(lf)      ,[VVLCV] [Labor Costs Variable]#(lf)      ,[VVN30] [Taxes]#(lf)      ,[VV910] [Rev for Exp Travel]#(lf)      ,[VV950] [Travel Expenses]#(lf)      ,[VV970] [Cost Third Party]#(lf)      ,[VVYSV] [Subscription Revenue]#(lf)  FROM OSQ.[osq].[CE11010] f tablesample (85 percent),  mds.mdm.profitcenter pc#(lf)where  [MANDT]  = 300 and concat([GJAHR] , substring([PERDE], 2, 2) ) < 201012 and f.PRCTR = pc.PCName and [FRWAE] = 'USD'"]),
+				    #"Renamed Columns" = Table.RenameColumns(Source, {{"Customer Key", "Customer Key"}, {"Product Key", "Product Key"}, {"BU Key", "BU Key"}, {"Scenario Key", "Scenario Key"}, {"Revenue", "Revenue"}, {"Material Costs", "Material Costs"}, {"Labor Costs Variable", "Labor Costs Variable"}, {"Taxes", "Taxes"}, {"Rev for Exp Travel", "Rev for Exp Travel"}, {"Travel Expenses", "Travel Expenses"}, {"Cost Third Party", "Cost Third Party"}, {"Subscription Revenue", "Subscription Revenue"}, {"YearPeriod", "YearPeriod"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"Customer Key", Int64.Type}, {"Product Key", type text}, {"BU Key", type number}, {"Scenario Key", Int64.Type}, {"Revenue", type number}, {"Material Costs", type number}, {"Labor Costs Variable", type number}, {"Taxes", type number}, {"Rev for Exp Travel", type number}, {"Travel Expenses", type number}, {"Cost Third Party", type number}, {"Subscription Revenue", type number}, {"YearPeriod", type text}})
+				in
+				    #"Changed Type"
+

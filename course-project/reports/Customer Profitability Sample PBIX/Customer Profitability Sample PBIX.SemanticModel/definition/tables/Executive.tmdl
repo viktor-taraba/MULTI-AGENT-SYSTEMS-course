@@ -1,0 +1,54 @@
+table Executive
+	lineageTag: f8bfa656-c25e-40e7-a2e1-7556bd9771bf
+
+	column ID
+		dataType: int64
+		isHidden
+		isKey
+		keepUniqueRows
+		lineageTag: fd732f8b-b979-4a13-bcf6-2c50588c8caf
+		summarizeBy: none
+		sourceColumn: ID
+
+		annotation DataTypeAtRefresh = Int64#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Name
+		dataType: string
+		lineageTag: d8003c87-58be-4eae-9a2b-d0f39154eda8
+		isDefaultLabel
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Img
+		dataType: binary
+		lineageTag: 776ca1a7-13c8-408f-a200-db0b46d58f20
+		dataCategory: Image
+		isDefaultImage
+		summarizeBy: none
+		sourceColumn: Img
+
+		annotation DataTypeAtRefresh = Binary#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Executive = m
+		source =
+				let
+				    Source = Sql.Database(".", "IP", [Query="SELECT [dbo].[Executive].*   FROM [dbo].[Executive]"]),
+				    #"Renamed Columns" = Table.RenameColumns(Source, {{"ID", "ID"}, {"Name", "Name"}, {"Img", "Img"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"ID", Int64.Type}, {"Name", type text}, {"Img", type binary}})
+				in
+				    #"Changed Type"
+

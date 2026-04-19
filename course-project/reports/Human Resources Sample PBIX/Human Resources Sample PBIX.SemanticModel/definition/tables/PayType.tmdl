@@ -1,0 +1,33 @@
+table PayType
+	lineageTag: 060737bf-dd88-4453-a565-cb34ec326809
+
+	column PayTypeID
+		dataType: string
+		isHidden
+		lineageTag: 724801de-5eda-46c0-bd5c-3255903524a2
+		summarizeBy: none
+		sourceColumn: PayTypeID
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayType
+		dataType: string
+		lineageTag: ca6dbe19-7e8c-42e1-b3bf-b37db54d4479
+		summarizeBy: none
+		sourceColumn: PayType
+
+		annotation DataTypeAtRefresh = String#####not a type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition PayGroup = m
+		source =
+				let
+				    Source = Sql.Database(".", "IP", [Query="select distinct PayTypeID, [Hrly-Salaried] PayType#(lf)from [HR].[PayGroup]"]),
+				    #"Renamed Columns" = Table.RenameColumns(Source, {{"PayTypeID", "PayTypeID"}, {"PayType", "PayType"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"PayTypeID", type text}, {"PayType", type text}})
+				in
+				    #"Changed Type"
+
