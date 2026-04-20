@@ -6,7 +6,8 @@ import pytest
 # тут додати те ж саме що в планері
 # FAILED tests/test_researcher.py::test_research_grounded - deepeval.errors.MissingTestCaseParamsError: 'retrieval_context' cannot be None for
 #  the 'Groundedness [GEval]' metric
-# тут окремо вичепити останнє повідомлення агента (звіт) і все що було до нього - контекст, але в більш читабельному вигляді, приміром як з принтами в консоль
+# тут окремо вичепити останнє повідомлення агента (звіт) і все що було до нього - контекст
+# план максимум: вичепити в більш читабельному вигляді, приміром як з принтами в консоль
 
 groundedness = GEval(
     name="Groundedness",
