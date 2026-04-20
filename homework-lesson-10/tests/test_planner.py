@@ -1,10 +1,10 @@
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
-#import os, sys
-# Add the parent directory (project root) to the system path
-#sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agents.planner import planner_agent
 import pytest
+
+# додати 2 ф-ї хелпери
+# з actual_output_str треба вичепити саме фінальну відповідь моделі, бо зараз там все передається
 
 plan_quality = GEval(
     name="Plan Quality",
@@ -23,7 +23,7 @@ plan_has_queries = GEval(
     evaluation_steps=[
         "Check that the output explicitly lists one or more actionable search queries in the `search_queries`.",
         "Check that the queries are highly relevant to the user's prompt.",
-        "Check that either tool `web_search` or `knowledge_search` was used at least 2 times in the `sources_to_check`"
+        "Check that either tool `web_search` or `knowledge_search` was recommended at least 2 times in the `sources_to_check` with relevant parameters"
     ],
     evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
     model="gpt-5.4-mini",
@@ -56,7 +56,7 @@ def test_plan_quality():
         actual_output_str = str(agent_response)
 
     # to delete
-    print(actual_output_str[:400])
+    # print(actual_output_str[:400])
 
     test_case = LLMTestCase(
         input=user_input,
@@ -74,10 +74,10 @@ def test_plan_quality():
 
 def test_plan_has_queries():
     # загорнути потім у функцію
-    user_input = "Create a detailed research plan on the effects of microplastics on marine ecosystems."
+    user_input = "Create a detailed research plan on the dividend policy types."
     agent_response = planner_agent.invoke(
             {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "test_thread_001"}}
+            config={"configurable": {"thread_id": "test_thread_002"}}
         )
 
     if hasattr(agent_response, "model_dump_json"):
@@ -103,10 +103,10 @@ def test_plan_has_queries():
 
 def test_query_diversity():
     # загорнути потім у функцію
-    user_input = "Create a detailed research plan on the effects of microplastics on marine ecosystems."
+    user_input = "Create a detailed research plan on the PBIR format files and structure (Power BI)."
     agent_response = planner_agent.invoke(
             {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "test_thread_001"}}
+            config={"configurable": {"thread_id": "test_thread_003"}}
         )
 
     if hasattr(agent_response, "model_dump_json"):
