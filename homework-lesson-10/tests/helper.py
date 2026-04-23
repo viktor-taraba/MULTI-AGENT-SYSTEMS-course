@@ -18,10 +18,24 @@ def extract_output_and_context(agent_response, stuctured_name):
 
 def evaluate_and_assert(metric, function_name, threshold_name):
     """(helper function) prints for test results"""
-
+    
+    metric_name = getattr(metric, "name", metric.__class__.__name__)
     if metric.is_successful():
-        print(f"\n✅ {function_name} ({metric.name}: {metric.score}, threshold: {metric.threshold})")
+        print(f"\n✅ {function_name} ({metric_name}: {metric.score}, threshold: {metric.threshold})")
     else:
-        print(f"\n❌ {function_name} ({metric.name}: {metric.score}, threshold: {metric.threshold})")
+        print(f"\n❌ {function_name} ({metric_name}: {metric.score}, threshold: {metric.threshold})")
         print(f"   Reason: {metric.reason}")
         pytest.fail(f"DeepEval {threshold_name} threshold not met.")
+
+def unique_tool_names(agent_response):
+    """(helper function) extracts unique tool names from agent response"""
+
+    unique_tool_names = []
+    for msg in agent_response.get("messages", []):
+        if hasattr(msg, "tool_calls") and msg.tool_calls:
+            for tool_call in msg.tool_calls:
+                name = tool_call["name"]
+                if name not in unique_tool_names:
+                    unique_tool_names.append(name)
+
+    return unique_tool_names
