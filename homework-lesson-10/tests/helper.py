@@ -27,7 +27,7 @@ def evaluate_and_assert(metric, function_name, threshold_name):
         print(f"   Reason: {metric.reason}")
         pytest.fail(f"DeepEval {threshold_name} threshold not met.")
 
-def unique_tool_names(agent_response):
+def get_unique_tool_names(agent_response):
     """(helper function) extracts unique tool names from agent response"""
 
     unique_tool_names = []
