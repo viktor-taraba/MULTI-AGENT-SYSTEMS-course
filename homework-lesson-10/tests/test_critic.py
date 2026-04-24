@@ -14,6 +14,9 @@ critique_quality = GEval(
     threshold=0.7,
 )
 
+# тут хардом прописати для критика якийсь поганий звіт
+# і взяти з прикладів в аутпуті хороший 
+
 def test_critique_approve():
     pass
 
