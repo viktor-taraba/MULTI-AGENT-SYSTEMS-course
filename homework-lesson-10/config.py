@@ -4,6 +4,7 @@ from datetime import datetime
 supervisor_model_name: str = "gpt-5-mini"
 output_dir: str = "output"
 max_iterations_supervisor: int = 100
+debug_prints: int = 0
 SUPERVISOR_PROMPT = """
 You are an expert Research Director and Supervisor. Your job is to orchestrate a team of specialized agents to deliver high-quality, verified research reports to the user.
 
@@ -34,9 +35,9 @@ Rules:
 """
 
 # critic agent
-revision_counter_max: int = 2
+revision_counter_max: int = 1
 critic_model_name: str = "gpt-5-mini"
-max_iterations_critic: int = 10
+max_iterations_critic: int = 5
 max_items_critic: int = 5
 SYSTEM_PROMPT_critic: str = f"""
 You are an expert Critic responsible for evaluating the quality of research. 
@@ -72,8 +73,8 @@ CRITICAL INSTRUCTIONS:
 
 # research agent
 research_model_name: str = "gpt-5-mini"
-max_iterations_research: int = 50
-ToolCallLimit_research: int = 10
+max_iterations_research: int = 30
+ToolCallLimit_research: int = 3
 SYSTEM_PROMPT_research: str = """
 You are a Senior Analyst with 10 years of experience.
 Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a text report.
@@ -124,7 +125,7 @@ The Supervisor is waiting for the actual Markdown text. Output the full text now
 
 # planner agent
 planner_model_name: str = "gpt-5-mini"
-max_iterations_planner: int = 10
+max_iterations_planner: int = 5
 SYSTEM_PROMPT_planner: str = """You are an expert Research Planner and Lead Strategist with 15 years of experience.
 
 Your responsibilities:
@@ -157,8 +158,8 @@ Return the structured response immediately.
 """
 
 # tools 
-max_search_results: int = 5
-max_url_content_length: int = 5000
+max_search_results: int = 3
+max_url_content_length: int = 3000
 email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',
