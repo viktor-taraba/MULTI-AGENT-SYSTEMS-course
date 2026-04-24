@@ -73,8 +73,8 @@ CRITICAL INSTRUCTIONS:
 
 # research agent
 research_model_name: str = "gpt-5-mini"
-max_iterations_research: int = 30
-ToolCallLimit_research: int = 3
+max_iterations_research: int = 60
+ToolCallLimit_research: int = 5
 SYSTEM_PROMPT_research: str = """
 You are a Senior Analyst with 10 years of experience.
 Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a text report.
@@ -158,8 +158,8 @@ Return the structured response immediately.
 """
 
 # tools 
-max_search_results: int = 3
-max_url_content_length: int = 3000
+max_search_results: int = 5
+max_url_content_length: int = 4000
 email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',

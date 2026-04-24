@@ -52,13 +52,23 @@ for i, data in enumerate(golden_data):
         })
 
     # to delete
-    if i > 1:
+    if i >= 1:
         break
 
-os.makedirs("e2e_results", exist_ok=True)
-results_path = "results/generated_responses.json"
+os.makedirs("tests/e2e_results", exist_ok=True)
+results_path = "tests/e2e_results/generated_responses.json"
+
+existing_data = []
+if os.path.exists(results_path):
+    with open(results_path, "r", encoding="utf-8") as f:
+        try:
+            existing_data = json.load(f)
+        except:
+            existing_data = []
+
+existing_data.extend(results_data)
 with open(results_path, "w", encoding="utf-8") as f:
-    json.dump(results_data, f, ensure_ascii=False, indent=4)
+    json.dump(existing_data, f, ensure_ascii=False, indent=4)
         
 print(f"\n✅ Generation complete. Results saved to {results_path}")
 
