@@ -1,6 +1,8 @@
 # тут треба ще принтів позбуватися, мабуть через додатковий параметр 0 або 1 для суб-агентів (щоб нічого не друкувалося в процесі їх роботи)
 # тут по golden dataset зробити підмножину, не всі відразу
 # плюс погратися з reasoning моделі
+# як альтернатива - якщо продовжуватимуме використвоувати save_report, то тоді можна буде через порівняння по даті і часу виводити фінальний 
+# звіт звідти, порівнюючи по даті і часу запуску та збереження звіту 
 
 from supervisor import (
     plan,
@@ -23,20 +25,17 @@ from deepeval import evaluate
 
 golden_data = [
     {
-        "input": "What is pbir format (Power BI reports)? At your final step do not save the report but just pint if for me as your final and only answer",
-        "expected_output": (
-            "Detailed report with description of project sructure, data formats and types and at least one example of real report structure"
-        ),
+        "input": "What is pbir format (Power BI reports)? At your final step do not save the report but just print if for me as your final and only answer",
+        "expected_output": "Detailed report with description of project sructure, data formats and types and at least one example of real report structure"
     },
     {
         "input": "kshdjg ksjdsjgd kj?",
-        "expected_output": (
-            "Should ask for clarification or ask to write question again.",
-        ),
+        "expected_output": "Should ask for clarification or ask to write question again."
     },
 ]
 
-# user_input = "What is Ponziani opening? At your final step do not save the report but just pint if for me as your final and only answer"
+# user_input = "What is Ponziani opening? At your final step do not save the report but just print if for me as your final and only answer"
+
 for i, data in enumerate(golden_data):
     print()
     user_input = data["input"]
