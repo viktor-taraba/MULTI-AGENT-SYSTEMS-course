@@ -21,6 +21,9 @@ import os
 
 with open("tests/golden_dataset.json", "r", encoding="utf-8") as f:
     golden_data = json.load(f)
+ 
+# to delete
+golden_data = golden_data[2:]
 
 results_data = []
 for i, data in enumerate(golden_data):
@@ -52,7 +55,7 @@ for i, data in enumerate(golden_data):
         })
 
     # to delete
-    if i >= 1:
+    if i >= 5:
         break
 
 os.makedirs("tests/e2e_results", exist_ok=True)
