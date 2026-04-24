@@ -16,29 +16,22 @@ from config import (
 from tools import save_report
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
-from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 import json
+import os
 
-with open("golden_dataset.json", "r", encoding="utf-8") as f:
+with open("tests/golden_dataset.json", "r", encoding="utf-8") as f:
     golden_data = json.load(f)
 
-# user_input = "What is Ponziani opening? At your final step do not save the report but just print if for me as your final and only answer"
-
+results_data = []
 for i, data in enumerate(golden_data):
-    print()
     user_input = data["input"]
     expected_output = data["expected_output"]
-
-    # to delete
-    print(user_input)
-    print(expected_output)
-    print()
+    category = data["category"]
 
     config = {
         "configurable": {"thread_id": f"supervisor_thread{i}"}, 
         "recursion_limit": max_iterations_supervisor}
 
-    # це не прописувати тут, а няпрму у файлі supervisor (через ф-ю), і далі використовувати саме її (return supervisor)
     supervisor = create_agent(
                 model=supervisor_model_name,
                 tools=[plan, research, critique, save_report],
@@ -49,14 +42,24 @@ for i, data in enumerate(golden_data):
     response = supervisor.invoke({"messages": [("user", user_input)]}, config=config)
     final_answer = response['messages'][-1].content
 
-    test_cases = []
-    tc = LLMTestCase(
-        input=user_input,
-        actual_output=final_answer,
-        expected_output=expected_output,
-    )
-    test_cases.append(tc)
+    print(f"Generated answer preview: {final_answer[:150]}...\n")
 
-# !!!!!!!!!!!! зберегти
+    results_data.append({
+            "input": user_input,
+            "expected_output": expected_output,
+            "actual_output": final_answer,
+            "category": category
+        })
 
-# python -m tests.test_e2e
+    # to delete
+    if i > 1:
+        break
+
+os.makedirs("e2e_results", exist_ok=True)
+results_path = "results/generated_responses.json"
+with open(results_path, "w", encoding="utf-8") as f:
+    json.dump(results_data, f, ensure_ascii=False, indent=4)
+        
+print(f"\n✅ Generation complete. Results saved to {results_path}")
+
+# python -m tests.test_e2e_generate

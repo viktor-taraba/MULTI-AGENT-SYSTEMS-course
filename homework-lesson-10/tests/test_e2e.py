@@ -1,6 +1,15 @@
 from deepeval.dataset import EvaluationDataset
 from deepeval.metrics import GEval, AnswerRelevancyMetric
 from deepeval import evaluate
+from deepeval.test_case import LLMTestCase, LLMTestCaseParams
+
+test_cases = []
+tc = LLMTestCase(
+    input=user_input,
+    actual_output=final_answer,
+    expected_output=expected_output,
+)
+test_cases.append(tc)
 
 dataset = EvaluationDataset()
 for tc in test_cases:
