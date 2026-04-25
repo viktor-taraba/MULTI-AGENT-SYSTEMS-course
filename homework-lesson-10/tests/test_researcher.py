@@ -3,8 +3,6 @@ from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 from agents.research import research_agent
 from helper import evaluate_and_assert, extract_output_and_context
 
-# додати обробку для toolcallexceedinglimit, але тут запустити ще раз ту ж модель із системним промтом, як в основному скрипті
-
 groundedness = GEval(
     name="Groundedness",
     evaluation_steps=[

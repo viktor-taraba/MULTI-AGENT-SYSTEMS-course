@@ -5,8 +5,6 @@ from agents.research import research_agent
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
 from helper import evaluate_and_assert, get_unique_tool_names
 
-# Planner should use web_search and/or knowledge_search for exploration
-# Researcher should use web_search, read_url, knowledge_search
 # Critic should verify facts via web_search
 
 tool_correctness_metric = ToolCorrectnessMetric(threshold=0.7, model="gpt-5.4-mini")
