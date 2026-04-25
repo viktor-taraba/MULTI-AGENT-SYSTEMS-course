@@ -4,16 +4,13 @@ from agents.planner import planner_agent
 from agents.research import research_agent
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
 from helper import evaluate_and_assert, get_unique_tool_names
-
-# Critic should verify facts via web_search
+from agents.critic import critic_agent
 
 tool_correctness_metric = ToolCorrectnessMetric(threshold=0.7, model="gpt-5.4-mini")
 
 """
 Створіть мінімум 3 тест-кейси для tool correctness:
 
-Planner отримує запит → має викликати пошукові інструменти
-Researcher отримує план → має використати інструменти згідно з sources_to_check
 Supervisor отримує APPROVE від Critic → має викликати save_report
 """
 
@@ -86,7 +83,32 @@ def test_researcher_tools():
     tool_correctness_metric.measure(test_case)
     evaluate_and_assert(tool_correctness_metric, "test_researcher_tools", "tool_correctness_metric")
 
+def test_critic_tools():
+    with open("tests/critic_tests_examples/ponziani_opening_report.md", "r", encoding="utf-8") as f:
+        revise_report = f.read()
+
+    user_input = f"Review report: {revise_report}"
+    agent_response = critic_agent.invoke(
+            {"messages": [("user", user_input)]}, 
+            config={"configurable": {"thread_id": "test_thread_001"}}
+        )
+
+    unique_tool_names = get_unique_tool_names(agent_response)
+
+    test_case = LLMTestCase(
+        input=user_input,
+        actual_output="Plan ready",
+        tools_called=[ToolCall(name=tool_name) for tool_name in unique_tool_names],
+        expected_tools=[
+            ToolCall(name="web_search"),
+            ToolCall(name="read_url")
+        ],
+    )
+    tool_correctness_metric.measure(test_case)
+    evaluate_and_assert(tool_correctness_metric, "test_critic_tools", "tool_correctness_metric")
+
 def test_supervisor_save():
     pass
 
+# cd C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
 # python -m pytest tests/test_tools.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no
