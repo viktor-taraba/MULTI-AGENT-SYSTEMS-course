@@ -230,13 +230,8 @@ Overall: 19/20 passed (95.0% pass rate)
 Приклад:
 ```
 PS C:\Users\Viktor> cd C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
-PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_tools.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no
+PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_tools.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no --no-header
 ================================================= test session starts =================================================
-platform win32 -- Python 3.13.12, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Viktor\AppData\Local\Python\pythoncore-3.13-64\python.exe
-cachedir: .pytest_cache
-rootdir: C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
-plugins: anyio-4.12.1, deepeval-3.9.7, langsmith-0.7.18, asyncio-1.3.0, repeat-0.9.4, rerunfailures-16.1, xdist-3.8.0
-asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
 collected 4 items
 
 
@@ -253,23 +248,42 @@ PASSED
 PASSEDRunning teardown with pytest sessionfinish...
 
 
-======================================================================================== 4 passed in 445.39s (0:07:25) =========================================================================================
-PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_critic.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no
+======================================================================================== 4 passed in 421.79s (0:07:01) =========================================================================================
+PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_critic.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no --no-header
 ============================================================================================= test session starts ==============================================================================================
-platform win32 -- Python 3.13.12, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Viktor\AppData\Local\Python\pythoncore-3.13-64\python.exe
-cachedir: .pytest_cache
-rootdir: C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
-plugins: anyio-4.12.1, deepeval-3.9.7, langsmith-0.7.18, asyncio-1.3.0, repeat-0.9.4, rerunfailures-16.1, xdist-3.8.0
-asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
 collected 2 items
 
 
-✅ test_critique_approve (Critique Quality: 0.9, threshold: 0.7)
+✅ test_critique_approve (Critique Quality: 0.8, threshold: 0.7)
 PASSED
 
-✅ test_critique_revise (Critique Quality: 0.9, threshold: 0.7)
+✅ test_critique_revise (Critique Quality: 0.8, threshold: 0.7)
 PASSEDRunning teardown with pytest sessionfinish...
 
 
-======================================================================================== 2 passed in 242.15s (0:04:02) =========================================================================================
+======================================================================================== 2 passed in 215.82s (0:03:35) =========================================================================================
+PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_researcher.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no --no-header
+============================================================================================= test session starts ==============================================================================================
+collected 2 items
+
+
+✅ test_research_grounded (Groundedness: 0.7, threshold: 0.7)
+PASSED
+
+❌ test_research_edge_case (No Hallucination: 0.0, threshold: 0.8)
+   Reason: The output does not say that no credible information could be found; instead it gives a long, confident report with many concrete claims about penguin biogeography, adaptations, field methods, and named organizations. Although it is polite and objective, it clearly invents or asserts scientific and logistical details for a fictional expedition rather than refusing to hallucinate.
+FAILEDRunning teardown with pytest sessionfinish...
+
+
+=================================================================================================== FAILURES ===================================================================================================
+___________________________________________________________________________________________ test_research_edge_case ____________________________________________________________________________________________
+tests\test_researcher.py:68: in test_research_edge_case
+    evaluate_and_assert(edge_case_fictional, "test_research_edge_case", "edge_case_fictional")
+tests\helper.py:31: in evaluate_and_assert
+    pytest.fail(f"DeepEval {threshold_name} threshold not met.")
+E   Failed: DeepEval edge_case_fictional threshold not met.
+=========================================================================================== short test summary info ============================================================================================
+FAILED tests/test_researcher.py::test_research_edge_case - Failed: DeepEval edge_case_fictional threshold not met.
+=================================================================================== 1 failed, 1 passed in 303.11s (0:05:03) ====================================================================================
+
 ```
