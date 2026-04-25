@@ -155,6 +155,3 @@ def test_supervisor_save():
     )
     tool_correctness_metric.measure(test_case)
     evaluate_and_assert(tool_correctness_metric, "test_supervisor_save", "tool_correctness_metric")
-
-# cd C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
-# python -m pytest tests/test_tools.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no

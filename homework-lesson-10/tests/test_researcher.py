@@ -66,5 +66,3 @@ def test_research_edge_case():
     )
     edge_case_fictional.measure(test_case)
     evaluate_and_assert(edge_case_fictional, "test_research_edge_case", "edge_case_fictional")
-
-# python -m pytest tests/test_researcher.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no

@@ -51,6 +51,3 @@ def test_critique_revise():
     )
     critique_quality.measure(test_case)
     evaluate_and_assert(critique_quality, "test_critique_revise", "critique_quality")
-    
-# C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
-# python -m pytest tests/test_critic.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no
