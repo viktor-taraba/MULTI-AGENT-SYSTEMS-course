@@ -1,4 +1,8 @@
 import os
+import time
+from pywinauto.application import Application
+from pywinauto import Desktop
+import subprocess
 
 def get_model_and_relationships(dataset_path: str) -> str:
     """
@@ -100,11 +104,77 @@ def get_table_content(dataset_path: str, table_name: str = None) -> str:
     else:
         return f"Error: Table file '{safe_table_name}.tmdl' not found. Please check the available tables."
 
+def save_page_content_to_txt(window, output_filename="page_content.txt"):
+    print(f"Extracting readable text to {output_filename}...")
+    
+    try:
+        with open(output_filename, 'w', encoding='utf-8') as file:
+            
+            elements = window.descendants()
+            
+            seen_texts = set()
+            
+            for el in elements:
+                try:
+                    text = el.window_text()
+                    
+                    if text and text.strip() and text not in seen_texts:
+                        file.write(f"{text.strip()}\n")
+                        seen_texts.add(text)
+                except Exception:
+                    continue
+                    
+        print(f"-> Extraction complete! Saved to {output_filename}")
+        
+    except Exception as e:
+        print(f"-> Failed to extract text: {e}")
 
+def switch_page_and_screenshot(report_name, page_display_name):
+    print("Searching desktop for Power BI window...")
+    
+    try:
+        desktop = Desktop(backend="uia")
+        exact_title_regex = f".*{report_name}.*Power BI Desktop.*"
+        window = desktop.window(title_re=exact_title_regex, visible_only=True)
+        
+        print("Waiting for Power BI window to be ready...")
+        window.wait('exists', timeout=10)
+        window.set_focus()
+        print("Successfully focused Power BI.")
+        
+    except Exception as e:
+        print(f"Failed to find or focus Power BI. Error: {e}")
+        return
 
-print(get_table_content("C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\course-project\\reports\\Corporate Spend\\Corporate Spend.SemanticModel\\definition"))
-print(get_table_content("C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\course-project\\reports\\Corporate Spend\\Corporate Spend.SemanticModel\\definition","Department"))
+    try:
+        page_tab = window.child_window(title=page_display_name, control_type="TabItem")
+        page_tab.click_input()
+        time.sleep(5) 
+        
+        fit_button = window.child_window(title="Fit to page", control_type="Button", found_index=0)
+        fit_button.click_input()
+        time.sleep(1) 
 
-поки план мінімум - хай розкаже про що звіт та додасть документацію мір
+        screenshot = window.capture_as_image()
+        screenshot.save(f"{page_display_name}_screenshot.png")
+        print(f"Successfully captured {page_display_name}")
+        
+    except Exception as e:
+        print(f"Could not find or switch to page '{page_display_name}': {e}")
+
+    print("\nInitiating shutdown...")
+    subprocess.run(
+        ["taskkill", "/F", "/IM", "PBIDesktop.exe", "/T"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+    print("Power BI closed quietly.")
+
+switch_page_and_screenshot("Customer Profitability Sample PBIX","Info")
+
+# print(get_table_content("C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\course-project\\reports\\Corporate Spend\\Corporate Spend.SemanticModel\\definition"))
+# print(get_table_content("C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\course-project\\reports\\Corporate Spend\\Corporate Spend.SemanticModel\\definition","Department"))
+
+# поки план мінімум - хай розкаже про що звіт та додасть документацію мір
 
 # print(get_model_and_relationships("C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\course-project\\reports\\Corporate Spend\\Corporate Spend.SemanticModel\\definition"))
