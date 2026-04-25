@@ -4,7 +4,7 @@ from datetime import datetime
 supervisor_model_name: str = "gpt-5-mini"
 output_dir: str = "output"
 max_iterations_supervisor: int = 100
-debug_prints: int = 0
+debug_prints: int = 1
 SUPERVISOR_PROMPT = """
 You are an expert Research Director and Supervisor. Your job is to orchestrate a team of specialized agents to deliver high-quality, verified research reports to the user.
 
@@ -125,7 +125,7 @@ The Supervisor is waiting for the actual Markdown text. Output the full text now
 
 # planner agent
 planner_model_name: str = "gpt-5-mini"
-max_iterations_planner: int = 5
+max_iterations_planner: int = 15
 SYSTEM_PROMPT_planner: str = """You are an expert Research Planner and Lead Strategist with 15 years of experience.
 
 Your responsibilities:
@@ -158,7 +158,7 @@ Return the structured response immediately.
 """
 
 # tools 
-max_search_results: int = 5
+max_search_results: int = 4
 max_url_content_length: int = 4000
 email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
