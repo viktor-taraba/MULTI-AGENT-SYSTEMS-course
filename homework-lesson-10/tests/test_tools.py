@@ -1,3 +1,4 @@
+from pickle import TRUE
 from deepeval.test_case import LLMTestCase, ToolCall
 from deepeval.metrics import ToolCorrectnessMetric
 from agents.planner import planner_agent
@@ -5,14 +6,22 @@ from agents.research import research_agent
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
 from helper import evaluate_and_assert, get_unique_tool_names
 from agents.critic import critic_agent
+from supervisor import (
+    plan,
+    research,
+    critique
+    )
+import supervisor
+from config import (
+    SUPERVISOR_PROMPT, 
+    supervisor_model_name, 
+    max_iterations_supervisor
+    )
+from tools import save_report
+from langchain.agents import create_agent
+from langgraph.checkpoint.memory import InMemorySaver
 
 tool_correctness_metric = ToolCorrectnessMetric(threshold=0.7, model="gpt-5.4-mini")
-
-"""
-Створіть мінімум 3 тест-кейси для tool correctness:
-
-Supervisor отримує APPROVE від Critic → має викликати save_report
-"""
 
 def test_planner_tools():
     user_input = "Create a research plan for agentic development for MS Power BI"
@@ -72,7 +81,7 @@ def test_researcher_tools():
 
     test_case = LLMTestCase(
         input=user_input,
-        actual_output="Plan ready",
+        actual_output="Research ready",
         tools_called=[ToolCall(name=tool_name) for tool_name in unique_tool_names],
         expected_tools=[
             ToolCall(name="web_search"),
@@ -84,10 +93,10 @@ def test_researcher_tools():
     evaluate_and_assert(tool_correctness_metric, "test_researcher_tools", "tool_correctness_metric")
 
 def test_critic_tools():
-    with open("tests/critic_tests_examples/ponziani_opening_report.md", "r", encoding="utf-8") as f:
-        revise_report = f.read()
+    with open("tests/critic_tests_examples/pbir_multi_agent_prompting_report.md", "r", encoding="utf-8") as f:
+        report = f.read()
 
-    user_input = f"Review report: {revise_report}"
+    user_input = f"Review report: {report}"
     agent_response = critic_agent.invoke(
             {"messages": [("user", user_input)]}, 
             config={"configurable": {"thread_id": "test_thread_001"}}
@@ -97,7 +106,7 @@ def test_critic_tools():
 
     test_case = LLMTestCase(
         input=user_input,
-        actual_output="Plan ready",
+        actual_output="Review ready",
         tools_called=[ToolCall(name=tool_name) for tool_name in unique_tool_names],
         expected_tools=[
             ToolCall(name="web_search"),
@@ -108,7 +117,44 @@ def test_critic_tools():
     evaluate_and_assert(tool_correctness_metric, "test_critic_tools", "tool_correctness_metric")
 
 def test_supervisor_save():
-    pass
+    with open("tests/critic_tests_examples/pbir_multi_agent_prompting_report.md", "r", encoding="utf-8") as f:
+        report = f.read()
+
+    critic_approval = {
+          "verdict": "APPROVE",
+          "is_fresh": TRUE,
+          "is_complete": TRUE,
+          "is_well_structured": TRUE,
+          "strengths": ["Level of details", "Up-to-date information", "Relevant sources"],
+          "gaps": [],
+          "revision_requests": []
+    }
+    user_input = f"Assume that you already called plan, research, and critique tools. Answers (prepared report and critic review) - Report: {report}. Critic response: {critic_approval}"
+    config = {
+        "configurable": {"thread_id": f"supervisor_thread_001"}, 
+        "recursion_limit": max_iterations_supervisor}
+
+    supervisor = create_agent(
+                model=supervisor_model_name,
+                tools=[plan, research, critique, save_report],
+                system_prompt=SUPERVISOR_PROMPT,
+                checkpointer=InMemorySaver(),
+                )
+    agent_response = supervisor.invoke({"messages": [("user", user_input)]}, config=config)
+    final_answer = agent_response['messages'][-1].content
+
+    unique_tool_names = get_unique_tool_names(agent_response)
+
+    test_case = LLMTestCase(
+        input=user_input,
+        actual_output=final_answer,
+        tools_called=[ToolCall(name=tool_name) for tool_name in unique_tool_names],
+        expected_tools=[
+            ToolCall(name="save_report")
+        ],
+    )
+    tool_correctness_metric.measure(test_case)
+    evaluate_and_assert(tool_correctness_metric, "test_supervisor_save", "tool_correctness_metric")
 
 # cd C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
 # python -m pytest tests/test_tools.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no
