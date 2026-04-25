@@ -1,6 +1,4 @@
 # розбити на етап генерації та збереження результатів (в окрему папку навіть можна) та етап оцінкиз тестами (з цього json)
-# як альтернатива - якщо продовжуватимуме використвоувати save_report, то тоді можна буде через порівняння по даті і часу виводити фінальний 
-# звіт звідти, порівнюючи по даті і часу запуску та збереження звіту 
 
 from supervisor import (
     plan,
@@ -21,9 +19,6 @@ import os
 
 with open("tests/golden_dataset.json", "r", encoding="utf-8") as f:
     golden_data = json.load(f)
- 
-# to delete
-golden_data = golden_data[2:]
 
 results_data = []
 for i, data in enumerate(golden_data):
@@ -53,10 +48,6 @@ for i, data in enumerate(golden_data):
             "actual_output": final_answer,
             "category": category
         })
-
-    # to delete
-    if i >= 5:
-        break
 
 os.makedirs("tests/e2e_results", exist_ok=True)
 results_path = "tests/e2e_results/generated_responses.json"
