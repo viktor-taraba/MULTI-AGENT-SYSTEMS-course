@@ -37,7 +37,7 @@ Rules:
 # critic agent
 revision_counter_max: int = 1
 critic_model_name: str = "gpt-5-mini"
-max_iterations_critic: int = 5
+max_iterations_critic: int = 20
 max_items_critic: int = 5
 SYSTEM_PROMPT_critic: str = f"""
 You are an expert Critic responsible for evaluating the quality of research. 
