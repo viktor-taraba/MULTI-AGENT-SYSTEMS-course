@@ -1,6 +1,6 @@
 import pytest
 
-def extract_output_and_context(agent_response, stuctured_name):
+def extract_output_and_context(agent_response, stuctured_name, context_needed = True):
     """(helper function) safe answer extraction"""
 
     if "structured_response" in agent_response:
@@ -8,11 +8,14 @@ def extract_output_and_context(agent_response, stuctured_name):
     else:
         actual_output_str = str(agent_response.get("messages", [])[-1].content)
 
-    context_list = [
-        str(msg.content) 
-        for msg in agent_response.get("messages", []) 
-        if type(msg).__name__ == "ToolMessage"
-    ]
+    if context_needed:
+        context_list = [
+            str(msg.content) 
+            for msg in agent_response.get("messages", []) 
+            if type(msg).__name__ == "ToolMessage"
+        ]
+    else:
+        context_list = []
 
     return actual_output_str, context_list
 
