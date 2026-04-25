@@ -226,3 +226,50 @@ Overall: 19/20 passed (95.0% pass rate)
 ```
 
 > Деякі тести можуть fail — це нормально. Мета не 100% pass rate, а мати **baseline** для подальших покращень. Зафіксуйте поточні scores і поступово покращуйте систему.
+
+Приклад:
+```
+PS C:\Users\Viktor> cd C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
+PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_tools.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no
+================================================= test session starts =================================================
+platform win32 -- Python 3.13.12, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Viktor\AppData\Local\Python\pythoncore-3.13-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
+plugins: anyio-4.12.1, deepeval-3.9.7, langsmith-0.7.18, asyncio-1.3.0, repeat-0.9.4, rerunfailures-16.1, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 4 items
+
+
+✅ test_planner_tools (ToolCorrectnessMetric: 1.0, threshold: 0.7)
+PASSED
+
+✅ test_researcher_tools (ToolCorrectnessMetric: 1.0, threshold: 0.7)
+PASSED
+
+✅ test_critic_tools (ToolCorrectnessMetric: 1.0, threshold: 0.7)
+PASSED
+
+✅ test_supervisor_save (ToolCorrectnessMetric: 1.0, threshold: 0.7)
+PASSEDRunning teardown with pytest sessionfinish...
+
+
+======================================================================================== 4 passed in 445.39s (0:07:25) =========================================================================================
+PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_critic.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no
+============================================================================================= test session starts ==============================================================================================
+platform win32 -- Python 3.13.12, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Viktor\AppData\Local\Python\pythoncore-3.13-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
+plugins: anyio-4.12.1, deepeval-3.9.7, langsmith-0.7.18, asyncio-1.3.0, repeat-0.9.4, rerunfailures-16.1, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 2 items
+
+
+✅ test_critique_approve (Critique Quality: 0.9, threshold: 0.7)
+PASSED
+
+✅ test_critique_revise (Critique Quality: 0.9, threshold: 0.7)
+PASSEDRunning teardown with pytest sessionfinish...
+
+
+======================================================================================== 2 passed in 242.15s (0:04:02) =========================================================================================
+```
