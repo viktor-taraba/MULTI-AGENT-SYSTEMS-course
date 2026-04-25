@@ -1,5 +1,8 @@
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
+from agents.critic import critic_agent
+from helper import evaluate_and_assert, extract_output_and_context
+import json 
 
 critique_quality = GEval(
     name="Critique Quality",
@@ -18,7 +21,30 @@ critique_quality = GEval(
 # і взяти з прикладів в аутпуті хороший 
 
 def test_critique_approve():
+    with open("tests/critic_tests_examples/pbir_multi_agent_prompting_report.md", "r", encoding="utf-8") as f:
+        approve_report = f.read()
     pass
 
 def test_critique_revise():
-    pass
+    with open("tests/critic_tests_examples/ponziani_opening_report.md", "r", encoding="utf-8") as f:
+        revise_report = f.read()
+
+    user_input = f"Review report: {revise_report}"
+    agent_response = critic_agent.invoke(
+            {"messages": [("user", user_input)]}, 
+            config={"configurable": {"thread_id": "test_thread_002"}}
+        )
+
+    # to delete
+    actual_output_str = str(agent_response.get("messages", [])[-1].content)
+    print(actual_output_str)
+        
+    test_case = LLMTestCase(
+        input=user_input,
+        actual_output=actual_output_str
+    )
+    critique_quality.measure(test_case)
+    evaluate_and_assert(critique_quality, "test_critique_revise", "critique_quality")
+    
+# C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
+# python -m pytest tests/test_critic.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no
