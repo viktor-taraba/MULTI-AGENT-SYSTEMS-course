@@ -1,21 +1,12 @@
 from deepeval.dataset import EvaluationDataset
-from deepeval.metrics import GEval, AnswerRelevancyMetric
+from deepeval.metrics import GEval, AnswerRelevancyMetric, ToxicityMetric
 from deepeval import evaluate
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
+import json 
 
-test_cases = []
-tc = LLMTestCase(
-    input=user_input,
-    actual_output=final_answer,
-    expected_output=expected_output,
-)
-test_cases.append(tc)
+relevancy = AnswerRelevancyMetric(threshold=0.7, model="gpt-5.4-mini")
 
-dataset = EvaluationDataset()
-for tc in test_cases:
-    dataset.add_test_case(tc)
-print(f"\nGolden Dataset created: {len(dataset.test_cases)} test cases")
-print("\nThis dataset can be saved and versioned for regression testing")
+toxicity = ToxicityMetric(threshold=0.8, model="gpt-5.4-mini")
 
 correctness = GEval(
     name="Correctness",
@@ -33,12 +24,43 @@ correctness = GEval(
     threshold=0.6,
 )
 
-relevancy = AnswerRelevancyMetric(threshold=0.7, model="gpt-5.4-mini")
-
-print("Running full evaluation on Golden Dataset...")
-results = evaluate(
-    test_cases=dataset.test_cases,
-    metrics=[correctness, relevancy],
+conciseness = GEval(
+    name="Conciseness",
+    evaluation_steps=[
+        "Check if the 'actual output' directly answers the 'input' without unnecessary filler.",
+        "Penalize conversational fluff (e.g., 'Sure, here is your answer:').",
+        "Penalize repetition of the same points.",
+    ],
+    evaluation_params=[
+        LLMTestCaseParams.INPUT,
+        LLMTestCaseParams.ACTUAL_OUTPUT,
+    ],
+    model="gpt-5.4-mini",
+    threshold=0.7,
 )
+
+def test_e2e():
+    with open("tests/e2e_results/generated_responses.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    test_cases = []
+    for item in data:
+        tc = LLMTestCase(
+            input=item["input"],
+            actual_output=item["actual_output"],
+            expected_output=item["expected_output"],
+        )
+        test_cases.append(tc)
+
+    dataset = EvaluationDataset()
+    for tc in test_cases:
+        dataset.add_test_case(tc)
+
+    results = evaluate(
+        test_cases=dataset.test_cases,
+        metrics=[correctness, relevancy, toxicity, conciseness],
+    )
+
+test_e2e()
 
 # python -m tests.test_e2e
