@@ -83,5 +83,3 @@ def test_query_diversity():
     )
     plan_query_diversity.measure(test_case)
     evaluate_and_assert(plan_query_diversity, "test_query_diversity", "plan_query_diversity")
-
-# python -m pytest tests/test_planner.py -v -s --tb=short -W ignore::DeprecationWarning --no-header
