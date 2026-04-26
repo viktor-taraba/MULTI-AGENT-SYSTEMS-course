@@ -113,15 +113,15 @@ homework-lesson-8/
 ├── supervisor.py        # Supervisor agent + agent-as-tool wrappers
 ├── agents/
 │   ├── planner.py       # Planner Agent (uses ResearchPlan from schemas.py)
-│   ├── research.py      # Research Agent (reuses hw5 tools)
+│   ├── research.py      # Research Agent
 │   └── critic.py        # Critic Agent (uses CritiqueResult from schemas.py)
 ├── schemas.py           # Pydantic models: ResearchPlan, CritiqueResult
-├── tools.py             # Reused from hw5: web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref + save_report
-├── retriever.py         # Reused from hw5
-├── ingest.py            # Reused from hw5
+├── tools.py             # Reused from hw8: web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref + save_report
+├── retriever.py         # Reused from hw8
+├── ingest.py            # Reused from hw8
 ├── config.py            # Prompts + settings
-├── requirements.txt     # Dependencies (add langgraph to hw5 deps)
-├── data/                # Documents for RAG (from hw5)
+├── requirements.txt     # Dependencies
+├── data/                # Documents for RAG (from hw8)
 ├── chunks/              # Результат роботи ingestion.py (JSON файл зі збереженими чанками)
 │   └── bm25_chunks.json         # JSON файл зі збереженими чанками
 ├── index/               # Векторна БД
