@@ -1,6 +1,9 @@
 from pickle import TRUE
 from deepeval.test_case import LLMTestCase, ToolCall
 from deepeval.metrics import ToolCorrectnessMetric
+from deepeval import assert_test
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agents.planner import planner_agent
 from agents.research import research_agent
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
@@ -41,8 +44,7 @@ def test_planner_tools():
             ToolCall(name="knowledge_search")
         ],
     )
-    tool_correctness_metric.measure(test_case)
-    evaluate_and_assert(tool_correctness_metric, "test_planner_tools", "tool_correctness_metric")
+    assert_test(test_case, [tool_correctness_metric])
 
 def test_researcher_tools():
     user_input = """
@@ -89,8 +91,7 @@ def test_researcher_tools():
             ToolCall(name="read_url")
         ],
     )
-    tool_correctness_metric.measure(test_case)
-    evaluate_and_assert(tool_correctness_metric, "test_researcher_tools", "tool_correctness_metric")
+    assert_test(test_case, [tool_correctness_metric])
 
 def test_critic_tools():
     with open("tests/critic_tests_examples/pbir_multi_agent_prompting_report.md", "r", encoding="utf-8") as f:
@@ -113,8 +114,7 @@ def test_critic_tools():
             ToolCall(name="read_url")
         ],
     )
-    tool_correctness_metric.measure(test_case)
-    evaluate_and_assert(tool_correctness_metric, "test_critic_tools", "tool_correctness_metric")
+    assert_test(test_case, [tool_correctness_metric])
 
 def test_supervisor_save():
     with open("tests/critic_tests_examples/pbir_multi_agent_prompting_report.md", "r", encoding="utf-8") as f:
@@ -153,5 +153,4 @@ def test_supervisor_save():
             ToolCall(name="save_report")
         ],
     )
-    tool_correctness_metric.measure(test_case)
-    evaluate_and_assert(tool_correctness_metric, "test_supervisor_save", "tool_correctness_metric")
+    assert_test(test_case, [tool_correctness_metric])
