@@ -1,19 +1,20 @@
 # Домашнє завдання: тестування мультиагентної системи (розширення hw8)
 
 ![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
-![langchain](https://img.shields.io/badge/langchain-1.2.0+-orange.svg)
-![langgraph](https://img.shields.io/badge/langgraph-1.1.2+-orange.svg)
-![yfinance](https://img.shields.io/badge/yfinance-1.2.0+-orange.svg)
-![trafilatura](https://img.shields.io/badge/trafilatura-2.0.0+-orange.svg)
-![pypdf](https://img.shields.io/badge/pypdf-6.9.1+-orange.svg)
-![pandas](https://img.shields.io/badge/pandas-3.0.1+-orange.svg)
-![ddgs](https://img.shields.io/badge/ddgs-9.11.4+-orange.svg)
-![requests](https://img.shields.io/badge/requests-2.32.5+-orange.svg)
-![chromadb](https://img.shields.io/badge/chromadb-1.5.5+-orange.svg)
+![langchain](https://img.shields.io/badge/langchain-1.2.0-orange.svg)
+![langgraph](https://img.shields.io/badge/langgraph-1.1.2-orange.svg)
+![yfinance](https://img.shields.io/badge/yfinance-1.2.0-orange.svg)
+![trafilatura](https://img.shields.io/badge/trafilatura-2.0.0-orange.svg)
+![pypdf](https://img.shields.io/badge/pypdf-6.9.1-orange.svg)
+![pandas](https://img.shields.io/badge/pandas-3.0.1-orange.svg)
+![ddgs](https://img.shields.io/badge/ddgs-9.11.4-orange.svg)
+![requests](https://img.shields.io/badge/requests-2.32.5-orange.svg)
+![chromadb](https://img.shields.io/badge/chromadb-1.5.5-orange.svg)
 ![youtube-transcript-api](https://img.shields.io/badge/youtube--transcript--api-1.2.4+-orange.svg)
-![transformers](https://img.shields.io/badge/transformers-5.4.0+-orange.svg)
-![docx2txt](https://img.shields.io/badge/docx2txt-0.9+-orange.svg)
-![rank_bm25](https://img.shields.io/badge/rank_bm25-0.2.2+-orange.svg)
+![transformers](https://img.shields.io/badge/transformers-5.4.0-orange.svg)
+![docx2txt](https://img.shields.io/badge/docx2txt-0.9-orange.svg)
+![rank_bm25](https://img.shields.io/badge/rank_bm25-0.2.2-orange.svg)
+![deepeval](https://img.shields.io/badge/deepeval-3.9.7-orange.svg)
 
 ### Що змінюється порівняно з homework-8
 
@@ -39,32 +40,9 @@
 |test_researcher_tools|Researcher|Tool Correctness - Використання тулів web_search, knowledge_search, knowledge_search для пошуку|
 |test_critic_tools|Critic|Tool Correctness - Використання тулів web_search та read_url для верифікації звіту|
 |test_supervisor_save|Supervisor|Tool Correctness - Використання save_report після approve від критика|
+|test_e2e|повний pipeline Supervisor → Planner → Researcher → Critic|Перевірка e2e на основі golden_dataset за метриками correctness, relevancy, toxicity, conciseness|
 
 Використовую pytest напряму замість deepeval через обмеження з боку  Application Control (Windows App Control and Smart App Control) `Program 'deepeval.exe' failed to run: An Application Control policy has blocked this file` 
-
-#### 4. End-to-end тест
-
-Протестуйте повний pipeline Supervisor → Planner → Researcher → Critic:
-
-```python
-answer_relevancy = AnswerRelevancyMetric(threshold=0.7, model="gpt-5.4-mini")
-
-correctness = GEval(
-    name="Correctness",
-    evaluation_steps=[
-        "Check whether the facts in 'actual output' contradict 'expected output'",
-        "Penalize omission of critical details",
-        "Different wording of the same concept is acceptable",
-    ],
-    evaluation_params=[
-        LLMTestCaseParams.INPUT,
-        LLMTestCaseParams.ACTUAL_OUTPUT,
-        LLMTestCaseParams.EXPECTED_OUTPUT,
-    ],
-    model="gpt-5.4-mini",
-    threshold=0.6,
-)
-```
 
 ### Загальний опис
 
@@ -73,7 +51,7 @@ correctness = GEval(
 
 Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>` та `HF_TOKEN=<тут_ваш_ключ>`
 
-Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-8/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-10/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
 Підтримувані формати файлів для RAG (для збереження використовуєьтся chromadb):
 - `PDF-файли (.pdf)` — спочатку намагаємося витягнути текст через `PyPDFLoader`. Якщо сторінки виявляються "порожніми" (наприклад, це скани або складний формат), використовуємо резервний `PyMuPDFLoader`.
@@ -120,9 +98,9 @@ Supervisor Agent
 ```
 homework-lesson-8/
 ├── tests/
-│   ├── golden_dataset.json       # 15-20 golden examples
+│   ├── golden_dataset.json       # 12 golden examples
 │   ├── test_planner.py           # Planner agent tests
-│   ├── test_researcher.py        # Research agent tests (groundedness)
+│   ├── test_researcher.py        # Research agent tests
 │   ├── test_critic.py            # Critic agent tests
 │   ├── test_tools.py             # Tool correctness tests
 │   └── test_e2e.py               # End-to-end evaluation on golden dataset
@@ -151,21 +129,6 @@ homework-lesson-8/
 │   └── pbir_multi_agent_prompting_report.md    # Example generated report (#2)
 │   └── pbir_tmdl_validator_report.md           # Example generated report (#3)
 └── README.md            # Setup instructions, architecture overview
-```
-
-### Структура проєкту
-
-```
-homework-lesson-10/
-├── tests/
-│   ├── golden_dataset.json       # 15-20 golden examples
-│   ├── test_planner.py           # Planner agent tests
-│   ├── test_researcher.py        # Research agent tests (groundedness)
-│   ├── test_critic.py            # Critic agent tests
-│   ├── test_tools.py             # Tool correctness tests
-│   └── test_e2e.py               # End-to-end evaluation on golden dataset
-├── ... (all files from homework-lesson-8)
-└── README.md
 ```
 
 ### Як запустити тести
