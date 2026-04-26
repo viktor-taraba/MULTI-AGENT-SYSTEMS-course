@@ -1,7 +1,10 @@
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
+from deepeval import assert_test
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agents.research import research_agent
-from helper import evaluate_and_assert, extract_output_and_context
+from helper import extract_output_and_context
 
 groundedness = GEval(
     name="Groundedness",
@@ -48,8 +51,7 @@ def test_research_grounded():
         actual_output=actual_output_str,
         retrieval_context = context_list
     )
-    groundedness.measure(test_case)
-    evaluate_and_assert(groundedness, "test_research_grounded", "groundedness")
+    assert_test(test_case, [groundedness])
 
 def test_research_edge_case():
     user_input = "The 2025 Saharan Spheniscidae Expedition: Assessing Avian Desert Adaptation"
@@ -64,5 +66,4 @@ def test_research_edge_case():
         actual_output=actual_output_str,
         retrieval_context = context_list
     )
-    edge_case_fictional.measure(test_case)
-    evaluate_and_assert(edge_case_fictional, "test_research_edge_case", "edge_case_fictional")
+    assert_test(test_case, [edge_case_fictional])
