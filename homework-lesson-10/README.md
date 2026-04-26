@@ -181,7 +181,7 @@ deepeval test run tests/test_planner.py
 deepeval test run tests/ -v
 ```
 
-### Приклад запуску:
+Приклад запуску:
 ```
 PS C:\Users\Viktor> cd C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
 PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_tools.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no --no-header
