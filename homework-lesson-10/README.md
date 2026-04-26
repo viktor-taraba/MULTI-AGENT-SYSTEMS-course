@@ -24,7 +24,7 @@
 | Немає golden dataset | 12 golden examples (happy path + edge cases + failure cases) для regression testing |
 | Немає CI-ready тестів | запуск тестів через pytest |
 
-#### Тести
+### Тести
 
 |Назва тесту|Якого агента тестуємо|Що перевіряємо|
 |--|--|--|
