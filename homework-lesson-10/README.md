@@ -1,47 +1,26 @@
 # Домашнє завдання: тестування мультиагентної системи (розширення hw8)
 
-Напишіть автоматизовані тести для вашої мультиагентної системи з `homework-lesson-8`, використовуючи DeepEval та підходи з Лекції 10.
-
----
-
 ### Що змінюється порівняно з homework-8
 
 | Було (homework-lesson-8) | Стає (homework-lesson-10)                    |
 |-|----------------------------------------------|
 | Мультиагентна система без тестів | Та сама система + покриття тестами           |
 | Якість перевіряється вручну (vibe check) | Автоматизовані evals з метриками 0–1         |
-| Немає golden dataset | 10–15 golden examples для regression testing |
-| Немає CI-ready тестів | `deepeval test run` запускає всі тести       |
+| Немає golden dataset | 12 golden examples (happy path + edge cases + failure cases) для regression testing |
+| Немає CI-ready тестів | запуск тестів через pytest |
 
----
+#### Тести
 
-### Що потрібно реалізувати
+|Назва тесту|Якого агента тестуємо|Що перевіряємо|
+|--|--|--|
+|test_plan_quality|Planner|Структуру та якість плану|
+|test_plan_has_queries|Planner|Наявність пошукових запитів в search_queries та їх релевантність|
+|test_query_diversity|Planner|Широта та повнота покриття питання запитами|
+|||
+|||
+|||
 
-#### 1. Golden Dataset (10–15 прикладів)
-
-Створіть golden dataset для тестування вашої системи. Кожен приклад — це пара `input` → `expected_output` з категорією:
-
-| Категорія | Кількість | Приклади |
-|---|-----------|---|
-| **Happy path** | 3–5       | Типові дослідницькі запити, на які система має дати повну відповідь |
-| **Edge cases** | 3–5       | Неоднозначні запити, дуже вузькі або дуже широкі теми, запити кількома мовами |
-| **Failure cases** | 3–5       | Запити поза доменом, безглузді запити, запити на заборонені теми |
-
-Збережіть як `tests/golden_dataset.json`:
-
-```json
-[
-  {
-    "input": "Compare naive RAG vs sentence-window retrieval",
-    "expected_output": "Naive RAG splits documents into fixed-size chunks...",
-    "category": "happy_path"
-  }
-]
-```
-
-Можна використати Ragas `TestsetGenerator` для початкової генерації, але **обов'язково зробіть manual review** — виправте або видаліть неякісні приклади.
-
-#### 2. Тести компонентів (component-level)
+Використовую pytest напряму замість deepeval
 
 Протестуйте кожного суб-агента окремо.
 
@@ -177,57 +156,7 @@ deepeval test run tests/test_planner.py
 deepeval test run tests/ -v
 ```
 
----
-
-### Вимоги
-
-1. **Golden Dataset:** 15–20 прикладів (happy path + edge cases + failure cases), збережений як JSON
-2. **Component tests:** мінімум по одному тесту на Planner, Researcher, Critic
-3. **Tool correctness:** мінімум 3 тест-кейси
-4. **End-to-end:** evaluation на повному golden dataset з мінімум 2 метриками
-5. **Custom metric:** мінімум 1 GEval метрика під вашу бізнес-логіку
-6. **Thresholds:** обґрунтовані пороги (не 0.95 з першого дня — встановіть baseline, потім підвищуйте)
-7. **Тести запускаються:** `deepeval test run tests/` проходить без помилок
-
----
-
-### Очікуваний результат
-
-```
-$ deepeval test run tests/
-
-Running 5 test files...
-
-tests/test_planner.py
-  ✅ test_plan_quality (Plan Quality: 0.85, threshold: 0.7)
-  ✅ test_plan_has_queries (Plan Quality: 0.90, threshold: 0.7)
-
-tests/test_researcher.py
-  ✅ test_research_grounded (Groundedness: 0.78, threshold: 0.7)
-  ❌ test_research_edge_case (Groundedness: 0.45, threshold: 0.7)
-
-tests/test_critic.py
-  ✅ test_critique_approve (Critique Quality: 0.92, threshold: 0.7)
-  ✅ test_critique_revise (Critique Quality: 0.88, threshold: 0.7)
-
-tests/test_tools.py
-  ✅ test_planner_tools (Tool Correctness: 1.0, threshold: 0.5)
-  ✅ test_researcher_tools (Tool Correctness: 1.0, threshold: 0.5)
-  ✅ test_supervisor_save (Tool Correctness: 1.0, threshold: 0.5)
-
-tests/test_e2e.py
-  ✅ test_golden_dataset [15/20 passed]
-     Correctness: avg 0.74, min 0.42, max 0.95
-     Answer Relevancy: avg 0.81, min 0.55, max 0.98
-     Citation Presence: avg 0.70, min 0.30, max 1.00
-
-======================================================
-Overall: 19/20 passed (95.0% pass rate)
-```
-
-> Деякі тести можуть fail — це нормально. Мета не 100% pass rate, а мати **baseline** для подальших покращень. Зафіксуйте поточні scores і поступово покращуйте систему.
-
-Приклад:
+Приклад запуску:
 ```
 PS C:\Users\Viktor> cd C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10
 PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_tools.py -v -s --tb=short -W ignore::DeprecationWarning --show-capture=no --no-header
@@ -285,5 +214,20 @@ E   Failed: DeepEval edge_case_fictional threshold not met.
 =========================================================================================== short test summary info ============================================================================================
 FAILED tests/test_researcher.py::test_research_edge_case - Failed: DeepEval edge_case_fictional threshold not met.
 =================================================================================== 1 failed, 1 passed in 303.11s (0:05:03) ====================================================================================
+PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\homework-lesson-10> python -m pytest tests/test_planner.py -v -s --tb=short -W ignore::DeprecationWarning --no-header
+============================================================================================= test session starts ==============================================================================================
+collected 3 items
 
+
+✅ test_plan_quality (Plan Quality: 0.9, threshold: 0.7)
+PASSED
+
+✅ test_plan_has_queries (Plan Quality: 0.9, threshold: 0.7)
+PASSED
+
+✅ test_query_diversity (Query Diversity: 0.8, threshold: 0.75)
+PASSEDRunning teardown with pytest sessionfinish...
+
+
+======================================================================================== 3 passed in 203.07s (0:03:23) =========================================================================================
 ```
