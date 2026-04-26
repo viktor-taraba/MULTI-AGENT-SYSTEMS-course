@@ -138,6 +138,8 @@ homework-lesson-8/
 
 ### Як запустити тести
 
+Перед запуском e2e тестів необхідно спершу виконати test_e2e_generate.py
+
 ```bash
 # Run all tests
 deepeval test run tests/
