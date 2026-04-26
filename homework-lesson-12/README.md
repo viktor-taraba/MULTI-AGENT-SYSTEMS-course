@@ -1,113 +1,139 @@
 # Домашнє завдання: Langfuse observability
 
-Підключіть Langfuse до вашої мультиагентної системи з останньої домашньої роботи, налаштуйте tracing та online evaluation через LLM-as-a-Judge.
+![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
+![langchain](https://img.shields.io/badge/langchain-1.2.0-orange.svg)
+![langgraph](https://img.shields.io/badge/langgraph-1.1.2-orange.svg)
+![yfinance](https://img.shields.io/badge/yfinance-1.2.0-orange.svg)
+![trafilatura](https://img.shields.io/badge/trafilatura-2.0.0-orange.svg)
+![pypdf](https://img.shields.io/badge/pypdf-6.9.1-orange.svg)
+![pandas](https://img.shields.io/badge/pandas-3.0.1-orange.svg)
+![ddgs](https://img.shields.io/badge/ddgs-9.11.4-orange.svg)
+![requests](https://img.shields.io/badge/requests-2.32.5-orange.svg)
+![chromadb](https://img.shields.io/badge/chromadb-1.5.5-orange.svg)
+![youtube-transcript-api](https://img.shields.io/badge/youtube--transcript--api-1.2.4+-orange.svg)
+![transformers](https://img.shields.io/badge/transformers-5.4.0-orange.svg)
+![docx2txt](https://img.shields.io/badge/docx2txt-0.9-orange.svg)
+![rank_bm25](https://img.shields.io/badge/rank_bm25-0.2.2-orange.svg)
+![deepeval](https://img.shields.io/badge/deepeval-3.9.7-orange.svg)
+![langfuse](https://img.shields.io/badge/langfuse-4.5.1-orange.svg)
 
----
+### Що змінилося порівняно з попередніми homework
 
-### Що змінюється порівняно з попередніми homework
-
-| Було | Стає |
+| Було | Стало |
 |---|---|
 | Немає observability — система працює як чорна скринька | Кожен запуск трейситься в Langfuse з повним деревом викликів |
 | DeepEval тести запускаються локально вручну (hw10) | Langfuse автоматично оцінює нові трейси через LLM-as-a-Judge |
 | Промпти захардкоджені в коді | Усі system prompts агентів винесено в Langfuse Prompt Management |
 
----
+### Скріншоти з Langfuse UI
 
-### Що потрібно зробити
+#### Sessions
+![sessions](/homework-lesson-12/screenshots/sessions.png)
 
-#### 0. Налаштування Langfuse Cloud
+#### Trace tree / tracing
+![tracing_1](/homework-lesson-12/screenshots/tracing_1.png)
+![tracing_2](/homework-lesson-12/screenshots/tracing_2.png)
+![tracing_3](/homework-lesson-12/screenshots/tracing_3.png)
 
-1. Зареєструйтесь на [us.cloud.langfuse.com](https://us.cloud.langfuse.com) (free tier, без credit card)
-2. Створіть Organization → Project (наприклад, `homework-12`)
-3. **Settings → API Keys → + Create new API keys** — скопіюйте `Public Key` (`pk-lf-...`) та `Secret Key` (`sk-lf-...`)
-4. Збережіть ключі у `.env` файл:
+#### Evaluator scores / LLM-as-a-Judge
+![llm_as_a_judge_1](/homework-lesson-12/screenshots/llm_as_a_judge_1.png)
+![llm_as_a_judge_2](/homework-lesson-12/screenshots/llm_as_a_judge_2.png)
+![llm_as_a_judge_3](/homework-lesson-12/screenshots/llm_as_a_judge_3.png)
+![scores_dashboard](/homework-lesson-12/screenshots/scores_dashboard.png)
+
+#### Prompt management
+![prompts](/homework-lesson-12/screenshots/prompts.png)
+
+### Загальний опис
+
+Агент запускається з терміналу (python3 main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
+Агент підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії. Приклади згенерованих звітів - в [output](/homework-lesson-12/output)
+
+Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens) та [Langfuse](https://us.cloud.langfuse.com/) (`LANGFUSE_PUBLIC_KEY`,`LANGFUSE_SECRET_KEY`,`LANGFUSE_BASE_URL`), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>` та `HF_TOKEN=<тут_ваш_ключ>`
+
+Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-12/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+
+Підтримувані формати файлів для RAG (для збереження використовуєьтся chromadb):
+- `PDF-файли (.pdf)` — спочатку намагаємося витягнути текст через `PyPDFLoader`. Якщо сторінки виявляються "порожніми" (наприклад, це скани або складний формат), використовуємо резервний `PyMuPDFLoader`.
+- `Текстові файли (.txt)` — зчитуються як звичайний текст у кодуванні UTF-8 за допомогою `TextLoader`.
+- `Markdown-файли (.md)` — також обробляються базовим TextLoader як звичайний текст.
+- `Документи Microsoft Word (.docx)` — завантажуються за допомогою `Docx2txtLoader`
+- `Субтитри YouTube-відео` — необхідний окремий файл `(.txt)` з переліком посилань (назва файлу задана у змінній `Youtube_links_file_name`), зчитаємо з нього посилання і отримуємо субтитри через `YoutubeLoader`, автоматично додаючи URL як джерело в метадані.
+
+### Опис тулів для агентів:
+|Назва|Параметри|Опис|
+|--|--|--|
+|`web_search`|`query: str`|Шукає актуальну інформацію в інтернеті через DuckDuckGo. Повертає перелік знайдених посилань з даними про заголовок, URL, фрагмент тексту. Використовується як перший крок пошуку.|
+|`read_url`|`url: str`|Отримує основний текст із вебсторінки (або PDF, якщо це пряме посилання на pdf-звіт чи статтю).|
+|`stock_company_info`|`stock_ticker: str, result_type: str`|Отримує фінансові дані або загальний профіль компанії через Yahoo Finance API.|
+|`find_articles_crossref`|`query: str`|Шукає наукові статті в базі Crossref. Повертає відфільтрований список записів із валідною анотацією (назва, анотація, DOI, рік).|
+|`knowledge_search`|`query: str`|Пошук у локальній базі знань за допомогою гібридного пошуку (hybrid retrieval) та реранкінгу.|
+|`write_report`|`filename: str, content: str`|Зберігає фінальний звіт у форматі Markdown, використовується як останній крок для видачі результату.|
+|`plan`|`request: str`|Субагент Planner (агент як tool для Supervisor)|
+|`research`|`plan: str`|Субагент Research (агент як tool для Supervisor)|
+|`critique`|`findings: str`|Субагент Research (агент як tool для Supervisor)|
+
+### Архітектура
 
 ```
-LANGFUSE_PUBLIC_KEY=pk-lf-...
-LANGFUSE_SECRET_KEY=sk-lf-...
-LANGFUSE_BASE_URL=https://us.cloud.langfuse.com
+User (REPL)
+  │
+  ▼
+Supervisor Agent
+  │
+  ├── 1. plan(request)       → Planner Agent      → [web_search, knowledge_search]  → structured ResearchPlan
+  │
+  ├── 2. research(plan)      → Research Agent     → [web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref]   → structured ResearchResult
+  │
+  ├── 3. critique(findings)  → Critic Agent       → [web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref]   → structured CritiqueResult
+  │       │
+  │       ├── verdict: "APPROVE"  → go to step 4
+  │       └── verdict: "REVISE"   → back to step 2 with feedback
+  │
+  └── 4. write_report(...)   → save_report tool   → HITL gated
 ```
 
----
+### Структура проєкту
 
-#### 1. Підключення tracing до мультиагентної системи
-
-Інтегруйте Langfuse так, щоб **кожен запуск вашої MAS** створював **trace** у Langfuse з повним деревом (усі LLM-виклики, tool calls, суб-агенти — вкладені під один батьківський trace).
-
-Зверніть увагу на:
-- `@observe` декоратор та `CallbackHandler` для LangChain/LangGraph — див. [документацію інтеграції](https://langfuse.com/docs/integrations/langchain)
-- `propagate_attributes` для прокидання `session_id`, `user_id`, `tags` на весь trace
-
-**Критерій:** зробіть 3-5 запусків з різними запитами. У Langfuse UI → **Tracing → Traces** має бути 3-5 рядків, кожен розгортається у повне дерево з суб-агентами та tool calls.
-
----
-
-#### 2. Session та User tracking
-
-Переконайтесь, що ваші traces згруповані у **session** і мають `user_id`:
-
-- Після 3-5 запусків перевірте Langfuse UI:
-  - **Sessions** tab — має з'явитися ваша сесія з кількома трейсами всередині
-  - **Users** tab — має з'явитися ваш user
-
----
-
-#### 3. Prompt Management
-
-Винесіть **усі system prompts ваших агентів** з коду в Langfuse Prompt Management. Після цього жоден промпт не повинен бути захардкоджений у Python-файлах — код лише завантажує промпти з Langfuse за іменем та label.
-
-##### 3.1. Створіть промпти у Langfuse UI
-
-Для кожного агента у вашій системі:
-
-1. **Prompts → + New prompt**
-2. Задайте ім'я, що відповідає ролі агента
-3. Вставте текст промпту. Використовуйте template variables (`{{...}}`) де промпт параметризований
-4. Додайте label `production`
-
-##### 3.2. Завантажте промпти з коду
-
-Використовуйте `get_prompt(name, label=...)` з Langfuse Python SDK для завантаження промптів, та `.compile(**variables)` для підстановки template variables. Див. [документацію Prompt Management](https://langfuse.com/docs/prompts).
-
-**Критерій:**
-- У коді **жодних захардкоджених system prompts** — усі завантажуються з Langfuse
-- У Langfuse UI → **Prompts** — видно промпт для кожного агента
-
----
-
-#### 4. LLM-as-a-Judge: online evaluation у Langfuse
-
-Налаштуйте **автоматичну оцінку** нових трейсів через Langfuse Evaluators.
-
-##### 4.1. Створіть evaluator'и у Langfuse UI
-
-1. Перейдіть: **LLM-as-a-Judge → Evaluators → + Set up evaluator**
-2. Створіть **мінімум 2 evaluator'и** з різними score type (numeric, boolean, або categorical)
-3. Самостійно продумайте, які аспекти якості найважливіші для вашої конкретної системи — наприклад: relevance відповіді, groundedness фактів, повнота дослідження, структурованість output'у, тощо
-4. Напишіть evaluation prompts, використовуючи template variables `{{input}}`, `{{output}}`
-
-Див. [документацію LLM-as-a-Judge](https://langfuse.com/docs/scores/model-based-evals) для доступних score types, template variables та прикладів.
-
-##### 4.2. Запустіть і перевірте
-
-1. Зробіть 3-5 нових запусків вашої системи
-2. Зачекайте 1-2 хвилини — Langfuse виконає evaluation асинхронно
-3. Перевірте результати:
-   - **Tracing → Traces** → відкрийте trace → вкладка **Scores** — має бути автоматично проставлений score від evaluator'а
-   - **LLM-as-a-Judge → Evaluators** → статус evaluator'а показує кількість оброблених трейсів
-
----
-
-### Вимоги
-
-1. **Tracing працює:** кожен запуск MAS → trace з повним деревом суб-агентів і tool calls
-2. **Session/User:** traces згруповані в session, мають user_id
-3. **Prompt Management:** усі system prompts агентів завантажуються з Langfuse (жодних захардкоджених)
-4. **LLM-as-a-Judge:** мінімум 2 evaluator'и налаштовані, автоматично оцінюють нові traces
-5. **Скріншоти:** 4 скріншоти з Langfuse UI (trace tree, session, evaluator scores, prompt management)
-
----
-
-### Що здавати
-- Папка `screenshots/` з 4 скріншотами з Langfuse UI
+```
+homework-lesson-8/
+├── tests/
+│   ├── golden_dataset.json             # 12 golden examples
+│   ├── test_planner.py                 # Planner agent tests
+│   ├── test_researcher.py              # Research agent tests
+│   ├── test_critic.py                  # Critic agent tests
+│   ├── test_tools.py                   # Tool correctness tests
+│   ├── test_e2e.py                     # End-to-end evaluation on golden dataset
+│   ├── helper.py                       # Helper functions for tests
+│   ├── test_e2e_generate               # perparation for test_e2e (generating outputs for golden examples to be used as references in test_e2e)
+│   ├── e2e_results/
+│   |   └── generated_responses.json    # Responses generated by test_e2e_generate for golden examples (used in test_e2e)
+│   └── critic_tests_examples/          # Examples used in test_critic.py for approve/revise cases
+│       ├── ponziani_opening_report.md
+│       └── pbir_multi_agent_prompting_report.md 
+├── main.py              # REPL with HITL interrupt/resume loop
+├── supervisor.py        # Supervisor agent + agent-as-tool wrappers
+├── agents/
+│   ├── planner.py       # Planner Agent (uses ResearchPlan from schemas.py)
+│   ├── research.py      # Research Agent
+│   └── critic.py        # Critic Agent (uses CritiqueResult from schemas.py)
+├── screenshots/
+│   └── ...				 # Langfuse UI screenshots
+├── schemas.py           # Pydantic models: ResearchPlan, CritiqueResult
+├── tools.py             # Reused from hw8: web_search, read_url, knowledge_search, stock_company_info, find_articles_crossref + save_report
+├── retriever.py         # Reused from hw8
+├── ingest.py            # Reused from hw8
+├── config.py            # settings
+├── requirements.txt     # Dependencies
+├── data/                # Documents for RAG (from hw8)
+├── chunks/              # Результат роботи ingestion.py (JSON файл зі збереженими чанками)
+│   └── bm25_chunks.json         # JSON файл зі збереженими чанками
+├── index/               # Векторна БД
+│   └──... (.bin, .pickle, .sqlite3 files)
+├── gif example/         # Приклад роботи агента
+│   └── agent_example.gif
+├── .env                 # API ключі
+├── output/
+│   └── ...				 # Examples (generated .md reports)
+└── README.md            # Setup instructions, architecture overview
+```
