@@ -3,6 +3,7 @@ from deepeval.metrics import GEval, AnswerRelevancyMetric, ToxicityMetric
 from deepeval import evaluate
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 import json 
+from collections import defaultdict
 
 relevancy = AnswerRelevancyMetric(threshold=0.7, model="gpt-5.4-mini")
 
@@ -58,9 +59,10 @@ def test_e2e():
 
     results = evaluate(
         test_cases=dataset.test_cases,
-        metrics=[correctness, relevancy, toxicity, conciseness],
+        metrics=[correctness, relevancy, toxicity, conciseness]
     )
 
-test_e2e()
+# test_e2e()
 
 # python -m tests.test_e2e
+# deepeval test run test_e2e.py
