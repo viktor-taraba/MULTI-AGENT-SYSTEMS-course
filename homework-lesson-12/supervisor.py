@@ -18,6 +18,7 @@ from langgraph.errors import GraphRecursionError
 from langchain.agents.middleware.tool_call_limit import ToolCallLimitExceededError
 import uuid
 import json
+from langchain_core.runnables import RunnableConfig
 
 revision_counter = 0
 global current_research_session
@@ -146,7 +147,7 @@ def run_agent_with_recovery(agent, request: str, config: dict, final_prompt: str
         return None
 
 @tool
-def plan(request: str) -> str:
+def plan(request: str, config: RunnableConfig) -> str:
     """Create structured, step-by-step research plans from user requests.
 
     Usage:
@@ -161,22 +162,25 @@ def plan(request: str) -> str:
         print(f"\n╭{'─'*30}\n│   [Supervisor → Planner]\n╰{'─'*30}")
 
     unique_planner_thread_id = f"planner_internal_thread{uuid.uuid4()}"
-    config = {
-        "recursion_limit": max_iterations_planner, 
-        "configurable": {"thread_id": unique_planner_thread_id}
+
+    sub_config = config.copy()
+    sub_config["recursion_limit"] = max_iterations_planner
+    sub_config["configurable"] = {
+        **config.get("configurable", {}),
+        "thread_id": unique_planner_thread_id
     }
 
     plan = run_agent_with_recovery(
         agent=planner_agent, 
         request=request, 
-        config=config,
+        config=sub_config,
         final_prompt=FINAL_PROMPT_planner,
         agent_name="Planner")
 
     return plan.model_dump_json(indent=2) if plan else "Error: Could not generate research plan."
 
 @tool
-def research(plan: str) -> str:
+def research(plan: str, config: RunnableConfig) -> str:
     """Execute deep-dive research and generate a comprehensive Markdown report.
 
     Usage:
@@ -196,15 +200,17 @@ def research(plan: str) -> str:
 
     global current_research_session
     unique_researcher_thread_id = f"research_internal_thread{current_research_session}"
-    config = {
-        "recursion_limit": max_iterations_research, 
-        "configurable": {"thread_id": unique_researcher_thread_id}
+    sub_config = config.copy()
+    sub_config["recursion_limit"] = max_iterations_research
+    sub_config["configurable"] = {
+        **config.get("configurable", {}),
+        "thread_id": unique_researcher_thread_id
     }
     
     res = run_agent_with_recovery(
             agent=research_agent, 
             request=plan, 
-            config=config,
+            config=sub_config,
             final_prompt=FINAL_PROMPT_research,
             agent_name="Researcher")
 
@@ -213,7 +219,7 @@ def research(plan: str) -> str:
     return "Error: Could not generate report."
 
 @tool
-def critique(findings: str) -> str:
+def critique(findings: str, config: RunnableConfig) -> str:
     """Independently review, fact-check, and evaluate a drafted research report.
 
     Usage:
@@ -246,15 +252,17 @@ def critique(findings: str) -> str:
         return f"--- CRITIQUE ROUND {revision_counter}/{revision_counter_max} ---\n" + json.dumps(mock_critique, indent=2)
 
     unique_critic_thread_id = f"critic_internal_thread{uuid.uuid4()}"
-    config = {
-        "recursion_limit": max_iterations_critic, 
-        "configurable": {"thread_id": unique_critic_thread_id}
+    sub_config = config.copy()
+    sub_config["recursion_limit"] = max_iterations_critic
+    sub_config["configurable"] = {
+        **config.get("configurable", {}),
+        "thread_id": unique_critic_thread_id
     }
 
     critique = run_agent_with_recovery(
         agent=critic_agent, 
         request=findings,
-        config=config,
+        config=sub_config,
         final_prompt=FINAL_PROMPT_critic,
         agent_name="Critic")
 
