@@ -219,7 +219,66 @@ PASSEDRunning teardown with pytest sessionfinish...
 
 ======================================================================================== 3 passed in 203.07s (0:03:23) =========================================================================================
 ```
-Результат для `deepeval test run tests/test_e2e.py`:
+#### Результат для `deepeval test run tests/test_planner.py`:
+
+```
+=========================================================================================== short test summary info ============================================================================================
+FAILED tests/test_planner.py::test_plan_has_queries - AssertionError: Metrics: Plan Has Queries [GEval] (score: 0.7, threshold: 0.8, strict: False, error: None, reason: The response strongly matches the task by providing many actionable, highly relevant sear...
+1 failed, 2 passed, 4 warnings in 150.48s (0:02:30)
+                                                                                                  Test Results
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Test case                                                                ┃ Metric                   ┃ Score                                                                   ┃ Status ┃ Overall Success Rate ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ test_plan_quality                                                        │                          │                                                                         │        │ 100.0%               │
+│                                                                          │ Plan Quality [GEval]     │ 1.0 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The response  │ PASSED │                      │
+│                                                                          │                          │ strongly satisfies the evaluation steps: it includes many specific,     │        │                      │
+│                                                                          │                          │ topic-relevant search queries rather than vague terms, such as targeted │        │                      │
+│                                                                          │                          │ queries on trophic transfer, POP adsorption, phytoplankton/zooplankton  │        │                      │
+│                                                                          │                          │ effects, and microplastic transport models. The sources_to_check list   │        │                      │
+│                                                                          │                          │ is also relevant, covering peer-reviewed reviews, UNEP/GESAMP, NOAA/EU  │        │                      │
+│                                                                          │                          │ monitoring protocols, PubMed Central, and recent meta-analyses. The     │        │                      │
+│                                                                          │                          │ output_format clearly matches the requested detailed research plan and  │        │                      │
+│                                                                          │                          │ goes beyond by specifying a structured Markdown report with sections,   │        │                      │
+│                                                                          │                          │ figures, tables, and operational steps., error=None)                    │        │                      │
+│                                                                          │                          │                                                                         │        │                      │
+│ test_plan_has_queries                                                    │                          │                                                                         │        │ 0.0%                 │
+│                                                                          │ Plan Has Queries [GEval] │ 0.7 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The response  │ FAILED │                      │
+│                                                                          │                          │ strongly matches the task by providing many actionable, highly relevant │        │                      │
+│                                                                          │                          │ search queries covering dividend policy types, theories, empirical      │        │                      │
+│                                                                          │                          │ studies, company examples, and data sources. It also recommends         │        │                      │
+│                                                                          │                          │ web_search, but only once in sources_to_check; the evaluation requires  │        │                      │
+│                                                                          │                          │ web_search or knowledge_search to appear at least twice with relevant   │        │                      │
+│                                                                          │                          │ parameters, so this criterion is not met., error=None)                  │        │                      │
+│                                                                          │                          │                                                                         │        │                      │
+│ test_query_diversity                                                     │                          │                                                                         │        │ 100.0%               │
+│                                                                          │ Plan Quality [GEval]     │ 0.9 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The plan      │ PASSED │                      │
+│                                                                          │                          │ includes many specific, relevant search queries about PBIR structure,   │        │                      │
+│                                                                          │                          │ JSON schemas, conversion, tooling, and Power BI release notes, which    │        │                      │
+│                                                                          │                          │ satisfies the specificity requirement and uses relevant sources such as │        │                      │
+│                                                                          │                          │ Power BI blogs, GitHub, and documentation. The output_format also       │        │                      │
+│                                                                          │                          │ clearly matches the requested detailed research plan deliverable in     │        │                      │
+│                                                                          │                          │ Markdown with sections, code blocks, and a file-tree diagram. Minor     │        │                      │
+│                                                                          │                          │ weakness: some source items are broad (for example, generic web_search  │        │                      │
+│                                                                          │                          │ entries) and the plan goes beyond a plan into a final report outline,   │        │                      │
+│                                                                          │                          │ but overall it aligns well., error=None)                                │        │                      │
+│ Note: Use Confident AI with DeepEval to analyze failed test cases for    │                          │                                                                         │        │                      │
+│ more details                                                             │                          │                                                                         │        │                      │
+└──────────────────────────────────────────────────────────────────────────┴──────────────────────────┴─────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────┘
+
+⚠ WARNING: No hyperparameters logged.
+» Log hyperparameters to attribute prompts and models to your test runs.
+
+================================================================================
+
+
+✓ Evaluation completed 🎉! (time taken: 153.06s | token cost: 0.00452325 USD)
+» Test Results (3 total tests):
+   » Pass Rate: 66.67% | Passed: 2 | Failed: 1
+
+ ================================================================================
+```
+
+#### Результат для `deepeval test run tests/test_e2e.py`:
 
 ```
 Overall Metric Pass Rates
