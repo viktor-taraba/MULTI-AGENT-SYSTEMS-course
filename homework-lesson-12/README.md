@@ -49,7 +49,7 @@
 Агент запускається з терміналу (python3 main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
 Агент підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії. Приклади згенерованих звітів - в [output](/homework-lesson-12/output)
 
-Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens) та [Langfuse](https://us.cloud.langfuse.com/) (`LANGFUSE_PUBLIC_KEY`,`LANGFUSE_SECRET_KEY`,`LANGFUSE_BASE_URL`), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>` та `HF_TOKEN=<тут_ваш_ключ>`
+Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens) та [Langfuse](https://us.cloud.langfuse.com/), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>`, `HF_TOKEN=<тут_ваш_ключ>`, `LANGFUSE_PUBLIC_KEY=<тут_ваш_ключ>`,`LANGFUSE_SECRET_KEY=<тут_ваш_ключ>`,`LANGFUSE_BASE_URL=https://us.cloud.langfuse.com`
 
 Файл залежностей — [requirements.txt](https://github.com/viktor-taraba/MULTI-AGENT-SYSTEMS-course/blob/main/homework-lesson-12/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
 
