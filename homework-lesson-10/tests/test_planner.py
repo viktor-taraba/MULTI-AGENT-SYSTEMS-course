@@ -55,9 +55,6 @@ def test_plan_quality():
     )
     assert_test(test_case, [plan_quality])
 
-    # plan_quality.measure(test_case)
-    #evaluate_and_assert(plan_quality, "test_plan_quality", "plan_quality")
-
 def test_plan_has_queries():
     user_input = "Create a detailed research plan on the dividend policy types."
     agent_response = planner_agent.invoke(
@@ -71,8 +68,6 @@ def test_plan_has_queries():
         actual_output=actual_output_str
     )
     assert_test(test_case, [plan_has_queries])
-    #plan_has_queries.measure(test_case)
-    #evaluate_and_assert(plan_quality, "test_plan_has_queries", "plan_has_queries")
 
 def test_query_diversity():
     user_input = "Create a detailed research plan on the PBIR format files and structure (Power BI)."
@@ -87,7 +82,3 @@ def test_query_diversity():
         actual_output=actual_output_str
     )
     assert_test(test_case, [plan_quality])
-
-    """
-    plan_query_diversity.measure(test_case)
-    evaluate_and_assert(plan_query_diversity, "test_query_diversity", "plan_query_diversity")"""
