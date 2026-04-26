@@ -1,5 +1,7 @@
 from datetime import datetime
 from langfuse import get_client
+from dotenv import load_dotenv
+load_dotenv()
 
 # for prompts
 langfuse_prompts = get_client()
