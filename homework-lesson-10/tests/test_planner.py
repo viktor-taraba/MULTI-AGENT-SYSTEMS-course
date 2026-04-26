@@ -1,10 +1,7 @@
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 from agents.planner import planner_agent
-import pytest
-
-# додати 2 ф-ї хелпери
-# з actual_output_str треба вичепити саме фінальну відповідь моделі, бо зараз там все передається
+from helper import evaluate_and_assert
 
 plan_quality = GEval(
     name="Plan Quality",
@@ -43,92 +40,48 @@ plan_query_diversity = GEval(
 )
 
 def test_plan_quality():
-    # загорнути потім у функцію
     user_input = "Create a detailed research plan on the effects of microplastics on marine ecosystems."
     agent_response = planner_agent.invoke(
             {"messages": [("user", user_input)]}, 
             config={"configurable": {"thread_id": "test_thread_001"}}
         )
-
-    if hasattr(agent_response, "model_dump_json"):
-        actual_output_str = agent_response.model_dump_json()
-    else:
-        actual_output_str = str(agent_response)
-
-    # to delete
-    # print(actual_output_str[:400])
+    actual_output_str = str(agent_response.get("messages", [])[-1].content)
 
     test_case = LLMTestCase(
         input=user_input,
         actual_output=actual_output_str
     )
     plan_quality.measure(test_case)
-
-    # це теж загорнути як окрему ф-ю
-    if plan_quality.is_successful():
-        print(f"\n✅ test_plan_quality ({plan_quality.name}: {plan_quality.score}, threshold: {plan_quality.threshold})")
-    else:
-        print(f"\n❌ test_plan_quality ({plan_quality.name}: {plan_quality.score}, threshold: {plan_quality.threshold})")
-        print(f"   Reason: {plan_quality.reason}")
-        pytest.fail("DeepEval plan_quality threshold not met.")
+    evaluate_and_assert(plan_quality, "test_plan_quality", "plan_quality")
 
 def test_plan_has_queries():
-    # загорнути потім у функцію
     user_input = "Create a detailed research plan on the dividend policy types."
     agent_response = planner_agent.invoke(
             {"messages": [("user", user_input)]}, 
             config={"configurable": {"thread_id": "test_thread_002"}}
         )
-
-    if hasattr(agent_response, "model_dump_json"):
-        actual_output_str = agent_response.model_dump_json()
-    else:
-        actual_output_str = str(agent_response)
-
-    # to delete
-    print(actual_output_str[:400])
+    actual_output_str = str(agent_response.get("messages", [])[-1].content)
 
     test_case = LLMTestCase(
         input=user_input,
         actual_output=actual_output_str
     )
     plan_has_queries.measure(test_case)
-
-    if plan_has_queries.is_successful():
-        print(f"\n✅ test_plan_has_queries ({plan_has_queries.name}: {plan_has_queries.score}, threshold: {plan_has_queries.threshold})")
-    else:
-        print(f"\n❌ test_plan_has_queries ({plan_has_queries.name}: {plan_has_queries.score}, threshold: {plan_has_queries.threshold})")
-        print(f"   Reason: {plan_has_queries.reason}")
-        pytest.fail("DeepEval plan_has_queries threshold not met.")
+    evaluate_and_assert(plan_quality, "test_plan_has_queries", "plan_has_queries")
 
 def test_query_diversity():
-    # загорнути потім у функцію
     user_input = "Create a detailed research plan on the PBIR format files and structure (Power BI)."
     agent_response = planner_agent.invoke(
             {"messages": [("user", user_input)]}, 
             config={"configurable": {"thread_id": "test_thread_003"}}
         )
-
-    if hasattr(agent_response, "model_dump_json"):
-        actual_output_str = agent_response.model_dump_json()
-    else:
-        actual_output_str = str(agent_response)
-
-    # to delete
-    print(actual_output_str[:400])
+    actual_output_str = str(agent_response.get("messages", [])[-1].content)
 
     test_case = LLMTestCase(
         input=user_input,
         actual_output=actual_output_str
     )
     plan_query_diversity.measure(test_case)
+    evaluate_and_assert(plan_query_diversity, "test_query_diversity", "plan_query_diversity")
 
-    # це теж загорнути як окрему ф-ю
-    if plan_query_diversity.is_successful():
-        print(f"\n✅ test_query_diversity ({plan_query_diversity.name}: {plan_query_diversity.score}, threshold: {plan_query_diversity.threshold})")
-    else:
-        print(f"\n❌ test_query_diversity ({plan_query_diversity.name}: {plan_query_diversity.score}, threshold: {plan_query_diversity.threshold})")
-        print(f"   Reason: {plan_query_diversity.reason}")
-        pytest.fail("DeepEval plan_query_diversity threshold not met.")
-
-# python -m pytest tests/test_planner.py -v -s --tb=short -W ignore::DeprecationWarning
+# python -m pytest tests/test_planner.py -v -s --tb=short -W ignore::DeprecationWarning --no-header
