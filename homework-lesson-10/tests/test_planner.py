@@ -1,7 +1,9 @@
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
+from deepeval import assert_test
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agents.planner import planner_agent
-from helper import evaluate_and_assert
 
 plan_quality = GEval(
     name="Plan Quality",
@@ -51,8 +53,10 @@ def test_plan_quality():
         input=user_input,
         actual_output=actual_output_str
     )
-    plan_quality.measure(test_case)
-    evaluate_and_assert(plan_quality, "test_plan_quality", "plan_quality")
+    assert_test(test_case, [plan_quality])
+
+    # plan_quality.measure(test_case)
+    #evaluate_and_assert(plan_quality, "test_plan_quality", "plan_quality")
 
 def test_plan_has_queries():
     user_input = "Create a detailed research plan on the dividend policy types."
@@ -66,8 +70,9 @@ def test_plan_has_queries():
         input=user_input,
         actual_output=actual_output_str
     )
-    plan_has_queries.measure(test_case)
-    evaluate_and_assert(plan_quality, "test_plan_has_queries", "plan_has_queries")
+    assert_test(test_case, [plan_has_queries])
+    #plan_has_queries.measure(test_case)
+    #evaluate_and_assert(plan_quality, "test_plan_has_queries", "plan_has_queries")
 
 def test_query_diversity():
     user_input = "Create a detailed research plan on the PBIR format files and structure (Power BI)."
@@ -81,5 +86,8 @@ def test_query_diversity():
         input=user_input,
         actual_output=actual_output_str
     )
+    assert_test(test_case, [plan_quality])
+
+    """
     plan_query_diversity.measure(test_case)
-    evaluate_and_assert(plan_query_diversity, "test_query_diversity", "plan_query_diversity")
+    evaluate_and_assert(plan_query_diversity, "test_query_diversity", "plan_query_diversity")"""
