@@ -211,79 +211,41 @@ FAILED tests/test_planner.py::test_plan_has_queries - AssertionError: Metrics: P
 #### Результат для `deepeval test run tests/test_researcher.py`:
 
 ```
-
-```
-
-#### Результат для `deepeval test run tests/test_critic.py`:
-
-```
-=============================================== short test summary info ===============================================
-FAILED tests/test_critic.py::test_critique_approve - AssertionError: Metrics: Critique Quality [GEval] (score: 0.6, threshold: 0.7, strict: False, error: None, reason: ...
-1 failed, 1 passed, 4 warnings in 267.91s (0:04:27)
-Warning: Could not load test run from disk: [Errno 2] No such file or directory: '.deepeval/.temp_test_run_data.json'
-                                                      Test Results
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Test case                   ┃ Metric                   ┃ Score                       ┃ Status ┃ Overall Success Rate ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
-│ test_critique_approve       │                          │                             │        │ 0.0%                 │
-│                             │ Critique Quality [GEval] │ 0.6 (threshold=0.7,         │ FAILED │                      │
-│                             │                          │ evaluation                  │        │                      │
-│                             │                          │ model=gpt-5.4-mini,         │        │                      │
-│                             │                          │ reason=The critique is      │        │                      │
-│                             │                          │ specific and grounded: it   │        │                      │
-│                             │                          │ cites missing canonical     │        │                      │
-│                             │                          │ schema URLs, unsupported    │        │                      │
-│                             │                          │ headless validation         │        │                      │
-│                             │                          │ assumptions, high-level     │        │                      │
-│                             │                          │ permission guidance, and    │        │                      │
-│                             │                          │ unverified community repo   │        │                      │
-│                             │                          │ maintenance. However, it    │        │                      │
-│                             │                          │ returns APPROVE while       │        │                      │
-│                             │                          │ listing several non-minor   │        │                      │
-│                             │                          │ gaps, and the               │        │                      │
-│                             │                          │ revision_requests field is  │        │                      │
-│                             │                          │ empty despite the           │        │                      │
-│                             │                          │ evaluation steps requiring  │        │                      │
-│                             │                          │ only minor gaps for APPROVE │        │                      │
-│                             │                          │ and at least one actionable │        │                      │
-│                             │                          │ revision_request for        │        │                      │
-│                             │                          │ REVISE. This weakens        │        │                      │
-│                             │                          │ alignment with the decision │        │                      │
-│                             │                          │ logic., error=None)         │        │                      │
-│                             │                          │                             │        │                      │
-│ test_critique_revise        │                          │                             │        │ 100.0%               │
-│                             │ Critique Quality [GEval] │ 0.8 (threshold=0.7,         │ PASSED │                      │
-│                             │                          │ evaluation                  │        │                      │
-│                             │                          │ model=gpt-5.4-mini,         │        │                      │
-│                             │                          │ reason=The response         │        │                      │
-│                             │                          │ correctly gives a REVISE    │        │                      │
-│                             │                          │ verdict and includes        │        │                      │
-│                             │                          │ actionable                  │        │                      │
-│                             │                          │ revision_requests, which    │        │                      │
-│                             │                          │ matches the required        │        │                      │
-│                             │                          │ structure. It also          │        │                      │
-│                             │                          │ identifies specific         │        │                      │
-│                             │                          │ problems rather than vague  │        │                      │
-│                             │                          │ complaints, especially the  │        │                      │
-│                             │                          │ illegal PGN move sequence   │        │                      │
-│                             │                          │ and the need for a real     │        │                      │
-│                             │                          │ sourced master game.        │        │                      │
-│                             │                          │ However, it is not fully    │        │                      │
-│                             │                          │ aligned because it contains │        │                      │
-│                             │                          │ extra fields beyond the     │        │                      │
-│                             │                          │ requested two-field JSON,   │        │                      │
-│                             │                          │ and the gaps are extensive  │        │                      │
-│                             │                          │ even though the report is   │        │                      │
-│                             │                          │ mostly well structured. The │        │                      │
-│                             │                          │ critique is specific, but   │        │                      │
-│                             │                          │ the formatting does not     │        │                      │
-│                             │                          │ match the evaluator         │        │                      │
-│                             │                          │ instructions exactly.,      │        │                      │
-│                             │                          │ error=None)                 │        │                      │
-│ Note: Use Confident AI with │                          │                             │        │                      │
-│ DeepEval to analyze failed  │                          │                             │        │                      │
-│ test cases for more details │                          │                             │        │                      │
-└─────────────────────────────┴──────────────────────────┴─────────────────────────────┴────────┴──────────────────────┘
+=========================================================================================== short test summary info ============================================================================================
+FAILED tests/test_researcher.py::test_research_grounded - AssertionError: Metrics: Groundedness [GEval] (score: 0.6, threshold: 0.7, strict: False, error: None, reason: Most of the response is grounded in the retrieval context: PBIR as a folder-based report form...
+FAILED tests/test_researcher.py::test_research_edge_case - AssertionError: Metrics: No Hallucination [GEval] (score: 0.0, threshold: 0.8, strict: False, error: None, reason: The response does not explicitly state that no credible information could be found; inste...
+2 failed, 4 warnings in 268.90s (0:04:28)
+                                                                                                  Test Results
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Test case                                                                ┃ Metric                   ┃ Score                                                                   ┃ Status ┃ Overall Success Rate ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ test_research_grounded                                                   │                          │                                                                         │        │ 0.0%                 │
+│                                                                          │ Groundedness [GEval]     │ 0.6 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=Most of the   │ FAILED │                      │
+│                                                                          │                          │ response is grounded in the retrieval context: PBIR as a folder-based   │        │                      │
+│                                                                          │                          │ report format replacing PBIX, its source-control friendliness,          │        │                      │
+│                                                                          │                          │ human-readable JSON files, granular diffs, CI/CD workflows, and the     │        │                      │
+│                                                                          │                          │ core files like definition.pbir, report.json, page.json, and            │        │                      │
+│                                                                          │                          │ visualContainer.json all appear in the provided sources. However,       │        │                      │
+│                                                                          │                          │ several claims are not directly supported by the context, such as the   │        │                      │
+│                                                                          │                          │ detailed schema/layout specifics beyond the cited examples, the mention │        │                      │
+│                                                                          │                          │ of "Power BI Projects (PBIP) and pairs with the TMDL semantic-model     │        │                      │
+│                                                                          │                          │ format" in that exact form, and the safety/tooling recommendations and  │        │                      │
+│                                                                          │                          │ timeline details beyond what is explicitly stated. Because the output   │        │                      │
+│                                                                          │                          │ contains many factual claims and some are ungrounded, the alignment is  │        │                      │
+│                                                                          │                          │ incomplete., error=None)                                                │        │                      │
+│                                                                          │                          │                                                                         │        │                      │
+│ test_research_edge_case                                                  │                          │                                                                         │        │ 0.0%                 │
+│                                                                          │ No Hallucination [GEval] │ 0.0 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The response  │ FAILED │                      │
+│                                                                          │                          │ does not explicitly state that no credible information could be found;  │        │                      │
+│                                                                          │                          │ instead it presents a detailed report with many asserted facts about    │        │                      │
+│                                                                          │                          │ penguin biology, Sahara feasibility, and expedition logistics. Because  │        │                      │
+│                                                                          │                          │ the topic is fictional/impossible, the evaluation steps require         │        │                      │
+│                                                                          │                          │ refusing to hallucinate rather than inventing scientific and historical │        │                      │
+│                                                                          │                          │ details, so the output is misaligned despite being polished and         │        │                      │
+│                                                                          │                          │ cautious in tone., error=None)                                          │        │                      │
+│ Note: Use Confident AI with DeepEval to analyze failed test cases for    │                          │                                                                         │        │                      │
+│ more details                                                             │                          │                                                                         │        │                      │
+└──────────────────────────────────────────────────────────────────────────┴──────────────────────────┴─────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────┘
 
 ⚠ WARNING: No hyperparameters logged.
 » Log hyperparameters to attribute prompts and models to your test runs.
@@ -291,9 +253,55 @@ Warning: Could not load test run from disk: [Errno 2] No such file or directory:
 ================================================================================
 
 
-✓ Evaluation completed 🎉! (time taken: 271.54s | token cost: 0.010998 USD)
+✓ Evaluation completed 🎉! (time taken: 272.58s | token cost: 0.006312 USD)
 » Test Results (2 total tests):
-   » Pass Rate: 50.0% | Passed: 1 | Failed: 1
+   » Pass Rate: 0.0% | Passed: 0 | Failed: 2
+
+ ================================================================================
+```
+
+#### Результат для `deepeval test run tests/test_critic.py`:
+
+```
+2 passed, 4 warnings in 230.41s (0:03:50)
+                                                                                                  Test Results
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Test case                                                                ┃ Metric                   ┃ Score                                                                   ┃ Status ┃ Overall Success Rate ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ test_critique_approve                                                    │                          │                                                                         │        │ 100.0%               │
+│                                                                          │ Critique Quality [GEval] │ 0.9 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The output    │ PASSED │                      │
+│                                                                          │                          │ follows the REVISE path correctly and includes multiple specific,       │        │                      │
+│                                                                          │                          │ actionable revision_requests, such as adding exact PBIR schema URLs,    │        │                      │
+│                                                                          │                          │ mapping pbirSchemaVersion to schema versions, and clarifying headless   │        │                      │
+│                                                                          │                          │ validation. The gaps are concrete rather than vague, and they align     │        │                      │
+│                                                                          │                          │ with the report’s missing canonical schema links and unpinned community │        │                      │
+│                                                                          │                          │ tooling. However, it does not fully satisfy the ideal because some      │        │                      │
+│                                                                          │                          │ points are broad qualifiers and the critique is more exhaustive than    │        │                      │
+│                                                                          │                          │ the evaluation steps require, though still well structured and          │        │                      │
+│                                                                          │                          │ actionable., error=None)                                                │        │                      │
+│                                                                          │                          │                                                                         │        │                      │
+│ test_critique_revise                                                     │                          │                                                                         │        │ 100.0%               │
+│                                                                          │ Critique Quality [GEval] │ 0.8 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The response  │ PASSED │                      │
+│                                                                          │                          │ correctly issues REVISE and includes multiple actionable                │        │                      │
+│                                                                          │                          │ revision_requests, such as adding real master games, clarifying move    │        │                      │
+│                                                                          │                          │ orders, and improving references. The gaps are specific rather than     │        │                      │
+│                                                                          │                          │ vague, referencing the lack of sourced PGNs, database stats, and        │        │                      │
+│                                                                          │                          │ precise transposition notes. It only partially aligns because it        │        │                      │
+│                                                                          │                          │ doesn’t assess the review’s accuracy against the prompt’s requirements  │        │                      │
+│                                                                          │                          │ beyond noting these deficiencies., error=None)                          │        │                      │
+│ Note: Use Confident AI with DeepEval to analyze failed test cases for    │                          │                                                                         │        │                      │
+│ more details                                                             │                          │                                                                         │        │                      │
+└──────────────────────────────────────────────────────────────────────────┴──────────────────────────┴─────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────┘
+
+⚠ WARNING: No hyperparameters logged.
+» Log hyperparameters to attribute prompts and models to your test runs.
+
+================================================================================
+
+
+✓ Evaluation completed 🎉! (time taken: 235.63s | token cost: 0.01123125 USD)
+» Test Results (2 total tests):
+   » Pass Rate: 100.0% | Passed: 2 | Failed: 0
 
  ================================================================================
 ```
