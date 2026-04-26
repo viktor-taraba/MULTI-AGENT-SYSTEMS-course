@@ -18,6 +18,15 @@ from config import (
 from tools import save_report
 import json
 import uuid
+from langfuse import get_client
+from langfuse.langchain import CallbackHandler
+
+langfuse = get_client()
+langfuse_handler = CallbackHandler()
+
+session_id = f"lecture-12-hw-{uuid.uuid4().hex[:8]}"
+user_id="viktor_hw_12"
+tags=["hw12", "multi-agent", "research-writer"]
 
 def resume_graph(interrupt, decision_payload):
     """Resume the graph after an interrupt with the given decision."""
@@ -26,7 +35,13 @@ def resume_graph(interrupt, decision_payload):
 
 config = {
     "configurable": {"thread_id": "supervisor_thread"}, 
-    "recursion_limit": max_iterations_supervisor}
+    "recursion_limit": max_iterations_supervisor,
+    "callbacks": [langfuse_handler],
+    "metadata": {
+            "langfuse_user_id": user_id,
+            "langfuse_session_id": session_id,
+            "langfuse_tags": tags
+        }}
 
 def main():
     print("Research Agent")
