@@ -40,7 +40,7 @@
 |test_critic_tools|Critic|Tool Correctness - Використання тулів web_search та read_url для верифікації звіту|
 |test_supervisor_save|Supervisor|Tool Correctness - Використання save_report після approve від критика|
 
-Використовую pytest напряму замість deepeval
+Використовую pytest напряму замість deepeval через обмеження з боку  Application Control (Windows App Control and Smart App Control) `Program 'deepeval.exe' failed to run: An Application Control policy has blocked this file` 
 
 #### 4. End-to-end тест
 
