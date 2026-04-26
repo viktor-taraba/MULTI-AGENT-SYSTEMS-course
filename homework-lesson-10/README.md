@@ -17,103 +17,30 @@
 
 ### Що змінюється порівняно з homework-8
 
-| Було (homework-lesson-8) | Стає (homework-lesson-10)                    |
+| Було (homework-lesson-8) | Стало (homework-lesson-10)                    |
 |-|----------------------------------------------|
 | Мультиагентна система без тестів | Та сама система + покриття тестами           |
 | Якість перевіряється вручну (vibe check) | Автоматизовані evals з метриками 0–1         |
 | Немає golden dataset | 12 golden examples (happy path + edge cases + failure cases) для regression testing |
 | Немає CI-ready тестів | запуск тестів через pytest |
 
-#### Тести
+### Тести
 
 |Назва тесту|Якого агента тестуємо|Що перевіряємо|
 |--|--|--|
 |test_plan_quality|Planner|Структуру та якість плану|
 |test_plan_has_queries|Planner|Наявність пошукових запитів в search_queries та їх релевантність|
 |test_query_diversity|Planner|Широта та повнота покриття питання запитами|
-|||
-|||
-|||
+|test_research_grounded|Researcher|groundedness відповіді (звіту)|
+|test_research_edge_case|Researcher|Hallucination - перевірка на прикладі неіснуючої експедиції|
+|test_critique_approve|Critic|Структуру та обгрунтування критики на прикладі якісно підготовленого звіту|
+|test_critique_revise|Critic|Структуру та обгрунтування критики на прикладі погано підготовленого звіту|
+|test_planner_tools|Planner|Tool Correctness - Використання тулів web_search та knowledge_search для пошуку інформації|
+|test_researcher_tools|Researcher|Tool Correctness - Використання тулів web_search, knowledge_search, knowledge_search для пошуку|
+|test_critic_tools|Critic|Tool Correctness - Використання тулів web_search та read_url для верифікації звіту|
+|test_supervisor_save|Supervisor|Tool Correctness - Використання save_report після approve від критика|
 
-Використовую pytest напряму замість deepeval
-
-Протестуйте кожного суб-агента окремо.
-
-**Planner Agent — структурованість плану:**
-
-```python
-from deepeval.metrics import GEval
-from deepeval.test_case import LLMTestCase, LLMTestCaseParams
-
-plan_quality = GEval(
-    name="Plan Quality",
-    evaluation_steps=[
-        "Check that the plan contains specific search queries (not vague)",
-        "Check that sources_to_check includes relevant sources for the topic",
-        "Check that the output_format matches what the user asked for",
-    ],
-    evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
-    model="gpt-5.4-mini",
-    threshold=0.7,
-)
-```
-
-**Critic Agent — якість критики:**
-
-```python
-critique_quality = GEval(
-    name="Critique Quality",
-    evaluation_steps=[
-        "Check that the critique identifies specific issues, not vague complaints",
-        "Check that revision_requests are actionable (researcher can act on them)",
-        "If verdict is APPROVE, gaps list should be empty or contain only minor items",
-        "If verdict is REVISE, there must be at least one revision_request",
-    ],
-    evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
-    model="gpt-5.4-mini",
-    threshold=0.7,
-)
-```
-
-**Research Agent — groundedness відповіді:**
-
-```python
-groundedness = GEval(
-    name="Groundedness",
-    evaluation_steps=[
-        "Extract every factual claim from 'actual output'",
-        "For each claim, check if it can be directly supported by 'retrieval context'",
-        "Claims not present in retrieval context count as ungrounded, even if true",
-        "Score = number of grounded claims / total claims",
-    ],
-    evaluation_params=[
-        LLMTestCaseParams.ACTUAL_OUTPUT,
-        LLMTestCaseParams.RETRIEVAL_CONTEXT,
-    ],
-    model="gpt-5.4-mini",
-    threshold=0.7,
-)
-```
-
-#### 3. Тести Tool Correctness
-
-Перевірте, що агенти викликають правильні інструменти:
-
-```python
-from deepeval.test_case import LLMTestCase, ToolCall
-from deepeval.metrics import ToolCorrectnessMetric
-
-# Planner should use web_search and/or knowledge_search for exploration
-# Researcher should use web_search, read_url, knowledge_search
-# Critic should verify facts via web_search
-
-tool_metric = ToolCorrectnessMetric(threshold=0.5, model="gpt-5.4-mini")
-```
-
-Створіть мінімум 3 тест-кейси для tool correctness:
-- Planner отримує запит → має викликати пошукові інструменти
-- Researcher отримує план → має використати інструменти згідно з `sources_to_check`
-- Supervisor отримує APPROVE від Critic → має викликати `save_report`
+Використовую pytest напряму замість deepeval через обмеження з боку  Application Control (Windows App Control and Smart App Control) `Program 'deepeval.exe' failed to run: An Application Control policy has blocked this file` 
 
 #### 4. End-to-end тест
 
@@ -138,8 +65,6 @@ correctness = GEval(
     threshold=0.6,
 )
 ```
-
-Запустіть evaluation на повному golden dataset і збережіть результати.
 
 ### Загальний опис
 
@@ -242,8 +167,6 @@ homework-lesson-10/
 ├── ... (all files from homework-lesson-8)
 └── README.md
 ```
-
----
 
 ### Як запустити тести
 
