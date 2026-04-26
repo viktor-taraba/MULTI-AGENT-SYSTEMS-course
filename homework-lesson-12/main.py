@@ -10,7 +10,7 @@ from supervisor import (
     )
 import supervisor
 from config import (
-    SUPERVISOR_PROMPT, 
+    SUPERVISOR_PROMPT,
     supervisor_model_name, 
     max_iterations_supervisor,
     tool_preview_len
