@@ -217,7 +217,85 @@ FAILED tests/test_planner.py::test_plan_has_queries - AssertionError: Metrics: P
 #### Результат для `deepeval test run tests/test_critic.py`:
 
 ```
+=============================================== short test summary info ===============================================
+FAILED tests/test_critic.py::test_critique_approve - AssertionError: Metrics: Critique Quality [GEval] (score: 0.6, threshold: 0.7, strict: False, error: None, reason: ...
+1 failed, 1 passed, 4 warnings in 267.91s (0:04:27)
+Warning: Could not load test run from disk: [Errno 2] No such file or directory: '.deepeval/.temp_test_run_data.json'
+                                                      Test Results
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Test case                   ┃ Metric                   ┃ Score                       ┃ Status ┃ Overall Success Rate ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ test_critique_approve       │                          │                             │        │ 0.0%                 │
+│                             │ Critique Quality [GEval] │ 0.6 (threshold=0.7,         │ FAILED │                      │
+│                             │                          │ evaluation                  │        │                      │
+│                             │                          │ model=gpt-5.4-mini,         │        │                      │
+│                             │                          │ reason=The critique is      │        │                      │
+│                             │                          │ specific and grounded: it   │        │                      │
+│                             │                          │ cites missing canonical     │        │                      │
+│                             │                          │ schema URLs, unsupported    │        │                      │
+│                             │                          │ headless validation         │        │                      │
+│                             │                          │ assumptions, high-level     │        │                      │
+│                             │                          │ permission guidance, and    │        │                      │
+│                             │                          │ unverified community repo   │        │                      │
+│                             │                          │ maintenance. However, it    │        │                      │
+│                             │                          │ returns APPROVE while       │        │                      │
+│                             │                          │ listing several non-minor   │        │                      │
+│                             │                          │ gaps, and the               │        │                      │
+│                             │                          │ revision_requests field is  │        │                      │
+│                             │                          │ empty despite the           │        │                      │
+│                             │                          │ evaluation steps requiring  │        │                      │
+│                             │                          │ only minor gaps for APPROVE │        │                      │
+│                             │                          │ and at least one actionable │        │                      │
+│                             │                          │ revision_request for        │        │                      │
+│                             │                          │ REVISE. This weakens        │        │                      │
+│                             │                          │ alignment with the decision │        │                      │
+│                             │                          │ logic., error=None)         │        │                      │
+│                             │                          │                             │        │                      │
+│ test_critique_revise        │                          │                             │        │ 100.0%               │
+│                             │ Critique Quality [GEval] │ 0.8 (threshold=0.7,         │ PASSED │                      │
+│                             │                          │ evaluation                  │        │                      │
+│                             │                          │ model=gpt-5.4-mini,         │        │                      │
+│                             │                          │ reason=The response         │        │                      │
+│                             │                          │ correctly gives a REVISE    │        │                      │
+│                             │                          │ verdict and includes        │        │                      │
+│                             │                          │ actionable                  │        │                      │
+│                             │                          │ revision_requests, which    │        │                      │
+│                             │                          │ matches the required        │        │                      │
+│                             │                          │ structure. It also          │        │                      │
+│                             │                          │ identifies specific         │        │                      │
+│                             │                          │ problems rather than vague  │        │                      │
+│                             │                          │ complaints, especially the  │        │                      │
+│                             │                          │ illegal PGN move sequence   │        │                      │
+│                             │                          │ and the need for a real     │        │                      │
+│                             │                          │ sourced master game.        │        │                      │
+│                             │                          │ However, it is not fully    │        │                      │
+│                             │                          │ aligned because it contains │        │                      │
+│                             │                          │ extra fields beyond the     │        │                      │
+│                             │                          │ requested two-field JSON,   │        │                      │
+│                             │                          │ and the gaps are extensive  │        │                      │
+│                             │                          │ even though the report is   │        │                      │
+│                             │                          │ mostly well structured. The │        │                      │
+│                             │                          │ critique is specific, but   │        │                      │
+│                             │                          │ the formatting does not     │        │                      │
+│                             │                          │ match the evaluator         │        │                      │
+│                             │                          │ instructions exactly.,      │        │                      │
+│                             │                          │ error=None)                 │        │                      │
+│ Note: Use Confident AI with │                          │                             │        │                      │
+│ DeepEval to analyze failed  │                          │                             │        │                      │
+│ test cases for more details │                          │                             │        │                      │
+└─────────────────────────────┴──────────────────────────┴─────────────────────────────┴────────┴──────────────────────┘
 
+⚠ WARNING: No hyperparameters logged.
+» Log hyperparameters to attribute prompts and models to your test runs.
+
+================================================================================
+
+
+✓ Evaluation completed 🎉! (time taken: 271.54s | token cost: 0.010998 USD)
+» Test Results (2 total tests):
+   » Pass Rate: 50.0% | Passed: 1 | Failed: 1
+
+ ================================================================================
 ```
 
 #### Результат для `deepeval test run tests/test_tools.py`:
