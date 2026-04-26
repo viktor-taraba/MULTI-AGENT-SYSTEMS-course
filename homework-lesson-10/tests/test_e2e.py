@@ -61,8 +61,3 @@ def test_e2e():
         test_cases=dataset.test_cases,
         metrics=[correctness, relevancy, toxicity, conciseness]
     )
-
-# test_e2e()
-
-# python -m tests.test_e2e
-# deepeval test run test_e2e.py
