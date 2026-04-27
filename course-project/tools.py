@@ -18,6 +18,18 @@ from retriever import get_retriever
 
 import pyodbc
 
+"""
+Фокус на оптимізації: QA-агент може не тільки перевіряти коректність, але й робити EXPLAIN QUERY PLAN, щоб відхиляти запити, які роблять Full Table Scan замість використання індексів.
+
+QA Engineer: * Завдання: Запускає SQL-запит на тестовій базі. Перевіряє edge cases (чи враховано NULL значення? чи немає дублікатів через неправильний JOIN?).
+
+Обмеження виводу (Context Window): Якщо агент напише SELECT * FROM users, а там мільйон записів, це зламає контекстне вікно LLM. Інструмент виконання SQL повинен мати жорстке обмеження (наприклад, завжди додавати LIMIT 50 до результатів під час тестування агентом).
+
+Безпека (Sandboxing): На відміну від Python REPL, де можна обмежити модулі, у базі даних агент може зробити DROP TABLE або випадково стерти дані через DELETE без WHERE
+
+# дати можливість рев'юеру подивитися план запиту
+"""
+
 #@tool
 def execute_sql_query(query: str) -> str:
     """
@@ -59,6 +71,37 @@ def execute_sql_query(query: str) -> str:
     finally:
         if 'conn' in locals():
             conn.close()
+
+def get_sql_execution_plan(query):
+    """
+    Retrieves the XML execution plan for a given SQL query.
+    """
+    plan_xml = ""
+    connection_string = f'''
+        DRIVER={{ODBC Driver 17 for SQL Server}};
+        SERVER={server};
+        DATABASE={database};
+        Trusted_Connection=yes;
+    '''
+    try:
+        conn = pyodbc.connect(connection_string)
+        cursor = conn.cursor()
+
+        cursor.execute("SET SHOWPLAN_XML ON")
+        cursor.execute(query)
+        
+        row = cursor.fetchone()
+        if row:
+            plan_xml = row[0]
+
+        cursor.execute("SET SHOWPLAN_XML OFF")
+
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print(f"Error retrieving plan: {e}")
+
+    return plan_xml
 
 @tool
 def knowledge_search(query: str) -> str:
@@ -208,3 +251,6 @@ agent_query = """
     
 agent_response = execute_sql_query(query=agent_query)
 print(agent_response)
+
+agent_response_2 = get_sql_execution_plan(query=agent_query)
+print(agent_response_2)
