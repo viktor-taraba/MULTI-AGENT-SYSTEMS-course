@@ -1,180 +1,161 @@
+from langchain_core.tools import tool
 import os
-import time
-from pywinauto.application import Application
-from pywinauto import Desktop
-import subprocess
-
-def get_model_and_relationships(dataset_path: str) -> str:
-    """
-    Reads and returns the raw text content of model.tmdl and relationships.tmdl.
-    Use this tool to understand the overall dataset configuration and table relationships.
-    
-    Args:
-        dataset_path (str): The root directory of the .pbip dataset.
-    """
-    result = []
-    
-    model_path = os.path.join(dataset_path, "model.tmdl")
-    if os.path.exists(model_path):
-        with open(model_path, "r", encoding="utf-8") as f:
-            result.append(f"--- model.tmdl ---\n{f.read()}")
-    else:
-        result.append("--- model.tmdl ---\n(File not found)")
-
-    rel_path = os.path.join(dataset_path, "relationships.tmdl")
-    if os.path.exists(rel_path):
-        with open(rel_path, "r", encoding="utf-8") as f:
-            result.append(f"--- relationships.tmdl ---\n{f.read()}")
-    else:
-        result.append("--- relationships.tmdl ---\n(File not found - relationships may be defined within individual table files)")
-
-    return "\n\n".join(result)
-
-def get_table_content(dataset_path: str, table_name: str = None) -> str:
-    """
-    Returns the raw TMDL content for a specific table. 
-    Automatically excludes the 'source' block (Power Query M code) to save LLM context window space, 
-    as it is not needed for DAX measure creation.
-    
-    If no table_name is provided, it returns a list of all available tables in the dataset.
-    
-    Args:
-        dataset_path (str): The root directory of the .pbip dataset.
-        table_name (str, optional): The exact name of the table to read (e.g., 'Sales').
-    """
-    tables_dir = os.path.join(dataset_path, "tables")
-    
-    if not os.path.exists(tables_dir):
-        return f"Error: The 'tables' directory was not found at {tables_dir}."
-
-    if not table_name:
-        try:
-            tables = [f.replace(".tmdl", "") for f in os.listdir(tables_dir) if f.endswith(".tmdl")]
-            return "Available tables:\n- " + "\n- ".join(tables)
-        except Exception as e:
-            return f"Error reading tables directory: {str(e)}"
-    
-    safe_table_name = "".join([c for c in table_name if c.isalpha() or c.isdigit() or c in (' ', '_', '-')]).strip()
-    table_path = os.path.join(tables_dir, f"{safe_table_name}.tmdl")
-    
-    if os.path.exists(table_path):
-        try:
-            with open(table_path, "r", encoding="utf-8-sig") as f:
-                lines = f.readlines()
-            
-            filtered_lines = []
-            in_source_block = False
-            source_indent_level = 0
-            
-            for line in lines:
-                stripped = line.lstrip()
-                
-                if not stripped:
-                    if not in_source_block:
-                        filtered_lines.append(line)
-                    continue
-                    
-                current_indent = len(line) - len(stripped)
-                
-                # If we are currently skipping a source block...
-                if in_source_block:
-                    # If the line is indented further than the 'source' declaration, it belongs to the M code
-                    if current_indent > source_indent_level:
-                        continue 
-                    # If the indentation drops back down, the source block is over
-                    else:
-                        in_source_block = False
-                
-                # Check if we are entering a new source block
-                if stripped.startswith("source =") or stripped.startswith("source:"):
-                    in_source_block = True
-                    source_indent_level = current_indent
-                    
-                    indent_spaces = " " * current_indent
-                    filtered_lines.append(f"{indent_spaces}source = (Power Query M code excluded for token efficiency)\n")
-                    continue
-                    
-                if not in_source_block:
-                    filtered_lines.append(line)
-                    
-            return f"--- {safe_table_name}.tmdl ---\n" + "".join(filtered_lines)
-            
-        except Exception as e:
-            return f"Error reading table '{safe_table_name}': {str(e)}"
-    else:
-        return f"Error: Table file '{safe_table_name}.tmdl' not found. Please check the available tables."
-
-def save_page_content_to_txt(window, output_filename="page_content.txt"):
-    print(f"Extracting readable text to {output_filename}...")
-    
-    try:
-        with open(output_filename, 'w', encoding='utf-8') as file:
-            
-            elements = window.descendants()
-            
-            seen_texts = set()
-            
-            for el in elements:
-                try:
-                    text = el.window_text()
-                    
-                    if text and text.strip() and text not in seen_texts:
-                        file.write(f"{text.strip()}\n")
-                        seen_texts.add(text)
-                except Exception:
-                    continue
-                    
-        print(f"-> Extraction complete! Saved to {output_filename}")
-        
-    except Exception as e:
-        print(f"-> Failed to extract text: {e}")
-
-def switch_page_and_screenshot(report_name, page_display_name):
-    print("Searching desktop for Power BI window...")
-    
-    try:
-        desktop = Desktop(backend="uia")
-        exact_title_regex = f".*{report_name}.*Power BI Desktop.*"
-        window = desktop.window(title_re=exact_title_regex, visible_only=True)
-        
-        print("Waiting for Power BI window to be ready...")
-        window.wait('exists', timeout=10)
-        window.set_focus()
-        print("Successfully focused Power BI.")
-        
-    except Exception as e:
-        print(f"Failed to find or focus Power BI. Error: {e}")
-        return
-
-    try:
-        page_tab = window.child_window(title=page_display_name, control_type="TabItem")
-        page_tab.click_input()
-        time.sleep(5) 
-        
-        fit_button = window.child_window(title="Fit to page", control_type="Button", found_index=0)
-        fit_button.click_input()
-        time.sleep(1) 
-
-        screenshot = window.capture_as_image()
-        screenshot.save(f"{page_display_name}_screenshot.png")
-        print(f"Successfully captured {page_display_name}")
-        
-    except Exception as e:
-        print(f"Could not find or switch to page '{page_display_name}': {e}")
-
-    print("\nInitiating shutdown...")
-    subprocess.run(
-        ["taskkill", "/F", "/IM", "PBIDesktop.exe", "/T"],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
+import trafilatura
+import yfinance  as yf
+import json
+import io
+import requests
+import logging
+import re
+from ddgs import DDGS
+from config import (
+    max_search_results, 
+    max_url_content_length, 
+    output_dir, 
+    desired_keys_yfinance, 
+    period_yfinance, 
+    email_crossref_api
     )
-    print("Power BI closed quietly.")
+from typing import List, Dict
+from pypdf import PdfReader
+from retriever import get_retriever
 
-switch_page_and_screenshot("Customer Profitability Sample PBIX","Info")
+@tool
+def knowledge_search(query: str) -> str:
+    """
+    Search the local knowledge database which has information about the following topics: large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development, changes in Power BI with he new version.
+    Returns top releveant search results.
+    Automatically filters out irrelevant noise via reranking.
 
-# print(get_table_content("C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\course-project\\reports\\Corporate Spend\\Corporate Spend.SemanticModel\\definition"))
-# print(get_table_content("C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\course-project\\reports\\Corporate Spend\\Corporate Spend.SemanticModel\\definition","Department"))
+    Args:
+        query (str): Search query or question to look up, e.g. 'DAX measures' or 'LLM monitoring'.
 
-# поки план мінімум - хай розкаже про що звіт та додасть документацію мір
+    Returns:
+        str: Most relevant document fragments (Content + Source).
+    """
+    try:
+        results = get_retriever(query)
+        if not results:
+            return "No documents found for this query. Try rephrasing."
+        else:
+            return results
+    except Exception as e:
+        return f"Error searching local knowledge base. Details: {e}."
 
-# print(get_model_and_relationships("C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\course-project\\reports\\Corporate Spend\\Corporate Spend.SemanticModel\\definition"))
+@tool
+def web_search(query: str) -> str:
+    """
+    Search the web to find up-to-date information.
+    Use this FIRST to find relevant URLs and basic summaries. Do not base your final answer solely on these short snippets.",
+
+    Args:
+        query (str): The search query or question to look up.
+
+    Returns:
+        str: A JSON-formatted string containing list of search results containing 'title', 'url', and 'snippet'.
+    """
+    processed_results: List[Dict[str, str]] = []
+
+    try:
+        raw_results = DDGS().text(query, max_results=max_search_results)
+        if not raw_results:
+            return processed_results
+
+        for item in raw_results:
+            processed_results.append({
+                "title": item.get("title", ""),
+                "url": item.get("href", ""),
+                "snippet": item.get("body", "")
+            })
+
+    except Exception as e:
+        return f"Error during search for '{query}': {e}"
+
+    return json.dumps(processed_results)
+
+# read_url_pdf will be used at read_url function, not as a separate tool for llm agent
+def read_url_pdf(url: str):
+    """
+    Fetches a PDF from a URL and extracts its text in-memory.
+    """
+    try:
+        # Mute pypdf's warnings about broken pdfs so they don't flood the agent's console
+        logging.getLogger("pypdf").setLevel(logging.ERROR)
+
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        content_type = response.headers.get('Content-Type', '').lower()
+        if 'application/pdf' not in content_type:
+            return f"Error: The server blocked the download or requires a subscription. It returned an HTML page instead of a PDF (Content-Type: {content_type}).\
+                     DO NOT try to read this URL again. Move on and use the other information you have gathered."
+
+        # Load the raw downloaded bytes into a virtual memory file
+        pdf_bytes = io.BytesIO(response.content)
+        reader = PdfReader(pdf_bytes)
+
+        full_text = []
+        for i, page in enumerate(reader.pages):
+            page_text = page.extract_text()
+            
+            if page_text:
+                full_text.append(f"--- Page {i + 1} ---\n{page_text}")
+            if i > max_search_results:
+                break
+
+        final_text = "\n\n".join(full_text)
+        
+        return final_text
+
+    except Exception as e:
+        return f"Error extracting PDF from {url}. Details: {e}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
+
+@tool 
+def read_url(url: str) -> str:
+    """
+    Fetches and extracts the main text content from a given URL.
+    Use this AFTER a web search to read the full, in-depth content of a webpage.
+    Essential for gathering detailed facts, examples, and deep context for your final report.
+    This function acts as a tool for an LLM agent to read the full content of a webpage.
+    It deliberately truncates the output to prevent blowing up the LLM's context window
+    (context engineering). It also catches errors so the agent can recover.
+
+    Args:
+        url (str): The URL of the webpage to read, , e.g. 'https://...'.
+
+    Returns:
+        str: The extracted plain text from the webpage, or an error message if extraction fails.
+    """
+
+    try:
+        if url.endswith('.pdf'):
+            text = read_url_pdf(url)
+
+        else: 
+            downloaded = trafilatura.fetch_url(url)
+            if downloaded is None:
+                return f"Error: Unable to fetch content from '{url}'. The page might be inaccessible, invalid, or blocking automated requests."
+            text = trafilatura.extract(downloaded)
+
+            if not text:
+                return f"Error: Fetched '{url}' successfully, but could not extract meaningful text. The page might rely heavily on JavaScript."
+
+        if len(text) > max_url_content_length:
+            text = text[:max_url_content_length]
+            return text
+
+        return text
+
+    except Exception as e:
+        return f"An unexpected error occurred while reading '{url}': {str(e)}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
+
+
+tool_registry = {
+    "web_search": web_search, 
+    "read_url": read_url, 
+    "knowledge_search": knowledge_search}
+
+tools = [
+    web_search, 
+    read_url, 
+    knowledge_search
+    ]
