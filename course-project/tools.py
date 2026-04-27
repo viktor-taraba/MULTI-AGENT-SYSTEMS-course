@@ -1,24 +1,64 @@
 from langchain_core.tools import tool
 import os
 import trafilatura
-import yfinance  as yf
 import json
 import io
 import requests
 import logging
-import re
 from ddgs import DDGS
 from config import (
     max_search_results, 
-    max_url_content_length, 
-    output_dir, 
-    desired_keys_yfinance, 
-    period_yfinance, 
-    email_crossref_api
+    max_url_content_length,
+    server,
+    database
     )
 from typing import List, Dict
 from pypdf import PdfReader
 from retriever import get_retriever
+
+import pyodbc
+
+#@tool
+def execute_sql_query(query: str) -> str:
+    """
+    Executes a SQL query against a SQL Server database and returns the results.
+    Use this tool when you need to retrieve data from the database, for example, information about departments (Department).
+    
+    Args:
+        query (str): Formatted SQL query to execute (e.g., "SELECT * FROM [HumanResources].[Department]").
+        
+    Returns:
+        str: Query results in JSON format (list of dictionaries) or an error message.
+    """
+
+    connection_string = f'''
+        DRIVER={{ODBC Driver 17 for SQL Server}};
+        SERVER={server};
+        DATABASE={database};
+        Trusted_Connection=yes;
+    '''
+    try:
+        conn = pyodbc.connect(connection_string)
+        cursor = conn.cursor()
+        cursor.execute(query)
+        
+        # Check if the query returns data (SELECT statement)
+        if cursor.description:
+            columns = [column[0] for column in cursor.description]
+            rows = cursor.fetchall()
+            result_data = [dict(zip(columns, row)) for row in rows]
+            return json.dumps(result_data, default=str)
+        else:
+            # If it's an INSERT/UPDATE/DELETE statement
+            conn.commit()
+            return json.dumps({"status": "success", "message": "Query executed successfully. No rows returned."})
+            
+    except pyodbc.Error as e:
+        return json.dumps({"status": "error", "error_message": str(e)})
+        
+    finally:
+        if 'conn' in locals():
+            conn.close()
 
 @tool
 def knowledge_search(query: str) -> str:
@@ -148,14 +188,23 @@ def read_url(url: str) -> str:
     except Exception as e:
         return f"An unexpected error occurred while reading '{url}': {str(e)}. DO NOT try to read this URL again. Move on and use the other information you have gathered."
 
-
 tool_registry = {
     "web_search": web_search, 
     "read_url": read_url, 
-    "knowledge_search": knowledge_search}
+    "knowledge_search": knowledge_search
+    }
+    #"execute_sql_query": execute_sql_query}
 
 tools = [
     web_search, 
     read_url, 
-    knowledge_search
-    ]
+    knowledge_search]
+    #execute_sql_query]
+
+agent_query = """
+    SELECT TOP (5) [DepartmentID], [Name], [GroupName], [ModifiedDate]
+    FROM [AdventureWorks2022].[HumanResources].[Department]
+"""
+    
+agent_response = execute_sql_query(query=agent_query)
+print(agent_response)
