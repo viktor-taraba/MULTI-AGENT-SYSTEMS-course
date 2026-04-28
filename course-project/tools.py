@@ -39,6 +39,29 @@ Rule: One file/chunk = One Database Table.
 Keep the table description, columns, and relationships bundled together in a single chunk.
 """
 
+"""
+Step 4: Add Metadata for Hybrid RAG
+When storing these files in your Vector Database (like Pinecone, Weaviate, or Qdrant), attach strict metadata tags.
+
+JSON
+{
+  "text": "CREATE TABLE dbo.AWBuildVersion...",
+  "metadata": {
+    "database": "AdventureWorks",
+    "schema": "dbo",
+    "module": "Admin",
+    "table_name": "AWBuildVersion",
+    "document_type": "table_schema"
+  }
+}
+Why? In a multi-agent system, a Planning Agent can write a filter query. If the user asks, "Show me HR data", the RAG retriever can pre-filter metadata={"module": "Human Resources"} before doing the vector search, drastically reducing false positives.
+"""
+
+"""
+The Router/Planner Agent: Give this agent access to a summarized "Data Dictionary" document that only lists Table Names and their high-level descriptions (no columns). It decides which tables are relevant.
+The Retriever Agent: Takes the table names identified by the Router, queries the Vector DB using the metadata tags, and pulls the exact chunk (the DDL or Markdown file).
+"""
+
 def validate_safe_sql(query: str) -> bool:
     """
     Parses a SQL query and raises a ValueError if it contains 
