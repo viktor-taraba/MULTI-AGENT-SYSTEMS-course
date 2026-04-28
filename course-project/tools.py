@@ -15,7 +15,7 @@ from config import (
 from typing import List, Dict
 from pypdf import PdfReader
 from retriever import get_retriever
-
+import sqlparse
 import pyodbc
 
 """
@@ -27,8 +27,62 @@ QA Engineer: * Завдання: Запускає SQL-запит на тесто
 
 Безпека (Sandboxing): На відміну від Python REPL, де можна обмежити модулі, у базі даних агент може зробити DROP TABLE або випадково стерти дані через DELETE без WHERE
 
-# дати можливість рев'юеру подивитися план запиту
+# дати можливість рев'юеру подивитися план запиту, виводити його додатково (якщо запит був проблемний, то додатково зберігати десь для адмінів + дати нотіфікейшн в телеграмі)
 """
+
+"""
+Step 2: Implement "Entity-Level" Chunking
+Do not use standard text splitters (like splitting every 500 tokens). If a table's schema gets cut in half, the LLM will hallucinate SQL queries.
+
+Rule: One file/chunk = One Database Table.
+
+Keep the table description, columns, and relationships bundled together in a single chunk.
+"""
+
+def validate_safe_sql(query: str) -> bool:
+    """
+    Parses a SQL query and raises a ValueError if it contains 
+    destructive or state-altering commands.
+    Args:
+        query (str): The SQL query string to evaluate.
+    Returns:
+        bool: True if the query is safe (read-only).
+    Raises:
+        ValueError: If a dangerous statement type is detected.
+    """
+
+    dangerous_commands = {
+        'DELETE', 'DROP', 'TRUNCATE', 'ALTER', 'UPDATE', 
+        'INSERT', 'GRANT', 'REVOKE', 'REPLACE', 'CREATE'
+    }
+    
+    # Parse the query. sqlparse handles multiple statements separated by ';'
+    parsed_statements = sqlparse.parse(query)
+    
+    for stmt in parsed_statements:
+        command_type = stmt.get_type()
+        if command_type in dangerous_commands:
+            raise ValueError(
+                f"Security Error: The AI attempted to use a forbidden "
+                f"SQL command '{command_type}'."
+            )
+            
+    return True
+
+# --- Example Usage ---
+queries_to_test = [
+    "SELECT * FROM users WHERE status = 'active';",
+    "SELECT * FROM items WHERE description LIKE '%drop%';", # Safe, word is in a string
+    "DROP TABLE users;",                                     # Dangerous
+    "SELECT * FROM users; DELETE FROM audit_logs;"           # Dangerous (multi-statement)
+]
+
+for q in queries_to_test:
+    try:
+        validate_safe_sql(q)
+        print(f"[SAFE] {q}")
+    except ValueError as e:
+        print(f"[BLOCKED] {q} -> {e}")
 
 #@tool
 def execute_sql_query(query: str) -> str:
@@ -71,6 +125,11 @@ def execute_sql_query(query: str) -> str:
     finally:
         if 'conn' in locals():
             conn.close()
+
+"""
+SET SHOWPLAN_XML ON	Estimated	Returns the plan as XML without executing the query. Safe for large delete/update tests.
+SET STATISTICS XML ON	Actual	Executes the query and returns the plan. Provides real-time metrics like actual row counts.
+"""
 
 def get_sql_execution_plan(query):
     """
