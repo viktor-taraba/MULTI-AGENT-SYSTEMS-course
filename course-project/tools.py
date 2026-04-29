@@ -62,6 +62,25 @@ The Router/Planner Agent: Give this agent access to a summarized "Data Dictionar
 The Retriever Agent: Takes the table names identified by the Router, queries the Vector DB using the metadata tags, and pulls the exact chunk (the DDL or Markdown file).
 """
 
+"""
+3. Generate Synthetic Databases
+Have an LLM generate a completely novel schema for a niche, fictional business (e.g., an intergalactic space-freight logistics company), complete with complex constraints and edge cases. Build the DB, populate it with synthetic data, and test your agents on that.
+
+1. Obfuscate AdventureWorks (The Quick Fix)
+If you already have the AdventureWorks database set up and want to use its data, just rename the schema, tables, and columns to something completely nonsensical.
+Change Sales.Customer to ModuleA.Entity14
+
+Change Production.Product to ModuleB.ItemAlpha
+
+If your system can still write correct SQL by reading your provided schema definitions without relying on semantic naming clues, you'll know the reasoning engine is actually working.
+"""
+# як варіант - додаткові ознаки по працівниках або клієнтах по типу connotationvalue та connotationkind
+# набір таблиць по клієнтах (додатковий) - типу відпустки, бронювання, мобілізація
+# схема banking data - додати інформацію по картках, по транзаціях (у 2 різних системах і з різними cardid), з нечитабельними назвами
+# по клієнтах додати розбіжності між даними в різних системах
+# але це все потім, це вже етап тестування. Спершу треба робочу систему з тулами, RAG, і графом
+
+@tool
 def validate_safe_sql(query: str) -> bool:
     """
     Parses a SQL query and raises a ValueError if it contains 
@@ -85,29 +104,11 @@ def validate_safe_sql(query: str) -> bool:
     for stmt in parsed_statements:
         command_type = stmt.get_type()
         if command_type in dangerous_commands:
-            raise ValueError(
-                f"Security Error: The AI attempted to use a forbidden "
-                f"SQL command '{command_type}'."
-            )
+            return f"Security Error: The AI attempted to use a forbidden. SQL command '{command_type}'."
             
-    return True
+    return "Security check: query is safe"
 
-# --- Example Usage ---
-queries_to_test = [
-    "SELECT * FROM users WHERE status = 'active';",
-    "SELECT * FROM items WHERE description LIKE '%drop%';", # Safe, word is in a string
-    "DROP TABLE users;",                                     # Dangerous
-    "SELECT * FROM users; DELETE FROM audit_logs;"           # Dangerous (multi-statement)
-]
-
-for q in queries_to_test:
-    try:
-        validate_safe_sql(q)
-        print(f"[SAFE] {q}")
-    except ValueError as e:
-        print(f"[BLOCKED] {q} -> {e}")
-
-#@tool
+@tool
 def execute_sql_query(query: str) -> str:
     """
     Executes a SQL query against a SQL Server database and returns the results.
@@ -316,23 +317,13 @@ def read_url(url: str) -> str:
 tool_registry = {
     "web_search": web_search, 
     "read_url": read_url, 
-    "knowledge_search": knowledge_search
-    }
-    #"execute_sql_query": execute_sql_query}
+    "knowledge_search": knowledge_search,
+    "execute_sql_query": execute_sql_query,
+    "validate_safe_sql": validate_safe_sql}
 
 tools = [
     web_search, 
     read_url, 
-    knowledge_search]
-    #execute_sql_query]
-
-agent_query = """
-    SELECT TOP (5) [DepartmentID], [Name], [GroupName], [ModifiedDate]
-    FROM [AdventureWorks2022].[HumanResources].[Department]
-"""
-    
-agent_response = execute_sql_query(query=agent_query)
-print(agent_response)
-
-agent_response_2 = get_sql_execution_plan(query=agent_query)
-print(agent_response_2)
+    knowledge_search,
+    execute_sql_query,
+    validate_safe_sql]
