@@ -25,20 +25,20 @@ FINAL_PROMPT_critic = langfuse_prompts.get_prompt("FINAL_PROMPT_critic", label="
 
 # research agent
 research_model_name: str = "gpt-5-mini"
-max_iterations_research: int = 80
-ToolCallLimit_research: int = 25
+max_iterations_research: int = 30
+ToolCallLimit_research: int = 5
 SYSTEM_PROMPT_research = langfuse_prompts.get_prompt("SYSTEM_PROMPT_research", label="production").compile()
 FINAL_PROMPT_research = langfuse_prompts.get_prompt("FINAL_PROMPT_research", label="production").compile()
 
 # planner agent
 planner_model_name: str = "gpt-5-mini"
-max_iterations_planner: int = 30
+max_iterations_planner: int = 10
 SYSTEM_PROMPT_planner = langfuse_prompts.get_prompt("SYSTEM_PROMPT_planner", label="production").compile()
 FINAL_PROMPT_planner = langfuse_prompts.get_prompt("FINAL_PROMPT_planner", label="production").compile()
 
 # tools 
-max_search_results: int = 4
-max_url_content_length: int = 4000
+max_search_results: int = 3
+max_url_content_length: int = 3000
 email_crossref_api: str =  "youremail@gmail.com" # optional, email for the crossref "Polite Pool"
 desired_keys_yfinance: list = ['country', 'industry', 'sector', 'website', 'longBusinessSummary', 'fullTimeEmployees', 'fiveYearAvgDividendYield', 'beta', 'trailingPE',
                 'forwardPE', 'marketCap', 'nonDilutedMarketCap', 'previousClose', 'fiftyTwoWeekLow', 'fiftyTwoWeekHigh', 'allTimeHigh', 'fiftyDayAverage',

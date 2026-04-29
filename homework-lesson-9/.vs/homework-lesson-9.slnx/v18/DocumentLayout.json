@@ -1,0 +1,248 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\acp_server.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:acp_server.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\requirements.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:requirements.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\supervisor.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:supervisor.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\main.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:main.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\mcp_servers\\report_mcp.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:mcp_servers\\report_mcp.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\mcp_servers\\search_mcp.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:mcp_servers\\search_mcp.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\config.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:config.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "acp_server.py",
+              "DocumentMoniker": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\acp_server.py",
+              "RelativeDocumentMoniker": "acp_server.py",
+              "ToolTip": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\acp_server.py",
+              "RelativeToolTip": "acp_server.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-09T21:07:02.025Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "search_mcp.py",
+              "DocumentMoniker": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\mcp_servers\\search_mcp.py",
+              "RelativeDocumentMoniker": "mcp_servers\\search_mcp.py",
+              "ToolTip": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\mcp_servers\\search_mcp.py",
+              "RelativeToolTip": "mcp_servers\\search_mcp.py",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAJMAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-09T21:06:35.485Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "report_mcp.py",
+              "DocumentMoniker": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\mcp_servers\\report_mcp.py",
+              "RelativeDocumentMoniker": "mcp_servers\\report_mcp.py",
+              "ToolTip": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\mcp_servers\\report_mcp.py",
+              "RelativeToolTip": "mcp_servers\\report_mcp.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-09T21:06:43.687Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "main.py",
+              "DocumentMoniker": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\main.py",
+              "RelativeDocumentMoniker": "main.py",
+              "ToolTip": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\main.py",
+              "RelativeToolTip": "main.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-12T12:34:29.059Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "supervisor.py",
+              "DocumentMoniker": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\supervisor.py",
+              "RelativeDocumentMoniker": "supervisor.py",
+              "ToolTip": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\supervisor.py",
+              "RelativeToolTip": "supervisor.py",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAJgAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-10T20:27:19.949Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1991546494:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:140021582:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:703864968:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:654958549:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1176128396:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1780006935:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:8:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:6:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:5:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:7:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2098567005:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:4:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:3:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2113001452:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1068179780:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:448010168:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:338654235:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1301751751:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:594048373:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "requirements.txt",
+              "DocumentMoniker": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\requirements.txt",
+              "RelativeDocumentMoniker": "requirements.txt",
+              "ToolTip": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\requirements.txt",
+              "RelativeToolTip": "requirements.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-04-12T17:54:13.378Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "config.py",
+              "DocumentMoniker": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\config.py",
+              "RelativeDocumentMoniker": "config.py",
+              "ToolTip": "C:\\Users\\Viktor\\source\\repos\\MULTI-AGENT-SYSTEMS-course\\homework-lesson-9\\config.py",
+              "RelativeToolTip": "config.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-12T10:31:18.856Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

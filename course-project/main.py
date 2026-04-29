@@ -1,9 +1,16 @@
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, MessagesState, START, END
-from pydantic import BaseModel
 from typing import Literal
+from config import (
+    LLM_POWERFUL,
+    LLM_FAST)
+from agents.planner import planner
 from dotenv import load_dotenv
+from langfuse import get_client
+from langfuse.langchain import CallbackHandler
+from datetime import datetime
+import uuid
 load_dotenv()
 
 """
@@ -24,10 +31,16 @@ Reviewer: Перевіряє код на помилки, стиль, відпо�
 Давайте агентам різні моделі під задачу: потужну для planning/evaluation, дешевшу для execution
 """
 
-# Planner-Coder-Reviewer team as a LangGraph graph
+# Error searching local knowledge base. Details: Path chunks\bm25_chunks.json does not exist. - пофіксити, запустити
 
-LLM_POWERFUL = "openai:gpt-5.4"       # for planning, evaluation, supervision
-LLM_FAST = "openai:gpt-5.4-nano"     # for execution, simple tasks
+langfuse = get_client()
+langfuse_handler = CallbackHandler()
+
+session_id = f"{datetime.now().isoformat()}-course-project-{uuid.uuid4().hex[:8]}"
+user_id="viktor_hw_12"
+tags=["course-project", "multi-agent"]
+
+# Planner-Coder-Reviewer team as a LangGraph graph
 
 @tool
 def write_file(path: str, content: str) -> str:
@@ -40,20 +53,10 @@ def run_tests(path: str) -> str:
     return "All tests passed."
 
 # Define agents with different model tiers
-planner = create_agent(
-    model=LLM_POWERFUL,
-    tools=[],
-    system_prompt=(
-        "You are a software architect. Given a task, break it into 2-3 concrete implementation steps. "
-        "Be concise — just a numbered list."
-    ),
-    name="planner",
-)
-
 coder = create_agent(
     model=LLM_FAST,
     tools=[write_file, run_tests],
-    system_prompt="You are a Python developer. Implement the plan step by step. Be concise.",
+    system_prompt="You are a SQL developer. Implement the plan step by step. Be concise.",
     name="coder",
 )
 
@@ -91,8 +94,14 @@ print("✅ Planner-Coder-Reviewer graph compiled")
 
 # Run the team
 result = dev_team_app.invoke(
-    {"messages": [{"role": "user", "content": "Create a Python function to check if a number is prime"}]},
-    {"recursion_limit": 25},
+    {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of employees"}]},
+    {"recursion_limit": 50,
+    "callbacks": [langfuse_handler],
+    "metadata": {
+            "langfuse_user_id": user_id,
+            "langfuse_session_id": session_id,
+            "langfuse_tags": tags
+        }},
 )
 
 # Print each agent's contribution

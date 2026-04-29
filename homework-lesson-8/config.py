@@ -73,7 +73,7 @@ CRITICAL INSTRUCTIONS:
 # research agent
 research_model_name: str = "gpt-5-mini"
 max_iterations_research: int = 50
-ToolCallLimit_research: int = 15
+ToolCallLimit_research: int = 10
 SYSTEM_PROMPT_research: str = """
 You are a Senior Analyst with 10 years of experience.
 Your task is to receive a question from the user, search and structure information using appropriate tools, gathers findings, and generate a text report.
@@ -124,7 +124,7 @@ The Supervisor is waiting for the actual Markdown text. Output the full text now
 
 # planner agent
 planner_model_name: str = "gpt-5-mini"
-max_iterations_planner: int = 5
+max_iterations_planner: int = 10
 SYSTEM_PROMPT_planner: str = """You are an expert Research Planner and Lead Strategist with 15 years of experience.
 
 Your responsibilities:
