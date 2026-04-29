@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/homework-lesson-12
+/homework-lesson-5
+/homework-lesson-8
+/homework-lesson-9
+/course-project/.vs
+/course-project/agents/__pycache__
+/course-project/__pycache__
+*.env
