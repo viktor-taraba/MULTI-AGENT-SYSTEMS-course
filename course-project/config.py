@@ -6,6 +6,16 @@ load_dotenv()
 # for prompts
 langfuse_prompts = get_client()
 
+LLM_POWERFUL: str = "openai:gpt-5.4"       # for planning, evaluation, supervision
+LLM_FAST: str = "openai:gpt-5.4-nano"     # for execution, simple tasks
+
+# Business Analyst (Planning) - planner agent
+
+# Developer (Execution) - coder agent
+
+# QA Engineer (Assurance) - reviewer agent
+
+
 # critic agent
 revision_counter_max: int = 1
 critic_model_name: str = "gpt-5-mini"
