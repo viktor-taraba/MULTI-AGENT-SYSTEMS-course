@@ -108,6 +108,68 @@ def validate_safe_sql(query: str) -> bool:
     return True
 
 @tool
+def get_table_structure(table_name: str, schema_name: str) -> str:
+    """
+    Retrieves the column structure (name, data type, length, nullability, precision) of a specified DWH table.
+    Use this tool when you need to understand the schema and data types of a table before writing queries or when ypu have suspicion that documentation is outdated.
+    
+    Args:
+        table_name (str): The name of the table to inspect (e.g., 'Store').
+        schema_name (str): The schema the table belongs to (e.g., 'Sales').
+        
+    Returns:
+        str: Table structure details in JSON format (list of dictionaries) or an error message.
+    """
+
+    connection_string = f'''
+        DRIVER={{ODBC Driver 17 for SQL Server}};
+        SERVER={server};
+        DATABASE={database};
+        Trusted_Connection=yes;
+    '''
+    
+    query = """
+        SELECT 
+            COLUMN_NAME, 
+            DATA_TYPE, 
+            CHARACTER_MAXIMUM_LENGTH AS MAX_LENGTH, 
+            IS_NULLABLE, 
+            NUMERIC_PRECISION,
+            NUMERIC_SCALE
+        FROM 
+            INFORMATION_SCHEMA.COLUMNS 
+        WHERE 
+            TABLE_NAME = ? AND TABLE_SCHEMA = ?;
+    """
+    
+    try:
+        conn = pyodbc.connect(connection_string)
+        cursor = conn.cursor()
+        cursor.execute(query, (table_name, schema_name))
+        
+        if cursor.description:
+            columns = [column[0] for column in cursor.description]
+            rows = cursor.fetchall()
+            
+            if not rows:
+                return json.dumps({
+                    "status": "not_found", 
+                    "message": f"Table '{schema_name}.{table_name}' not found or has no columns."
+                })
+                
+            result_data = [dict(zip(columns, row)) for row in rows]
+            return json.dumps(result_data, default=str)
+        else:
+            return json.dumps({"status": "error", "message": "Failed to retrieve metadata."})
+            
+    except pyodbc.Error as e:
+        return json.dumps({"status": "error", "error_message": str(e)})
+        
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+@tool
 def execute_sql_query(query: str) -> str:
     """
     Executes a SQL query against a SQL Server database and returns the results.
@@ -133,14 +195,12 @@ def execute_sql_query(query: str) -> str:
         if validate_safe_sql:
             cursor.execute(query)
         
-        # Check if the query returns data (SELECT statement)
         if cursor.description:
             columns = [column[0] for column in cursor.description]
             rows = cursor.fetchall()
             result_data = [dict(zip(columns, row)) for row in rows]
             return json.dumps(result_data, default=str)
         else:
-            # If it's an INSERT/UPDATE/DELETE statement
             conn.commit()
             return json.dumps({"status": "success", "message": "Query executed successfully. No rows returned."})
             
@@ -319,10 +379,12 @@ tool_registry = {
     "web_search": web_search, 
     "read_url": read_url, 
     "knowledge_search": knowledge_search,
-    "execute_sql_query": execute_sql_query}
+    "execute_sql_query": execute_sql_query,
+    "get_table_structure": get_table_structure}
 
 tools = [
     web_search, 
     read_url, 
     knowledge_search,
-    execute_sql_query]
+    execute_sql_query,
+    get_table_structure]
