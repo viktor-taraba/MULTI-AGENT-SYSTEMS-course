@@ -80,7 +80,6 @@ If your system can still write correct SQL by reading your provided schema defin
 # по клієнтах додати розбіжності між даними в різних системах
 # але це все потім, це вже етап тестування. Спершу треба робочу систему з тулами, RAG, і графом
 
-@tool
 def validate_safe_sql(query: str) -> bool:
     """
     Parses a SQL query and raises a ValueError if it contains 
@@ -106,7 +105,7 @@ def validate_safe_sql(query: str) -> bool:
         if command_type in dangerous_commands:
             return f"Security Error: The AI attempted to use a forbidden. SQL command '{command_type}'."
             
-    return "Security check: query is safe"
+    return True
 
 @tool
 def execute_sql_query(query: str) -> str:
@@ -130,7 +129,9 @@ def execute_sql_query(query: str) -> str:
     try:
         conn = pyodbc.connect(connection_string)
         cursor = conn.cursor()
-        cursor.execute(query)
+
+        if validate_safe_sql:
+            cursor.execute(query)
         
         # Check if the query returns data (SELECT statement)
         if cursor.description:
@@ -318,12 +319,10 @@ tool_registry = {
     "web_search": web_search, 
     "read_url": read_url, 
     "knowledge_search": knowledge_search,
-    "execute_sql_query": execute_sql_query,
-    "validate_safe_sql": validate_safe_sql}
+    "execute_sql_query": execute_sql_query}
 
 tools = [
     web_search, 
     read_url, 
     knowledge_search,
-    execute_sql_query,
-    validate_safe_sql]
+    execute_sql_query]
