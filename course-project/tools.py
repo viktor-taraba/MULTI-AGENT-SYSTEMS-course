@@ -189,12 +189,12 @@ def get_sql_execution_plan(query):
 @tool
 def knowledge_search(query: str) -> str:
     """
-    Search the local knowledge database which has information about the following topics: large language models, langchain, RAG, Power BI, DAX documentations for Power BI, Power BI and agentic development, changes in Power BI with he new version.
+    Search the local knowledge database which has information about the following topics: description of tables in the DWH, connections between tables, structure (data types, PK, FK)).
     Returns top releveant search results.
     Automatically filters out irrelevant noise via reranking.
 
     Args:
-        query (str): Search query or question to look up, e.g. 'DAX measures' or 'LLM monitoring'.
+        query (str): Search query or question to look up, e.g. 'Sales.Store' or 'SQL Style Guide'
 
     Returns:
         str: Most relevant document fragments (Content + Source).
