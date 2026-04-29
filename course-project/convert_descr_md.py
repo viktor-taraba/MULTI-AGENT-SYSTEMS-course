@@ -64,6 +64,6 @@ def local_docx_to_markdown(input_filepath, output_filepath=None):
         
     return final_md
 
-url = "C:\\Users\\Viktor\\OneDrive\\Desktop\\HumanResources.EmployeeDepartmentHistory.docx"#dbo.AWBuildVersion.docx"#HumanResources.docx"
+url = "C:\\Users\\Viktor\\OneDrive\\Desktop\\Production.ProductPhoto.docx"#dbo.AWBuildVersion.docx"#HumanResources.docx"
 markdown_output = local_docx_to_markdown(url)
 print(markdown_output)
