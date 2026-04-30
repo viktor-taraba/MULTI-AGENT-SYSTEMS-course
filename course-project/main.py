@@ -42,7 +42,10 @@ Workflow (LangGraph)
 
 # add HITL
 # check: reducer = add
-# агентів coder та critic винести в окремі файли, продумати тули, написати для них системні промпти
+# переробити RAG (щоб для таблиць повертав повний файл, а не лише фрагмент)
+# подивитися як отримати фактичний план запиту, а не лише оціночний
+# для оціночного плану запиту покращити форматування аутпуту
+# подумати над додатковими ідеями для тулів (можливо для створення окремих .sql файлів з кодом)
 
 langfuse = get_client()
 langfuse_handler = CallbackHandler()
@@ -92,7 +95,7 @@ result = planner.invoke(
 
 # Run the team
 result = dev_team_app.invoke(
-    {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of current employees by year when they started working in the company"}]},
+    {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of current working employees and average salary by year when they started working in the company"}]},
     {"recursion_limit": 50,
     "callbacks": [langfuse_handler],
     "metadata": {
