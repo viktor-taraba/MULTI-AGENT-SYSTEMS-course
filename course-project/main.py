@@ -2,10 +2,9 @@ from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, MessagesState, START, END
 from typing import Literal
-from config import (
-    LLM_POWERFUL,
-    LLM_FAST)
 from agents.planner import planner
+from agents.coder import coder
+from agents.reviewer import reviewer
 from dotenv import load_dotenv
 from langfuse import get_client
 from langfuse.langchain import CallbackHandler
@@ -52,35 +51,6 @@ session_id = f"{datetime.now().isoformat()}-course-project-{uuid.uuid4().hex[:8]
 user_id="viktor_hw_12"
 tags=["course-project", "multi-agent"]
 
-@tool
-def write_file(path: str, content: str) -> str:
-    """Write content to a file."""
-    return f"File {path} written successfully."
-
-@tool
-def run_tests(path: str) -> str:
-    """Run tests for a file."""
-    return "All tests passed."
-
-# Define agents with different model tiers
-coder = create_agent(
-    model=LLM_FAST,
-    tools=[write_file, run_tests],
-    system_prompt="You are a SQL developer. Implement the plan step by step. Be concise.",
-    name="coder",
-)
-
-reviewer = create_agent(
-    model=LLM_POWERFUL,
-    tools=[],
-    system_prompt=(
-        "You are a code reviewer. Check code for bugs and plan compliance. "
-        "If issues found, say REVISION_NEEDED and list problems. "
-        "If code is good, say APPROVED."
-    ),
-    name="reviewer",
-)
-
 # Reviewer routing: return string, not Command (conditional edges require strings)
 def review_router(state: MessagesState) -> Literal["coder", "__end__"]:
     """Route based on reviewer verdict."""
@@ -103,6 +73,7 @@ dev_team_app = graph.compile()
 print("✅ Planner-Coder-Reviewer graph compiled")
 
 # Test planner
+"""
 result = planner.invoke(
     {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of employees"}]},
     {"recursion_limit": 50,
@@ -117,10 +88,11 @@ result = planner.invoke(
         }
     },
 )
+"""
 
 # Run the team
 result = dev_team_app.invoke(
-    {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of employees"}]},
+    {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of current employees by year when they started working in the company"}]},
     {"recursion_limit": 50,
     "callbacks": [langfuse_handler],
     "metadata": {
