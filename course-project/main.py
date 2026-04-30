@@ -117,7 +117,6 @@ result = dev_team_app.invoke(
         }},
 )
 
-# Print each agent's contribution
 for msg in result["messages"][1:]:  # skip the user message
     name = getattr(msg, "name", msg.type)
     print(f"\n{'='*60}")
