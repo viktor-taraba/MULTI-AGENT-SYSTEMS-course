@@ -18,23 +18,6 @@ Coder_SYSTEM_prompt = langfuse_prompts.get_prompt("Coder_SYSTEM_prompt", label="
 # QA Engineer (Assurance) - reviewer agent
 Reviewer_SYSTEM_prompt = langfuse_prompts.get_prompt("Reviewer_SYSTEM_prompt", label="production").compile()
 
-# critic agent
-revision_counter_max: int = 1
-critic_model_name: str = "gpt-5-mini"
-max_iterations_critic: int = 25
-max_items_critic: int = 5
-SYSTEM_PROMPT_critic = langfuse_prompts.get_prompt("SYSTEM_PROMPT_critic", label="production").compile(
-                        current_date=datetime.now().isoformat(),
-                        max_items_critic=max_items_critic)
-FINAL_PROMPT_critic = langfuse_prompts.get_prompt("FINAL_PROMPT_critic", label="production").compile()
-
-# research agent
-research_model_name: str = "gpt-5-mini"
-max_iterations_research: int = 80
-ToolCallLimit_research: int = 25
-SYSTEM_PROMPT_research = langfuse_prompts.get_prompt("SYSTEM_PROMPT_research", label="production").compile()
-FINAL_PROMPT_research = langfuse_prompts.get_prompt("FINAL_PROMPT_research", label="production").compile()
-
 # tools 
 max_search_results: int = 10
 max_url_content_length: int = 7000
