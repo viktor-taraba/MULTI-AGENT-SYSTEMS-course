@@ -89,6 +89,22 @@ graph.add_conditional_edges("reviewer", review_router)
 dev_team_app = graph.compile()
 print("✅ Planner-Coder-Reviewer graph compiled")
 
+# Test planner
+result = planner.invoke(
+    {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of employees"}]},
+    {"recursion_limit": 50,
+    "callbacks": [langfuse_handler],
+    "metadata": {
+            "langfuse_user_id": user_id,
+            "langfuse_session_id": session_id,
+            "langfuse_tags": tags
+        },
+    "configurable": {
+            "thread_id": "test_planner_thread_1" # You can use any string (e.g., uuid) for the thread_id
+        }
+    },
+)
+
 # Run the team
 result = dev_team_app.invoke(
     {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of employees"}]},
