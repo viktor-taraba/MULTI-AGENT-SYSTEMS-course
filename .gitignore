@@ -11,3 +11,4 @@
 /course-project/__pycache__
 *.env
 /course-project/.deepeval
+/course-project/tests/__pycache__
