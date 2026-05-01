@@ -8,6 +8,7 @@ langfuse_prompts = get_client()
 
 LLM_POWERFUL: str = "openai:gpt-5.4"  # for planning, evaluation, supervision
 LLM_FAST: str = "openai:gpt-5.4-nano" # for execution, simple tasks
+LLM_test = "gpt-5.4-mini"
 
 # Business Analyst (Planning) - planner agent
 Business_Analyst_SYSTEM_prompt = langfuse_prompts.get_prompt("Business_Analyst_SYSTEM_prompt", label="production").compile()
