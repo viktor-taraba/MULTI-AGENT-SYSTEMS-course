@@ -10,3 +10,4 @@
 /course-project/agents/__pycache__
 /course-project/__pycache__
 *.env
+/course-project/.deepeval
