@@ -26,6 +26,12 @@ Reviewer: Перевіряє код на помилки, стиль, відпо�
 Скільки ітерацій допускається перед ескалацією до людини?
 Як передається контекст між агентами — повністю або compact summary?
 
+Does it make sense to use cheaper model to filter user question as a first step in a multi-agent system if it is not relevant to the covered tasks?
+
+Yes, it makes complete sense. In fact, this is an industry-standard architectural pattern often referred to as Semantic Routing or Gating.
+
+Using a smaller, faster model as the "front door" to your heavier, more expensive multi-agent system provides several distinct advantages, but it does come with a few trade-offs you will need to manage.
+
 Workflow (LangGraph)
 1) START → BA: користувач надсилає user story.
 2) BA досліджує контекст (DuckDuckGo + RAG), формує SpecOutput.
@@ -74,6 +80,15 @@ graph.add_edge("coder", "reviewer")
 graph.add_conditional_edges("reviewer", review_router)
 
 dev_team_app = graph.compile()
+
+config = {"recursion_limit": 50,
+    "callbacks": [langfuse_handler],
+    "metadata": {
+            "langfuse_user_id": user_id,
+            "langfuse_session_id": session_id,
+            "langfuse_tags": tags
+        }}
+
 print("✅ Planner-Coder-Reviewer graph compiled")
 
 # Test planner
@@ -94,6 +109,7 @@ result = planner.invoke(
 )
 """
 
+"""
 # Run the team
 result = dev_team_app.invoke(
     {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of current working employees and average salary by year when they started working in the company"}]},
@@ -105,9 +121,55 @@ result = dev_team_app.invoke(
             "langfuse_tags": tags
         }},
 )
+"""
 
+def main():
+    print("Research Agent")
+    print("type 'exit' or 'quit' to quit")
+    print("-" * 100)
+
+    while True:
+        try:
+            user_input = input("\nYou: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\nGoodbye!")
+            break
+
+        if not user_input:
+            continue
+        if user_input.lower() in ("exit", "quit"):
+            print("Goodbye!")
+            break
+
+        try:
+            current_input = {"messages": [{"role": "user", "content": user_input}]}
+
+            while True:
+                interrupted = False
+
+                for step in dev_team_app.stream(
+                    current_input,
+                    config=config
+                ):
+                    for update in step.values():
+                        print(update)
+
+                    if interrupted:
+                        break
+
+                if not interrupted:
+                    break
+
+        except Exception as e:
+            print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversation with you!")
+
+if __name__ == "__main__":
+    main()
+
+"""
 for msg in result["messages"][1:]:  # skip the user message
     name = getattr(msg, "name", msg.type)
     print(f"\n{'='*60}")
     print(f"🤖 {name}:")
     print(msg.content)
+"""
