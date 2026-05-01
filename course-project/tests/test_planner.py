@@ -110,3 +110,5 @@ def test_plan_alignment():
         actual_output=actual_output_str
     )
     assert_test(test_case, [plan_alignment])
+
+# deepeval test run tests/test_planner.py
