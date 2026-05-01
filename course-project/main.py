@@ -1,6 +1,7 @@
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, MessagesState, START, END
+from langgraph.types import Command, Interrupt
 from typing import Literal
 from agents.planner import planner
 from agents.coder import coder
@@ -9,6 +10,10 @@ from dotenv import load_dotenv
 from langfuse import get_client
 from langfuse.langchain import CallbackHandler
 from datetime import datetime
+from config import (
+    tool_preview_len
+    )
+from tools import tool_registry
 import uuid
 load_dotenv()
 
@@ -123,8 +128,49 @@ result = dev_team_app.invoke(
 )
 """
 
+def print_tool_call(tool_name, tool_args, indent=""):
+    tool_args = tool_args[:tool_preview_len] + "..." if len(tool_args) > tool_preview_len else tool_args
+    print(f"{indent}🔧 Tool called -> {tool_name}({tool_args})")
+
+    tool_name = tool_registry.get(tool_name)
+    if tool_name is None:
+        print(f"{indent}❌ Unknown tool: {tool_name}")
+
+def print_agent_step(msg):
+    """Parses a single LangChain message object and prints it in a clean format."""
+    indent = "    "
+
+    msg_type = getattr(msg, "type", None)
+    msg_content = getattr(msg, "content", "")
+
+    if msg_type == "ai":
+        
+        tool_calls = getattr(msg, "tool_calls", [])
+        if tool_calls:
+            for tool_call in tool_calls:
+                if isinstance(tool_call, dict):
+                    tool_name = tool_call.get("name")
+                    tool_args = str(tool_call.get("args"))
+                else:
+                    tool_name = getattr(tool_call, "name", "Unknown")
+                    tool_args = str(getattr(tool_call, "args", "{}"))
+                if tool_name:
+                    print_tool_call(tool_name,tool_args,indent=indent)
+
+    elif msg_type == "tool":
+        tool_name = getattr(msg, "name", "unknown_tool")
+        content_str = str(msg_content)
+
+        print(f"{indent}✅ Result ({tool_name}):")
+        formatted_name = tool_name.replace("_", " ").title()
+        lines = content_str.splitlines()
+        indented_content = "\n".join(f"{indent}│ {line}" for line in lines)
+        print(f"\n{indent}╭─── 📄 {formatted_name} {'─' * (40 - len(formatted_name))}")
+        print(indented_content)
+        print(f"{indent}╰{'─' * 46}\n")
+
 def main():
-    print("Research Agent")
+    print("SQL / DWH Assistant")
     print("type 'exit' or 'quit' to quit")
     print("-" * 100)
 
@@ -152,7 +198,21 @@ def main():
                     config=config
                 ):
                     for update in step.values():
-                        print(update)
+                        #print(update)
+
+                        # HITL
+                        if isinstance(update, tuple) and len(update) > 0 and isinstance(update[0], Interrupt):
+                            interrupt = update[0]
+                            interrupted = True
+                
+                            print(f"\n{'=' * 60}")
+                            print(f" ⏸️  ACTION REQUIRES APPROVAL")
+                            print(f"{'=' * 60}")
+
+                        # usual agent messages
+                        elif isinstance(update, dict):
+                            for message in update.get("messages", []):
+                                print_agent_step(message)
 
                     if interrupted:
                         break
@@ -165,11 +225,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-"""
-for msg in result["messages"][1:]:  # skip the user message
-    name = getattr(msg, "name", msg.type)
-    print(f"\n{'='*60}")
-    print(f"🤖 {name}:")
-    print(msg.content)
-"""
