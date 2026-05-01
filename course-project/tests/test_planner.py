@@ -83,11 +83,10 @@ def test_plan_has_queries():
     assert_test(test_case, [plan_has_queries])
 
 def test_plan_edge_cases():
-    # A prompt involving "highest" or "top" naturally tests tie-breaking and null handling
     user_input = "Find the employee with the highest salary in each department."
     agent_response = planner_agent.invoke(
             {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "test_thread_004"}}
+            config={"configurable": {"thread_id": "test_thread_003"}}
         )
     actual_output_str = str(agent_response.get("messages", [])[-1].content)
 
@@ -99,10 +98,10 @@ def test_plan_edge_cases():
 
 
 def test_plan_alignment():
-    user_input = "Calculate the month-over-month revenue growth percentage for 2023."
+    user_input = "Calculate the month-over-month revenue growth percentage for the last available year."
     agent_response = planner_agent.invoke(
             {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "test_thread_005"}}
+            config={"configurable": {"thread_id": "test_thread_004"}}
         )
     actual_output_str = str(agent_response.get("messages", [])[-1].content)
 
