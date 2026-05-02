@@ -31,13 +31,14 @@ Workflow (LangGraph)
 8) Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 """
 
+# перевірити що HITL повертає якщо не апрув
 # додати форматування Agent Output (schema output)
 # додати обмеження на timeout при запуску коду через тул execution
 # перевірити що працює пам'ять між запитами в межах однієї сесії
 # Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 # додати тести по тулах (для кожного агента окремо) (все через deepeval)
-
 # переробити RAG (щоб для таблиць повертав повний файл, а не лише фрагмент)
+
 # подивитися як отримати фактичний план запиту, а не лише оціночний
 # для оціночного плану запиту покращити форматування аутпуту
 # подумати над додатковими ідеями для тулів (можливо для створення окремих .sql файлів з кодом)
@@ -77,13 +78,6 @@ def print_agent_step(msg):
     msg_content = getattr(msg, "content", "")
 
     if msg_type == "ai":
-
-        if msg_content and str(msg_content).strip():
-            print(f"{indent}🤖 Agent Output:")
-            lines = str(msg_content).splitlines()
-            indented_content = "\n".join(f"{indent}│ {line}" for line in lines)
-            print(indented_content)
-            print(f"{indent}╰{'─' * 46}\n")
         
         tool_calls = getattr(msg, "tool_calls", [])
         if tool_calls:
@@ -96,6 +90,13 @@ def print_agent_step(msg):
                     tool_args = str(getattr(tool_call, "args", "{}"))
                 if tool_name:
                     print_tool_call(tool_name,tool_args,indent=indent)
+
+        if msg_content and str(msg_content).strip():
+            print(f"{indent}🤖 Agent Output:")
+            lines = str(msg_content).splitlines()
+            indented_content = "\n".join(f"{indent}│ {line}" for line in lines)
+            print(indented_content)
+            print(f"{indent}╰{'─' * 46}\n")
 
     elif msg_type == "tool":
         tool_name = getattr(msg, "name", "unknown_tool")
@@ -133,7 +134,9 @@ def main():
             while True:
                 try:
                     # Run the graph until it finishes or hits an interrupt
-                    for step in dev_team_app.stream(current_input, config=config):
+                    for event in dev_team_app.stream(current_input, config=config, subgraphs=True):
+                        namespace, step = event
+                        
                         for node_name, update in step.items():
                             # usual agent messages
                             if isinstance(update, dict) and "messages" in update:
