@@ -10,6 +10,7 @@ from config import (
     )
 from tools import tool_registry
 from graph import dev_team_app
+import json
 import uuid
 load_dotenv()
 
@@ -31,10 +32,7 @@ Workflow (LangGraph)
 8) Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 """
 
-# перевірити що HITL повертає якщо не апрув
 # додати форматування Agent Output (schema output)
-# додати обмеження на timeout при запуску коду через тул execution
-# перевірити що працює пам'ять між запитами в межах однієї сесії
 # Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 # додати тести по тулах (для кожного агента окремо) (все через deepeval)
 # переробити RAG (щоб для таблиць повертав повний файл, а не лише фрагмент)
@@ -77,8 +75,15 @@ def print_agent_step(msg):
     msg_type = getattr(msg, "type", None)
     msg_content = getattr(msg, "content", "")
 
+    content_str = str(msg_content).strip()
+    if content_str.startswith("{") or content_str.startswith("["):
+        try:
+            parsed_json = json.loads(content_str)
+            content_str = json.dumps(parsed_json, indent=2, ensure_ascii=False)
+        except json.JSONDecodeError:
+            pass
+
     if msg_type == "ai":
-        
         tool_calls = getattr(msg, "tool_calls", [])
         if tool_calls:
             for tool_call in tool_calls:
@@ -91,17 +96,16 @@ def print_agent_step(msg):
                 if tool_name:
                     print_tool_call(tool_name,tool_args,indent=indent)
 
-        if msg_content and str(msg_content).strip():
+        if content_str:
             print(f"{indent}🤖 Agent Output:")
-            lines = str(msg_content).splitlines()
+            lines = content_str.splitlines()
             indented_content = "\n".join(f"{indent}│ {line}" for line in lines)
             print(indented_content)
             print(f"{indent}╰{'─' * 46}\n")
 
     elif msg_type == "tool":
         tool_name = getattr(msg, "name", "unknown_tool")
-        content_str = str(msg_content)
-
+        
         print(f"{indent}✅ Result ({tool_name}):")
         formatted_name = tool_name.replace("_", " ").title()
         lines = content_str.splitlines()
