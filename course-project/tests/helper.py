@@ -36,24 +36,10 @@ def run_e2e_graph(user_input: str, thread_id: str) -> str:
     config = {"recursion_limit": recursion_limit, "configurable": {"thread_id": thread_id}}
     final_state = dev_team_app_e2e_test.invoke(inputs, config=config)
     
-    # to delete
-    print(str(final_state["messages"]))
-
     for message in reversed(final_state["messages"]):
         content_str = str(message.content)
         
         if "source_code" in content_str and "description" in content_str:
             return content_str
             
-    return str(final_state["messages"].content)
-
-user_input = """
-Title: Most Recently Hired Employee per Department
-Requirements: Find the newest, currently active employee in each department. You must join HumanResources.Employee, HumanResources.EmployeeDepartmentHistory, HumanResources.Department, and Person.Person to get the actual names. 
-Acceptance Criteria:
-- Must return DepartmentName, FirstName, LastName, and HireDate.
-- Must filter EmployeeDepartmentHistory to only include current assignments (where EndDate IS NULL).
-- Must use a window function (like ROW_NUMBER) to partition by department and sort by HireDate descending.
-"""
-actual_output_str = run_e2e_graph(user_input, "e2e_001")
-print(actual_output_str)
+    return str(final_state["messages"])
