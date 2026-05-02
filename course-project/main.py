@@ -1,6 +1,8 @@
+from langfuse.langchain import CallbackHandler
+from langgraph.types import Command
+from langgraph.errors import GraphInterrupt
 from dotenv import load_dotenv
 from langfuse import get_client
-from langfuse.langchain import CallbackHandler
 from datetime import datetime
 from config import (
     tool_preview_len,
@@ -12,19 +14,6 @@ import uuid
 load_dotenv()
 
 """
-2.1. Приклад: AI Team — Planner–Coder–Reviewer
-Класична "AI-команда" для software development:
-
-User Request → Planner → Coder → Reviewer → (loop if needed) → Final Output
-Planner: Отримує задачу, розбиває на конкретні кроки реалізації
-Coder: Пише код за планом, використовує інструменти (file write, shell exec)
-Reviewer: Перевіряє код на помилки, стиль, відповідність плану. Якщо є проблеми — повертає Coder-у
-Важливі design decisions:
-
-Чи бачить Reviewer весь контекст (план + код), чи тільки код?
-Скільки ітерацій допускається перед ескалацією до людини?
-Як передається контекст між агентами — повністю або compact summary?
-
 Does it make sense to use cheaper model to filter user question as a first step in a multi-agent system if it is not relevant to the covered tasks?
 
 Yes, it makes complete sense. In fact, this is an industry-standard architectural pattern often referred to as Semantic Routing or Gating.
@@ -42,19 +31,17 @@ Workflow (LangGraph)
 8) Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 """
 
-# add HITL
-# check: reducer = add
+# додати форматування Agent Output (schema output)
+# додати обмеження на timeout при запуску коду через тул execution
+# перевірити що працює пам'ять між запитами в межах однієї сесії
+# Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
+# додати тести по тулах (для кожного агента окремо) (все через deepeval)
+
 # переробити RAG (щоб для таблиць повертав повний файл, а не лише фрагмент)
 # подивитися як отримати фактичний план запиту, а не лише оціночний
 # для оціночного плану запиту покращити форматування аутпуту
 # подумати над додатковими ідеями для тулів (можливо для створення окремих .sql файлів з кодом)
-# додати як в дз пам'ять (щоб пам'ятав попередні діалоги в межах сесії)
-# додати тести по тулах (для кожного агента окремо) (все через deepeval)
-# Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
-# додати обмеження на timeout при запуску коду через тул execution
-# винести граф в окремий файл в проекті, щоб main був більш читабельний
 # додати окремим тулом перелік всіх таблиць з коротким описом та к-тю записів в них
-# після додавання HITL треба буде ще перевірити E2E тести, чи там буде все ок, чи для них перестворити граф, або відправляти approve
 
 langfuse = get_client()
 langfuse_handler = CallbackHandler()
@@ -65,6 +52,9 @@ tags=["course-project", "multi-agent"]
 
 config = {"recursion_limit": recursion_limit,
     "callbacks": [langfuse_handler],
+    "configurable": {
+        "thread_id": f"session_{uuid.uuid4().hex[:8]}" 
+    },
     "metadata": {
             "langfuse_user_id": user_id,
             "langfuse_session_id": session_id,
@@ -87,6 +77,13 @@ def print_agent_step(msg):
     msg_content = getattr(msg, "content", "")
 
     if msg_type == "ai":
+
+        if msg_content and str(msg_content).strip():
+            print(f"{indent}🤖 Agent Output:")
+            lines = str(msg_content).splitlines()
+            indented_content = "\n".join(f"{indent}│ {line}" for line in lines)
+            print(indented_content)
+            print(f"{indent}╰{'─' * 46}\n")
         
         tool_calls = getattr(msg, "tool_calls", [])
         if tool_calls:
@@ -134,37 +131,39 @@ def main():
             current_input = {"messages": [{"role": "user", "content": user_input}]}
 
             while True:
-                interrupted = False
+                try:
+                    # Run the graph until it finishes or hits an interrupt
+                    for step in dev_team_app.stream(current_input, config=config):
+                        for node_name, update in step.items():
+                            # usual agent messages
+                            if isinstance(update, dict) and "messages" in update:
+                                for message in update.get("messages", []):
+                                    print_agent_step(message)
 
-                for step in dev_team_app.stream(
-                    current_input,
-                    config=config
-                ):
-                    for update in step.values():
-                        #print(update)
-
-                        # HITL
-                        if isinstance(update, tuple) and len(update) > 0 and isinstance(update[0], Interrupt):
-                            interrupt = update[0]
-                            interrupted = True
-                
-                            print(f"\n{'=' * 60}")
-                            print(f" ⏸️  ACTION REQUIRES APPROVAL")
-                            print(f"{'=' * 60}")
-
-                        # usual agent messages
-                        elif isinstance(update, dict):
-                            for message in update.get("messages", []):
-                                print_agent_step(message)
-
-                    if interrupted:
-                        break
-
-                if not interrupted:
+                except GraphInterrupt:
+                    pass
+            
+                # Check the state to see if it paused
+                state = dev_team_app.get_state(config)
+                # If state.next has items, the graph is paused at our human_approval_gate
+                if state.next:
+                    print(f"\n{'=' * 60}")
+                    print(f" ⏸️  ACTION REQUIRES APPROVAL (HITL)")
+                    print(f"{'=' * 60}")
+                    
+                    interrupt_prompt = "Please review. Type 'APPROVED' to accept, or provide feedback to revise."
+                    if state.tasks and state.tasks[0].interrupts:
+                        interrupt_prompt = state.tasks[0].interrupts[0].value
+                    print(f"\nSystem: {interrupt_prompt}")
+                    human_feedback = input("Your Feedback: ").strip()
+                    
+                    current_input = Command(resume=human_feedback)
+                else:
+                    # state.next is empty, meaning the graph reached __end__ successfully
                     break
 
         except Exception as e:
-            print(f"\n❌ An error occurred: {e}. Try again or type 'continue' (Don't worry, model remembers conversation with you!")
+            print(f"\n❌ An error occurred: {e}. Try again or type 'continue'")
 
 if __name__ == "__main__":
     main()
