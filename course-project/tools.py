@@ -10,7 +10,8 @@ from config import (
     max_search_results, 
     max_url_content_length,
     server,
-    database
+    database,
+    timeout_seconds
     )
 from typing import List, Dict
 from pypdf import PdfReader
@@ -190,6 +191,7 @@ def execute_sql_query(query: str) -> str:
     '''
     try:
         conn = pyodbc.connect(connection_string)
+        conn.timeout = timeout_seconds
         cursor = conn.cursor()
 
         if validate_safe_sql:
