@@ -1,5 +1,4 @@
 from langchain_core.tools import tool
-import os
 import trafilatura
 import json
 import io
@@ -16,6 +15,7 @@ from config import (
 from typing import List, Dict
 from pypdf import PdfReader
 from retriever import get_retriever
+from langgraph.types import interrupt
 import sqlparse
 import pyodbc
 
@@ -213,6 +213,19 @@ def execute_sql_query(query: str) -> str:
         if 'conn' in locals():
             conn.close()
 
+@tool
+def ask_user_for_clarification(question: str) -> str:
+    """
+    Use this tool to ask the user a clarifying question BEFORE generating the final specification.
+    Call this when the business requirements are ambiguous, missing, or need confirmation.
+    
+    Args:
+        question (str): The precise question to ask the user.
+    """
+    human_answer = interrupt(f"🤔 PLANNER QUESTION: {question}")
+    
+    return human_answer
+
 """
 SET SHOWPLAN_XML ON	Estimated	Returns the plan as XML without executing the query. Safe for large delete/update tests.
 SET STATISTICS XML ON	Actual	Executes the query and returns the plan. Provides real-time metrics like actual row counts.
@@ -382,11 +395,13 @@ tool_registry = {
     "read_url": read_url, 
     "knowledge_search": knowledge_search,
     "execute_sql_query": execute_sql_query,
-    "get_table_structure": get_table_structure}
+    "get_table_structure": get_table_structure,
+    "ask_user_for_clarification": ask_user_for_clarification}
 
 tools = [
     web_search, 
     read_url, 
     knowledge_search,
     execute_sql_query,
-    get_table_structure]
+    get_table_structure,
+    ask_user_for_clarification]

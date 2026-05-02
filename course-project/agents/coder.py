@@ -9,7 +9,8 @@ from tools import (
     knowledge_search,
     read_url,
     get_table_structure,
-    execute_sql_query
+    execute_sql_query,
+    ask_user_for_clarification
 )
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
@@ -21,7 +22,7 @@ memory = InMemorySaver(serde=custom_serializer)
 
 coder = create_agent(
     model=LLM_FAST,
-    tools=[knowledge_search,web_search,read_url,get_table_structure,execute_sql_query],
+    tools=[knowledge_search,web_search,read_url,get_table_structure,execute_sql_query,ask_user_for_clarification],
     system_prompt=Coder_SYSTEM_prompt,
     response_format=CodeOutput,
     checkpointer=memory,
