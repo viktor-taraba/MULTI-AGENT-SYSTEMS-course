@@ -10,7 +10,6 @@ class SpecOutput(BaseModel):
 class CodeOutput(BaseModel):
     source_code: str = Field(description="The complete, executable source code generated to fulfill the request. Must include all necessary imports, adhere to language-specific formatting best practices, and contain inline comments explaining complex logic.")
     description: str = Field(description="A clear, high-level explanation of how the generated code works. Should detail the core algorithm, step-by-step execution instructions, required dependencies, and any key architectural decisions made.")
-    files_created: list[str] = Field(description="A list of the exact filenames and relative paths that correspond to the generated code (e.g., ['main.sql', 'utils/helpers.sql', 'package.sql']). Guides the user or system on how to properly save and structure the output.")
 
 class ReviewOutput(BaseModel):
     verdict: Literal["APPROVED", "REVISION_NEEDED"] = Field(description="The final decision on the code's quality. Use 'APPROVED' if the code/SQL is fully correct, performant, and meets all specifications. Use 'REVISION_NEEDED' if bugs, vulnerabilities, or unhandled edge cases are found.")
