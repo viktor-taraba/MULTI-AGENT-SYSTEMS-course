@@ -1,11 +1,3 @@
-from langchain.agents import create_agent
-from langchain_core.tools import tool
-from langgraph.graph import StateGraph, MessagesState, START, END
-from langgraph.types import Command, Interrupt
-from typing import Literal
-from agents.planner import planner
-from agents.coder import coder
-from agents.reviewer import reviewer
 from dotenv import load_dotenv
 from langfuse import get_client
 from langfuse.langchain import CallbackHandler
@@ -14,6 +6,7 @@ from config import (
     tool_preview_len
     )
 from tools import tool_registry
+from graph import dev_team_app
 import uuid
 load_dotenv()
 
@@ -59,6 +52,7 @@ Workflow (LangGraph)
 # Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 # додати обмеження на timeout при запуску коду через тул execution
 # винести граф в окремий файл в проекті, щоб main був більш читабельний
+# додати окремим тулом перелік всіх таблиць з коротким описом та к-тю записів в них
 
 langfuse = get_client()
 langfuse_handler = CallbackHandler()
@@ -67,26 +61,6 @@ session_id = f"{datetime.now().isoformat()}-course-project-{uuid.uuid4().hex[:8]
 user_id="viktor_hw_12"
 tags=["course-project", "multi-agent"]
 
-# Reviewer routing: return string, not Command (conditional edges require strings)
-def review_router(state: MessagesState) -> Literal["coder", "__end__"]:
-    """Route based on reviewer verdict."""
-    last_msg = state["messages"][-1].content
-    if "APPROVED" in last_msg.upper():
-        return END
-    return "coder"
-
-# Build the graph: planner → coder → reviewer → (loop or end)
-graph = StateGraph(MessagesState)
-graph.add_node("planner", planner)
-graph.add_node("coder", coder)
-graph.add_node("reviewer", reviewer)
-graph.add_edge(START, "planner")
-graph.add_edge("planner", "coder")
-graph.add_edge("coder", "reviewer")
-graph.add_conditional_edges("reviewer", review_router)
-
-dev_team_app = graph.compile()
-
 config = {"recursion_limit": 50,
     "callbacks": [langfuse_handler],
     "metadata": {
@@ -94,40 +68,6 @@ config = {"recursion_limit": 50,
             "langfuse_session_id": session_id,
             "langfuse_tags": tags
         }}
-
-print("✅ Planner-Coder-Reviewer graph compiled")
-
-# Test planner
-"""
-result = planner.invoke(
-    {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of employees"}]},
-    {"recursion_limit": 50,
-    "callbacks": [langfuse_handler],
-    "metadata": {
-            "langfuse_user_id": user_id,
-            "langfuse_session_id": session_id,
-            "langfuse_tags": tags
-        },
-    "configurable": {
-            "thread_id": "test_planner_thread_1" # You can use any string (e.g., uuid) for the thread_id
-        }
-    },
-)
-"""
-
-"""
-# Run the team
-result = dev_team_app.invoke(
-    {"messages": [{"role": "user", "content": "Write a SQL query to get the total number of current working employees and average salary by year when they started working in the company"}]},
-    {"recursion_limit": 50,
-    "callbacks": [langfuse_handler],
-    "metadata": {
-            "langfuse_user_id": user_id,
-            "langfuse_session_id": session_id,
-            "langfuse_tags": tags
-        }},
-)
-"""
 
 def print_tool_call(tool_name, tool_args, indent=""):
     tool_args = tool_args[:tool_preview_len] + "..." if len(tool_args) > tool_preview_len else tool_args
