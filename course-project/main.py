@@ -60,7 +60,38 @@ config = {"recursion_limit": recursion_limit,
             "langfuse_tags": tags
         }}
 
+def format_data(data, level=0):
+    """helper function to format json schema output"""
+    lines = []
+    ind = "  " * level
+
+    if isinstance(data, dict):
+        for k, v in data.items():
+            if isinstance(v, str) and '\n' in v:
+                lines.append(f"{ind}{k}:")
+                for line in v.splitlines():
+                    lines.append(f"{ind}  {line}")
+            elif isinstance(v, (dict, list)):
+                lines.append(f"{ind}{k}:")
+                lines.extend(format_data(v, level + 1))
+            else:
+                lines.append(f"{ind}{k}: {v}")
+
+    elif isinstance(data, list):
+        for item in data:
+            if isinstance(item, (dict, list)):
+                lines.extend(format_data(item, level + 1))
+            elif isinstance(item, str) and '\n' in item:
+                lines.append(f"{ind}-")
+                for line in item.splitlines():
+                    lines.append(f"{ind}  {line}")
+            else:
+                lines.append(f"{ind}- {item}")
+    return lines
+
 def print_tool_call(tool_name, tool_args, indent=""):
+    """Helper function for printing tool calls"""
+
     tool_args = tool_args[:tool_preview_len] + "..." if len(tool_args) > tool_preview_len else tool_args
     print(f"{indent}🔧 Tool called -> {tool_name}({tool_args})")
 
@@ -79,7 +110,8 @@ def print_agent_step(msg):
     if content_str.startswith("{") or content_str.startswith("["):
         try:
             parsed_json = json.loads(content_str)
-            content_str = json.dumps(parsed_json, indent=2, ensure_ascii=False)
+            formatted_lines = format_data(parsed_json)
+            content_str = "\n".join(formatted_lines)
         except json.JSONDecodeError:
             pass
 
