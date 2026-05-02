@@ -3,7 +3,8 @@ from langfuse import get_client
 from langfuse.langchain import CallbackHandler
 from datetime import datetime
 from config import (
-    tool_preview_len
+    tool_preview_len,
+    recursion_limit
     )
 from tools import tool_registry
 from graph import dev_team_app
@@ -62,7 +63,7 @@ session_id = f"{datetime.now().isoformat()}-course-project-{uuid.uuid4().hex[:8]
 user_id="viktor_hw_12"
 tags=["course-project", "multi-agent"]
 
-config = {"recursion_limit": 50,
+config = {"recursion_limit": recursion_limit,
     "callbacks": [langfuse_handler],
     "metadata": {
             "langfuse_user_id": user_id,
