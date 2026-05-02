@@ -4,8 +4,8 @@ from deepeval import assert_test
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from graph import dev_team_app 
 from config import LLM_test
+from helper import run_e2e_graph
 
 e2e_task_completion = GEval(
     name="Task Accuracy and Completion",
@@ -101,11 +101,7 @@ def test_e2e_recent_hires():
     - Must filter EmployeeDepartmentHistory to only include current assignments (where EndDate IS NULL).
     - Must use a window function (like ROW_NUMBER) to partition by department and sort by HireDate descending.
     """
-    dev_team_response = dev_team_app.invoke(
-            {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "e2e_001"}}
-        )
-    actual_output_str = str(dev_team_response.get("messages", [])[-1].content)
+    actual_output_str = run_e2e_graph(user_input, "e2e_001")
 
     test_case = LLMTestCase(input=user_input, actual_output=actual_output_str)
     assert_test(test_case, metrics_list)
@@ -119,11 +115,7 @@ def test_e2e_aw_customers_without_orders():
     - Must use either a LEFT JOIN with a NULL check or a NOT EXISTS clause.
     - Ensure the result set does not include any customer who has placed an order.
     """
-    dev_team_response = dev_team_app.invoke(
-            {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "e2e_002"}}
-        )
-    actual_output_str = str(dev_team_response.get("messages", [])[-1].content)
+    actual_output_str = run_e2e_graph(user_input, "e2e_002")
 
     test_case = LLMTestCase(input=user_input, actual_output=actual_output_str)
     assert_test(test_case, metrics_list)
@@ -137,11 +129,7 @@ def test_e2e_high_reach_products():
     - Must use COUNT(DISTINCT CustomerID) to determine the unique reach.
     - Must use a HAVING clause to filter out products with fewer than 50 unique customers.
     """
-    dev_team_response = dev_team_app.invoke(
-            {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "e2e_003"}}
-        )
-    actual_output_str = str(dev_team_response.get("messages", [])[-1].content)
+    actual_output_str = run_e2e_graph(user_input, "e2e_003")
 
     test_case = LLMTestCase(input=user_input, actual_output=actual_output_str)
     assert_test(test_case, metrics_list)
@@ -156,11 +144,7 @@ def test_e2e_yoy_revenue_growth():
     - Must use the LAG() window function to retrieve the previous year's revenue on the same row.
     - Must gracefully handle the first year (where previous year revenue is NULL).
     """
-    dev_team_response = dev_team_app.invoke(
-            {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "e2e_004"}}
-        )
-    actual_output_str = str(dev_team_response.get("messages", [])[-1].content)
+    actual_output_str = run_e2e_graph(user_input, "e2e_004")
 
     test_case = LLMTestCase(input=user_input, actual_output=actual_output_str)
     assert_test(test_case, metrics_list)
@@ -174,11 +158,7 @@ def test_e2e_email_domain_distribution():
     - Must extract the domain from the EmailAddress column by finding the string after the '@' symbol using T-SQL string functions (like SUBSTRING and CHARINDEX).
     - Must group by the extracted domain and order the results from most frequent to least frequent.
     """
-    dev_team_response = dev_team_app.invoke(
-            {"messages": [("user", user_input)]}, 
-            config={"configurable": {"thread_id": "e2e_005"}}
-        )
-    actual_output_str = str(dev_team_response.get("messages", [])[-1].content)
+    actual_output_str = run_e2e_graph(user_input, "e2e_005")
 
     test_case = LLMTestCase(input=user_input, actual_output=actual_output_str)
     assert_test(test_case, metrics_list)
