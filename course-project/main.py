@@ -32,7 +32,6 @@ Workflow (LangGraph)
 8) Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 """
 
-# додати форматування Agent Output (schema output)
 # Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 # додати тести по тулах (для кожного агента окремо) (все через deepeval)
 # переробити RAG (щоб для таблиць повертав повний файл, а не лише фрагмент)
