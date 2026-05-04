@@ -14,32 +14,12 @@ import json
 import uuid
 load_dotenv()
 
-"""
-Does it make sense to use cheaper model to filter user question as a first step in a multi-agent system if it is not relevant to the covered tasks?
-
-Yes, it makes complete sense. In fact, this is an industry-standard architectural pattern often referred to as Semantic Routing or Gating.
-
-Using a smaller, faster model as the "front door" to your heavier, more expensive multi-agent system provides several distinct advantages, but it does come with a few trade-offs you will need to manage.
-
-Workflow (LangGraph)
-1) START → BA: користувач надсилає user story.
-2) BA досліджує контекст (DuckDuckGo + RAG), формує SpecOutput.
-3) HITL gate: користувач затверджує специфікацію або повертає з feedback → BA переробляє (цикл до затвердження). Запобігає розробці за неправильними вимогами.
-4) BA → Developer: передача затвердженої SpecOutput.
-5) Developer пише код (Python REPL + file write), повертає CodeOutput. ⚠️ LLM-згенерований код потрібно запускати з обмеженнями: timeout, заборонені модулі (os, subprocess, shutil), обмеження на розмір output.
-6) Developer → QA: передача CodeOutput.
-7) QA оцінює код, повертає ReviewOutput (with_structured_output).
-8) Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
-"""
-
-# Conditional edge (Command API): verdict=REVISION_NEEDED і iteration < 5 → Developer з payload (issues + suggestions). Інакше → END.
 # додати тести по тулах (для кожного агента окремо) (все через deepeval)
-# переробити RAG (щоб для таблиць повертав повний файл, а не лише фрагмент)
-
-# подивитися як отримати фактичний план запиту, а не лише оціночний
 # для оціночного плану запиту покращити форматування аутпуту
-# подумати над додатковими ідеями для тулів (можливо для створення окремих .sql файлів з кодом)
-# додати окремим тулом перелік всіх таблиць з коротким описом та к-тю записів в них
+# додати до RAG відео та документ по оптимізації запитів
+# Get_Sample_Rows: Accepts a table_name and returns the top 3–5 rows. This is crucial for agents to understand data formatting (e.g., are dates stored as YYYY-MM-DD or unix timestamps? Are strings lowercase?).
+
+# подивитися як отримати фактичний план запиту, а не лише оціночнийs
 
 langfuse = get_client()
 langfuse_handler = CallbackHandler()
