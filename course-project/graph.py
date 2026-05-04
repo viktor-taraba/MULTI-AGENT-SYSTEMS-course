@@ -8,6 +8,7 @@ from agents.coder import coder
 from agents.reviewer import reviewer
 from config import to_save_graph_image
 from langgraph.checkpoint.memory import InMemorySaver
+from config import max_iterations
 
 class DevTeamState(TypedDict):
     messages: Annotated[list, add_messages]
@@ -20,7 +21,7 @@ def reviewer_node(state: DevTeamState) -> Command[Literal["coder", "__end__"]]:
     reviewer_response = reviewer.invoke(state) 
     last_msg = reviewer_response["messages"][-1].content
     
-    if "APPROVED" in last_msg.upper() or current_iteration >= 5:
+    if "APPROVED" in last_msg.upper() or current_iteration >= max_iterations:
         return Command(
             goto=END,
             update={

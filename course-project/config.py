@@ -1,4 +1,3 @@
-from datetime import datetime
 from langfuse import get_client
 from dotenv import load_dotenv
 load_dotenv()
@@ -6,10 +5,10 @@ load_dotenv()
 # for prompts
 langfuse_prompts = get_client()
 
-LLM_POWERFUL: str = "gpt-5-mini" #"openai:gpt-5.4"  # for planning, evaluation, supervision
+LLM_POWERFUL: str = "gpt-5-mini" #"openai:gpt-5.4"    # for planning, evaluation, supervision
 LLM_FAST: str = "gpt-5-mini" #"openai:gpt-5.4-nano" # for execution, simple tasks
 LLM_test: str = "gpt-5.4-mini"
-to_save_graph_image: int = 1
+to_save_graph_image: int = 0
 recursion_limit: int = 100
 
 # Business Analyst (Planning) - planner agent
@@ -18,8 +17,9 @@ Business_Analyst_SYSTEM_prompt = langfuse_prompts.get_prompt("Business_Analyst_S
 # Developer (Execution) - coder agent
 Coder_SYSTEM_prompt = langfuse_prompts.get_prompt("Coder_SYSTEM_prompt", label="production").compile()
 
-# QA Engineer (Assurance) - reviewer agent
+# QA Engineer - reviewer agent
 Reviewer_SYSTEM_prompt = langfuse_prompts.get_prompt("Reviewer_SYSTEM_prompt", label="production").compile()
+max_iterations = 5
 
 # tools 
 max_search_results: int = 10
