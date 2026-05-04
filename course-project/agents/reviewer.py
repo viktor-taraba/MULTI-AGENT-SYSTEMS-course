@@ -8,7 +8,8 @@ from tools import (
     knowledge_search,
     get_table_structure,
     execute_sql_query,
-    get_sample_rows
+    get_sample_rows,
+    get_sql_execution_plan
 )
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
@@ -20,7 +21,7 @@ memory = InMemorySaver(serde=custom_serializer)
 
 reviewer = create_agent(
     model=LLM_POWERFUL,
-    tools=[knowledge_search,get_table_structure,execute_sql_query,get_sample_rows],
+    tools=[knowledge_search,get_table_structure,execute_sql_query,get_sample_rows,get_sql_execution_plan],
     system_prompt=Reviewer_SYSTEM_prompt,
     response_format=ReviewOutput,
     checkpointer=memory,
