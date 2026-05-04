@@ -5,8 +5,8 @@ load_dotenv()
 # for prompts
 langfuse_prompts = get_client()
 
-LLM_POWERFUL: str = "gpt-5-mini" #"openai:gpt-5.4"    # for planning, evaluation, supervision
-LLM_FAST: str = "gpt-5-mini" #"openai:gpt-5.4-nano" # for execution, simple tasks
+LLM_POWERFUL: str = "openai:gpt-5.4"    # for planning, evaluation, supervision
+LLM_FAST: str = "openai:gpt-5.4-nano" # for execution, simple tasks
 LLM_test: str = "gpt-5.4-mini"
 to_save_graph_image: int = 0
 recursion_limit: int = 100
