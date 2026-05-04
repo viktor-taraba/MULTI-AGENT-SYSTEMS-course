@@ -254,6 +254,54 @@ def list_schemas_and_tables() -> str:
             conn.close()
 
 @tool
+def get_sample_rows(table_name: str, schema_name: str) -> str:
+    """
+    Retrieves a small sample of rows (top 5) from a specified DWH table.
+    Use this tool when you need to understand the actual data formatting, value distributions, 
+    or how specific columns are populated (e.g., date formats, casing of strings, unix timestamps vs ISO dates) 
+    before constructing complex queries or analyzing data.
+    
+    Args:
+        table_name (str): The name of the table to sample (e.g., 'Store').
+        schema_name (str): The schema the table belongs to (e.g., 'Sales').
+        
+    Returns:
+        str: JSON formatted string containing up to 5 sample rows (list of dictionaries) or an error message.
+    """
+    connection_string = f'''
+        DRIVER={{ODBC Driver 17 for SQL Server}};
+        SERVER={server};
+        DATABASE={database};
+        Trusted_Connection=yes;
+    '''
+    query = f"SELECT TOP 5 * FROM [{schema_name}].[{table_name}];" 
+    try:
+        conn = pyodbc.connect(connection_string)
+        cursor = conn.cursor()
+        cursor.execute(query)
+        
+        if cursor.description:
+            columns = [column[0] for column in cursor.description]
+            rows = cursor.fetchall()
+            
+            if not rows:
+                return json.dumps({
+                    "status": "empty", 
+                    "message": f"Table '{schema_name}.{table_name}' contains no data (0 rows)."
+                })
+            result_data = [dict(zip(columns, row)) for row in rows]
+            return json.dumps(result_data, default=str)
+        else:
+            return json.dumps({"status": "error", "message": "Failed to retrieve sample rows."})
+            
+    except pyodbc.Error as e:
+        return json.dumps({"status": "error", "error_message": str(e)})
+        
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+@tool
 def knowledge_search(query: str) -> str:
     """
     Search the local knowledge database which has information about the following topics: description of tables in the DWH, connections between tables, structure (data types, PK, FK)).
@@ -388,7 +436,8 @@ tool_registry = {
     "execute_sql_query": execute_sql_query,
     "get_table_structure": get_table_structure,
     "ask_user_for_clarification": ask_user_for_clarification,
-    "list_schemas_and_tables": list_schemas_and_tables}
+    "list_schemas_and_tables": list_schemas_and_tables,
+    "get_sample_rows": get_sample_rows}
 
 tools = [
     web_search, 
@@ -397,4 +446,5 @@ tools = [
     execute_sql_query,
     get_table_structure,
     ask_user_for_clarification,
-    list_schemas_and_tables]
+    list_schemas_and_tables,
+    get_sample_rows]
