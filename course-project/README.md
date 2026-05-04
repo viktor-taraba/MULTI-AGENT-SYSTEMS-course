@@ -1,3 +1,22 @@
+# Мультиагентна система (команду розробки для SQL запитів до DWH)
+
+![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
+![langchain](https://img.shields.io/badge/langchain-1.2.0-orange.svg)
+![langgraph](https://img.shields.io/badge/langgraph-1.1.2-orange.svg)
+![trafilatura](https://img.shields.io/badge/trafilatura-2.0.0-orange.svg)
+![pypdf](https://img.shields.io/badge/pypdf-6.9.1-orange.svg)
+![ddgs](https://img.shields.io/badge/ddgs-9.11.4-orange.svg)
+![requests](https://img.shields.io/badge/requests-2.32.5-orange.svg)
+![chromadb](https://img.shields.io/badge/chromadb-1.5.5-orange.svg)
+![youtube-transcript-api](https://img.shields.io/badge/youtube--transcript--api-1.2.4+-orange.svg)
+![transformers](https://img.shields.io/badge/transformers-5.4.0-orange.svg)
+![docx2txt](https://img.shields.io/badge/docx2txt-0.9-orange.svg)
+![rank_bm25](https://img.shields.io/badge/rank_bm25-0.2.2-orange.svg)
+![deepeval](https://img.shields.io/badge/deepeval-3.9.7-orange.svg)
+![langfuse](https://img.shields.io/badge/langfuse-4.5.1-orange.svg)
+![sqlparse](https://img.shields.io/badge/sqlparse-0.5.5-orange.svg)
+![pyodbc](https://img.shields.io/badge/pyodbc-5.3.0-orange.svg)
+
 ### Загальний опис
 
 Мультиагентна система, що симулює AI-команду розробки за патерном Planner–Coder–Reviewer для повного циклу SQL-запитів: від аналізу бізнес-вимог до написання та тестування готового коду (T-SQL, Microsoft SQL Server), запускається з терміналу (python main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
