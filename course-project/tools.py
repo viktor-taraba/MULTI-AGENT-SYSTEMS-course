@@ -164,16 +164,18 @@ def ask_user_for_clarification(question: str) -> str:
     
     return human_answer
 
-"""
-SET SHOWPLAN_XML ON	Estimated	Returns the plan as XML without executing the query. Safe for large delete/update tests.
-SET STATISTICS XML ON	Actual	Executes the query and returns the plan. Provides real-time metrics like actual row counts.
-"""
-
-def get_sql_execution_plan(query):
+@tool
+def get_sql_execution_plan(sql_query: str) -> str:
     """
-    Retrieves the XML execution plan for a given SQL query.
+    Retrieves the estimated XML execution plan for a given SQL query without actually executing the query.
+    Use this tool to debug slow queries or to optimize query.
+    
+    Args:
+        sql_query (str): The T-SQL query to analyze.
+        
+    Returns:
+        str: JSON formatted string containing the execution plan in XML format, or an error message.
     """
-    plan_xml = ""
     connection_string = f'''
         DRIVER={{ODBC Driver 17 for SQL Server}};
         SERVER={server};
@@ -181,24 +183,40 @@ def get_sql_execution_plan(query):
         Trusted_Connection=yes;
     '''
     try:
-        conn = pyodbc.connect(connection_string)
+        conn = pyodbc.connect(connection_string, autocommit=True)
         cursor = conn.cursor()
-
-        cursor.execute("SET SHOWPLAN_XML ON")
-        cursor.execute(query)
+        cursor.execute("SET SHOWPLAN_XML ON;")
         
-        row = cursor.fetchone()
-        if row:
-            plan_xml = row[0]
-
-        cursor.execute("SET SHOWPLAN_XML OFF")
-
-        cursor.close()
-        conn.close()
-    except Exception as e:
-        print(f"Error retrieving plan: {e}")
-
-    return plan_xml
+        try:
+            cursor.execute(sql_query)
+            row = cursor.fetchone()
+            if row:
+                plan_xml = row[0]
+                result = json.dumps({
+                    "status": "success",
+                    "message": "Estimated execution plan retrieved successfully.",
+                    "execution_plan_xml": plan_xml
+                })
+            else:
+                result = json.dumps({
+                    "status": "empty", 
+                    "message": "No execution plan was returned by the server."
+                })
+                
+        except pyodbc.Error as query_error:
+            result = json.dumps({
+                "status": "query_error", 
+                "error_message": f"Query compilation failed: {str(query_error)}"
+            })
+        finally:
+            cursor.execute("SET SHOWPLAN_XML OFF;") 
+        return result
+            
+    except pyodbc.Error as db_error:
+        return json.dumps({"status": "error", "error_message": f"Database connection/state error: {str(db_error)}"})
+    finally:
+        if 'conn' in locals():
+            conn.close()
 
 @tool
 def list_schemas_and_tables() -> str:
@@ -489,7 +507,8 @@ tool_registry = {
     "ask_user_for_clarification": ask_user_for_clarification,
     "list_schemas_and_tables": list_schemas_and_tables,
     "get_sample_rows": get_sample_rows,
-    "get_view_definition": get_view_definition}
+    "get_view_definition": get_view_definition,
+    "get_sql_execution_plan": get_sql_execution_plan}
 
 tools = [
     web_search, 
@@ -500,4 +519,5 @@ tools = [
     ask_user_for_clarification,
     list_schemas_and_tables,
     get_sample_rows,
-    get_view_definition]
+    get_view_definition,
+    get_sql_execution_plan]
