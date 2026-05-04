@@ -43,3 +43,16 @@ def run_e2e_graph(user_input: str, thread_id: str) -> str:
             return content_str
             
     return str(final_state["messages"])
+
+def get_unique_tool_names(agent_response):
+    """(helper function) extracts unique tool names from agent response"""
+
+    unique_tool_names = []
+    for msg in agent_response.get("messages", []):
+        if hasattr(msg, "tool_calls") and msg.tool_calls:
+            for tool_call in msg.tool_calls:
+                name = tool_call["name"]
+                if name not in unique_tool_names:
+                    unique_tool_names.append(name)
+
+    return unique_tool_names
