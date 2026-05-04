@@ -1,3 +1,23 @@
+### Загальний опис
+
+Агент запускається з терміналу (python3 main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
+Агент підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії.
+
+Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>` та `HF_TOKEN=<тут_ваш_ключ>`
+
+Файл залежностей — [requirements.txt](/course-project/screenshots/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+
+Підтримувані формати файлів для RAG (для збереження використовуєьтся chromadb):
+- `PDF-файли (.pdf)` — спочатку намагаємося витягнути текст через `PyPDFLoader`. Якщо сторінки виявляються "порожніми" (наприклад, це скани або складний формат), використовуємо резервний `PyMuPDFLoader`.
+- `Текстові файли (.txt)` — зчитуються як звичайний текст у кодуванні UTF-8 за допомогою `TextLoader`.
+- `Markdown-файли (.md)` — також обробляються базовим TextLoader як звичайний текст.
+- `Документи Microsoft Word (.docx)` — завантажуються за допомогою `Docx2txtLoader`
+- `Субтитри YouTube-відео` — необхідний окремий файл `(.txt)` з переліком посилань (назва файлу задана у змінній `Youtube_links_file_name`), зчитаємо з нього посилання і отримуємо субтитри через `YoutubeLoader`, автоматично додаючи URL як джерело в метадані.
+
+### Приклад:
+
+![Demo](/course-project/demo/demo.gif)
+
 ### Опис тулів для агентів:
 |Назва|Параметри|Опис|
 |--|--|--|
@@ -11,6 +31,17 @@
 |`get_sample_rows`|`table_name: str, schema_name: str`|Повертає топ-5 записів з вказаної таблиці для "знайомства" з даними.|
 |`get_view_definition`|`view_name: str, schema_name: str`|Повертає визначення представлення (view).|
 |`get_sql_execution_plan`|`sql_query: str`|Повертає оціночний план запиту|
+
+### Скріншоти з Langfuse UI
+
+#### Sessions
+![sessions](/course-project/screenshots/sessions.png)
+
+#### Trace tree / tracing
+![tracing_1](/course-project/screenshots/tracing_1.png)
+
+#### Prompt management
+![prompts](/course-project/screenshots/prompts.png)
 
 #### Результат для `deepeval test run tests/test_e2e.py`:
 
