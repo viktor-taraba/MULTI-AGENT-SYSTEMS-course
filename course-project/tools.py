@@ -302,6 +302,57 @@ def get_sample_rows(table_name: str, schema_name: str) -> str:
             conn.close()
 
 @tool
+def get_view_definition(view_name: str, schema_name: str) -> str:
+    """
+    Retrieves the SQL definition (source code) of a specified view in the DWH.
+    Use this tool when you need to understand the underlying business logic, joins, 
+    transformations, or base tables that make up a view before writing queries against it.
+    
+    Args:
+        view_name (str): The name of the view to inspect (e.g., 'vPersonDemographics').
+        schema_name (str): The schema the view belongs to (e.g., 'Sales').
+        
+    Returns:
+        str: JSON formatted string containing the view's SQL definition or an error message.
+    """
+    connection_string = f'''
+        DRIVER={{ODBC Driver 17 for SQL Server}};
+        SERVER={server};
+        DATABASE={database};
+        Trusted_Connection=yes;
+    '''
+    query = """
+        SELECT sm.definition
+        FROM sys.sql_modules sm
+        JOIN sys.views v ON sm.object_id = v.object_id
+        JOIN sys.schemas s ON v.schema_id = s.schema_id
+        WHERE s.name = ? AND v.name = ?;
+    """
+    try:
+        conn = pyodbc.connect(connection_string)
+        cursor = conn.cursor()
+        cursor.execute(query, (schema_name, view_name))
+        row = cursor.fetchone()
+        
+        if not row:
+            return json.dumps({
+                "status": "not_found", 
+                "message": f"View '{schema_name}.{view_name}' not found. Ensure the name is correct and it is indeed a VIEW, not a BASE TABLE."
+            })
+        return json.dumps({
+            "status": "success",
+            "schema_name": schema_name,
+            "view_name": view_name,
+            "definition": row[0]
+        })
+            
+    except pyodbc.Error as e:
+        return json.dumps({"status": "error", "error_message": str(e)})
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+@tool
 def knowledge_search(query: str) -> str:
     """
     Search the local knowledge database which has information about the following topics: description of tables in the DWH, connections between tables, structure (data types, PK, FK)).
@@ -437,7 +488,8 @@ tool_registry = {
     "get_table_structure": get_table_structure,
     "ask_user_for_clarification": ask_user_for_clarification,
     "list_schemas_and_tables": list_schemas_and_tables,
-    "get_sample_rows": get_sample_rows}
+    "get_sample_rows": get_sample_rows,
+    "get_view_definition": get_view_definition}
 
 tools = [
     web_search, 
@@ -447,4 +499,5 @@ tools = [
     get_table_structure,
     ask_user_for_clarification,
     list_schemas_and_tables,
-    get_sample_rows]
+    get_sample_rows,
+    get_view_definition]
