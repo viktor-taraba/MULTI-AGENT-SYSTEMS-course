@@ -64,6 +64,53 @@ python main.py
 #### Prompt management
 ![prompts](/course-project/screenshots/prompts.png)
 
+### Структура проєкту
+
+```
+course-project/
+├── main.py              # REPL with HITL interrupt/resume loop
+├── tools.py             # Tool definitions and implementations
+├── agents/
+│   ├── planner.py       # Planner Agent definition
+│   ├── coder.py         # Coder Agent definition
+│   └── reviewer.py      # QA Agent definition
+├── tests/               # tests
+│   ├── test_coder.py       
+│   ├── test_planner.py
+│   ├── test_reviewer.py
+│   ├── test_tools.py
+│   ├── test_e2e.py      
+│   └── helper.py        
+├── schemas.py           # Pydantic models
+├── config.py            # settings
+├── convert_descr_md.py  # word -> md conversion for DWH description
+├── retriever.py         # Hybrid retrieval + reranking logic
+├── ingest.py            # Ingestion pipeline: docs → chunks → embeddings → vector DB
+├── requirements.txt     # Dependencies
+├── data/                # Documents for RAG
+├── dwh_descr_docs/      # raw description docs
+├── chunks/              # Результат роботи ingestion.py (JSON файл зі збереженими чанками)
+│   └── bm25_chunks.json         # JSON файл зі збереженими чанками
+├── index/               # Векторна БД
+│   └──... (.bin, .pickle, .sqlite3 files)
+├── demo/                # Приклад роботи агента
+├── .env                 # API ключі
+├── graph_structure.png  # візуалізація структури
+├── screenshots/         # langfuse screenshots
+├── prompts/             # last version of prompts from langfuse prompt management
+└── README.md            # Setup instructions, architecture overview
+```
+
+### Тести
+
+|Назва файлу|Тести та метрики|Короткий опис|
+|--|--|--|
+|`test_coder.py`|||
+|`test_planner.py`|||
+|`test_reviewer.py`|||
+|`test_tools.py`|||
+|`test_e2e.py`|||
+
 #### Результат для `deepeval test run tests/test_e2e.py`:
 
 ```
