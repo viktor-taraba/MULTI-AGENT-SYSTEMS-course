@@ -4966,6 +4966,1028 @@
         }
     },
     {
+        "page_content": "Maria Eugenia Inzaugarat\nPassionate Data Scientist always looking for challenges. Loves writing about Data Scienceand Python.\nTOPICS\nData Engineering\nSQL\nSQL is an important tool for anyone managing and manipulating data within relational databases. It enables us to interact with databases and perform essential tasks efficiently. With the amount of available data growing every day, we face the challenge of writing complex queries to retrieve that data.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 0,
+            "page_label": "1"
+        }
+    },
+    {
+        "page_content": "Slow queries can be a real bottleneck, impacting everything from application performance to user experience. Optimizing SQL queries improves performance, reduces resource consumption, and ensures scalability.\nIn this article, we’ll look into some of the most effective techniques for optimizing our SQL queries. We will dive into the benefits and drawbacks of each technique to understand their impact on SQL query performance. Let’s start!\n1. Use Proper Indexing",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 0,
+            "page_label": "1"
+        }
+    },
+    {
+        "page_content": "1. Use Proper Indexing\nImagine we are searching for a book in a library without a catalog. We'd have to check every shelf and every row until we finally found it. Indexes in a database are similar to catalogs. They help us quickly locate the data we need without scanning the entire table.\nHow indexes work",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 0,
+            "page_label": "1"
+        }
+    },
+    {
+        "page_content": "How indexes work\nIndexes are data structures that improve the speed at which data is retrieved. They work by creating a sorted copy of the indexed columns, which allows the database to quickly pinpoint the rows that match our query, saving us a lot of time. \nThere are three main types of indexes in databases: \nClustered indexes - Physically order data based on column values and are best used for sequential or sorted data with no duplicates, such as primary keys.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 0,
+            "page_label": "1"
+        }
+    },
+    {
+        "page_content": "Non-clustered indexes - Create two separate columns, making them suitable for mapping tables or glossaries. \nFull-text indexes - Used to search large text fields, like articles or emails, by storing the positions of terms within the text.\nSo, how can we use indexes to improve the performance of SQL queries? Let’s see some best practices:",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 0,
+            "page_label": "1"
+        }
+    },
+    {
+        "page_content": "Index frequently queried columns. If we usually search a table using customer_id or item_id, indexing those columns will greatly impact speed. Check below how to \nHome Blog Data Engineering\nSQL Query Optimization: 15Techniques for Better Performance\nExplore different strategies for faster and more efficient SQL queries.\nJan 30, 2025 · 14 min read\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 1/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 0,
+            "page_label": "1"
+        }
+    },
+    {
+        "page_content": "create an index:\nAvoid using unnecessary indexes. While indexes are very helpful for speeding upSELECT queries, they can slightly slow down INSERT, UPDATE, and DELETE operations. This is because the index needs to be updated every time you modify data. So, too many indexes can slow things down by increasing the overhead for data modifications.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 1,
+            "page_label": "2"
+        }
+    },
+    {
+        "page_content": "Choose the right index type. Different databases offer various index types. We should pick the one that best suits our data and query patterns. For example, a B-tree index is a good choice if we often search for ranges of values.\n2. Avoid SELECT *\nSometimes, we are tempted to use SELECT * to grab all columns, even those that aren't relevant to our analysis. Although this could seem convenient, it leads to very inefficient queries that can slow down performance.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 1,
+            "page_label": "2"
+        }
+    },
+    {
+        "page_content": "The database has to read and transfer more data than necessary, requiring higher memory usage since the server must process and store more information than needed.\nAs a general best practice, we should only select the specific columns we need. Minimizing unnecessary data not only will keep our code clean and easy to understand but also help optimize the performance.\nSo, instead of writing:\nWe should write:\n3. Avoid Redundant or Unnecessary Data Retrieval",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 1,
+            "page_label": "2"
+        }
+    },
+    {
+        "page_content": "So, instead of writing:\nWe should write:\n3. Avoid Redundant or Unnecessary Data Retrieval\nWe’ve just discussed that selecting only relevant columns is considered a best practice tooptimize SQL queries. However, it is also important to limit the number of rows we areretrieving, not just columns. The queries usually slow down when the number of rowsincreases.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 1,
+            "page_label": "2"
+        }
+    },
+    {
+        "page_content": "We can use LIMIT to reduce the number of rows returned. This feature prevents us fromunintentionally retrieving thousands of rows of data when we only need to work with a few. \nThe LIMIT function is especially helpful for validation queries or inspecting the output of atransformation we're working on. It’s ideal for experimentation and understanding how ourcode behaves. However, it may not be suitable for automated data models, where we needto return the entire dataset.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 1,
+            "page_label": "2"
+        }
+    },
+    {
+        "page_content": "Here we have an example of how LIMIT works:\nCREATE INDEX index_customer_id ON customers (customer_id);\nPOWERED BY \nSELECT * FROM products;\nPOWERED BY \nSELECT product_id, product_name, product_price FROM products;\nPOWERED BY \nSELECT name FROM customers ORDER BY customer_group DESC LIMIT 100;\nPOWERED BY \n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 2/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 1,
+            "page_label": "2"
+        }
+    },
+    {
+        "page_content": "4. Use Joins Efficiently\nWhen working with relational databases, data is often organized into separate tables toavoid redundancy and improve efficiency. However, this means that we need to retrievedata from different places and glue them together to get all the relevant information weneed.  \nJoins allow us to combine rows from two or more tables based on a related column betweenthem in a single query, making it possible to perform more complex analyses.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 2,
+            "page_label": "3"
+        }
+    },
+    {
+        "page_content": "There are different types of join, and we need to understand how to use them. Using thewrong join can create duplicates in our dataset and slow it down.\nAn inner join returns only the rows with a match in both tables. If a record exists in onetable but not the other, that record will be excluded from the result.\nFigure: Inner Join. Image source: DataCamp SQL-Join cheat sheet.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 2,
+            "page_label": "3"
+        }
+    },
+    {
+        "page_content": "Figure: Inner Join. Image source: DataCamp SQL-Join cheat sheet.\nAn outer join returns all rows from one table and the matching rows from the other. Ifthere is no match, NULL values are returned for columns from the table with nomatching row. \nFigure: Outer or Full Join. Image source: DataCamp SQL-Join cheat sheet.\nSELECT o.order_id, c.nameFROM orders oINNER JOIN customers c ON o.customer_id = c.customer_id;\nPOWERED BY \nSELECT o.order_id, c.nameFROM orders o",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 2,
+            "page_label": "3"
+        }
+    },
+    {
+        "page_content": "POWERED BY \nSELECT o.order_id, c.nameFROM orders o\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 3/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 2,
+            "page_label": "3"
+        }
+    },
+    {
+        "page_content": "A left join includes all rows from the left table and the matched rows from the righttable. If no match is found, NULL values are returned for the right table's columns. \nSimilarly, a right join includes all rows from the right table, with matching rows fromthe left, filling in NULLs where no match exists.\nFigure: Left and Right Join. Image source: DataCamp SQL-Join cheat sheet.\nTips for efficient joins:",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 3,
+            "page_label": "4"
+        }
+    },
+    {
+        "page_content": "Figure: Left and Right Join. Image source: DataCamp SQL-Join cheat sheet.\nTips for efficient joins:\nOrder joins logically. We should start with the tables that return the fewest rows. Thisreduces the amount of data that needs to be processed in subsequent joins.\nUse indexes on join columns. Again indexes are our ally. Using indexes helps thedatabase quickly find matching rows.\nConsider using subqueries or CTEs (Common Table Expressions) to simplify complexjoins:\n5. Analyze Query Execution Plans",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 3,
+            "page_label": "4"
+        }
+    },
+    {
+        "page_content": "5. Analyze Query Execution Plans\nMost of the time, we run SQL queries and only check if the output or result retrieved is what we expected. However, we rarely wonder what happens behind the scenes when we execute a SQL query.\nFULL OUTER JOIN customers c ON o.customer_id = c.customer_id;\nPOWERED BY \nSELECT c.name, o.order_idFROM customers cLEFT JOIN orders o ON c.customer_id = o.customer_id;\nPOWERED BY",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 3,
+            "page_label": "4"
+        }
+    },
+    {
+        "page_content": "POWERED BY \nWITH RecentOrders AS (    SELECT customer_id, order_id    FROM orders    WHERE order_date >= DATE('now', '-30 days') )SELECT c.customer_name, ro.order_idFROM customers cINNER JOIN RecentOrders ro ON c.customer_id = ro.customer_id;\nPOWERED BY \n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 4/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 3,
+            "page_label": "4"
+        }
+    },
+    {
+        "page_content": "Most databases provide functions such as EXPLAIN or EXPLAIN PLAN to visualize this process. These plans provide a step-by-step breakdown of how the database will retrieve the data. We can use this feature to identify where we have the performance bottlenecks and make informed decisions about optimizing our queries.\nLet’s see how we can use EXPLAIN to identify bottlenecks. We’ll run the following code:\nWe can then examine the results:",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 4,
+            "page_label": "5"
+        }
+    },
+    {
+        "page_content": "We can then examine the results:\nFigure: An example of a query execution plan. Image source: CloudDBeaver website.\nHere’s general guidance on how to interpret the results:\nFull table scan: If the plan shows a full table scan, the database scans every row inthe table, which can be painfully slow. This often indicates a missing index or aninefficient WHERE clause.\nInefficient join strategies: The plan can reveal if the database uses a less optimal join algorithm.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 4,
+            "page_label": "5"
+        }
+    },
+    {
+        "page_content": "Other potential issues: Explain plans can highlight other problems, such as high sort costs or excessive temporary table usage.\nAssociate Data Engineer in SQLGain practical knowledge in ETL, SQL, and data warehousing for dataengineering.\n6. Optimize WHERE Clauses",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 4,
+            "page_label": "5"
+        }
+    },
+    {
+        "page_content": "6. Optimize WHERE Clauses\nThe WHERE clause is essential in SQL queries because it allows us to filter data based on specific conditions, ensuring only relevant records are returned. It improves query efficiency by reducing the amount of data processed, which is very important for working with a large dataset. \nSo, a correct WHERE clause can be a powerful ally when we are optimizing the performance of a SQL query. Let’s see some ways in which we can take advantage of this",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 4,
+            "page_label": "5"
+        }
+    },
+    {
+        "page_content": "EXPLAIN SELECT f.title, a.actor_nameFROM film f, film_actor fa,  actor aWHERE f.film_id = fa.film_id and fa.actor_id = a.id \nPOWERED BY \nExplore Track\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 5/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 4,
+            "page_label": "5"
+        }
+    },
+    {
+        "page_content": "clause:\nAdd proper filtering conditions early. Sometimes, having a WHERE clause is good but not enough. We have to be careful where we place the clause. Filtering out as many rows as possible early in the WHERE clause can help us optimize the query.\nAvoid using functions on columns in the WHERE clause. When we apply a function to a column, the database has to apply that function to every row in the table before it can filter the results. This prevents the database from using indexes effectively.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 5,
+            "page_label": "6"
+        }
+    },
+    {
+        "page_content": "For example, instead of: \nWe should use: \nUse appropriate operators. We should choose the most efficient operators that meetour needs. For example, = is generally faster than LIKE, and using specific date ranges is faster than using functions like MONTH(order_date).\nSo, for example, instead of performing this query:\nWe can perform the following: \n7. Optimize Subqueries",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 5,
+            "page_label": "6"
+        }
+    },
+    {
+        "page_content": "We can perform the following: \n7. Optimize Subqueries\nIn some cases, we are writing a query and feel we need to dynamically perform somefiltering, aggregation, or joins of data. We don’t want to do several queries; instead, we wantto keep it to a single query. \nFor those cases, we can use subqueries. Subqueries in SQL are queries nested inside anotherquery, typically in the SELECT, INSERT, UPDATE, or DELETE statements.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 5,
+            "page_label": "6"
+        }
+    },
+    {
+        "page_content": "Subqueries can be powerful and fast, but they can also cause performance issues if they are not used carefully. As a rule, we should minimize the use of subqueries and follow a set of best practices:\nReplace subqueries with joins when possible. Joins are generally faster and more efficient than subqueries.\nUse common table expressions (CTEs) instead.  CTEs separate our code into a few smaller rather than one big query, which is much easier to read.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 5,
+            "page_label": "6"
+        }
+    },
+    {
+        "page_content": "SELECT * FROM employees WHERE YEAR(hire_date) = 2020;\nPOWERED BY \nSELECT * FROM employees WHERE hire_date >= '2020-01-01' AND hire_date < '2021-01-01';\nPOWERED BY \nSELECT * FROM orders WHERE MONTH(order_date) = 12 AND YEAR(order_date) = 2023;\nPOWERED BY \nSELECT * FROM orders WHERE order_date >= '2023-12-01' AND order_date < '2024-01-01';\nPOWERED BY \n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 6/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 5,
+            "page_label": "6"
+        }
+    },
+    {
+        "page_content": "Use uncorrelated subqueries. Uncorrelated subqueries are independent of the outerquery and can be executed once, whereas correlated subqueries are executed foreach row in the outer query.\n8. Use EXISTS Instead of IN for Subqueries\nWhen working with subqueries, we often need to check if a value exists in a set of results.We can do this with two IN or EXISTS, but EXISTS is generally more efficient, especially for larger datasets.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 6,
+            "page_label": "7"
+        }
+    },
+    {
+        "page_content": "The IN clause reads the entire subquery result set into memory before comparing. On the other hand, the EXISTS clause stops processing the subquery as soon as it finds a match. \nHere we have an example of how to use this clause:\n9. Limit the use of DISTINCT\nImagine that we are working on an analysis for sending a promotional offer to customersfrom unique cities. The database has multiple orders from the same customers. The firstthing that pops into our mind is using the DISTINCT clause.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 6,
+            "page_label": "7"
+        }
+    },
+    {
+        "page_content": "This function is handy for certain cases but can be resource-intensive, especially on large datasets. There are a few alternatives to DISTINCT:\nIdentify and remove duplicate data during data cleaning processes. This prevents duplicates from creeping into our database in the first place.\nUse GROUP BY instead of DISTINCT when possible. GROUP BY can be more efficient, especially when combined with aggregate functions. \nSo, instead of performing:\nWe can use:",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 6,
+            "page_label": "7"
+        }
+    },
+    {
+        "page_content": "So, instead of performing:\nWe can use:\nUse window functions. Window functions such as ROW_NUMBER can help us identify duplicates and filter them out without using DISTINCT.\n10. Leverage Database-Specific Features\nWhen working with data, we interact with it using SQL through a Database Management System (DBMS). The DBMS processes the SQL commands, manages the database, and",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 6,
+            "page_label": "7"
+        }
+    },
+    {
+        "page_content": "WITH SalesCTE AS (              SELECT salesperson_id, SUM(sales_amount) AS total_sales              FROM sales GROUP BY salesperson_id ) \nSELECT salesperson_id, total_sales FROM SalesCTE WHERE total_sales > 5000;\nPOWERED BY \nSELECT * FROM orders oWHERE EXISTS (SELECT 1 FROM customers c WHERE c.customer_id = o.customer_id AND c\nPOWERED BY \nSELECT DISTINCT city FROM customers;\nPOWERED BY \nSELECT city FROM customers GROUP BY city;\nPOWERED BY",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 6,
+            "page_label": "7"
+        }
+    },
+    {
+        "page_content": "POWERED BY \nSELECT city FROM customers GROUP BY city;\nPOWERED BY \n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 7/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 6,
+            "page_label": "7"
+        }
+    },
+    {
+        "page_content": "ensures data integrity and security. Different database systems offer unique features that can help optimize queries. \nDatabase hints are special instructions we can add to our queries to execute a query more efficiently. They are a helpful tool, but they should be used with caution. \nFor example, in MySQL, the USE INDEX hint can force the use of a specific index:\nIn SQL Server, the OPTION (LOOP JOIN) hint specifies the join method:",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "In SQL Server, the OPTION (LOOP JOIN) hint specifies the join method: \nThese hints override the default query optimization, improving performance in specificscenarios.\nOn the other hand, partitioning and sharding are two techniques for distributing data in thecloud.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "On the other hand, partitioning and sharding are two techniques for distributing data in thecloud. \nWith partitioning, we divide one large table into multiple smaller tables, each with itspartition key. Partition keys are typically based on the timestamps of when rows werecreated or the integer values they contain. When we execute a query on this table, theserver will automatically route us to the partitioned table appropriate for our query.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "Sharding is quite similar, except that instead of splitting one big table into smallertables, it’s splitting one big database into smaller databases. Each of these databasesis on a different server. Instead of a partition key, a sharding key redirects queries tobe run on the appropriate database. Sharding increases processing speeds becausethe load is split across different servers. \n11. Monitor and Optimize Database Statistics",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "11. Monitor and Optimize Database Statistics\nKeeping database statistics up to date is important to ensure that the query optimizer canmake informed, accurate decisions regarding the most efficient way to execute queries.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "Statistics describe the data distribution in a table (e.g., the number of rows, the frequency ofvalues, and the spread of values across columns), and the optimizer relies on thisinformation to estimate query execution costs. If statistics are outdated, the optimizer maychoose inefficient execution plans, such as using the wrong indexes or opting for a full tablescan instead of a more efficient index scan, leading to poor query performance.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "Databases often support automatic updates to maintain accurate statistics. For instance, inSQL Server, the default configuration automatically updates statistics when a significantamount of data changes. Similarly, PostgreSQL has an auto-analyze feature, which updatesstatistics after a specified threshold of data modification.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "However, we can manually update statistics in cases where automatic updates areinsufficient or if manual intervention is needed. In SQL Server, we can use the UPDATESTATISTICS command to refresh the statistics for a specific table or index, while in PostgreSQL, the ANALYZE command can be run to update statistics for one or more tables. \n SELECT * FROM employees USE INDEX (idx_salary) WHERE salary > 50000;\nPOWERED BY",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "SELECT * FROM employees USE INDEX (idx_salary) WHERE salary > 50000;\nPOWERED BY \nSELECT * FROM orders INNER JOIN customers ON orders.customer_id = customers.id OPTION (LOOP JOIN); \nPOWERED BY \n-- Update statistics for all tables in the current databaseANALYZE;\n-- Update statistics for a specific tableANALYZE my_table;\nPOWERED BY BLOGS categoryEN\nRegister for Free\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 8/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 7,
+            "page_label": "8"
+        }
+    },
+    {
+        "page_content": "12. Utilize stored procedures\nA stored procedure is a set of SQL commands we save in our database so we don’t have towrite the same SQL repeatedly. We can think of it as a reusable script.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "When we need to perform a certain task, like updating records or calculating values, we justcall the stored procedure. It can take input, do some work, such as querying or modifyingdata, and even return a result. Stored procedures help speed things up since the SQL isprecompiled, making your code cleaner and easier to manage. \nWe can create a stored procedure in PostgreSQL as follows:\n13. Avoid Unnecessary Ordering and Grouping",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "13. Avoid Unnecessary Ordering and Grouping\nAs data practitioners, we like to have our data ordered and grouped so we can gain insightsmore easily. We usually use ORDER BY and GROUP BY in our SQL queries.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "However, both clauses can be computationally expensive, especially when dealing with large datasets. When sorting or aggregating data, the database engine must often perform a full scan of the data and then organize it, identify the groups, and/or apply aggregate functions, typically using resource-intensive algorithms. \nTo optimize the queries, we can follow some of these tips:",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "To optimize the queries, we can follow some of these tips:\nMinimize sorting. We should only use ORDER BY when necessary. If sorting is not essential, omitting this clause can help us dramatically reduce processing time. \nUse indexes. When possible, we should make sure that the columns involved in ORDER BY and GROUP BY are indexed. \nPush sorting to the application layer. If it is possible, we should push the sorting operation to the application layer rather than the database.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "Pre-aggregate data. For complex queries involving GROUP BY, we could pre-aggregate the data at an earlier stage or in a materialized view, so the database doesn’t need to compute the same aggregates repeatedly.\n14. Use UNION ALL Instead of UNION",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "14. Use UNION ALL Instead of UNION\nWhen we want to combine results from multiple queries into one list, we can use the UNION and UNION ALL clauses. Both combine the results of two or more SELECT statements when they have the same column names. However, they are not the same, and their difference makes them suitable for different use cases.\nThe UNION clause removes duplicate rows, which requires more processing time.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "The UNION clause removes duplicate rows, which requires more processing time. \nCREATE OR REPLACE PROCEDURE insert_employee(    emp_id INT,    emp_first_name VARCHAR,    emp_last_name VARCHAR)LANGUAGE plpgsqlAS $BEGIN    -- Insert a new employee into the employees table    INSERT INTO employees (employee_id, first_name, last_name)    VALUES (emp_id, emp_first_name, emp_last_name);END;$;\n-- call the procedureCALL insert_employee(101, 'John', 'Doe');\nPOWERED BY",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "-- call the procedureCALL insert_employee(101, 'John', 'Doe');\nPOWERED BY \n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 9/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 8,
+            "page_label": "9"
+        }
+    },
+    {
+        "page_content": "Figure: Union in SQL. Image source: DataCamp SQL-Join cheat sheet.\nOn the other hand, UNION ALL combines the results but keeps all rows, including duplicates. So, if we don't need to remove duplicates, we should use UNION ALL for better performance.\nFigure: UNION ALL in SQL. Image source: DataCamp SQL-Join cheat sheet.\n15. Break Down Complex Queries",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 9,
+            "page_label": "10"
+        }
+    },
+    {
+        "page_content": "15. Break Down Complex Queries\nWorking with large datasets implies that we'll often encounter complex queries that are difficult to understand and optimize. We can try to tackle these cases by breaking them down into smaller, simpler queries. In this way, we can easily identify performance bottlenecks and apply optimization techniques.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 9,
+            "page_label": "10"
+        }
+    },
+    {
+        "page_content": "One of the most frequently used strategies to break down queries is materialized views.These are precomputed and stored query results that can be accessed quickly rather than recalculating the query each time it’s referenced. When the underlying data changes, the materialized view must be manually or automatically refreshed.\n-- Potentially slowerSELECT product_id FROM products WHERE category = 'Electronics'UNIONSELECT product_id FROM products WHERE category = 'Books';",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 9,
+            "page_label": "10"
+        }
+    },
+    {
+        "page_content": "-- Potentially fasterSELECT product_id FROM products WHERE category = 'Electronics'UNION ALLSELECT product_id FROM products WHERE category = 'Books';\nPOWERED BY \n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 10/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 9,
+            "page_label": "10"
+        }
+    },
+    {
+        "page_content": "Here’s an example of how to create and query a materialized view:\nConclusion\nIn this article, we have explored various strategies and best practices for optimizing SQL queries, from indexing and joins to subqueries and database-specific features. By applying these techniques, you can significantly improve the performance of your queries and make our databases run more efficiently.",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 10,
+            "page_label": "11"
+        }
+    },
+    {
+        "page_content": "Remember, optimizing SQL queries is an ongoing process. As your data grows and your application evolves, you'll need to continually monitor and optimize your queries to ensure they're running at optimal performance.\nTo further enhance your understanding of SQL, we encourage you to explore the followingresources on DataCamp:\nSQL Basics Cheat Sheet\nImproving Query Performance in SQL Server\nImproving Query Performance in PostgreSQL",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 10,
+            "page_label": "11"
+        }
+    },
+    {
+        "page_content": "Improving Query Performance in SQL Server\nImproving Query Performance in PostgreSQL \nBecome SQL CertifiedProve your SQL skills are job-ready with a certification.\nAUTHOR\nMaria Eugenia Inzaugarat\nTOPICS\nData Engineering SQL\nTraining more people?\nGet your team access to the full DataCamp for business platform.\nFor a bespoke solution book a demo.\nFor Business",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 10,
+            "page_label": "11"
+        }
+    },
+    {
+        "page_content": "For a bespoke solution book a demo.\nFor Business\n-- Create a materialized viewCREATE MATERIALIZED VIEW daily_sales ASSELECT product_id, SUM(quantity) AS total_quantityFROM order_itemsGROUP BY product_id;\n-- Query the materialized viewSELECT * FROM daily_sales;\nPOWERED BY \nBoost My Career\nLearn more about SQL with these courses!\nCOURSE\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 11/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 10,
+            "page_label": "11"
+        }
+    },
+    {
+        "page_content": "Related\nGrow your data skills with DataCamp for Mobile\nMake progress on the go with our mobile courses and daily 5-minute coding challenges.\nLEARN\nDATA COURSES\nSee More\n4 hr 317.3K\nMaster the complex SQL queries necessary to answer a wide variety of data science questions and prepare robust data sets foranalysis in PostgreSQL.\nData Manipulation in SQL\nSee Details\nS t a r t  C o u r s e\nSee More\nL e a r n  P y t h o n\nL e a r n  A I\nL e a r n  P o w e r  B I",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 11,
+            "page_label": "12"
+        }
+    },
+    {
+        "page_content": "S t a r t  C o u r s e\nSee More\nL e a r n  P y t h o n\nL e a r n  A I\nL e a r n  P o w e r  B I\nL e a r n  D a t a  E n g i n e e r i n g\nA s s e s s m e n t s\nC a r e e r  T r a c k s\nS k i l l  T r a c k s\nC o u r s e s\nD a t a  S c i e n c e  R o a d m a p\nTUTORIAL\nSQL Tutorial: How To WriteBetter Queries\nTUTORIAL\nDynamic SQL: Techniques,Security, and Optimization\nTUTORIAL\nSQL Order of Execution:Understanding How Queries Run",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 11,
+            "page_label": "12"
+        }
+    },
+    {
+        "page_content": "TUTORIAL\nSQL Order of Execution:Understanding How Queries Run\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 12/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 11,
+            "page_label": "12"
+        }
+    },
+    {
+        "page_content": "DATALAB\nCERTIFICATION\nRESOURCES\nP y t h o n  C o u r s e s\nR  C o u r s e s\nS Q L  C o u r s e s\nP o w e r  B I  C o u r s e s\nT a b l e a u  C o u r s e s\nA l t e r y x  C o u r s e s\nA z u r e  C o u r s e s\nA W S  C o u r s e s\nG o o g l e  C l o u d  C o u r s e s\nG o o g l e  S h e e t s  C o u r s e s\nE x c e l  C o u r s e s\nA I  C o u r s e s\nD a t a  A n a l y s i s  C o u r s e s\nD a t a  V i s u a l i z a t i o n  C o u r s e s\nM a c h i n e  L e a r n i n g  C o u r s e s",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 12,
+            "page_label": "13"
+        }
+    },
+    {
+        "page_content": "D a t a  V i s u a l i z a t i o n  C o u r s e s\nM a c h i n e  L e a r n i n g  C o u r s e s\nD a t a  E n g i n e e r i n g  C o u r s e s\nP r o b a b i l i t y  &  S t a t i s t i c s  C o u r s e s\nG e t  S t a r t e d\nP r i c i n g\nS e c u r i t y\nD o c u m e n t a t i o n\nC e r t i f i c a t i o n s\nD a t a  S c i e n t i s t\nD a t a  A n a l y s t\nD a t a  E n g i n e e r\nS Q L  A s s o c i a t e\nP o w e r  B I  D a t a  A n a l y s t",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 12,
+            "page_label": "13"
+        }
+    },
+    {
+        "page_content": "D a t a  E n g i n e e r\nS Q L  A s s o c i a t e\nP o w e r  B I  D a t a  A n a l y s t\nT a b l e a u  C e r t i f i e d  D a t a  A n a l y s t\nA z u r e  F u n d a m e n t a l s\nA I  F u n d a m e n t a l s\nR e s o u r c e  C e n t e r\nU p c o m i n g  E v e n t s\nB l o g\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 13/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 12,
+            "page_label": "13"
+        }
+    },
+    {
+        "page_content": "PLANS\nFOR BUSINESS\nABOUT\nSUPPORT\nC o d e - A l o n g s\nT u t o r i a l s\nD o c s\nO p e n  S o u r c e\nR D o c u m e n t a t i o n\nB o o k  a  D e m o  w i t h  D a t a C a m p  f o r  B u s i n e s s\nD a t a  P o r t f o l i o\nP r i c i n g\nF o r  S t u d e n t s\nF o r  B u s i n e s s\nF o r  U n i v e r s i t i e s\nD i s c o u n t s ,  P r o m o s  &  S a l e s\nE x p e n s e  D a t a C a m p\nD a t a C a m p  D o n a t e s\nB u s i n e s s  P r i c i n g\nT e a m s  P l a n",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 13,
+            "page_label": "14"
+        }
+    },
+    {
+        "page_content": "D a t a C a m p  D o n a t e s\nB u s i n e s s  P r i c i n g\nT e a m s  P l a n\nD a t a  &  A I  U n l i m i t e d  P l a n\nC u s t o m e r  S t o r i e s\nP a r t n e r  P r o g r a m\nA b o u t  U s\nL e a r n e r  S t o r i e s\nC a r e e r s\nB e c o m e  a n  I n s t r u c t o r\nP r e s s\nL e a d e r s h i p\nC o n t a c t  U s\nD a t a C a m p  E s p a ñ o l\nD a t a C a m p  P o r t u g u ê s\nD a t a C a m p  D e u t s c h\nD a t a C a m p  F r a n ç a i s\nH e l p  C e n t e r",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 13,
+            "page_label": "14"
+        }
+    },
+    {
+        "page_content": "D a t a C a m p  D e u t s c h\nD a t a C a m p  F r a n ç a i s\nH e l p  C e n t e r\nB e c o m e  a n  A f f i l i a t e\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 14/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 13,
+            "page_label": "14"
+        }
+    },
+    {
+        "page_content": "P r i v a c y  P o l i c y\nC o o k i e  N o t i c e\nD o  N o t  S e l l  M y  P e r s o n a l  I n f o r m a t i o n\nA c c e s s i b i l i t y\nS e c u r i t y\nT e r m s  o f  U s e\n©  2 0 2 6  D a t a C a m p ,  I n c .  A l l  R i g h t s  R e s e r v e d .\n04.05.26, 22:00 SQL Query Optimization: 15 Techniques for Better Performance | DataCamp\nhttps://www.datacamp.com/blog/sql-query-optimization 15/15",
+        "metadata": {
+            "producer": "Skia/PDF m147",
+            "creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "creationdate": "2026-05-04T19:00:09+00:00",
+            "title": "SQL Query Optimization: 15 Techniques for Better Performance | DataCamp",
+            "moddate": "2026-05-04T19:00:09+00:00",
+            "source": "data\\SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf",
+            "total_pages": 15,
+            "page": 14,
+            "page_label": "15"
+        }
+    },
+    {
         "page_content": "sys.allocation_units (Transact-SQL)\nApplies to:  SQL Server  Azure SQL Database  Azure SQL Managed Instance  SQL\ndatabase in Microsoft Fabric\nContains a row for each allocation unit in the database.\nColumn nameData type Description\nallocation_unit_idbigint ID of the allocation unit. Is unique within a database.\ntype tinyint Type of allocation unit:\n0 = Dropped\n1 = In-row data (all data types, except LOB data types)\n2 = Large object (LOB) data (text, ntext, image, xml, large value types,",
         "metadata": {
             "producer": "Skia/PDF m147",
@@ -10045,6 +11067,960 @@
             "total_pages": 11,
             "page": 10,
             "page_label": "11"
+        }
+    },
+    {
+        "page_content": "hey friends so now we going to talk about an advanced topic and that is the execution plan it is a very effective tool in order to find the exact paino of why your queries are slow so let's go all right friends so now let's say that you have a large complex analytical SC query and it involves a lot of joints and aggregations and so on but it is slow and of course you want to go and optimize the performance of your query by maybe using indexes and now the big question is where exactly I'm going",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "of your query by maybe using indexes and now the big question is where exactly I'm going to go build this index on which table on which columns so that means you have to understand where exactly the problem is is it by joining tables or sorting data or by the aggregations now in order to answer all those questions we have something called execution plan so what is that the execution plan going to show you how the database exactly process your query step by step and and this is what we need it's",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "show you how the database exactly process your query step by step and and this is what we need it's going to show us where exactly we have a performance issue so in other words the execution plan it's like your window on how the SQL database thinks and once you understand that then you're going to make a right decision on building an index so let's understand exactly what this means okay so now let's imagine that you are doing a query like selecting from table and then joining the data with",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "let's imagine that you are doing a query like selecting from table and then joining the data with another table so now once you execute this query the database engine will not go immediately and start fing data from the disk but instead of that first the SQL has to make a plan so it's like you are planning a trip where you check the Google Map in order to find the best rout in order to reach the destination and the execution plan is exactly the same thing the database has first to plan how to",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "destination and the execution plan is exactly the same thing the database has first to plan how to execute your query and it's going to build this plan step by step based on your query and as well the statistics so the first step for example how to get the data from the tables and there are like multiple ways like scan index or Full Table scan and then after that it need to decide which type of joints going to be done like is it a hash join or a loop join and then at the end of this plan it's",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "joints going to be done like is it a hash join or a loop join and then at the end of this plan it's going to be the select statements so once the execution plan is ready the database engine going to start implementing the steps so it's going to go and start reading your tables for example from the disk and then after that it's going to join the tables and then select the columns and send at the end the results to the end user and now once everything is done the database engine going to do one",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "end the results to the end user and now once everything is done the database engine going to do one more thing where it's going to go and take this execution plan and store it at the cache and that's because the database engine can go and reuse this plan if we have a similar query so for example if you go and execute the same query again the database engine here can understand ah this is the same query we have already built an execution plan for that so it's going to go and check the cash and",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "query we have already built an execution plan for that so it's going to go and check the cash and it is way faster to get it immediately from the cash instead of building it so in this scenario the database engine doesn't have to make any decisions or something like that it going to go and get the plan from the cash and start immediately by executing the plan and of course the database engine will not hide the execution plan from the users you can go and check it because you can go and check",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "not hide the execution plan from the users you can go and check it because you can go and check how the database loaded the data how they are joined and so on and then you can make a correct decision on how to optimize your query Maybe by adding indexes so let's go back to SQL and see how we can do that okay so now we're going to work with the database Adventure Works DW 2022 and now we're going to go to our tables and we're going to focus on the fact fact reseller sales now let's go and check",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "to go to our tables and we're going to focus on the fact fact reseller sales now let's go and check the type of this table so if you go inside it and go to the indexes you can see that we have an index on the primary key so we have a clustered rore index so that means that data is structured in this P Tre so now what we're going to do we're going to go andate create a mirror of this table but without any indexes so it's going to be very simple select star from our fact reseller sales and we can",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "any indexes so it's going to be very simple select star from our fact reseller sales and we can insert it in a new table so into fact reseller sales and I'm going to call it HP for Heap so let's go and execute it and now you can see we have inserted in the new table around 60,000 rows so now we can go and refresh our tables in order to find our new table so it is over here Factory seller sales and if you check the indexes you will not find any so that means it is a h table now let's go and do a",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "if you check the indexes you will not find any so that means it is a h table now let's go and do a very simple query on top of our new table so select star from the factory seller HP like this so let's go and execute it and we got the results so now the question is I would like to see the execution plan of this query now in order to see the execution plan we're going to go to the toolbar over here and we have three things the first one is is says display estimated execution plan and we have",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "here and we have three things the first one is is says display estimated execution plan and we have another one says include actual execution plan and a third one says include live query statistics so now the question is what are the differences between them let's start with the first one displayed estimated execution plan so here what's going to happen SQL going to go and guess the execution plan without executing the query so it's just an estimation so this is only a guess an estimation the",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "without executing the query so it's just an estimation so this is only a guess an estimation the second one is the the actual one so this going to show you the execution plan that is used in order to process your query so after executing your query SQL going to show for you which plan is used so that means the estimated plan it is something before executing your query and the actual plan is something after executing your query and the third one is while executing the query so you're going to",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "after executing your query and the third one is while executing the query so you're going to get a realtime execution of your query and you can see how your execution plan is working so now we can go and try that let's go and activate the estimated execution plan now we can see over here we have a new output where you can see like few boxes so this is an estimated execution plan without executing your query but now if you go over here and switch it to the actual execution plan nothing going to",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "your query but now if you go over here and switch it to the actual execution plan nothing going to happen because first you have to execute the query so let's go and do that so once we have executed we got the result the messages and here we have a new tab called execution plan so if you go over here you will find the real execution plan that is used to process your query and let's go and try the third one and let's go and execute it was pretty fast because the query is very fast but here we",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "third one and let's go and execute it was pretty fast because the query is very fast but here we can see how the data and the plan is working during the execution so this is the live execution plan and of course we have the last one which is the current execution plan so those are the differences between those stuff now you might ask why do we have this estimated and actual execution plans well it is really nice tool to understand whether everything like is healthy at your database because if",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "it is really nice tool to understand whether everything like is healthy at your database because if the guessing is something else at the actual execution plan that means this is an indicator that something is wrong at the statistics or the index at your database so if they are matching the estimated and the actual then everything looks good but now we're going to focus only on one type of those execution plans we're going to stick with the acttion ual execution plan so now what we're going to",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "execution plans we're going to stick with the acttion ual execution plan so now what we're going to do we're going to go and open two queries side by side and one going to be from the clustered index and another one is from the Heap structure so it's going to be like one to one let's go and query both of them and now let's go and try to read the execution plan but make sure that you are activating the actual execution plan so we have here now two plans so now we are at the Hae table and we",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "the actual execution plan so we have here now two plans so now we are at the Hae table and we don't have any indexes so now the question is how to read this EX execution plan well now the plan is very simple because we have a very simple query but we read it from the right to the left so the first operation is the table scan and then we have here a very small arrow to the next one where we have the select so from right to left so now of course the first operator is how to read your data inside",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "select so from right to left so now of course the first operator is how to read your data inside the table and here we have different types of scans and one of them is the table scan so table scan actually is scanning the entire table so it's going to go and scan all the rules inside your tables in order to execute this query now if you go and mouse hover on the table scan you will find a lot of details about what is happening during loading the data or scanning the table but it is a little bit",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "about what is happening during loading the data or scanning the table but it is a little bit annoying better than that if you go right to click on it and then go to properties you will get in the right side the same details but it is easier to read so the first thing that you have to read is the number of rows that has been read so we can see that we have read all the rows inside the table which is not really good and we have other important informations about the resources and the cost so we",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "is not really good and we have other important informations about the resources and the cost so we have the CBU cost and the input output cost and what is interesting is The Logical operator the table scan and we can see some nice informations about the storage it says it is R store now let's go and check the execution plan of this other table where we have a clustered index so let's go to the execution plan and now you can see that we have on the right side something else we don't have table",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "plan and now you can see that we have on the right side something else we don't have table scan we have something called clustered index scan it is either scanning the entire table again or only a range or a part of the index and of course in the details we can see whether it read all the informations or not now if you go and check the number of rows again the whole index is red in order to get this results so again we have here the total number of RADS inside our table and as well you can see",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "results so again we have here the total number of RADS inside our table and as well you can see over here The Logical operation it is clustered index scan so it is not table scan now of course we have to go and check the CPU and the input output cost whether we are consuming the same efforts or not so we can go and compare stuff so here we have like 0.07 and if we go over here you can see we didn't gain like a lot of information having an index on this table and that's of course logical because",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "gain like a lot of information having an index on this table and that's of course logical because this query is not using any indexes it is just like selecting everything from the whole table so now let's go and extended we we're going to sort the data by the primary key sales order number so let's go and get this one and as well for the he structure so let's go and execute it and check the execution plan and the same thing for our cluster table now let's check first the H structure as you can",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "plan and the same thing for our cluster table now let's check first the H structure as you can see here we have like two steps first it's going to go and scan the whole table and then we have sort operator in order to go and sort all the data in order to present it in the output and at the end we have the select which is not really important so here we have like two operators but now if you go to our clustered index you can see that we have only like two steps there is no sort step right and",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "to our clustered index you can see that we have only like two steps there is no sort step right and that's because the clustered index is only sorted and SQL don't have to go and sort the data again so it doesn't have to go and sort anything the data is already sorted so this is the first win that you have if you have an index so everything is is already sorted and if you have an order Buy on this column then SQL don't have to do it during the query so now if you want to go and compare the cost",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "column then SQL don't have to do it during the query so now if you want to go and compare the cost you can see here we still have the same cost for the CPU and the input output in the H structure without any index we have here like double cost the first cost is for the table scan it is the exact same amount of CPU and input output like the clustered but as well on top of it we have high cost for sorting the data so we are consuming more CPU and input output and if you summarize those cost of",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "sorting the data so we are consuming more CPU and input output and if you summarize those cost of course this query going to be slower and bad compared to the clustered index so with that in the execution plan you can understand exactly the benefit of your index and one more thing about this plan if you go over here so if you go to the objects and let me just extend it like this you can see the name of the index that has been used for your query so it says the index is b key for primary key and",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "of the index that has been used for your query so it says the index is b key for primary key and then we have the whole thing so now if you go to our table on the left side check the indexes it's going to be exactly this index so in the execution plan you can find as well which index has been used in your query and this is very important to check if you create a new index then run your query and check whether the database is using your new created index and if not then you are making the wrong",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "check whether the database is using your new created index and if not then you are making the wrong decisions about your index so each time you create a new index make sure to check whether in the execution plan the database is using your new index okay so now let's keep going now instead of using the primary key I'm going to go and filter the data based on one of those columns that we have in this table so let me check the results and let's take for example the carrier tracking number so",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "in this table so let me check the results and let's take for example the carrier tracking number so carrier tracking number and let's go and pick a value the first one here like this and let's do the same thing for the Heap table and execute it and now in the execution plan you see we still have a table scan and on this table let's see the execution plan with the clustered index now let's say that I would like to go and create a nonclustered index for this column so let's go and do it so create",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "I would like to go and create a nonclustered index for this column so let's go and do it so create nonclustered index and I'm going to call it index fact reseller and then the column name so on our table facts res color and the column going to be carrier tracking number so I'm going to take it from here and let's go and create it now let's see whether our query going to use this index so let's go and execute it and let's go to the execution plan now things looks completely different than before",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "and execute it and let's go to the execution plan now things looks completely different than before so what is going on we can see that we have now something new we don't have a clustered index we have something called index seek index seek is an amazing sign in your execution plan because it tells us the SQL Server did find a way to use the index in order to find the exact data that we need without scanning a lot of stuff so that means now we have like three types of scans we have the table",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "scanning a lot of stuff so that means now we have like three types of scans we have the table scan where the SQL going to go and scan the whole table and this can happen in the Heap structure and the second one we have the index scan and here we don't know whether it is scanning the whole index or a part of the index and the last one we have the index seek where the database is able to find directly the data without scanning a lot of stuff so the worst type is the table scan then we have the",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "the data without scanning a lot of stuff so the worst type is the table scan then we have the index scan and the best one is the index seek so if you check here the details you can see the number of rows that has been read is only 12 this is amazing let's go and check the H scan over here so to the execution plan and if you go over here you can see that we are reading around 60,000 rows in order to get 12 but with the index we are reading only 12 in order to get 12 and this is amazing and very",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "to get 12 but with the index we are reading only 12 in order to get 12 and this is amazing and very fast of course and of course the cost of this is very very small so if you check the CPU and the input output you can see those numbers are nothing and of course if you go to the object over here you can see which index has been used and this is exactly the index that we have just created so that means it was a really good decision to create this index and the SQL was very happy about it and used",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "it was a really good decision to create this index and the SQL was very happy about it and used it in order to fast find our data so now let's go and check the rest of the plan and now you can see over here we have key lookup the KY lookup is an operation that we need in order to get the rest of the columns because from this index we are getting the data of only one column the carrier tracking number but since in our query we are saying select star that means we have a lot of columns and those",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "but since in our query we are saying select star that means we have a lot of columns and those columns are not part of the index so in this index ISL don't know anything about the RIS that's why has to go and search for the other columns and of course it is called a lookup not a scan or something like that and that's why we have here as well only 12 rows but from this step we will get the rest of the columns so and now the next step with that isq going to go and join those two informations so",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "the columns so and now the next step with that isq going to go and join those two informations so we have from the first one the carrier tracking number and the second one we have the rest of course SQL has to go and merge all those stuff in one in order to have it as a results and now this operation called in nested Loops behind the scenes there are different types of joints not the one that we know the inner left and so on but there is another types of joints we have the nested Loop we have",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "know the inner left and so on but there is another types of joints we have the nested Loop we have the merge joint and the hash joint the Ned Loop is very good for small stuff if you have large tables then the merge and the has joints are way better than the Ned Loop so that means if you are getting here a lot of data from the index and the lookups and you see SQL is using a Ned Loop this is not good but for now it is okay because we are getting only 12 rows and the operation going to be fast",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "good but for now it is okay because we are getting only 12 rows and the operation going to be fast enough and now one more thing that we can see inside our execution plan is the cost in percentage so from checking this plan you can see the select is almost costing nothing the cost of the nested Loop is as well like 0% and then we have like 6% of the index seek that's because it is pretty fast and the most expensive operation that done in our query is the key lookups of course because it's going",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "the most expensive operation that done in our query is the key lookups of course because it's going to go and get all the columns and now if you go and compared to the Heap structure even though that the execution plan of the Heap structure looks very small doesn't mean that is faster than the indexes that we have still if you go and add up all those numbers it is way way faster than the Heap structure now I would like to show you one more thing if you want to get rid of this key lookup and in",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "now I would like to show you one more thing if you want to get rid of this key lookup and in your where you have only selecting the carrier tracking number let's go and execute it and go to the execution plan as you can see there is no need for the look up because we have only one column and this data we can get it completely from our index so as you can see it is interesting to understand how SQL is working with your table and with your index and this is how to validate whether you are making",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "is working with your table and with your index and this is how to validate whether you are making correct decisions about your indexes okay so now now let's go and add more stuff where we are doing aggregation joins and so on let's extend our query so I'm going to go and join it with another dimension like for example the dim products and the joint going to be on the product key so products key and equal to as well product key now after that we're going to go and aggregate few stuff so we're",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "and equal to as well product key now after that we're going to go and aggregate few stuff so we're going to aggregate by the product name so I'm going to take the product name so it's going to be the English product name and let's go and call it product name and let's go and aggregate the sales so sum and we're going to get it from the fact table it's going to be sales amount so as total sales and of course we have to go and do groupy and not the French name it's going to be the English name so",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "of course we have to go and do groupy and not the French name it's going to be the English name so let's grw up by the product name and that's it let's go and execute it now we have a nice list ofu products and total sales but let's go and check the execution plan and oh my God we have a lot of stuff so let's start from the right side so let's do it quickly from the right to the left so the first thing is that it's going to go and get the data from the fact so it is using the clustered index",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "thing is that it's going to go and get the data from the fact so it is using the clustered index and then after that it's going to go and do a hash match for the aggregation and after that it's going to go and sort the data because it is doing later a m join so all those steps are preparing the fact table and then we have another cluster scan for the dimension so it's going to go and as well select the informations from the dimension and we have here like not a lot of rows so it is very small",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "the informations from the dimension and we have here like not a lot of rows so it is very small table 600 rows and of course the result of the cluster scan is as well sorted right and of course as we learned the cluster the index going to go and sort the data so we have here a sorted output together with another sorted output so we have like two data sets that are sorted and SQL here decided to go with the mer joint which is a good join in order to join two sorted data sets it is way faster",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "go with the mer joint which is a good join in order to join two sorted data sets it is way faster than joining using the listed Loop so everything is fine and then the data going to be sorted and presented at the output and now if you are checking this plan you can see the most expensive thing happened at the fact table so 71% of the total cost happened in this step now let's say that the query is low and I would like to go and optimize it we have learned that if you are doing aggregations on",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "is low and I would like to go and optimize it we have learned that if you are doing aggregations on Big T then the column store index is a good idea so let's go and find whether that is true so I'm going to go to our other table so our sales table was with the Heap structure and now you say you know what let's go and convert this Heap structure to a column store so let's go and do that we're going to say create clustered column store index and we're going to call it index and then the whole",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "to say create clustered column store index and we're going to call it index and then the whole name fact reseller sales HP and we don't have to specify any columns so it's going to be our table on and that's it let's go and execute it so now our table is not anymore he structure it should be a column store so if you go and check the informations we can see we have like clustered column stored index on it so now let's go and do the same query and check whether we have a better performance let's",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "on it so now let's go and do the same query and check whether we have a better performance let's go and execute it and of course you have to go and activate the execution plan so I'm I'm going to and now let's go and check from the right again so this is our fact table and as you can see already it is costing only 6% interesting so let's go and compare what happened to our fact table first of all we can see that the physical operation is a column store index scan and if you go to the objects",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "we can see that the physical operation is a column store index scan and if you go to the objects over here you can see that the SQL did use the column store and that is of course going to happen because the whole data is stored only in the index so there is no way around it so it can go and of course and use the index but now what is interesting maybe we have to go and compare the CPU costs so if we check over here it is like 0 comma 0067 almost the same thing for the input output let's go to",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "we check over here it is like 0 comma 0067 almost the same thing for the input output let's go to the previous plan where we don't have a colum store and check our facts so as you can see here it is way more expensive reading the fact table than the column store and as well we have reduced the input output costs so as you can see we went from 71% of total cost for the fact table to only 6% and the resource that is used to execute the query it is way less than a normal cluster draw store and",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "the resource that is used to execute the query it is way less than a normal cluster draw store and this is exactly the power of this index the column store index you can use it in big tables like the fact tables like we are doing here in this query you will be getting amazing performance for this scenario so of course you can go and compare the execution plan by moving left and right so as as you can see if I click over here and I just switch to the other tab I can like quickly Compare the",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "you can see if I click over here and I just switch to the other tab I can like quickly Compare the numbers but there is another way on how to compare execution plans and that is if you go to the execution plan and right to click on it then go to save execution plan as and then you have to go and give it a name for example query Pro store so let's go and save it and then you can go to the second query where we have the r store and then right click on the execution plan and say compare show plan",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "where we have the r store and then right click on the execution plan and say compare show plan so once you click on that then you have to go and select the one that you want to compare with so open and now on top you have your query and at the bottom you have the execution plan that you have saved and then you have here a lot of informations where they compare both of the execution plan and with that you can go in more details in order to understand which plan is better all right friends so as",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "that you can go in more details in order to understand which plan is better all right friends so as you can see having the execution plan is is amazing we can see how the SQL is working behind the scenes and we can understand how skill is processing my query step by step how much resources it is consuming whether my indexes are useful or useless and I can go and experiment stuff I can go and add like an index then test and check whether I gained like few performance or not and we can go and",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "like an index then test and check whether I gained like few performance or not and we can go and compare like multiple execution plans before and after until you get the right index for the right table and the right column so the execution plan are amazing in order to help us understanding whether our indexing strategy is correct or not all right friends so so far we have learned that the SQL Server going to make its own decisions on how to execute your queries and the SQL make those plans",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "Server going to make its own decisions on how to execute your queries and the SQL make those plans based on the statistics but sometimes the plan that you are getting from the database might be not the best one for your query and there could be many reasons why this could happen maybe the STA SS are not up to dat or you have a lot of indexes and the database engine get confused and here exactly where we need the SQL hints so you can use the SQL hints in order to command to force the SQL",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "where we need the SQL hints so you can use the SQL hints in order to command to force the SQL database on how exactly your SQL query should be executed so you can intervene and change the steps in the execution plan so let's see how we can do that all right so now let's have a very simple query we are just joining the table orders with the customers and we are showing like few columns now if you go and execute it and we go and check the execution plan we can see in this plan that it is using",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "go and execute it and we go and check the execution plan we can see in this plan that it is using the clustered index in order to read the data from the orders at the customers and then it is using the Ned Loop in order to do the joins now let's say that our tables are really big but still the SQL is using the nested loops and of course this is not good for large tables and maybe the SQL was confused with the indexes and statistics and so on and it decided to use the uned loops so now in order",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "with the indexes and statistics and so on and it decided to use the uned loops so now in order to force the SQL to use another type of join we can go and give a hint in our query for the SQL to use different types for the join so let's go and do that we're going to go at the end of our query and we're going to say option and inside it we're going to say use the hash join like this so that's it this is our query and at the end we are giving the database a hint for the execution plan so let's go",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "is our query and at the end we are giving the database a hint for the execution plan so let's go and try that out so let's check the execution plan and now as you can see SQL is using different type of join so with that we are intervening in the execution plan and we are making choices so with that we have changed the technicality on how the xql is joining those two tables all right so now let's go and change something else like for example instead of having index scan I would like to have an",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "go and change something else like for example instead of having index scan I would like to have an index seek so if you have the right index in your table you can go and tell ql how to read your data in the table so let's go and do that currently here we have an index scan on the table customers so we can go over here near the table and we're going to say with and inside it we're going to say for SQL Force seek so we are forcing SQL to use the seek index so we can use those keywords near the",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "SQL Force seek so we are forcing SQL to use the seek index so we can use those keywords near the table in order to specify for SQL how to load the data if you are not specifying anything like here with the orders we don't have any hint that means we are counting on the execution plan that is regenerated from the SQL but if you don't want the recommendations you can go and specify which one should be used so now let's go and execute it now we got an error because the SQL is not able to process",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "be used so now let's go and execute it now we got an error because the SQL is not able to process what we are asking for and I think maybe we are using the for scan and as well the hash join let me just un comment this and let's go and give it another try and now it is working so let's go to the execution plan so you can see we got again the Ned Loop and now if you go to the customer table you can see now it is using the index seek so it is not using anymore the index scan so as you can see",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "can see now it is using the index seek so it is not using anymore the index scan so as you can see again we are intervening and forcing SQL to use the method that might be better for our query now if you are creating a lot of indexes in one table and the SQL is still not targeting the right index so if you check the object you can see it is targeting specific index but if you have a better index than that you can give a hint for the SQL to use a specific index and we can do that like this if",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "than that you can give a hint for the SQL to use a specific index and we can do that like this if you go over here and remove the for seek and you say use index and then we have to go and specify the index name so let's go and get again the primary key over here now I'm telling SQL you have to go and use this index in order to scan the table customers so let's go and try this out and if you go to the execution plan you can see it is as well targeting this index so not only can force SQL for",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "to the execution plan you can see it is as well targeting this index so not only can force SQL for specific type of loading or joining you can force SQL to use a specific index that you created all right friends so as you can see SQL hints are very powerful but we have to be very careful with them because I really had a bad experience using them in my projects so here are my recommendations and what happens so what could happen is that you are optimizing the performance in the development",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "and what happens so what could happen is that you are optimizing the performance in the development database and you start using the hints and the speed was really good and once you roll that out to another database the production database this hint will not be working correctly the same hint that you are using might not improve the performance and one reason is that sometimes the productive database has like large data compared to the development database so you have really to test the hint in",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "has like large data compared to the development database so you have really to test the hint in each database that you have so if your hint is working in one environment that doesn't mean it going to work in the other one so always make sure to test and the second recommendation that don't use the hint as a permanent fix for your queries so what this means let's say that you are working in the project and one of your queries are very slow now if it's not clear why the execution plan is really",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "and one of your queries are very slow now if it's not clear why the execution plan is really bad you can go and use the hints as a workaround in order to speed up your query again but it's still as a work around temporary you still have to invest and spend time in order to analyze what was the the root cause so maybe it is an old statistics or you have wrong indexing and so on so use hints only to work around and speed up your queries but don't use it as a permanent fix so friends SQL hints are",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "work around and speed up your queries but don't use it as a permanent fix so friends SQL hints are really amazing in order to control the execution plan but use it very carefully and only if there is like an emergency if you like this video and you want me to create more content like this I'm going to really appreciate it if you support the channel by subscribing liking sharing commenting all the stuff going to help the Channel with the YouTube algorithm and as well my content going to reach",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "stuff going to help the Channel with the YouTube algorithm and as well my content going to reach the others so thank you so much for watching and I will see you in the next tutorial bye",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=O7AzUDogXsw"
+        }
+    },
+    {
+        "page_content": "what's up everyone and thanks for joining me again today today I want to start a new video series on execution plan since it's been one of my most requested topics to date I nearly always start my performance troubleshooting by looking at an execution plan and so in this multi-part series we're gonna show you how you can use execution plans to troubleshoot your own sequel server query performance problems and so in today's video we're specifically going to be talking about what an execution plan",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "and so in today's video we're specifically going to be talking about what an execution plan is and all the different ways that you can view a queries execution plan in sequel server so sequel server is a declarative language instead of specifying how to get the data off the disk or from memory you just say hey sequel server this is the data I need here are some filters and restrictions you know let me hit execute and go off and get my data so an execution plan reveals to us how sequel server is",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "me hit execute and go off and get my data so an execution plan reveals to us how sequel server is deciding to retrieve the data that we requested of it in our sequel query for most queries that we want a performance tune the sequel server query optimizer calculates a bunch of different possible ways of returning the data to you and then ends up choosing one of those plans to actually run your query most of the time this process works really well in sequel server returns your data in a pretty",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "most of the time this process works really well in sequel server returns your data in a pretty quick manner and it's important to note that I didn't say that sequel server returns your data in the quickest manner possible it's a common confusion that a lot of people have because the sequel server simply can't write if it went and calculated all the different ways of getting your data it could take I don't know an hour to run all those different combinations where your query may only take",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "take I don't know an hour to run all those different combinations where your query may only take actually 5 seconds to run so as soon as sequel server finds a plan that it thinks is good enough is fast enough it's gonna go ahead and run it because calculating every possible combination of you know ways of getting your data is often just unfeasible problems arise when the query optimizer chooses a plan that doesn't actually get your data efficiently this can happen for a number of different",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "a plan that doesn't actually get your data efficiently this can happen for a number of different reasons and we'll go more in depth into those reasons in future episodes of this series but for now just know that right when we performance tune our poor performing query it's because sequel server chose a plan that you know had maybe inaccurate information about it that made the query run longer than we would like so today let's start by looking at what an execution plan looks like and where we",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "we would like so today let's start by looking at what an execution plan looks like and where we can find them one way that we can view the query plan that sequel server generated in order to retrieve the data that we asked of it in our query is by setting the show plan all option to on if we go ahead and do that we'll see that sequel server returns a text-based tree that shows the logic in the order of what the different operations are occurring when it's retrieving your data now if you're",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "order of what the different operations are occurring when it's retrieving your data now if you're familiar with other relational database systems right you may be used to seeing an execution plan in this kind of text tree based format but in SSMS and sequel server we have a much better option we have a graphical way of displaying an execution plans we can do that by pressing the display estimated execution plan button this graphical representation is my preference and this is what we're going",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "execution plan button this graphical representation is my preference and this is what we're going to be looking at throughout the rest of this series but I do want to show you that we can also view the underlying XML that SSMS is using to generate this graphical execution plan if we just right click and show execution plan XML we'll see the underlying XML information for this execution plan and while most people don't find this XML is easy to look at as the nice graphical execution plan it's",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "while most people don't find this XML is easy to look at as the nice graphical execution plan it's important to know that this XML is here because sometimes there are some properties and values that you can only find by diving into the X amount right they don't you can't find them in the graphical interface so far every plan we've been looking at is what's known as an estimated execution plan it's known as the estimated plan because it only contains information that it has available to it",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "it's known as the estimated plan because it only contains information that it has available to it before the query gets executed so things like statistics and meta information about your tables and objects and the data within them to retrieve our actual plan all we have to do is click the button for the actual execution plan and then run our query if we hop on over to the execution plan tab we will see our actual execution plan there's often a lot of confusion about the differences between an",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "see our actual execution plan there's often a lot of confusion about the differences between an estimated execution plan and actual execution plan in truth the query plans themselves are actually the same the main differentiator is that the actual execution plan contains runtime information so if we hover over one of these operators for example you'll see that in this actual execution plan we can see the actual number of rows the number of executions and so on right there's actual data that we",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "see the actual number of rows the number of executions and so on right there's actual data that we have available to us because this plan was updated after it executed the estimated plan on the other hand can't have any of those actual numbers because the query hadn't ran yet so if we don't care about those actual execution statistics the estimated execution plan the actual execution plan will be the same a third way we can look at an execution plan is by turning on live query statistics this",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "the same a third way we can look at an execution plan is by turning on live query statistics this is something I was introducing 2016 and it's actually really cool for those times when you are running a query a that doesn't seem to ever want to finish it's also really helpful if you're newer to looking at execution plans because it makes it pretty obvious to see which operators are the bottlenecks in your performance in order to enable our live query statistics all we need to do is press the",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "in your performance in order to enable our live query statistics all we need to do is press the button with the little green check mark here and SSMS and we'll execute our query and you'll see we get our estimated execution plan immediately but now there's some animation and we're seeing how many rows are actually being completed during runtime and we could see exactly which step our execution is currently on so you could see our scans we're taking a while and then as soon as we finish the rest",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "currently on so you could see our scans we're taking a while and then as soon as we finish the rest of the steps completed quickly so if we needed to performance tune this query we would know to kind of focus on okay that big clustered index scan and so these live query statistics are a hybrid between estimated and actual execution plans you're getting the benefits of right an estimated execution plan of getting it immediately but then the real-time actual data is being overlaid on top of it so",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "plan of getting it immediately but then the real-time actual data is being overlaid on top of it so you have a better idea of what's going on as your queries executing so up to this point we've been looking at how to view execution plans for queries that you are running in real time or have they're already available in your SSMS window now I want to show you how you can find execution plans for historical queries you know queries that ran you know previously on your server so one way to look at",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "queries you know queries that ran you know previously on your server so one way to look at a historical plan is to look in the query plan cash because query planes are not free for sequel server to compute when sequel server generates one it's typically going to cash it and so that it can be reused in the future we can view these cash plans by looking at the DMV called DM exact query plan and right if we run this join with some of our other DMVs to get the data we need we'll see a lot of",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "right if we run this join with some of our other DMVs to get the data we need we'll see a lot of information about the queries that are in our plan cache including our XML which when you click on it will open up as our graphical execution plan and that's a pretty handy way of getting queries that you know have previously run on your server the thing to be aware of is that if the query plan has been cleared out of your plan cache you might not find it and the plans that you are looking at right",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "cleared out of your plan cache you might not find it and the plans that you are looking at right our estimated plans so the actual runtime values won't be there and the second way of like looking up historical query plans is to look in the query store now this obviously only works if you have query store enabled on your database but if you do there's one way of doing it right is there's a whole set of DMVs once again to be able to query that data for you and obviously I don't have a query store",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "of DMVs once again to be able to query that data for you and obviously I don't have a query store enabled so I won't see anything there but if I did you'd see the query plans in conclusion execution plans are great because they give us some insight about how sequel server is returning the data that we requested of it I hope you enjoyed the first video in this execution plan series and I hope you'll join me again next week where we'll continue diving deeper into execution plans and how to use",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "join me again next week where we'll continue diving deeper into execution plans and how to use them to troubleshoot your queries and if you're not already a subscriber please press that subscribe button that way you'll stay up to date on all these execution plan videos and all the other videos I plan on filming after that thanks again for watching I'll see you next week [Music]",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=VcA92fe1Erw"
+        }
+    },
+    {
+        "page_content": "Hello everyone. My name is Hugo Kornelis. Welcome to: \"Here's the execution plan ... now what? (part one)\". So you probably know, when you have seen my content before or when you've watched me speak, that I love execution plans and I love teaching. So I do a lot of teaching in execution plans, and I hope that people learn from it. But there is a one problem that people have when they are learning about execution plans. Not just from me, basically always",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Not just from me, basically always. So let's say that you are trying to learn execution plans and a teacher, me or someone else, explains something. In order to explain something, we simplify it. So we come up with a really simplified clean example, to show you just the specific issue we want to discuss, and then we give you all this information that we want to give you about this specific situation. And you pay attention, and you are like: \"Ah, now I get it, I understand how this works",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". And you pay attention, and you are like: \"Ah, now I get it, I understand how this works. I have learned something.\" And then the next day you are at your work, and you brag how much you learned from attending a conference or watching a YouTube video or whatever source you had for learning something. And your boss now thinks you're the execution plan expert. So when your co-worker has a performance issue, he asks you to go there and help that co-worker",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So when your co-worker has a performance issue, he asks you to go there and help that co-worker. And you, full of confidence, approach the co-worker, and say: \"Show me the execution plan\". And your co-worker shows you the execution plan and you're like: \"Oh, that's not how they looked in the classroom; this is actually quite complex and I have no idea where to start\"",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". This video, or rather this series of videos, is intended to bridge that gap, to get you from those very simplified classroom examples to reality, by doing some examples that are somewhere in between. So we will show sample execution plans that are for realistic scenarios. Not completely simplified, but not too complex. A medium complexity, to get you one step closer to the reality of the execution plans you will see in your work. In this video, I'm going to talk about the excessive I/O case",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". In this video, I'm going to talk about the excessive I/O case. There are more cases, those are for future videos that I also plan to make, but this video will show you how you could deal with a scenario of excessive I/O. So let's stop talking and let's jump right into the demo where I'm going to show you just that. So here's the situation. You have been told about a stored procedure or you found a stored procedure that causes excessive I/O. Maybe the DBA found it and asks you to fix it",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Maybe the DBA found it and asks you to fix it. Maybe you found it yourself and you need to fix it. Anyway, you know that there is a stored procedure, SalesByRegions, that causes too much I/O, and this needs to be fixed. So, let's just first take a quick look at the execution of the query, and it's fast enough. Well, we weren't asked to fix the speed, we were asked to fix the excessive I/O. So in this relatively small database, even with excessive I/O it is really fast",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So in this relatively small database, even with excessive I/O it is really fast. But let's look a bit deeper. So let's start by looking at the stored procedure. So we have a stored procedure called SalesByRegion. So I'm going to go to the Object Explorer; connect to the database; and I find it in AdventureWorks, it's in the stored procedures tab, SalesByRegions. I'm going to click Modify, because I'm lazy. I could click Script as / Alter to / New query editor. But Modify does the same thing",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". I could click Script as / Alter to / New query editor. But Modify does the same thing. So I just click Modify, I'm not going to actually modify it, this is just so I can check the text. And what we have here is a stored procedure, and ... wow we have a comment! But the comment is rather cryptic. Someone wrote this, and they probably thought it made sense. But this is something you will have in your real work. You will have bad comments in your code, or no comments at all",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". You will have bad comments in your code, or no comments at all. In this case we have a comment, and if you read the entire text you see that there is a SalesOrderHeader and Address, so someone described that there is a join from SalesOrderHeader to Address, then to StateProvince, and that this has to be done two times. And then there's this join, and now I suddenly understand that this is probably short for ... SP: StateProvince; ST: SalesTerritory. So this is the short form of ... this",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". SP: StateProvince; ST: SalesTerritory. So this is the short form of ... this. And this comment says someone who wrote the stored procedure realized we have the same query multiple times. Instead of doing that same query multiple times in the single ... or the same join multiple times in the query,",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": "I am going to do it once and save the results, because I think that will make the stored procedure more efficient. Is that correct, is that incorrect? I don't know; at this point I don't care. I only want to know the excessive I/Os, because that's what I'm paid for. This is also something you need to learn once you get into optimization",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". This is also something you need to learn once you get into optimization. It's so tempting to optimize everything, but you don't need to spend a half hour or hour to optimize something that nobody cares about, because then you're wasting time. So let's look at the stored procedure. So we have a table variable that is used to save the results of a join of SalesTerritory to CountryRegion. We see that here it's stored there. Then we have another table variable that is used to do this triple join",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Then we have another table variable that is used to do this triple join. And because we already have this SalesTerritory to CountryRegion in this version here, we reuse that table variable here to get the results of SalesPerson to SalesTerritory to CountryRegion. For some reason, that same method could have been used here to do the Address to CountryRegion join, but it hasn't. Another place where perhaps we could optimize, but I'm not going to do blindly things",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Another place where perhaps we could optimize, but I'm not going to do blindly things. I want to know why we have excessive I/O. Then there's the actual query where we get some data back, and we see all those table variables used here in the join. And we have a selection on the CountryRegionName for either the BillRegion, or the ShipRegion, or the Salesperson; all three has to match the supplied parameters. Okay, cool, this is the text of the stored procedure",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Okay, cool, this is the text of the stored procedure. I don't immediately obviously see a problem, but we have the text. We know what the stored procedure does. Where do we start? Well, we could ask for the so-called \"estimated execution plan\"; and those who know me know I don't like that term, I call it the \"execution plan only\". So let's ask the execution plan only for ... that's the wrong tab ... for executing this",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So let's ask the execution plan only for ... that's the wrong tab ... for executing this. So click for execution plan only, drag the slider up, and we see that all the logic of the stored procedure ... let's put it up a bit more ..., as multiple steps is there. So you see all the execution plans for each statement, in a sequence",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So you see all the execution plans for each statement, in a sequence. But there's nothing immediately screaming at me, saying: \"Oh this is where there's excessive I/O.\" Yeah I see things that cause I/O, but which one is excessive, I don't know. So, maybe we should run the query with some additional data. So now I'm going to ask for statistics I/O and statistics time. That is given on a per statement level",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". That is given on a per statement level. So when I execute this, I can see in the messages a lot of stuff, and this is all the data we need but it's now really hard to read. So what I'm going to do now is, I'm going to select it all, copy it, I'm going to start a browser, and I'm going to go to the statistics parser. And if I type it right it should be one of my first stored results, because I Google this all the time. And I go to this, I probably should bookmark it. I can paste this here",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". And I go to this, I probably should bookmark it. I can paste this here. This is written by, I think it's, yeah, Richie Rump has written this, made it available to the community. It's awesome. You just paste the output of set statistics I/O and statistics time here, you click parse, and what you get is the same data, more readable, with easy totals added. So here, it's the total for the first statement, we just have 32 logical reads. That's not excessive",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". That's not excessive. Second statement, 17 logical reads, not excessive. Third statement, 62, uhm, okay. The fourth statement, hey, here we have 163,000 logical reads, and that's also the last statement. So here we have the totals of all statements combined. Sometimes that's useful, in this case I'm going to stick to just this fourth statement, where we have 163,000 logical reads. That is the excessive part",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". That is the excessive part. So even though we saw some weird stuff in the first three statements, and had our doubts: \"is this smart, is this not smart?\", we were right not to waste time on this, because we were asked to look into this stored procedure for the excessive I/O, and the excessive I/O is completely in this fourth statement, and apparently 163 logical reads. Almost half of that comes from a worktable, and the other half from the Product table, so the rest is peanuts in comparison",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". It's mostly the Product table and the worktable. So now we know a bit better where we need to look. So let's run this same stored procedure again, but now with the execution plan plus runtime statistics (also known as actual execution plan) enabled. So we get our results, we get of course the same statistics I/O, but now we also get the execution plans for each step. I'm going to skip the first three ... and here's one more thing I do want to point out",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". I'm going to skip the first three ... and here's one more thing I do want to point out. Here we see in query three, I'm going to zoom in, this is query three that we know does almost no I/O, here we see that it's 57 percent relative to the batch. In one of my other videos, \"Execution plans, where do I start?\", I talk in more depth about this, how confusing this percentage can be. This is an estimate, this is not reality. In reality this number is completely misleading",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". This is an estimate, this is not reality. In reality this number is completely misleading. This third query is not the problem, the 57 percent is misleading, it's a bad estimate. Reality is that all the I/O is caused by query four, even though it says 41 percent. This is where all the I/O is, and it is on a worktable and on the Product table ... do I recall that correctly? Let's just flip back here ... yes, the Product table and the worktable",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". do I recall that correctly? Let's just flip back here ... yes, the Product table and the worktable. So now I need to look at the execution plan, and I'm just going to go through it and look at things. And one thing I notice is that there are some of those yellow triangles here. That was ... sorry that was uh ... These yellow triangles ... and if I hop out of the zoom and hover my mouse there, you will see that those triangles mean there is a warning: we used tempdb to spill data",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". That is the worktable. So there is data being spilled to worktables in tempdb for sorting data. There is also a Spool. Spools always use worktables. So there's also a Spool that uses a worktable. This Spool is needed because ... if we go back to the text of the stored procedure, then this last final query, we have multiple count distinct here. In order to do a count distinct, SQL Server has to remove duplicates. But once you have removed duplicates, you have changed your data",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". But once you have removed duplicates, you have changed your data. You still need the full data for the second count distinct. That's why in this execution plan, we have a branch ... come on do what I want ... We have a branch on top that does the normal aggregation, and then we have two branches below that, each with a Distinct Sort that removes duplicates and then does a count distinct based on data from the Table Spool",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So this is where a lot of that data from the worktable comes from: the Sorts and of course those Table Spools. Now we also have the Product table, and we see that the Product table is used in a Clustered Index Seek ... ... that would be nice if you ... yeah there you go  ... So we have a Clustered Index Seek where we have an estimated number of executions of 3.8, but the actual number of executions is almost 40,000",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". And it's a Clustered Index Seek that is executed this often into a Nested Loops. And why is this done? Because there is a mis-estimate on the results of that Nested Loops. SQL Server thinks that only 4 rows will match; in reality 38,000 rows match. And that ... I'm not even going to look that much at the rest because we already know that's not where the excessive I/O comes from",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So now we have found, by first looking at the set statistics I/O to see which query in the stored procedure and which tables in that query caused excessive I/O; now we have found the specific operators. Now we need to do something about this. Now we use table variables, and you should know that table variables have no statistics. That is sometimes a benefit, and sometimes it is not. In this case ... I'm going to go back to the execution plan ..",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". In this case ... I'm going to go back to the execution plan ... we had an estimate of just 4 rows, the reality was 38,000. And now I do need to go to the far right side, because all the data comes from these table variables that have an estimate of 1 row. And for instance this table variable in reality has 8,668 rows, but the estimated number of rows was just 1",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". And that bad estimate is just propagated through the rest of the execution plan, as it joins to other stuff, to this estimate here of 4 that is completely off, and that causes SQL Server to choose a bad execution plan. So the obvious choice if you have table variables, that almost always use an estimated number of rows of 1, and that causes a bad execution plan, the obvious solution or fix is to use temporary tables instead",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". That can introduce new problems, because temporary tables have their own issues, but in this case it might help. So what I have done is, I copy and paste the text of the stored procedure. If there's a change log, I will of course add it to the change log. But what I've done is, instead of doing declare table variables, I create temporary tables. That's the only change I've made. Even the stuff that I saw that was suspicious,",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": "I didn't change it because I want to isolate this change and see the effect. That's the only way to really know what we are doing. So I'm going to alter the stored procedure. And if this is in production, I would create a new stored procedure to verify the two, but we're on a test environment, I can just alter the stored procedure, I can always restore from production, no problem. So I alter the stored procedure to use temporary tables, and now let's check what happens",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So I alter the stored procedure to use temporary tables, and now let's check what happens. So I'm going to execute it again. We have our results, and let's first copy all the data from the set statistics I/O. Go back to the query window and open another statistics parser window. Paste the new data here and compare the total. So I'm just going to scroll down to the totals at the end, the far end. So this is for the entire stored procedure",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So this is for the entire stored procedure. Now the original, I'm also now going to scroll down until the end, so we had before we changed anything in the original stored procedure, we had an overall total of 163,000 logical reads. We have already reduced that to 87,000. That's a huge reduction. Those 87,000 are still almost all from the last query, and it's almost all the worktable. Let's look at the execution plan that we had to see if we can do even more",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Let's look at the execution plan that we had to see if we can do even more. So once more we're going to skip the first queries. I'm just going to focus on the last one. So we see that some things have improved. We see that there are still Table Spools, because we have this distinct stuff. Some Sorts don't spill anymore, but some Sorts still do. These two Sorts still have this warning symbol and this message that there is a spill. Why is this spill here? Because we still have a bad estimate",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Why is this spill here? Because we still have a bad estimate. Yes, the estimates are better. If you go to the far right, we see that the estimate from SalesPerson to CountryCode is correct: eight. The estimates from the other tables are correct. We have no Nested Loops into the Persons table anymore. With Hash Match we have better data. But at the total end, we still have a bad estimate. We have an estimate of 1,502 rows going into the Table Spool, while in reality it's 38,000",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". We have an estimate of 1,502 rows going into the Table Spool, while in reality it's 38,000. And that low estimate of 1,502 causes these Sorts to allocate insufficient memory, which causes the spill. We need to get a better estimate. So why do we have this bad estimate? This one took me some time to figure out. But I checked and I saw we scan all the SalesPersonToCountry, we join that to SalesOrderHeader, and remember we have a filter on there as well and that filter is then applied ..",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". um I don't know exactly ... so this filter is applied here. Here we have a predicate that says we only want the the rows that have the correct SalesPersonRegion. So we get 8 rows instead of the 14 rows that were previously stored in this temporary table, which means that of the 31,000 rows from SalesOrderHeader, we lose a lot of rows that are not in the correct country. Then we have a remaining number of rows estimated to be 1,895, in reality 2,436",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Then we have a remaining number of rows estimated to be 1,895, in reality 2,436. And we repeat the same pattern of joining to another table that also uses a predicate, now on the BillRegion, and we once more lose rows. But in reality we don't lose rows. You see the actual numbers: 2,436 ... 2,436 ... 2,436. It doesn't change. The estimate goes down: 1,895 ... 859 ... 390",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". 2,436 ... 2,436. It doesn't change. The estimate goes down: 1,895 ... 859 ... 390. So why does this estimate go down, and the reality does not go down? Why are the estimates wrong? That has to do with the fact that we filter on BillRegion, ShipRegion, and SalesPersonRegion, all in the United States",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". And it makes sense that if you filter on one of these to only orders that are shipped in the United States, that probably almost all of them are billed in the United States and done by a salesperson that's working in the United States. That's full correlation, or almost full, there might be one or two exceptions. But 99 percent of orders that are shipped in the United States will be also billed and sold in the United States, so those filters are very correlated",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". But SQL Server has two options, depending on which cardinality estimation model you use, for how to deal with multiple filters. One of them is no correlation at all, and the other is partial correlation. No correlation at all would for instance be: It's sold in the United States and the amount is less than 10. There is no reason to believe that in the United States the amount is always less than 10 or always more than 10",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Partial correlation might be: Sold in the United States and there is a symbol of the American flag on it somewhere. I think that products that carry a symbol of the American flag will be sold more in the United States than elsewhere but it's not full correlation. There is no way to tell the optimizer: Assume that these three predicates are fully correlated. We cannot tell the optimizer that. So the best way to get this bad estimate out of the way is actually to split the query in this case",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So what I have done in this case, once more, changed the stored procedure. The start is the same. I use the same temporary tables, that was a change that works, I'm going to keep it that way. But now I'm going to create a new temporary table, SelectedSalesOrderHeaders, that only finds the SalesOrderHeaders that match those three regions. And then in the actual query I use the SelectedSalesOrderHeaders, and don't filter anymore. So it's the same logic, but I've split the query in two parts",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So it's the same logic, but I've split the query in two parts. Let's change the code, and then execute this again. Execute. We get our messages, copy it. This was the second attempt. This was already bad, I'm going to reuse this window because I don't want to keep opening new windows, I could do that of course, but now I'm going to look at the results of our split query. What do we see now? Well, there's now five statements. So I'm going to go straight to the totals and now the total is 85,000",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So I'm going to go straight to the totals and now the total is 85,000. The total was, let's move down again, 87,000, so we did reduce the number a bit. Not much but a bit. Maybe not what we hoped for but let's look at the execution plan. Now you see that in the fourth query, this is where we apply those filters, and you see that same bad estimate, where we expected 390 in the estimate but in reality there's 2,436",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". We cannot fix that bad estimate, but by putting the results of that bad estimate in a temporary table, we have ensured that the next query actually will use this correct estimate. You see the exact correct estimate of ... ... whoops that was a misclick, I'm sorry for that ... You see the exact correct estimate of 2,436 rows pop up here, and that means that the rest of the estimates, while still not totally correct, is much closer to reality",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". So we reduced the logical I/O a bit, but what we also did was we removed all the spills. So there's no spill anymore, and spilling always slows down a query. It wasn't our task to optimize this query, our task was to reduce the I/O. Spilling causes I/O. We saw the reads. We didn't see the writes; SQL Server doesn't report the writes. But there were writes as well, that spilled to tempdb",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". But there were writes as well, that spilled to tempdb. All of those are gone now, we're not writing to a worktable anymore; we're not reading from a worktable anymore, at least not as part of a spilled Sort. We do still have the writes to the Spool, we cannot change that. Why can't we get rid of that? Simply because we need those multiple count distincts",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Why can't we get rid of that? Simply because we need those multiple count distincts. If this query is still causing too much I/O, if our DBA tells us, or our monitoring tells us, this is still a number that is too high, we're causing issues on the system, we need to do something about it. Yes, obviously. That will be very hard. There are ways but they are very hard",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". There are ways but they are very hard. In this case, if this 70k logical reads caused by the Table Spool is still a problem, my first impulse would be to go to the end users and say: \"Do you really need these numbers?\" That may sound weird, but I have experienced over and over and over again that sometimes fields are removed from a dashboard, but nobody tells the SQL guy they don't need those columns in the data anymore, so we just keep producing data that is not even used in the front end",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Or maybe an end user will say: \"Yeah, I like it, but it's not really relevant; if it's costing that much you can remove it.\" If we really need this user requirement, if it's not negotiable, then there are ways to get around this. But they are hard, and they are beyond scope of this video. Now I didn't fix everything. I'm pretty sure that those temporary tables \"for performance\" are not really good for performance",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". I'm pretty sure that those temporary tables \"for performance\" are not really good for performance. Based on what I understand of SQL Server, I wouldn't jump to the conclusion that doing that once and then storing the results is actually a smart idea. So perhaps we should use CTEs, or just use it in the query. If we do keep those temporary tables, maybe we should index them; that might help. But that's not what we were asked to do right now",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". But that's not what we were asked to do right now. We were asked to tame this stored procedure, to reduce its I/O. We did just that. We got to a point where we say we have 70k logical reads that are directly caused by the requirements, we cannot change that without either negotiating or spending a huge amount of time to do something very smart. Is this sufficient, is 70k sufficient, then we're done. Is 70k insufficient, then we need to do that next step",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". Is 70k insufficient, then we need to do that next step. All those other optimizations, yeah they might be smart, they might be interesting. If we ever have time where we have nothing to do, we might look at the stored procedure and just optimize it to make sure we do something useful with our time. But right now, I have eight more tickets waiting for my attention. I have reduced the logical I/Os of this stored procedure; that was my work. That is the reality of working with SQL Server",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". That is the reality of working with SQL Server. You don't optimize just because you can. Of course if you have time you do. But if you're busy, you optimize where you should optimize. Perhaps you have questions. You can always mail me, or you can leave them in the comments and I will try to answer your questions. If you liked this video, then please click the like button. If you want to get an alert when I create more videos, hit the subscribe button, and YouTube will arrange that",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
+        }
+    },
+    {
+        "page_content": ". My name is Hugo Kornelis, I love execution plans. I thank you for your attention. Goodbye!",
+        "metadata": {
+            "source": "https://www.youtube.com/watch?v=UrbzBYVvgqE"
         }
     }
 ]
