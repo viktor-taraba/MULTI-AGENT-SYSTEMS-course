@@ -90,9 +90,9 @@ python main.py
 
 #### Trace tree / tracing
 ![tracing](/course-project/screenshots/tracing.png)
-![trace_example](/course-project/screenshots/trace_example.png)
-![trace_example_2](/course-project/screenshots/trace_example_2.png)
-![trace_example_3](/course-project/screenshots/trace_example_3.png)
+![trace_example_01](/course-project/screenshots/trace_example_01.png)
+![trace_example_02](/course-project/screenshots/trace_example_02.png)
+![trace_example_03](/course-project/screenshots/trace_example_03.png)
 
 #### Prompt management
 ![prompts](/course-project/screenshots/prompts.png)
