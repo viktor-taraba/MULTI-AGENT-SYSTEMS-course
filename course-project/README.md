@@ -1,4 +1,20 @@
-deepeval test run tests/test_e2e.py
+### Опис тулів для агентів:
+|Назва|Параметри|Опис|
+|--|--|--|
+|`web_search`|`query: str`|Шукає актуальну інформацію в інтернеті через DuckDuckGo. Повертає перелік знайдених посилань з даними про заголовок, URL, фрагмент тексту. Використовується як перший крок пошуку.|
+|`read_url`|`url: str`|Отримує основний текст із вебсторінки (або PDF, якщо це пряме посилання на pdf-звіт чи статтю).|
+|`knowledge_search`|`query: str`|Пошук у локальній базі знань за допомогою гібридного пошуку (hybrid retrieval) та реранкінгу.|
+|`execute_sql_query`|`query: str`|Виконання sql запиту з обмеженням на timeout та вісутність заборонених операторів.|
+|`get_table_structure`|`table_name: str, schema_name: str`|Повертає структуру вказаної таблиці (назви полів + типи даних).|
+|`ask_user_for_clarification`|`question: str`|Комунікація з користувачем (запитання / уточнення).|
+|`list_schemas_and_tables`|`-`|Повертає повний перелік таблиць (назва+схема).|
+|`get_sample_rows`|`table_name: str, schema_name: str`|Повертає топ-5 записів з вказаної таблиці для "знайомства" з даними.|
+|`get_view_definition`|`view_name: str, schema_name: str`|Повертає визначення представлення (view).|
+|`get_sql_execution_plan`|`sql_query: str`|Повертає оціночний план запиту|
+
+#### Результат для `deepeval test run tests/test_e2e.py`:
+
+```
 -------------------------------------------------- Captured log call --------------------------------------------------
 INFO     deepeval.evaluate.execute:execute.py:779 in _a_execute_llm_test_cases
 ================================================ slowest 10 durations =================================================
@@ -776,9 +792,11 @@ FAILED tests/test_e2e.py::test_e2e_high_reach_products - AssertionError: Metrics
    » Pass Rate: 60.0% | Passed: 3 | Failed: 2
 
  ================================================================================
+ ```
 
- deepeval test run tests/test_planner.py
+ #### Результат для `deepeval test run tests/test_planner.py`
 
+ ```
  ================================================================================
 
 
@@ -865,9 +883,11 @@ PS C:\Users\Viktor\source\repos\MULTI-AGENT-SYSTEMS-course\course-project> deepe
    » Pass Rate: 100.0% | Passed: 4 | Failed: 0
 
  ================================================================================
+ ```
 
- deepeval test run tests/test_coder.py
+#### Результат для `deepeval test run tests/test_coder.py`
 
+```
  ---------------------------------------------------------------------------------------------- Captured log call -----------------------------------------------------------------------------------------------
 INFO     deepeval.evaluate.execute:execute.py:779 in _a_execute_llm_test_cases
 ============================================================================================= slowest 10 durations =============================================================================================
@@ -937,9 +957,11 @@ FAILED tests/test_coder.py::test_code_logic_alignment - deepeval.errors.MissingT
    » Pass Rate: 50.0% | Passed: 2 | Failed: 2
 
  ================================================================================
+```
 
- deepeval test run tests/test_reviewer.py
+#### Результат для `deepeval test run tests/test_reviewer.py`
 
+```
  ---------------------------------------------------------------------------------------------- Captured log call -----------------------------------------------------------------------------------------------
 INFO     deepeval.evaluate.execute:execute.py:779 in _a_execute_llm_test_cases
 ============================================================================================= slowest 10 durations =============================================================================================
@@ -1017,3 +1039,86 @@ FAILED tests/test_reviewer.py::test_reviewer_spec_alignment_missing_filter - Ass
    » Pass Rate: 66.67% | Passed: 2 | Failed: 1
 
  ================================================================================
+```
+
+#### Результат для `deepeval test run tests/test_tools.py`
+
+```
+ ---------------------------------------------------------------------------------------------- Captured log call -----------------------------------------------------------------------------------------------
+INFO     deepeval.evaluate.execute:execute.py:779 in _a_execute_llm_test_cases
+============================================================================================= slowest 10 durations =============================================================================================
+127.19s call     tests/test_tools.py::test_planner_tools
+6.08s call     tests/test_tools.py::test_coder_tools
+5.64s call     tests/test_tools.py::test_reviewer_tools
+2.27s call     tests/test_tools.py::test_planner_tools_error_request
+
+(6 durations < 0.005s hidden.  Use -vv to show these durations.)
+=========================================================================================== short test summary info ============================================================================================
+FAILED tests/test_tools.py::test_planner_tools - AssertionError: Metrics: Tool Correctness (score: 0.5, threshold: 0.7, strict: False, error: None, reason: [
+FAILED tests/test_tools.py::test_coder_tools - AssertionError: Metrics: Tool Correctness (score: 0.6666666666666666, threshold: 0.7, strict: False, error: None, reason: [
+2 failed, 2 passed, 4 warnings in 173.39s (0:02:53)
+                                                                                                  Test Results
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Test case                                                                    ┃ Metric           ┃ Score                                                                       ┃ Status ┃ Overall Success Rate ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ test_planner_tools                                                           │                  │                                                                             │        │ 0.0%                 │
+│                                                                              │ Tool Correctness │ 0.5 (threshold=0.7, evaluation model=n/a, reason=[                          │ FAILED │                      │
+│                                                                              │                  │          Tool Calling Reason: Incomplete tool usage: missing tools          │        │                      │
+│                                                                              │                  │ [ToolCall(                                                                  │        │                      │
+│                                                                              │                  │     name="get_table_structure"                                              │        │                      │
+│                                                                              │                  │ ), ToolCall(                                                                │        │                      │
+│                                                                              │                  │     name="get_sample_rows"                                                  │        │                      │
+│                                                                              │                  │ )]; expected ['list_schemas_and_tables', 'knowledge_search',                │        │                      │
+│                                                                              │                  │ 'get_table_structure', 'get_sample_rows'], called ['knowledge_search',      │        │                      │
+│                                                                              │                  │ 'list_schemas_and_tables']. See more details above.                         │        │                      │
+│                                                                              │                  │          Tool Selection Reason: No available tools were provided to assess  │        │                      │
+│                                                                              │                  │ tool selection criteria                                                     │        │                      │
+│                                                                              │                  │ ]                                                                           │        │                      │
+│                                                                              │                  │ , error=None)                                                               │        │                      │
+│                                                                              │                  │                                                                             │        │                      │
+│ test_planner_tools_error_request                                             │                  │                                                                             │        │ 100.0%               │
+│                                                                              │ Tool Correctness │ 1.0 (threshold=0.7, evaluation model=n/a, reason=[                          │ PASSED │                      │
+│                                                                              │                  │          Tool Calling Reason: All expected tools                            │        │                      │
+│                                                                              │                  │ ['ask_user_for_clarification'] were called (order not considered).          │        │                      │
+│                                                                              │                  │          Tool Selection Reason: No available tools were provided to assess  │        │                      │
+│                                                                              │                  │ tool selection criteria                                                     │        │                      │
+│                                                                              │                  │ ]                                                                           │        │                      │
+│                                                                              │                  │ , error=None)                                                               │        │                      │
+│                                                                              │                  │                                                                             │        │                      │
+│ test_coder_tools                                                             │                  │                                                                             │        │ 0.0%                 │
+│                                                                              │ Tool Correctness │ 0.67 (threshold=0.7, evaluation model=n/a, reason=[                         │ FAILED │                      │
+│                                                                              │                  │          Tool Calling Reason: Incomplete tool usage: missing tools          │        │                      │
+│                                                                              │                  │ [ToolCall(                                                                  │        │                      │
+│                                                                              │                  │     name="get_sql_execution_plan"                                           │        │                      │
+│                                                                              │                  │ )]; expected ['get_table_structure', 'execute_sql_query',                   │        │                      │
+│                                                                              │                  │ 'get_sql_execution_plan'], called ['get_table_structure',                   │        │                      │
+│                                                                              │                  │ 'execute_sql_query']. See more details above.                               │        │                      │
+│                                                                              │                  │          Tool Selection Reason: No available tools were provided to assess  │        │                      │
+│                                                                              │                  │ tool selection criteria                                                     │        │                      │
+│                                                                              │                  │ ]                                                                           │        │                      │
+│                                                                              │                  │ , error=None)                                                               │        │                      │
+│                                                                              │                  │                                                                             │        │                      │
+│ test_reviewer_tools                                                          │                  │                                                                             │        │ 100.0%               │
+│                                                                              │ Tool Correctness │ 1.0 (threshold=0.7, evaluation model=n/a, reason=[                          │ PASSED │                      │
+│                                                                              │                  │          Tool Calling Reason: All expected tools ['execute_sql_query',      │        │                      │
+│                                                                              │                  │ 'get_sql_execution_plan'] were called (order not considered).               │        │                      │
+│                                                                              │                  │          Tool Selection Reason: No available tools were provided to assess  │        │                      │
+│                                                                              │                  │ tool selection criteria                                                     │        │                      │
+│                                                                              │                  │ ]                                                                           │        │                      │
+│                                                                              │                  │ , error=None)                                                               │        │                      │
+│ Note: Use Confident AI with DeepEval to analyze failed test cases for more   │                  │                                                                             │        │                      │
+│ details                                                                      │                  │                                                                             │        │                      │
+└──────────────────────────────────────────────────────────────────────────────┴──────────────────┴─────────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────┘
+
+⚠ WARNING: No hyperparameters logged.
+» Log hyperparameters to attribute prompts and models to your test runs.
+
+================================================================================
+
+
+✓ Evaluation completed 🎉! (time taken: 176.79s | token cost: None)
+» Test Results (4 total tests):
+   » Pass Rate: 50.0% | Passed: 2 | Failed: 2
+
+ ================================================================================
+ ```
