@@ -126,7 +126,7 @@ course-project/
 │   └── bm25_chunks.json         # JSON файл зі збереженими чанками
 ├── index/               # Векторна БД
 │   └──... (.bin, .pickle, .sqlite3 files)
-├── demo/                # Приклад роботи агента
+├── demo/                # Приклад роботи агента (gif + trace example)
 ├── .env                 # API ключі
 ├── graph_structure.png  # візуалізація структури
 ├── screenshots/         # langfuse screenshots
