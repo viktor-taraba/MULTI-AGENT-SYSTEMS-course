@@ -18,6 +18,16 @@
 
 ![Demo](/course-project/demo/demo.gif)
 
+### Порядок запуску
+
+```bash
+# 1. Ingest documents for RAG
+python ingest.py
+
+# 2. Run supervisor REPL
+python main.py
+```
+
 ### Опис тулів для агентів:
 |Назва|Параметри|Опис|
 |--|--|--|
@@ -32,6 +42,16 @@
 |`get_view_definition`|`view_name: str, schema_name: str`|Повертає визначення представлення (view).|
 |`get_sql_execution_plan`|`sql_query: str`|Повертає оціночний план запиту|
 
+### Структура графа:
+
+![graph_structure](/course-project/graph_structure.png)
+
+|Агент|Опис|
+|--|--|
+|`planner`|Спілкується з користувачем, досліджує структуру бази даних (схеми, таблиці) та формує чітке технічне завдання (специфікацію).|
+|`coder`|Пише T-SQL код на основі специфікації, перевіряє структуру конкретних таблиць та робить тестові запуски запитів.|
+|`reviewer`|Перевіряє написаний код, виконує його, аналізує продуктивність за допомогою планів виконання (execution plans) та вирішує: затвердити код чи повернути розробнику на доопрацювання.|
+
 ### Скріншоти з Langfuse UI
 
 #### Sessions
@@ -39,7 +59,7 @@
 
 #### Trace tree / tracing
 ![tracing](/course-project/screenshots/tracing.png)
-![trace example](/course-project/screenshots/trace example.png)
+![trace_example](/course-project/screenshots/trace_example.png)
 
 #### Prompt management
 ![prompts](/course-project/screenshots/prompts.png)
