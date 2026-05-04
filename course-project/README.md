@@ -1,4 +1,4 @@
-# Мультиагентна система (команду розробки для SQL запитів до DWH)
+# Мультиагентна система (команда розробки для SQL запитів)
 
 ![OpenAI](https://img.shields.io/badge/OpenAI-API-black.svg)
 ![langchain](https://img.shields.io/badge/langchain-1.2.0-orange.svg)
