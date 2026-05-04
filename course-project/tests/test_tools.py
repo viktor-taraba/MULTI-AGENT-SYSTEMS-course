@@ -66,8 +66,8 @@ def test_coder_tools():
     - Output: ProductName, TotalRevenue. Group by ProductName, Order by TotalRevenue DESC, limit to Top 10.
     """
     agent_response = coder.invoke(
-        {"messages": [("user", {"thread_id": "test_coder_001"})]}, 
-        config=config
+        {"messages": [("user", user_input)]}, 
+        config={"configurable": {"thread_id": "test_coder_001"}}
     )
 
     unique_tool_names = get_unique_tool_names(agent_response)
