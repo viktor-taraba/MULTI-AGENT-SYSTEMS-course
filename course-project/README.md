@@ -96,7 +96,7 @@ python main.py
 
 #### Prompt management
 ![prompts](/course-project/screenshots/prompts.png)
-![prompt_example](/course-project/screenshots/prompt_example.png)
+![prompt_example_](/course-project/screenshots/prompt_example_.png)
 
 ### Структура проєкту
 
