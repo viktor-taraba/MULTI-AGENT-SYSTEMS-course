@@ -19,71 +19,9 @@ from langgraph.types import interrupt
 import sqlparse
 import pyodbc
 
-"""
-Фокус на оптимізації: QA-агент може не тільки перевіряти коректність, але й робити EXPLAIN QUERY PLAN, щоб відхиляти запити, які роблять Full Table Scan замість використання індексів.
-
-QA Engineer: * Завдання: Запускає SQL-запит на тестовій базі. Перевіряє edge cases (чи враховано NULL значення? чи немає дублікатів через неправильний JOIN?).
-
-Обмеження виводу (Context Window): Якщо агент напише SELECT * FROM users, а там мільйон записів, це зламає контекстне вікно LLM. Інструмент виконання SQL повинен мати жорстке обмеження (наприклад, завжди додавати LIMIT 50 до результатів під час тестування агентом).
-
-Безпека (Sandboxing): На відміну від Python REPL, де можна обмежити модулі, у базі даних агент може зробити DROP TABLE або випадково стерти дані через DELETE без WHERE
-
-# дати можливість рев'юеру подивитися план запиту, виводити його додатково (якщо запит був проблемний, то додатково зберігати десь для адмінів + дати нотіфікейшн в телеграмі)
-"""
-
-"""
-Step 2: Implement "Entity-Level" Chunking
-Do not use standard text splitters (like splitting every 500 tokens). If a table's schema gets cut in half, the LLM will hallucinate SQL queries.
-
-Rule: One file/chunk = One Database Table.
-
-Keep the table description, columns, and relationships bundled together in a single chunk.
-"""
-
-"""
-Step 4: Add Metadata for Hybrid RAG
-When storing these files in your Vector Database (like Pinecone, Weaviate, or Qdrant), attach strict metadata tags.
-
-JSON
-{
-  "text": "CREATE TABLE dbo.AWBuildVersion...",
-  "metadata": {
-    "database": "AdventureWorks",
-    "schema": "dbo",
-    "module": "Admin",
-    "table_name": "AWBuildVersion",
-    "document_type": "table_schema"
-  }
-}
-Why? In a multi-agent system, a Planning Agent can write a filter query. If the user asks, "Show me HR data", the RAG retriever can pre-filter metadata={"module": "Human Resources"} before doing the vector search, drastically reducing false positives.
-"""
-
-"""
-The Router/Planner Agent: Give this agent access to a summarized "Data Dictionary" document that only lists Table Names and their high-level descriptions (no columns). It decides which tables are relevant.
-The Retriever Agent: Takes the table names identified by the Router, queries the Vector DB using the metadata tags, and pulls the exact chunk (the DDL or Markdown file).
-"""
-
-"""
-3. Generate Synthetic Databases
-Have an LLM generate a completely novel schema for a niche, fictional business (e.g., an intergalactic space-freight logistics company), complete with complex constraints and edge cases. Build the DB, populate it with synthetic data, and test your agents on that.
-
-1. Obfuscate AdventureWorks (The Quick Fix)
-If you already have the AdventureWorks database set up and want to use its data, just rename the schema, tables, and columns to something completely nonsensical.
-Change Sales.Customer to ModuleA.Entity14
-
-Change Production.Product to ModuleB.ItemAlpha
-
-If your system can still write correct SQL by reading your provided schema definitions without relying on semantic naming clues, you'll know the reasoning engine is actually working.
-"""
-# як варіант - додаткові ознаки по працівниках або клієнтах по типу connotationvalue та connotationkind
-# набір таблиць по клієнтах (додатковий) - типу відпустки, бронювання, мобілізація
-# схема banking data - додати інформацію по картках, по транзаціях (у 2 різних системах і з різними cardid), з нечитабельними назвами
-# по клієнтах додати розбіжності між даними в різних системах
-# але це все потім, це вже етап тестування. Спершу треба робочу систему з тулами, RAG, і графом
-
 def validate_safe_sql(query: str) -> bool:
     """
-    Parses a SQL query and raises a ValueError if it contains 
+    Helper function: Parses a SQL query and raises a ValueError if it contains 
     destructive or state-altering commands.
     Args:
         query (str): The SQL query string to evaluate.
@@ -263,6 +201,59 @@ def get_sql_execution_plan(query):
     return plan_xml
 
 @tool
+def list_schemas_and_tables() -> str:
+    """
+    Retrieves a list of available schemas and their tables in the DWH.
+    Use this tool to explore the database structure, discover available schemas, and find specific table names before writing queries.
+    
+    Returns:
+        str: A JSON formatted list of dictionaries containing TABLE_SCHEMA, TABLE_NAME, and TABLE_TYPE, or an error message.
+    """
+    connection_string = f'''
+        DRIVER={{ODBC Driver 17 for SQL Server}};
+        SERVER={server};
+        DATABASE={database};
+        Trusted_Connection=yes;
+    '''
+    query = """
+        SELECT 
+            TABLE_SCHEMA, 
+            TABLE_NAME, 
+            TABLE_TYPE 
+        FROM 
+            INFORMATION_SCHEMA.TABLES 
+        ORDER BY 
+            TABLE_SCHEMA, 
+            TABLE_NAME;
+    """
+    try:
+        conn = pyodbc.connect(connection_string)
+        cursor = conn.cursor()
+        cursor.execute(query)
+        
+        if cursor.description:
+            columns = [column[0] for column in cursor.description]
+            rows = cursor.fetchall()
+            
+            if not rows:
+                return json.dumps({
+                    "status": "not_found", 
+                    "message": "No schemas or tables found in the specified database."
+                })
+                
+            result_data = [dict(zip(columns, row)) for row in rows]
+            return json.dumps(result_data, default=str)
+        else:
+            return json.dumps({"status": "error", "message": "Failed to retrieve schemas and tables metadata."})
+            
+    except pyodbc.Error as e:
+        return json.dumps({"status": "error", "error_message": str(e)})
+        
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+@tool
 def knowledge_search(query: str) -> str:
     """
     Search the local knowledge database which has information about the following topics: description of tables in the DWH, connections between tables, structure (data types, PK, FK)).
@@ -396,7 +387,8 @@ tool_registry = {
     "knowledge_search": knowledge_search,
     "execute_sql_query": execute_sql_query,
     "get_table_structure": get_table_structure,
-    "ask_user_for_clarification": ask_user_for_clarification}
+    "ask_user_for_clarification": ask_user_for_clarification,
+    "list_schemas_and_tables": list_schemas_and_tables}
 
 tools = [
     web_search, 
@@ -404,4 +396,5 @@ tools = [
     knowledge_search,
     execute_sql_query,
     get_table_structure,
-    ask_user_for_clarification]
+    ask_user_for_clarification,
+    list_schemas_and_tables]
