@@ -91,6 +91,8 @@ python main.py
 #### Trace tree / tracing
 ![tracing](/course-project/screenshots/tracing.png)
 ![trace_example](/course-project/screenshots/trace_example.png)
+![trace_example_2](/course-project/screenshots/trace_example_2.png)
+![trace_example_3](/course-project/screenshots/trace_example_3.png)
 
 #### Prompt management
 ![prompts](/course-project/screenshots/prompts.png)
@@ -795,4 +797,5208 @@ FAILED tests/test_tools.py::test_coder_tools - AssertionError: Metrics: Tool Cor
    » Pass Rate: 50.0% | Passed: 2 | Failed: 2
 
  ================================================================================
+ ```
+
+ ### Приклад використання:
+ ```
+ SQL / DWH Assistant
+type 'exit' or 'quit' to quit
+----------------------------------------------------------------------------------------------------
+
+You: Employee with the biggest amount of sales (among those employees who are currently working in the company)
+    🔧 Tool called -> knowledge_search({'query': 'employee sales currently working company active employee sales tables metric DWH'})
+    🔧 Tool called -> list_schemas_and_tables({})
+    ✅ Result (list_schemas_and_tables):
+
+    ╭─── 📄 List Schemas And Tables ─────────────────
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: AWBuildVersion
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: DatabaseLog
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: ErrorLog
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Department
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Employee
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: EmployeeDepartmentHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: EmployeePayHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: JobCandidate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Shift
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployee
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployeeDepartment
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployeeDepartmentHistory
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidate
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidateEducation
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidateEmployment
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Address
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: AddressType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntity
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntityAddress
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntityContact
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: ContactType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: CountryRegion
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: EmailAddress
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Password
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Person
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: PersonPhone
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: PhoneNumberType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: StateProvince
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: vAdditionalContactInfo
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: vStateProvinceCountryRegion
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: BillOfMaterials
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Culture
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Document
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Illustration
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Location
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Product
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductCategory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductCostHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductDescription
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductDocument
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductInventory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductListPriceHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModel
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModelIllustration
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModelProductDescriptionCulture
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductPhoto
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductProductPhoto
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductReview
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductSubcategory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ScrapReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: TransactionHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: TransactionHistoryArchive
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: UnitMeasure
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductAndDescription
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductModelCatalogDescription
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductModelInstructions
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: WorkOrder
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: WorkOrderRouting
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: ProductVendor
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: PurchaseOrderDetail
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: PurchaseOrderHeader
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: ShipMethod
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: Vendor
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: vVendorWithAddresses
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: vVendorWithContacts
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CountryRegionCurrency
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CreditCard
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Currency
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CurrencyRate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Customer
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: PersonCreditCard
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderDetail
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderHeader
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderHeaderSalesReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesPerson
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesPersonQuotaHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTaxRate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTerritory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTerritoryHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: ShoppingCartItem
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SpecialOffer
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SpecialOfferProduct
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Store
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vIndividualCustomer
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vPersonDemographics
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vSalesPerson
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vSalesPersonSalesByFiscalYears
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithAddresses
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithContacts
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithDemographics
+    │   TABLE_TYPE: VIEW
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | HumanResources.Employee | Employee identification number. Foreign key to Employee.BusinessEntityID. |
+    │ | - | 2 | - | DepartmentID | smallint | - | - | HumanResources.Department | Department in which the employee worked including currently. Foreign key to Department.DepartmentID. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | LoginID | nvarchar(256) | - | - | - | Network login. Test2 |
+    │ | - | 4 | - | OrganizationNode | hierarchyid | - | - | - | Where the employee is located in corporate hierarchy. |
+    │ | - | 5 | - | OrganizationLevel | smallint | - | Computed: [OrganizationNode].[GetLevel]() | - | The depth of the employee in the corporate hierarchy. |
+    │ | - | 6 | - | JobTitle | nvarchar(50) | - | - | - | Work title such as Buyer or Sales Representative. |
+    │
+    │ --- Document 3 ---
+    │ Source: SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf (Page: 6)
+    │ Content:
+    │ WITH SalesCTE AS (              SELECT salesperson_id, SUM(sales_amount) AS total_sales              FROM sales GROUP BY salesperson_id )
+    │ SELECT salesperson_id, total_sales FROM SalesCTE WHERE total_sales > 5000;
+    │ POWERED BY
+    │ SELECT * FROM orders oWHERE EXISTS (SELECT 1 FROM customers c WHERE c.customer_id = o.customer_id AND c
+    │ POWERED BY
+    │ SELECT DISTINCT city FROM customers;
+    │ POWERED BY
+    │ SELECT city FROM customers GROUP BY city;
+    │ POWERED BY
+    │
+    │ --- Document 4 ---
+    │ Source: https://www.youtube.com/watch?v=O7AzUDogXsw (Page: Unknown)
+    │ Content:
+    │ and equal to as well product key now after that we're going to go and aggregate few stuff so we're going to aggregate by the product name so I'm going to take the product name so it's going to be the English product name and let's go and call it product name and let's go and aggregate the sales so sum and we're going to get it from the fact table it's going to be sales amount so as total sales and of course we have to go and do groupy and not the French name it's going to be the English name so
+    │
+    │ --- Document 5 ---
+    │ Source: Sales.SalesPerson.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | SalesQuota | money | - | - | - | Projected yearly sales. |
+    │ | - | 4 | - | Bonus | money | - | Default: 0.00 | - | Bonus due if quota is met. |
+    │ | - | 5 | - | CommissionPct | smallmoney | - | Default: 0.00 | - | Commision percent received per sale. |
+    │ | - | 6 | - | SalesYTD | money | - | Default: 0.00 | - | Sales total year to date. |
+    │ | - | 7 | - | SalesLastYear | money | - | Default: 0.00 | - | Sales total of previous year. |
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'SalesOrderHeader SalesPersonID employee current employee active status EndDate HumanResources.Employee current working'})
+    🔧 Tool called -> knowledge_search({'query': 'HumanResources.Employee current employee definition EndDate CurrentFlag SalesPerson BusinessEntityID Person name'})
+    🔧 Tool called -> get_view_definition({'view_name': 'vSalesPerson', 'schema_name': 'Sales'})
+    ✅ Result (get_view_definition):
+
+    ╭─── 📄 Get View Definition ─────────────────────
+    │ status: success
+    │ schema_name: Sales
+    │ view_name: vSalesPerson
+    │ definition:
+    │
+    │   CREATE VIEW [Sales].[vSalesPerson]
+    │   AS
+    │   SELECT
+    │       s.[BusinessEntityID]
+    │       ,p.[Title]
+    │       ,p.[FirstName]
+    │       ,p.[MiddleName]
+    │       ,p.[LastName]
+    │       ,p.[Suffix]
+    │       ,e.[JobTitle]
+    │       ,pp.[PhoneNumber]
+    │           ,pnt.[Name] AS [PhoneNumberType]
+    │       ,ea.[EmailAddress]
+    │       ,p.[EmailPromotion]
+    │       ,a.[AddressLine1]
+    │       ,a.[AddressLine2]
+    │       ,a.[City]
+    │       ,[StateProvinceName] = sp.[Name]
+    │       ,a.[PostalCode]
+    │       ,[CountryRegionName] = cr.[Name]
+    │       ,[TerritoryName] = st.[Name]
+    │       ,[TerritoryGroup] = st.[Group]
+    │       ,s.[SalesQuota]
+    │       ,s.[SalesYTD]
+    │       ,s.[SalesLastYear]
+    │   FROM [Sales].[SalesPerson] s
+    │       INNER JOIN [HumanResources].[Employee] e
+    │       ON e.[BusinessEntityID] = s.[BusinessEntityID]
+    │           INNER JOIN [Person].[Person] p
+    │           ON p.[BusinessEntityID] = s.[BusinessEntityID]
+    │       INNER JOIN [Person].[BusinessEntityAddress] bea
+    │       ON bea.[BusinessEntityID] = s.[BusinessEntityID]
+    │       INNER JOIN [Person].[Address] a
+    │       ON a.[AddressID] = bea.[AddressID]
+    │       INNER JOIN [Person].[StateProvince] sp
+    │       ON sp.[StateProvinceID] = a.[StateProvinceID]
+    │       INNER JOIN [Person].[CountryRegion] cr
+    │       ON cr.[CountryRegionCode] = sp.[CountryRegionCode]
+    │       LEFT OUTER JOIN [Sales].[SalesTerritory] st
+    │       ON st.[TerritoryID] = s.[TerritoryID]
+    │           LEFT OUTER JOIN [Person].[EmailAddress] ea
+    │           ON ea.[BusinessEntityID] = p.[BusinessEntityID]
+    │           LEFT OUTER JOIN [Person].[PersonPhone] pp
+    │           ON pp.[BusinessEntityID] = p.[BusinessEntityID]
+    │           LEFT OUTER JOIN [Person].[PhoneNumberType] pnt
+    │           ON pnt.[PhoneNumberTypeID] = pp.[PhoneNumberTypeID];
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ | Person.EmailAddress | - | Person.Person | Person.EmailAddress.BusinessEntityID = Person.Person.BusinessEntityID | FK_EmailAddress_Person_BusinessEntityID Foreign key constraint referencing Person.BusinessEntityID. |
+    │ | HumanResources.Employee | - | Person.Person | HumanResources.Employee.BusinessEntityID = Person.Person.BusinessEntityID | FK_Employee_Person_BusinessEntityID Foreign key constraint referencing Person.BusinessEntityID. |
+    │
+    │ --- Document 2 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ | Person.BusinessEntityContact | - | Person.Person | Person.BusinessEntityContact.PersonID = Person.Person.BusinessEntityID | FK_BusinessEntityContact_Person_PersonID Foreign key constraint referencing Person.BusinessEntityID. |
+    │ | Sales.Customer | - | Person.Person | Sales.Customer.PersonID = Person.Person.BusinessEntityID | FK_Customer_Person_PersonID Foreign key constraint referencing Person.BusinessEntityID. |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.EmployeePayHistory | - | HumanResources.Employee | HumanResources.EmployeePayHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeePayHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | Person.BusinessEntity | Primary key for Person records. |
+    │ | - | 2 | - | PersonType | nchar(2) | - | - | - | Primary type of person: SC = Store Contact, IN = Individual (retail) customer, SP = Sales person, EM = Employee (non-sales), VC = Vendor contact, GC = General contact |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 2 ---
+    │ Source: Sales.SalesPerson.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesPerson | - | Sales.SalesTerritory | Sales.SalesPerson.TerritoryID = Sales.SalesTerritory.TerritoryID | FK_SalesPerson_SalesTerritory_TerritoryID Foreign key constraint referencing SalesTerritory.TerritoryID. |
+    │ | Sales.SalesOrderHeader | - | Sales.SalesPerson | Sales.SalesOrderHeader.SalesPersonID = Sales.SalesPerson.BusinessEntityID | FK_SalesOrderHeader_SalesPerson_SalesPersonID Foreign key constraint referencing SalesPerson.SalesPersonID. |
+    │
+    │ --- Document 3 ---
+    │ Source: Sales.SalesOrderHeader.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Sales.SalesPerson | Sales.SalesOrderHeader.SalesPersonID = Sales.SalesPerson.BusinessEntityID | FK_SalesOrderHeader_SalesPerson_SalesPersonID Foreign key constraint referencing SalesPerson.SalesPersonID. |
+    │ | Sales.SalesOrderHeader | - | Sales.SalesTerritory | Sales.SalesOrderHeader.TerritoryID = Sales.SalesTerritory.TerritoryID | FK_SalesOrderHeader_SalesTerritory_TerritoryID Foreign key constraint referencing SalesTerritory.TerritoryID. |
+    │
+    │ --- Document 4 ---
+    │ Source: Person.Address.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Person.Address | Sales.SalesOrderHeader.ShipToAddressID = Person.Address.AddressID | FK_SalesOrderHeader_Address_ShipToAddressID Foreign key constraint referencing Address.AddressID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Sales.SalesOrderHeader.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Person.Address | Sales.SalesOrderHeader.ShipToAddressID = Person.Address.AddressID | FK_SalesOrderHeader_Address_ShipToAddressID Foreign key constraint referencing Address.AddressID. |
+    │ | Sales.SalesOrderHeader | - | Sales.CreditCard | Sales.SalesOrderHeader.CreditCardID = Sales.CreditCard.CreditCardID | FK_SalesOrderHeader_CreditCard_CreditCardID Foreign key constraint referencing CreditCard.CreditCardID. |
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'HumanResources.Employee columns CurrentFlag EndDate active employee'})
+    🔧 Tool called -> knowledge_search({'query': 'EmployeeDepartmentHistory EndDate current department currently working EndDate null'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'EmployeeDepartmentHistory', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │   BusinessEntityID: 1
+    │   DepartmentID: 16
+    │   ShiftID: 1
+    │   StartDate: 2009-01-14
+    │   EndDate: None
+    │   ModifiedDate: 2009-01-13 00:00:00
+    │   BusinessEntityID: 2
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2008-01-31
+    │   EndDate: None
+    │   ModifiedDate: 2008-01-30 00:00:00
+    │   BusinessEntityID: 3
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2007-11-11
+    │   EndDate: None
+    │   ModifiedDate: 2007-11-10 00:00:00
+    │   BusinessEntityID: 4
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2007-12-05
+    │   EndDate: 2010-05-30
+    │   ModifiedDate: 2010-05-28 00:00:00
+    │   BusinessEntityID: 4
+    │   DepartmentID: 2
+    │   ShiftID: 1
+    │   StartDate: 2010-05-31
+    │   EndDate: None
+    │   ModifiedDate: 2010-05-30 00:00:00
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │   SalesOrderID: 43659
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43659
+    │   PurchaseOrderNumber: PO522145787
+    │   AccountNumber: 10-4020-000676
+    │   CustomerID: 29825
+    │   SalesPersonID: 279
+    │   TerritoryID: 5
+    │   BillToAddressID: 985
+    │   ShipToAddressID: 985
+    │   ShipMethodID: 5
+    │   CreditCardID: 16281
+    │   CreditCardApprovalCode: 105041Vi84182
+    │   CurrencyRateID: None
+    │   SubTotal: 20565.6206
+    │   TaxAmt: 1971.5149
+    │   Freight: 616.0984
+    │   TotalDue: 23153.2339
+    │   Comment: None
+    │   rowguid: 79B65321-39CA-4115-9CBA-8FE0903E12E6
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43660
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43660
+    │   PurchaseOrderNumber: PO18850127500
+    │   AccountNumber: 10-4020-000117
+    │   CustomerID: 29672
+    │   SalesPersonID: 279
+    │   TerritoryID: 5
+    │   BillToAddressID: 921
+    │   ShipToAddressID: 921
+    │   ShipMethodID: 5
+    │   CreditCardID: 5618
+    │   CreditCardApprovalCode: 115213Vi29411
+    │   CurrencyRateID: None
+    │   SubTotal: 1294.2529
+    │   TaxAmt: 124.2483
+    │   Freight: 38.8276
+    │   TotalDue: 1457.3288
+    │   Comment: None
+    │   rowguid: 738DC42D-D03B-48A1-9822-F95A67EA7389
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43661
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43661
+    │   PurchaseOrderNumber: PO18473189620
+    │   AccountNumber: 10-4020-000442
+    │   CustomerID: 29734
+    │   SalesPersonID: 282
+    │   TerritoryID: 6
+    │   BillToAddressID: 517
+    │   ShipToAddressID: 517
+    │   ShipMethodID: 5
+    │   CreditCardID: 1346
+    │   CreditCardApprovalCode: 85274Vi6854
+    │   CurrencyRateID: 4
+    │   SubTotal: 32726.4786
+    │   TaxAmt: 3153.7696
+    │   Freight: 985.5530
+    │   TotalDue: 36865.8012
+    │   Comment: None
+    │   rowguid: D91B9131-18A4-4A11-BC3A-90B6F53E9D74
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43662
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43662
+    │   PurchaseOrderNumber: PO18444174044
+    │   AccountNumber: 10-4020-000227
+    │   CustomerID: 29994
+    │   SalesPersonID: 282
+    │   TerritoryID: 6
+    │   BillToAddressID: 482
+    │   ShipToAddressID: 482
+    │   ShipMethodID: 5
+    │   CreditCardID: 10456
+    │   CreditCardApprovalCode: 125295Vi53935
+    │   CurrencyRateID: 4
+    │   SubTotal: 28832.5289
+    │   TaxAmt: 2775.1646
+    │   Freight: 867.2389
+    │   TotalDue: 32474.9324
+    │   Comment: None
+    │   rowguid: 4A1ECFC0-CC3A-4740-B028-1C50BB48711C
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43663
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43663
+    │   PurchaseOrderNumber: PO18009186470
+    │   AccountNumber: 10-4020-000510
+    │   CustomerID: 29565
+    │   SalesPersonID: 276
+    │   TerritoryID: 4
+    │   BillToAddressID: 1073
+    │   ShipToAddressID: 1073
+    │   ShipMethodID: 5
+    │   CreditCardID: 4322
+    │   CreditCardApprovalCode: 45303Vi22691
+    │   CurrencyRateID: None
+    │   SubTotal: 419.4589
+    │   TaxAmt: 40.2681
+    │   Freight: 12.5838
+    │   TotalDue: 472.3108
+    │   Comment: None
+    │   rowguid: 9B1E7A40-6AE0-4AD3-811C-A64951857C4B
+    │   ModifiedDate: 2011-06-07 00:00:00
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │ status: error
+    │ error_message: ('ODBC SQL type -151 is not yet supported.  column-index=3  type=-151', 'HY106')
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | - | 12 | - | VacationHours | smallint | - | Default: 0 | - | Number of available vacation hours. |
+    │ | - | 13 | - | SickLeaveHours | smallint | - | Default: 0 | - | Number of available sick leave hours. |
+    │ | - | 14 | - | CurrentFlag | bit | - | Default: 1 | - | 0 = Inactive, 1 = Active |
+    │ | - | 15 | - | rowguid | uniqueidentifier | - | Default: newid() | - | ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.Employee | - | HumanResources.Shift | - | zzz zxczxc |
+    │ | HumanResources.Employee | - | HumanResources.vEmployeeDepartment | - | qqq asdasda |
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | HumanResources.Employee | Employee identification number. Foreign key to Employee.BusinessEntityID. |
+    │ | - | 2 | - | DepartmentID | smallint | - | - | HumanResources.Department | Department in which the employee worked including currently. Foreign key to Department.DepartmentID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | ShiftID | tinyint | - | - | HumanResources.Shift | Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID. |
+    │ | - | 4 | - | StartDate | date | - | - | - | Date the employee started work in the department. |
+    │ | - | 5 | - | EndDate | date | - | - | - | Date the employee left the department. NULL = Current department. |
+    │ | - | 6 | - | ModifiedDate | datetime | - | Default: getdate() | - | Date and time the record was last updated. |
+    │
+    │ --- Document 5 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | ShiftID | tinyint | - | - | HumanResources.Shift | Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID. |
+    │ | - | 4 | - | StartDate | date | - | - | - | Date the employee started work in the department. |
+    │ | - | 5 | - | EndDate | date | - | - | - | Date the employee left the department. NULL = Current department. |
+    │ | - | 6 | - | ModifiedDate | datetime | - | Default: getdate() | - | Date and time the record was last updated. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Shift.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.vEmployeeDepartmentHistory | - | HumanResources.Shift | HumanResources.vEmployeeDepartmentHistory.Title = HumanResources.Shift.Name | fk_Shift_vEmployeeDepartmentHistory xcbxcvbxcvbbvbvb |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.Employee | - | HumanResources.Shift | - | zzz zxczxc |
+    │ | HumanResources.Employee | - | HumanResources.vEmployeeDepartment | - | qqq asdasda |
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Production.WorkOrder.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | OrderQty | int | - | - | - | Product quantity to build. |
+    │ | - | 4 | - | StockedQty | int | - | Computed: isnull([OrderQty]-[ScrappedQty],(0)) | - | Quantity built and put in inventory. |
+    │ | - | 5 | - | ScrappedQty | smallint | - | - | - | Quantity that failed inspection. |
+    │ | - | 6 | - | StartDate | datetime | - | - | - | Work order start date. |
+    │ | - | 7 | - | EndDate | datetime | - | - | - | Work order end date. |
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ title: Identify the currently active employee with the highest sales amount
+    │ requirements:
+    │   - Use Sales.SalesOrderHeader as the transactional source for sales and HumanResources.Employee as the source of employee employment status.
+    │   - Restrict the population to employees who are currently working in the company by filtering HumanResources.Employee.CurrentFlag = 1. Do not infer current employment only from department history if CurrentFlag is available.
+    │   - Link sales to employees through Sales.SalesOrderHeader.SalesPersonID = HumanResources.Employee.BusinessEntityID. Note that only employees who are also salespeople will have matching sales records.
+    │   - Use Person.Person to retrieve the employee's human-readable name via Person.Person.BusinessEntityID = HumanResources.Employee.BusinessEntityID.
+    │   - Aggregate sales by employee and calculate total sales amount using Sales.SalesOrderHeader.TotalDue as the sales amount, unless the business explicitly wants pre-tax/pre-freight revenue; based on the request wording, total sales amount should default to TotalDue because it represents the full order amount available in the sales header.
+    │   - Exclude rows where SalesOrderHeader.SalesPersonID is null, since those orders are not attributable to a salesperson.
+    │   - Return only the top employee by aggregated sales amount across all available data, sorted descending by the calculated total sales.
+    │   - Include at minimum these business output fields: employee identifier, employee full name, and aggregated sales amount.
+    │   - Handle ties deterministically. If multiple active employees have the same highest aggregated sales, either return all tied employees or apply a secondary stable sort by employee identifier ascending. Preferred default: return the single row with the lowest BusinessEntityID among tied highest totals unless the reporting requirement is to show all ties.
+    │   - Treat null sales amounts as zero during aggregation if encountered, although SalesOrderHeader.TotalDue is expected to be populated.
+    │   - Do not use Sales.SalesPerson.SalesYTD for this request because it is a pre-aggregated attribute and may not represent the full historical sales total in the same way as summing order-level sales records.
+    │ acceptance_criteria:
+    │   - The result includes only employees with HumanResources.Employee.CurrentFlag = 1.
+    │   - The calculation uses sales orders assigned to a salesperson through Sales.SalesOrderHeader.SalesPersonID.
+    │   - Orders with null SalesPersonID are excluded from the aggregation.
+    │   - The employee name is sourced from Person.Person and is readable in the final output.
+    │   - The sales metric is aggregated at employee level using Sales.SalesOrderHeader.TotalDue.
+    │   - The final result returns exactly one top employee unless tie-handling is explicitly changed to return all ties.
+    │   - The returned employee has the maximum aggregated sales amount among all currently active employees with attributable sales.
+    │   - If two employees share the same maximum total sales and single-row output is used, the tie is resolved consistently using the lowest employee identifier.
+    │ estimated_complexity: simple
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'employee sales currently working company active employee sales tables metric DWH'})
+    🔧 Tool called -> list_schemas_and_tables({})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | HumanResources.Employee | Employee identification number. Foreign key to Employee.BusinessEntityID. |
+    │ | - | 2 | - | DepartmentID | smallint | - | - | HumanResources.Department | Department in which the employee worked including currently. Foreign key to Department.DepartmentID. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | LoginID | nvarchar(256) | - | - | - | Network login. Test2 |
+    │ | - | 4 | - | OrganizationNode | hierarchyid | - | - | - | Where the employee is located in corporate hierarchy. |
+    │ | - | 5 | - | OrganizationLevel | smallint | - | Computed: [OrganizationNode].[GetLevel]() | - | The depth of the employee in the corporate hierarchy. |
+    │ | - | 6 | - | JobTitle | nvarchar(50) | - | - | - | Work title such as Buyer or Sales Representative. |
+    │
+    │ --- Document 3 ---
+    │ Source: SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf (Page: 6)
+    │ Content:
+    │ WITH SalesCTE AS (              SELECT salesperson_id, SUM(sales_amount) AS total_sales              FROM sales GROUP BY salesperson_id )
+    │ SELECT salesperson_id, total_sales FROM SalesCTE WHERE total_sales > 5000;
+    │ POWERED BY
+    │ SELECT * FROM orders oWHERE EXISTS (SELECT 1 FROM customers c WHERE c.customer_id = o.customer_id AND c
+    │ POWERED BY
+    │ SELECT DISTINCT city FROM customers;
+    │ POWERED BY
+    │ SELECT city FROM customers GROUP BY city;
+    │ POWERED BY
+    │
+    │ --- Document 4 ---
+    │ Source: https://www.youtube.com/watch?v=O7AzUDogXsw (Page: Unknown)
+    │ Content:
+    │ and equal to as well product key now after that we're going to go and aggregate few stuff so we're going to aggregate by the product name so I'm going to take the product name so it's going to be the English product name and let's go and call it product name and let's go and aggregate the sales so sum and we're going to get it from the fact table it's going to be sales amount so as total sales and of course we have to go and do groupy and not the French name it's going to be the English name so
+    │
+    │ --- Document 5 ---
+    │ Source: Sales.SalesPerson.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | SalesQuota | money | - | - | - | Projected yearly sales. |
+    │ | - | 4 | - | Bonus | money | - | Default: 0.00 | - | Bonus due if quota is met. |
+    │ | - | 5 | - | CommissionPct | smallmoney | - | Default: 0.00 | - | Commision percent received per sale. |
+    │ | - | 6 | - | SalesYTD | money | - | Default: 0.00 | - | Sales total year to date. |
+    │ | - | 7 | - | SalesLastYear | money | - | Default: 0.00 | - | Sales total of previous year. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (list_schemas_and_tables):
+
+    ╭─── 📄 List Schemas And Tables ─────────────────
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: AWBuildVersion
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: DatabaseLog
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: ErrorLog
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Department
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Employee
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: EmployeeDepartmentHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: EmployeePayHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: JobCandidate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Shift
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployee
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployeeDepartment
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployeeDepartmentHistory
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidate
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidateEducation
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidateEmployment
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Address
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: AddressType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntity
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntityAddress
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntityContact
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: ContactType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: CountryRegion
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: EmailAddress
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Password
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Person
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: PersonPhone
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: PhoneNumberType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: StateProvince
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: vAdditionalContactInfo
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: vStateProvinceCountryRegion
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: BillOfMaterials
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Culture
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Document
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Illustration
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Location
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Product
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductCategory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductCostHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductDescription
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductDocument
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductInventory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductListPriceHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModel
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModelIllustration
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModelProductDescriptionCulture
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductPhoto
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductProductPhoto
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductReview
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductSubcategory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ScrapReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: TransactionHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: TransactionHistoryArchive
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: UnitMeasure
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductAndDescription
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductModelCatalogDescription
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductModelInstructions
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: WorkOrder
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: WorkOrderRouting
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: ProductVendor
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: PurchaseOrderDetail
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: PurchaseOrderHeader
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: ShipMethod
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: Vendor
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: vVendorWithAddresses
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: vVendorWithContacts
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CountryRegionCurrency
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CreditCard
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Currency
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CurrencyRate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Customer
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: PersonCreditCard
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderDetail
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderHeader
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderHeaderSalesReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesPerson
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesPersonQuotaHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTaxRate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTerritory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTerritoryHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: ShoppingCartItem
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SpecialOffer
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SpecialOfferProduct
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Store
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vIndividualCustomer
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vPersonDemographics
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vSalesPerson
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vSalesPersonSalesByFiscalYears
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithAddresses
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithContacts
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithDemographics
+    │   TABLE_TYPE: VIEW
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'SalesOrderHeader SalesPersonID employee current employee active status EndDate HumanResources.Employee current working'})
+    🔧 Tool called -> knowledge_search({'query': 'HumanResources.Employee current employee definition EndDate CurrentFlag SalesPerson BusinessEntityID Person name'})
+    🔧 Tool called -> get_view_definition({'view_name': 'vSalesPerson', 'schema_name': 'Sales'})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 2 ---
+    │ Source: Sales.SalesPerson.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesPerson | - | Sales.SalesTerritory | Sales.SalesPerson.TerritoryID = Sales.SalesTerritory.TerritoryID | FK_SalesPerson_SalesTerritory_TerritoryID Foreign key constraint referencing SalesTerritory.TerritoryID. |
+    │ | Sales.SalesOrderHeader | - | Sales.SalesPerson | Sales.SalesOrderHeader.SalesPersonID = Sales.SalesPerson.BusinessEntityID | FK_SalesOrderHeader_SalesPerson_SalesPersonID Foreign key constraint referencing SalesPerson.SalesPersonID. |
+    │
+    │ --- Document 3 ---
+    │ Source: Sales.SalesOrderHeader.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Sales.SalesPerson | Sales.SalesOrderHeader.SalesPersonID = Sales.SalesPerson.BusinessEntityID | FK_SalesOrderHeader_SalesPerson_SalesPersonID Foreign key constraint referencing SalesPerson.SalesPersonID. |
+    │ | Sales.SalesOrderHeader | - | Sales.SalesTerritory | Sales.SalesOrderHeader.TerritoryID = Sales.SalesTerritory.TerritoryID | FK_SalesOrderHeader_SalesTerritory_TerritoryID Foreign key constraint referencing SalesTerritory.TerritoryID. |
+    │
+    │ --- Document 4 ---
+    │ Source: Person.Address.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Person.Address | Sales.SalesOrderHeader.ShipToAddressID = Person.Address.AddressID | FK_SalesOrderHeader_Address_ShipToAddressID Foreign key constraint referencing Address.AddressID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Sales.SalesOrderHeader.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Person.Address | Sales.SalesOrderHeader.ShipToAddressID = Person.Address.AddressID | FK_SalesOrderHeader_Address_ShipToAddressID Foreign key constraint referencing Address.AddressID. |
+    │ | Sales.SalesOrderHeader | - | Sales.CreditCard | Sales.SalesOrderHeader.CreditCardID = Sales.CreditCard.CreditCardID | FK_SalesOrderHeader_CreditCard_CreditCardID Foreign key constraint referencing CreditCard.CreditCardID. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ | Person.EmailAddress | - | Person.Person | Person.EmailAddress.BusinessEntityID = Person.Person.BusinessEntityID | FK_EmailAddress_Person_BusinessEntityID Foreign key constraint referencing Person.BusinessEntityID. |
+    │ | HumanResources.Employee | - | Person.Person | HumanResources.Employee.BusinessEntityID = Person.Person.BusinessEntityID | FK_Employee_Person_BusinessEntityID Foreign key constraint referencing Person.BusinessEntityID. |
+    │
+    │ --- Document 2 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ | Person.BusinessEntityContact | - | Person.Person | Person.BusinessEntityContact.PersonID = Person.Person.BusinessEntityID | FK_BusinessEntityContact_Person_PersonID Foreign key constraint referencing Person.BusinessEntityID. |
+    │ | Sales.Customer | - | Person.Person | Sales.Customer.PersonID = Person.Person.BusinessEntityID | FK_Customer_Person_PersonID Foreign key constraint referencing Person.BusinessEntityID. |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.EmployeePayHistory | - | HumanResources.Employee | HumanResources.EmployeePayHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeePayHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | Person.BusinessEntity | Primary key for Person records. |
+    │ | - | 2 | - | PersonType | nchar(2) | - | - | - | Primary type of person: SC = Store Contact, IN = Individual (retail) customer, SP = Sales person, EM = Employee (non-sales), VC = Vendor contact, GC = General contact |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_view_definition):
+
+    ╭─── 📄 Get View Definition ─────────────────────
+    │ status: success
+    │ schema_name: Sales
+    │ view_name: vSalesPerson
+    │ definition:
+    │
+    │   CREATE VIEW [Sales].[vSalesPerson]
+    │   AS
+    │   SELECT
+    │       s.[BusinessEntityID]
+    │       ,p.[Title]
+    │       ,p.[FirstName]
+    │       ,p.[MiddleName]
+    │       ,p.[LastName]
+    │       ,p.[Suffix]
+    │       ,e.[JobTitle]
+    │       ,pp.[PhoneNumber]
+    │           ,pnt.[Name] AS [PhoneNumberType]
+    │       ,ea.[EmailAddress]
+    │       ,p.[EmailPromotion]
+    │       ,a.[AddressLine1]
+    │       ,a.[AddressLine2]
+    │       ,a.[City]
+    │       ,[StateProvinceName] = sp.[Name]
+    │       ,a.[PostalCode]
+    │       ,[CountryRegionName] = cr.[Name]
+    │       ,[TerritoryName] = st.[Name]
+    │       ,[TerritoryGroup] = st.[Group]
+    │       ,s.[SalesQuota]
+    │       ,s.[SalesYTD]
+    │       ,s.[SalesLastYear]
+    │   FROM [Sales].[SalesPerson] s
+    │       INNER JOIN [HumanResources].[Employee] e
+    │       ON e.[BusinessEntityID] = s.[BusinessEntityID]
+    │           INNER JOIN [Person].[Person] p
+    │           ON p.[BusinessEntityID] = s.[BusinessEntityID]
+    │       INNER JOIN [Person].[BusinessEntityAddress] bea
+    │       ON bea.[BusinessEntityID] = s.[BusinessEntityID]
+    │       INNER JOIN [Person].[Address] a
+    │       ON a.[AddressID] = bea.[AddressID]
+    │       INNER JOIN [Person].[StateProvince] sp
+    │       ON sp.[StateProvinceID] = a.[StateProvinceID]
+    │       INNER JOIN [Person].[CountryRegion] cr
+    │       ON cr.[CountryRegionCode] = sp.[CountryRegionCode]
+    │       LEFT OUTER JOIN [Sales].[SalesTerritory] st
+    │       ON st.[TerritoryID] = s.[TerritoryID]
+    │           LEFT OUTER JOIN [Person].[EmailAddress] ea
+    │           ON ea.[BusinessEntityID] = p.[BusinessEntityID]
+    │           LEFT OUTER JOIN [Person].[PersonPhone] pp
+    │           ON pp.[BusinessEntityID] = p.[BusinessEntityID]
+    │           LEFT OUTER JOIN [Person].[PhoneNumberType] pnt
+    │           ON pnt.[PhoneNumberTypeID] = pp.[PhoneNumberTypeID];
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'HumanResources.Employee columns CurrentFlag EndDate active employee'})
+    🔧 Tool called -> knowledge_search({'query': 'EmployeeDepartmentHistory EndDate current department currently working EndDate null'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'EmployeeDepartmentHistory', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | - | 12 | - | VacationHours | smallint | - | Default: 0 | - | Number of available vacation hours. |
+    │ | - | 13 | - | SickLeaveHours | smallint | - | Default: 0 | - | Number of available sick leave hours. |
+    │ | - | 14 | - | CurrentFlag | bit | - | Default: 1 | - | 0 = Inactive, 1 = Active |
+    │ | - | 15 | - | rowguid | uniqueidentifier | - | Default: newid() | - | ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.Employee | - | HumanResources.Shift | - | zzz zxczxc |
+    │ | HumanResources.Employee | - | HumanResources.vEmployeeDepartment | - | qqq asdasda |
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | HumanResources.Employee | Employee identification number. Foreign key to Employee.BusinessEntityID. |
+    │ | - | 2 | - | DepartmentID | smallint | - | - | HumanResources.Department | Department in which the employee worked including currently. Foreign key to Department.DepartmentID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | ShiftID | tinyint | - | - | HumanResources.Shift | Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID. |
+    │ | - | 4 | - | StartDate | date | - | - | - | Date the employee started work in the department. |
+    │ | - | 5 | - | EndDate | date | - | - | - | Date the employee left the department. NULL = Current department. |
+    │ | - | 6 | - | ModifiedDate | datetime | - | Default: getdate() | - | Date and time the record was last updated. |
+    │
+    │ --- Document 5 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | ShiftID | tinyint | - | - | HumanResources.Shift | Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID. |
+    │ | - | 4 | - | StartDate | date | - | - | - | Date the employee started work in the department. |
+    │ | - | 5 | - | EndDate | date | - | - | - | Date the employee left the department. NULL = Current department. |
+    │ | - | 6 | - | ModifiedDate | datetime | - | Default: getdate() | - | Date and time the record was last updated. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Shift.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.vEmployeeDepartmentHistory | - | HumanResources.Shift | HumanResources.vEmployeeDepartmentHistory.Title = HumanResources.Shift.Name | fk_Shift_vEmployeeDepartmentHistory xcbxcvbxcvbbvbvb |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.Employee | - | HumanResources.Shift | - | zzz zxczxc |
+    │ | HumanResources.Employee | - | HumanResources.vEmployeeDepartment | - | qqq asdasda |
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Production.WorkOrder.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | OrderQty | int | - | - | - | Product quantity to build. |
+    │ | - | 4 | - | StockedQty | int | - | Computed: isnull([OrderQty]-[ScrappedQty],(0)) | - | Quantity built and put in inventory. |
+    │ | - | 5 | - | ScrappedQty | smallint | - | - | - | Quantity that failed inspection. |
+    │ | - | 6 | - | StartDate | datetime | - | - | - | Work order start date. |
+    │ | - | 7 | - | EndDate | datetime | - | - | - | Work order end date. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │ status: error
+    │ error_message: ('ODBC SQL type -151 is not yet supported.  column-index=3  type=-151', 'HY106')
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │   BusinessEntityID: 1
+    │   DepartmentID: 16
+    │   ShiftID: 1
+    │   StartDate: 2009-01-14
+    │   EndDate: None
+    │   ModifiedDate: 2009-01-13 00:00:00
+    │   BusinessEntityID: 2
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2008-01-31
+    │   EndDate: None
+    │   ModifiedDate: 2008-01-30 00:00:00
+    │   BusinessEntityID: 3
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2007-11-11
+    │   EndDate: None
+    │   ModifiedDate: 2007-11-10 00:00:00
+    │   BusinessEntityID: 4
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2007-12-05
+    │   EndDate: 2010-05-30
+    │   ModifiedDate: 2010-05-28 00:00:00
+    │   BusinessEntityID: 4
+    │   DepartmentID: 2
+    │   ShiftID: 1
+    │   StartDate: 2010-05-31
+    │   EndDate: None
+    │   ModifiedDate: 2010-05-30 00:00:00
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │   SalesOrderID: 43659
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43659
+    │   PurchaseOrderNumber: PO522145787
+    │   AccountNumber: 10-4020-000676
+    │   CustomerID: 29825
+    │   SalesPersonID: 279
+    │   TerritoryID: 5
+    │   BillToAddressID: 985
+    │   ShipToAddressID: 985
+    │   ShipMethodID: 5
+    │   CreditCardID: 16281
+    │   CreditCardApprovalCode: 105041Vi84182
+    │   CurrencyRateID: None
+    │   SubTotal: 20565.6206
+    │   TaxAmt: 1971.5149
+    │   Freight: 616.0984
+    │   TotalDue: 23153.2339
+    │   Comment: None
+    │   rowguid: 79B65321-39CA-4115-9CBA-8FE0903E12E6
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43660
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43660
+    │   PurchaseOrderNumber: PO18850127500
+    │   AccountNumber: 10-4020-000117
+    │   CustomerID: 29672
+    │   SalesPersonID: 279
+    │   TerritoryID: 5
+    │   BillToAddressID: 921
+    │   ShipToAddressID: 921
+    │   ShipMethodID: 5
+    │   CreditCardID: 5618
+    │   CreditCardApprovalCode: 115213Vi29411
+    │   CurrencyRateID: None
+    │   SubTotal: 1294.2529
+    │   TaxAmt: 124.2483
+    │   Freight: 38.8276
+    │   TotalDue: 1457.3288
+    │   Comment: None
+    │   rowguid: 738DC42D-D03B-48A1-9822-F95A67EA7389
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43661
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43661
+    │   PurchaseOrderNumber: PO18473189620
+    │   AccountNumber: 10-4020-000442
+    │   CustomerID: 29734
+    │   SalesPersonID: 282
+    │   TerritoryID: 6
+    │   BillToAddressID: 517
+    │   ShipToAddressID: 517
+    │   ShipMethodID: 5
+    │   CreditCardID: 1346
+    │   CreditCardApprovalCode: 85274Vi6854
+    │   CurrencyRateID: 4
+    │   SubTotal: 32726.4786
+    │   TaxAmt: 3153.7696
+    │   Freight: 985.5530
+    │   TotalDue: 36865.8012
+    │   Comment: None
+    │   rowguid: D91B9131-18A4-4A11-BC3A-90B6F53E9D74
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43662
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43662
+    │   PurchaseOrderNumber: PO18444174044
+    │   AccountNumber: 10-4020-000227
+    │   CustomerID: 29994
+    │   SalesPersonID: 282
+    │   TerritoryID: 6
+    │   BillToAddressID: 482
+    │   ShipToAddressID: 482
+    │   ShipMethodID: 5
+    │   CreditCardID: 10456
+    │   CreditCardApprovalCode: 125295Vi53935
+    │   CurrencyRateID: 4
+    │   SubTotal: 28832.5289
+    │   TaxAmt: 2775.1646
+    │   Freight: 867.2389
+    │   TotalDue: 32474.9324
+    │   Comment: None
+    │   rowguid: 4A1ECFC0-CC3A-4740-B028-1C50BB48711C
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43663
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43663
+    │   PurchaseOrderNumber: PO18009186470
+    │   AccountNumber: 10-4020-000510
+    │   CustomerID: 29565
+    │   SalesPersonID: 276
+    │   TerritoryID: 4
+    │   BillToAddressID: 1073
+    │   ShipToAddressID: 1073
+    │   ShipMethodID: 5
+    │   CreditCardID: 4322
+    │   CreditCardApprovalCode: 45303Vi22691
+    │   CurrencyRateID: None
+    │   SubTotal: 419.4589
+    │   TaxAmt: 40.2681
+    │   Freight: 12.5838
+    │   TotalDue: 472.3108
+    │   Comment: None
+    │   rowguid: 9B1E7A40-6AE0-4AD3-811C-A64951857C4B
+    │   ModifiedDate: 2011-06-07 00:00:00
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ title: Identify the currently active employee with the highest sales amount
+    │ requirements:
+    │   - Use Sales.SalesOrderHeader as the transactional source for sales and HumanResources.Employee as the source of employee employment status.
+    │   - Restrict the population to employees who are currently working in the company by filtering HumanResources.Employee.CurrentFlag = 1. Do not infer current employment only from department history if CurrentFlag is available.
+    │   - Link sales to employees through Sales.SalesOrderHeader.SalesPersonID = HumanResources.Employee.BusinessEntityID. Note that only employees who are also salespeople will have matching sales records.
+    │   - Use Person.Person to retrieve the employee's human-readable name via Person.Person.BusinessEntityID = HumanResources.Employee.BusinessEntityID.
+    │   - Aggregate sales by employee and calculate total sales amount using Sales.SalesOrderHeader.TotalDue as the sales amount, unless the business explicitly wants pre-tax/pre-freight revenue; based on the request wording, total sales amount should default to TotalDue because it represents the full order amount available in the sales header.
+    │   - Exclude rows where SalesOrderHeader.SalesPersonID is null, since those orders are not attributable to a salesperson.
+    │   - Return only the top employee by aggregated sales amount across all available data, sorted descending by the calculated total sales.
+    │   - Include at minimum these business output fields: employee identifier, employee full name, and aggregated sales amount.
+    │   - Handle ties deterministically. If multiple active employees have the same highest aggregated sales, either return all tied employees or apply a secondary stable sort by employee identifier ascending. Preferred default: return the single row with the lowest BusinessEntityID among tied highest totals unless the reporting requirement is to show all ties.
+    │   - Treat null sales amounts as zero during aggregation if encountered, although SalesOrderHeader.TotalDue is expected to be populated.
+    │   - Do not use Sales.SalesPerson.SalesYTD for this request because it is a pre-aggregated attribute and may not represent the full historical sales total in the same way as summing order-level sales records.
+    │ acceptance_criteria:
+    │   - The result includes only employees with HumanResources.Employee.CurrentFlag = 1.
+    │   - The calculation uses sales orders assigned to a salesperson through Sales.SalesOrderHeader.SalesPersonID.
+    │   - Orders with null SalesPersonID are excluded from the aggregation.
+    │   - The employee name is sourced from Person.Person and is readable in the final output.
+    │   - The sales metric is aggregated at employee level using Sales.SalesOrderHeader.TotalDue.
+    │   - The final result returns exactly one top employee unless tie-handling is explicitly changed to return all ties.
+    │   - The returned employee has the maximum aggregated sales amount among all currently active employees with attributable sales.
+    │   - If two employees share the same maximum total sales and single-row output is used, the tie is resolved consistently using the lowest employee identifier.
+    │ estimated_complexity: simple
+    ╰──────────────────────────────────────────────
+
+
+============================================================
+ ⏸️  ACTION REQUIRES APPROVAL (HITL)
+============================================================
+
+System: Please review the Planner's Output. Type 'APPROVED' to accept, or provide feedback about what to change.
+Your Feedback: APPROVED
+    🔧 Tool called -> get_table_structure({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_table_structure({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    🔧 Tool called -> get_table_structure({'table_name': 'Person', 'schema_name': 'Person'})
+    🔧 Tool called -> get_table_structure({'table_name': 'SalesPerson', 'schema_name': 'Sales'})
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: SalesOrderID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: RevisionNumber
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OrderDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: DueDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ShipDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Status
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OnlineOrderFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalesOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: PurchaseOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: AccountNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CustomerID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SalesPersonID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: TerritoryID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: BillToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipMethodID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardApprovalCode
+    │   DATA_TYPE: varchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CurrencyRateID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SubTotal
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TaxAmt
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Freight
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TotalDue
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Comment
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 128
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: TerritoryID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SalesQuota
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Bonus
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: CommissionPct
+    │   DATA_TYPE: smallmoney
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: SalesYTD
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: SalesLastYear
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: NationalIDNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LoginID
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 256
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationNode
+    │   DATA_TYPE: hierarchyid
+    │   MAX_LENGTH: 892
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationLevel
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: JobTitle
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: BirthDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MaritalStatus
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Gender
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: HireDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalariedFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: VacationHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SickLeaveHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CurrentFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: PersonType
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 2
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: NameStyle
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Title
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 8
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: FirstName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MiddleName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LastName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Suffix
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 10
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: EmailPromotion
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: AdditionalContactInfo
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Demographics
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> execute_sql_query({'query': "WITH ActiveEmployees AS\n(\n    SELECT e.BusinessEntityID,\n           p.FirstName,\n           p.MiddleName,\n           p.LastName,\n           p.Suffix\n    FROM HumanResources.Employee AS e\n    INNER JOIN Person.Person AS p\n        ON p.BusinessEntityID = e.BusinessEntityID\n    WHE...)
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   EmployeeID: 276
+    │   EmployeeFullName: Linda C Mitchell
+    │   TotalSalesAmount: 11695019.0605
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ source_code:
+    │   WITH ActiveEmployees AS
+    │   (
+    │       -- Currently working employees
+    │       SELECT
+    │           e.BusinessEntityID,
+    │           p.FirstName,
+    │           p.MiddleName,
+    │           p.LastName,
+    │           p.Suffix
+    │       FROM HumanResources.Employee AS e
+    │       INNER JOIN Person.Person AS p
+    │           ON p.BusinessEntityID = e.BusinessEntityID
+    │       WHERE e.CurrentFlag = 1
+    │   ),
+    │   SalesByEmployee AS
+    │   (
+    │       -- Aggregate total sales per active employee (salesperson)
+    │       SELECT
+    │           ae.BusinessEntityID AS EmployeeID,
+    │           LTRIM(RTRIM(
+    │               COALESCE(ae.FirstName, '') +
+    │               CASE WHEN ae.MiddleName IS NULL OR ae.MiddleName = '' THEN '' ELSE ' ' + ae.MiddleName END +
+    │               ' ' + COALESCE(ae.LastName, '')
+    │           )) AS EmployeeFullName,
+    │           SUM(COALESCE(soh.TotalDue, 0)) AS TotalSalesAmount
+    │       FROM ActiveEmployees AS ae
+    │       INNER JOIN Sales.SalesOrderHeader AS soh
+    │           ON soh.SalesPersonID = ae.BusinessEntityID -- salesperson == employee
+    │       WHERE soh.SalesPersonID IS NOT NULL -- defensive: only attribute attributable orders
+    │       GROUP BY
+    │           ae.BusinessEntityID,
+    │           ae.FirstName,
+    │           ae.MiddleName,
+    │           ae.LastName
+    │   ),
+    │   Ranked AS
+    │   (
+    │       SELECT
+    │           sbe.EmployeeID,
+    │           sbe.EmployeeFullName,
+    │           sbe.TotalSalesAmount,
+    │           ROW_NUMBER() OVER
+    │           (
+    │               ORDER BY sbe.TotalSalesAmount DESC, sbe.EmployeeID ASC -- deterministic tie-breaker
+    │           ) AS rn
+    │       FROM SalesByEmployee AS sbe
+    │   )
+    │   SELECT
+    │       r.EmployeeID,
+    │       r.EmployeeFullName,
+    │       r.TotalSalesAmount
+    │   FROM Ranked AS r
+    │   WHERE r.rn = 1;
+    │ description: Filters HumanResources.Employee to currently active employees (CurrentFlag=1), joins them to Person.Person to build a readable employee name, aggregates sales per employee by joining Sales.SalesOrderHeader on SalesPersonID = BusinessEntityID and summing SalesOrderHeader.TotalDue, then selects the single top employee by sorting TotalSalesAmount DESC with a deterministic tie-break on EmployeeID ASC using ROW_NUMBER().
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'employee sales currently working company active employee sales tables metric DWH'})
+    🔧 Tool called -> list_schemas_and_tables({})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | HumanResources.Employee | Employee identification number. Foreign key to Employee.BusinessEntityID. |
+    │ | - | 2 | - | DepartmentID | smallint | - | - | HumanResources.Department | Department in which the employee worked including currently. Foreign key to Department.DepartmentID. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | LoginID | nvarchar(256) | - | - | - | Network login. Test2 |
+    │ | - | 4 | - | OrganizationNode | hierarchyid | - | - | - | Where the employee is located in corporate hierarchy. |
+    │ | - | 5 | - | OrganizationLevel | smallint | - | Computed: [OrganizationNode].[GetLevel]() | - | The depth of the employee in the corporate hierarchy. |
+    │ | - | 6 | - | JobTitle | nvarchar(50) | - | - | - | Work title such as Buyer or Sales Representative. |
+    │
+    │ --- Document 3 ---
+    │ Source: SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf (Page: 6)
+    │ Content:
+    │ WITH SalesCTE AS (              SELECT salesperson_id, SUM(sales_amount) AS total_sales              FROM sales GROUP BY salesperson_id )
+    │ SELECT salesperson_id, total_sales FROM SalesCTE WHERE total_sales > 5000;
+    │ POWERED BY
+    │ SELECT * FROM orders oWHERE EXISTS (SELECT 1 FROM customers c WHERE c.customer_id = o.customer_id AND c
+    │ POWERED BY
+    │ SELECT DISTINCT city FROM customers;
+    │ POWERED BY
+    │ SELECT city FROM customers GROUP BY city;
+    │ POWERED BY
+    │
+    │ --- Document 4 ---
+    │ Source: https://www.youtube.com/watch?v=O7AzUDogXsw (Page: Unknown)
+    │ Content:
+    │ and equal to as well product key now after that we're going to go and aggregate few stuff so we're going to aggregate by the product name so I'm going to take the product name so it's going to be the English product name and let's go and call it product name and let's go and aggregate the sales so sum and we're going to get it from the fact table it's going to be sales amount so as total sales and of course we have to go and do groupy and not the French name it's going to be the English name so
+    │
+    │ --- Document 5 ---
+    │ Source: Sales.SalesPerson.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | SalesQuota | money | - | - | - | Projected yearly sales. |
+    │ | - | 4 | - | Bonus | money | - | Default: 0.00 | - | Bonus due if quota is met. |
+    │ | - | 5 | - | CommissionPct | smallmoney | - | Default: 0.00 | - | Commision percent received per sale. |
+    │ | - | 6 | - | SalesYTD | money | - | Default: 0.00 | - | Sales total year to date. |
+    │ | - | 7 | - | SalesLastYear | money | - | Default: 0.00 | - | Sales total of previous year. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (list_schemas_and_tables):
+
+    ╭─── 📄 List Schemas And Tables ─────────────────
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: AWBuildVersion
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: DatabaseLog
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: ErrorLog
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Department
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Employee
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: EmployeeDepartmentHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: EmployeePayHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: JobCandidate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Shift
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployee
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployeeDepartment
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployeeDepartmentHistory
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidate
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidateEducation
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidateEmployment
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Address
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: AddressType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntity
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntityAddress
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntityContact
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: ContactType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: CountryRegion
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: EmailAddress
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Password
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Person
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: PersonPhone
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: PhoneNumberType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: StateProvince
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: vAdditionalContactInfo
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: vStateProvinceCountryRegion
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: BillOfMaterials
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Culture
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Document
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Illustration
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Location
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Product
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductCategory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductCostHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductDescription
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductDocument
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductInventory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductListPriceHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModel
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModelIllustration
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModelProductDescriptionCulture
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductPhoto
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductProductPhoto
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductReview
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductSubcategory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ScrapReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: TransactionHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: TransactionHistoryArchive
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: UnitMeasure
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductAndDescription
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductModelCatalogDescription
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductModelInstructions
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: WorkOrder
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: WorkOrderRouting
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: ProductVendor
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: PurchaseOrderDetail
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: PurchaseOrderHeader
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: ShipMethod
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: Vendor
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: vVendorWithAddresses
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: vVendorWithContacts
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CountryRegionCurrency
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CreditCard
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Currency
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CurrencyRate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Customer
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: PersonCreditCard
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderDetail
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderHeader
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderHeaderSalesReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesPerson
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesPersonQuotaHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTaxRate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTerritory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTerritoryHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: ShoppingCartItem
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SpecialOffer
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SpecialOfferProduct
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Store
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vIndividualCustomer
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vPersonDemographics
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vSalesPerson
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vSalesPersonSalesByFiscalYears
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithAddresses
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithContacts
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithDemographics
+    │   TABLE_TYPE: VIEW
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'SalesOrderHeader SalesPersonID employee current employee active status EndDate HumanResources.Employee current working'})
+    🔧 Tool called -> knowledge_search({'query': 'HumanResources.Employee current employee definition EndDate CurrentFlag SalesPerson BusinessEntityID Person name'})
+    🔧 Tool called -> get_view_definition({'view_name': 'vSalesPerson', 'schema_name': 'Sales'})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 2 ---
+    │ Source: Sales.SalesPerson.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesPerson | - | Sales.SalesTerritory | Sales.SalesPerson.TerritoryID = Sales.SalesTerritory.TerritoryID | FK_SalesPerson_SalesTerritory_TerritoryID Foreign key constraint referencing SalesTerritory.TerritoryID. |
+    │ | Sales.SalesOrderHeader | - | Sales.SalesPerson | Sales.SalesOrderHeader.SalesPersonID = Sales.SalesPerson.BusinessEntityID | FK_SalesOrderHeader_SalesPerson_SalesPersonID Foreign key constraint referencing SalesPerson.SalesPersonID. |
+    │
+    │ --- Document 3 ---
+    │ Source: Sales.SalesOrderHeader.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Sales.SalesPerson | Sales.SalesOrderHeader.SalesPersonID = Sales.SalesPerson.BusinessEntityID | FK_SalesOrderHeader_SalesPerson_SalesPersonID Foreign key constraint referencing SalesPerson.SalesPersonID. |
+    │ | Sales.SalesOrderHeader | - | Sales.SalesTerritory | Sales.SalesOrderHeader.TerritoryID = Sales.SalesTerritory.TerritoryID | FK_SalesOrderHeader_SalesTerritory_TerritoryID Foreign key constraint referencing SalesTerritory.TerritoryID. |
+    │
+    │ --- Document 4 ---
+    │ Source: Person.Address.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Person.Address | Sales.SalesOrderHeader.ShipToAddressID = Person.Address.AddressID | FK_SalesOrderHeader_Address_ShipToAddressID Foreign key constraint referencing Address.AddressID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Sales.SalesOrderHeader.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Person.Address | Sales.SalesOrderHeader.ShipToAddressID = Person.Address.AddressID | FK_SalesOrderHeader_Address_ShipToAddressID Foreign key constraint referencing Address.AddressID. |
+    │ | Sales.SalesOrderHeader | - | Sales.CreditCard | Sales.SalesOrderHeader.CreditCardID = Sales.CreditCard.CreditCardID | FK_SalesOrderHeader_CreditCard_CreditCardID Foreign key constraint referencing CreditCard.CreditCardID. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ | Person.EmailAddress | - | Person.Person | Person.EmailAddress.BusinessEntityID = Person.Person.BusinessEntityID | FK_EmailAddress_Person_BusinessEntityID Foreign key constraint referencing Person.BusinessEntityID. |
+    │ | HumanResources.Employee | - | Person.Person | HumanResources.Employee.BusinessEntityID = Person.Person.BusinessEntityID | FK_Employee_Person_BusinessEntityID Foreign key constraint referencing Person.BusinessEntityID. |
+    │
+    │ --- Document 2 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ | Person.BusinessEntityContact | - | Person.Person | Person.BusinessEntityContact.PersonID = Person.Person.BusinessEntityID | FK_BusinessEntityContact_Person_PersonID Foreign key constraint referencing Person.BusinessEntityID. |
+    │ | Sales.Customer | - | Person.Person | Sales.Customer.PersonID = Person.Person.BusinessEntityID | FK_Customer_Person_PersonID Foreign key constraint referencing Person.BusinessEntityID. |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.EmployeePayHistory | - | HumanResources.Employee | HumanResources.EmployeePayHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeePayHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | Person.BusinessEntity | Primary key for Person records. |
+    │ | - | 2 | - | PersonType | nchar(2) | - | - | - | Primary type of person: SC = Store Contact, IN = Individual (retail) customer, SP = Sales person, EM = Employee (non-sales), VC = Vendor contact, GC = General contact |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_view_definition):
+
+    ╭─── 📄 Get View Definition ─────────────────────
+    │ status: success
+    │ schema_name: Sales
+    │ view_name: vSalesPerson
+    │ definition:
+    │
+    │   CREATE VIEW [Sales].[vSalesPerson]
+    │   AS
+    │   SELECT
+    │       s.[BusinessEntityID]
+    │       ,p.[Title]
+    │       ,p.[FirstName]
+    │       ,p.[MiddleName]
+    │       ,p.[LastName]
+    │       ,p.[Suffix]
+    │       ,e.[JobTitle]
+    │       ,pp.[PhoneNumber]
+    │           ,pnt.[Name] AS [PhoneNumberType]
+    │       ,ea.[EmailAddress]
+    │       ,p.[EmailPromotion]
+    │       ,a.[AddressLine1]
+    │       ,a.[AddressLine2]
+    │       ,a.[City]
+    │       ,[StateProvinceName] = sp.[Name]
+    │       ,a.[PostalCode]
+    │       ,[CountryRegionName] = cr.[Name]
+    │       ,[TerritoryName] = st.[Name]
+    │       ,[TerritoryGroup] = st.[Group]
+    │       ,s.[SalesQuota]
+    │       ,s.[SalesYTD]
+    │       ,s.[SalesLastYear]
+    │   FROM [Sales].[SalesPerson] s
+    │       INNER JOIN [HumanResources].[Employee] e
+    │       ON e.[BusinessEntityID] = s.[BusinessEntityID]
+    │           INNER JOIN [Person].[Person] p
+    │           ON p.[BusinessEntityID] = s.[BusinessEntityID]
+    │       INNER JOIN [Person].[BusinessEntityAddress] bea
+    │       ON bea.[BusinessEntityID] = s.[BusinessEntityID]
+    │       INNER JOIN [Person].[Address] a
+    │       ON a.[AddressID] = bea.[AddressID]
+    │       INNER JOIN [Person].[StateProvince] sp
+    │       ON sp.[StateProvinceID] = a.[StateProvinceID]
+    │       INNER JOIN [Person].[CountryRegion] cr
+    │       ON cr.[CountryRegionCode] = sp.[CountryRegionCode]
+    │       LEFT OUTER JOIN [Sales].[SalesTerritory] st
+    │       ON st.[TerritoryID] = s.[TerritoryID]
+    │           LEFT OUTER JOIN [Person].[EmailAddress] ea
+    │           ON ea.[BusinessEntityID] = p.[BusinessEntityID]
+    │           LEFT OUTER JOIN [Person].[PersonPhone] pp
+    │           ON pp.[BusinessEntityID] = p.[BusinessEntityID]
+    │           LEFT OUTER JOIN [Person].[PhoneNumberType] pnt
+    │           ON pnt.[PhoneNumberTypeID] = pp.[PhoneNumberTypeID];
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'HumanResources.Employee columns CurrentFlag EndDate active employee'})
+    🔧 Tool called -> knowledge_search({'query': 'EmployeeDepartmentHistory EndDate current department currently working EndDate null'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'EmployeeDepartmentHistory', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | - | 12 | - | VacationHours | smallint | - | Default: 0 | - | Number of available vacation hours. |
+    │ | - | 13 | - | SickLeaveHours | smallint | - | Default: 0 | - | Number of available sick leave hours. |
+    │ | - | 14 | - | CurrentFlag | bit | - | Default: 1 | - | 0 = Inactive, 1 = Active |
+    │ | - | 15 | - | rowguid | uniqueidentifier | - | Default: newid() | - | ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.Employee | - | HumanResources.Shift | - | zzz zxczxc |
+    │ | HumanResources.Employee | - | HumanResources.vEmployeeDepartment | - | qqq asdasda |
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | HumanResources.Employee | Employee identification number. Foreign key to Employee.BusinessEntityID. |
+    │ | - | 2 | - | DepartmentID | smallint | - | - | HumanResources.Department | Department in which the employee worked including currently. Foreign key to Department.DepartmentID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | ShiftID | tinyint | - | - | HumanResources.Shift | Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID. |
+    │ | - | 4 | - | StartDate | date | - | - | - | Date the employee started work in the department. |
+    │ | - | 5 | - | EndDate | date | - | - | - | Date the employee left the department. NULL = Current department. |
+    │ | - | 6 | - | ModifiedDate | datetime | - | Default: getdate() | - | Date and time the record was last updated. |
+    │
+    │ --- Document 5 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | ShiftID | tinyint | - | - | HumanResources.Shift | Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID. |
+    │ | - | 4 | - | StartDate | date | - | - | - | Date the employee started work in the department. |
+    │ | - | 5 | - | EndDate | date | - | - | - | Date the employee left the department. NULL = Current department. |
+    │ | - | 6 | - | ModifiedDate | datetime | - | Default: getdate() | - | Date and time the record was last updated. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Shift.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.vEmployeeDepartmentHistory | - | HumanResources.Shift | HumanResources.vEmployeeDepartmentHistory.Title = HumanResources.Shift.Name | fk_Shift_vEmployeeDepartmentHistory xcbxcvbxcvbbvbvb |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.Employee | - | HumanResources.Shift | - | zzz zxczxc |
+    │ | HumanResources.Employee | - | HumanResources.vEmployeeDepartment | - | qqq asdasda |
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Production.WorkOrder.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | OrderQty | int | - | - | - | Product quantity to build. |
+    │ | - | 4 | - | StockedQty | int | - | Computed: isnull([OrderQty]-[ScrappedQty],(0)) | - | Quantity built and put in inventory. |
+    │ | - | 5 | - | ScrappedQty | smallint | - | - | - | Quantity that failed inspection. |
+    │ | - | 6 | - | StartDate | datetime | - | - | - | Work order start date. |
+    │ | - | 7 | - | EndDate | datetime | - | - | - | Work order end date. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │ status: error
+    │ error_message: ('ODBC SQL type -151 is not yet supported.  column-index=3  type=-151', 'HY106')
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │   BusinessEntityID: 1
+    │   DepartmentID: 16
+    │   ShiftID: 1
+    │   StartDate: 2009-01-14
+    │   EndDate: None
+    │   ModifiedDate: 2009-01-13 00:00:00
+    │   BusinessEntityID: 2
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2008-01-31
+    │   EndDate: None
+    │   ModifiedDate: 2008-01-30 00:00:00
+    │   BusinessEntityID: 3
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2007-11-11
+    │   EndDate: None
+    │   ModifiedDate: 2007-11-10 00:00:00
+    │   BusinessEntityID: 4
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2007-12-05
+    │   EndDate: 2010-05-30
+    │   ModifiedDate: 2010-05-28 00:00:00
+    │   BusinessEntityID: 4
+    │   DepartmentID: 2
+    │   ShiftID: 1
+    │   StartDate: 2010-05-31
+    │   EndDate: None
+    │   ModifiedDate: 2010-05-30 00:00:00
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │   SalesOrderID: 43659
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43659
+    │   PurchaseOrderNumber: PO522145787
+    │   AccountNumber: 10-4020-000676
+    │   CustomerID: 29825
+    │   SalesPersonID: 279
+    │   TerritoryID: 5
+    │   BillToAddressID: 985
+    │   ShipToAddressID: 985
+    │   ShipMethodID: 5
+    │   CreditCardID: 16281
+    │   CreditCardApprovalCode: 105041Vi84182
+    │   CurrencyRateID: None
+    │   SubTotal: 20565.6206
+    │   TaxAmt: 1971.5149
+    │   Freight: 616.0984
+    │   TotalDue: 23153.2339
+    │   Comment: None
+    │   rowguid: 79B65321-39CA-4115-9CBA-8FE0903E12E6
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43660
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43660
+    │   PurchaseOrderNumber: PO18850127500
+    │   AccountNumber: 10-4020-000117
+    │   CustomerID: 29672
+    │   SalesPersonID: 279
+    │   TerritoryID: 5
+    │   BillToAddressID: 921
+    │   ShipToAddressID: 921
+    │   ShipMethodID: 5
+    │   CreditCardID: 5618
+    │   CreditCardApprovalCode: 115213Vi29411
+    │   CurrencyRateID: None
+    │   SubTotal: 1294.2529
+    │   TaxAmt: 124.2483
+    │   Freight: 38.8276
+    │   TotalDue: 1457.3288
+    │   Comment: None
+    │   rowguid: 738DC42D-D03B-48A1-9822-F95A67EA7389
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43661
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43661
+    │   PurchaseOrderNumber: PO18473189620
+    │   AccountNumber: 10-4020-000442
+    │   CustomerID: 29734
+    │   SalesPersonID: 282
+    │   TerritoryID: 6
+    │   BillToAddressID: 517
+    │   ShipToAddressID: 517
+    │   ShipMethodID: 5
+    │   CreditCardID: 1346
+    │   CreditCardApprovalCode: 85274Vi6854
+    │   CurrencyRateID: 4
+    │   SubTotal: 32726.4786
+    │   TaxAmt: 3153.7696
+    │   Freight: 985.5530
+    │   TotalDue: 36865.8012
+    │   Comment: None
+    │   rowguid: D91B9131-18A4-4A11-BC3A-90B6F53E9D74
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43662
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43662
+    │   PurchaseOrderNumber: PO18444174044
+    │   AccountNumber: 10-4020-000227
+    │   CustomerID: 29994
+    │   SalesPersonID: 282
+    │   TerritoryID: 6
+    │   BillToAddressID: 482
+    │   ShipToAddressID: 482
+    │   ShipMethodID: 5
+    │   CreditCardID: 10456
+    │   CreditCardApprovalCode: 125295Vi53935
+    │   CurrencyRateID: 4
+    │   SubTotal: 28832.5289
+    │   TaxAmt: 2775.1646
+    │   Freight: 867.2389
+    │   TotalDue: 32474.9324
+    │   Comment: None
+    │   rowguid: 4A1ECFC0-CC3A-4740-B028-1C50BB48711C
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43663
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43663
+    │   PurchaseOrderNumber: PO18009186470
+    │   AccountNumber: 10-4020-000510
+    │   CustomerID: 29565
+    │   SalesPersonID: 276
+    │   TerritoryID: 4
+    │   BillToAddressID: 1073
+    │   ShipToAddressID: 1073
+    │   ShipMethodID: 5
+    │   CreditCardID: 4322
+    │   CreditCardApprovalCode: 45303Vi22691
+    │   CurrencyRateID: None
+    │   SubTotal: 419.4589
+    │   TaxAmt: 40.2681
+    │   Freight: 12.5838
+    │   TotalDue: 472.3108
+    │   Comment: None
+    │   rowguid: 9B1E7A40-6AE0-4AD3-811C-A64951857C4B
+    │   ModifiedDate: 2011-06-07 00:00:00
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ title: Identify the currently active employee with the highest sales amount
+    │ requirements:
+    │   - Use Sales.SalesOrderHeader as the transactional source for sales and HumanResources.Employee as the source of employee employment status.
+    │   - Restrict the population to employees who are currently working in the company by filtering HumanResources.Employee.CurrentFlag = 1. Do not infer current employment only from department history if CurrentFlag is available.
+    │   - Link sales to employees through Sales.SalesOrderHeader.SalesPersonID = HumanResources.Employee.BusinessEntityID. Note that only employees who are also salespeople will have matching sales records.
+    │   - Use Person.Person to retrieve the employee's human-readable name via Person.Person.BusinessEntityID = HumanResources.Employee.BusinessEntityID.
+    │   - Aggregate sales by employee and calculate total sales amount using Sales.SalesOrderHeader.TotalDue as the sales amount, unless the business explicitly wants pre-tax/pre-freight revenue; based on the request wording, total sales amount should default to TotalDue because it represents the full order amount available in the sales header.
+    │   - Exclude rows where SalesOrderHeader.SalesPersonID is null, since those orders are not attributable to a salesperson.
+    │   - Return only the top employee by aggregated sales amount across all available data, sorted descending by the calculated total sales.
+    │   - Include at minimum these business output fields: employee identifier, employee full name, and aggregated sales amount.
+    │   - Handle ties deterministically. If multiple active employees have the same highest aggregated sales, either return all tied employees or apply a secondary stable sort by employee identifier ascending. Preferred default: return the single row with the lowest BusinessEntityID among tied highest totals unless the reporting requirement is to show all ties.
+    │   - Treat null sales amounts as zero during aggregation if encountered, although SalesOrderHeader.TotalDue is expected to be populated.
+    │   - Do not use Sales.SalesPerson.SalesYTD for this request because it is a pre-aggregated attribute and may not represent the full historical sales total in the same way as summing order-level sales records.
+    │ acceptance_criteria:
+    │   - The result includes only employees with HumanResources.Employee.CurrentFlag = 1.
+    │   - The calculation uses sales orders assigned to a salesperson through Sales.SalesOrderHeader.SalesPersonID.
+    │   - Orders with null SalesPersonID are excluded from the aggregation.
+    │   - The employee name is sourced from Person.Person and is readable in the final output.
+    │   - The sales metric is aggregated at employee level using Sales.SalesOrderHeader.TotalDue.
+    │   - The final result returns exactly one top employee unless tie-handling is explicitly changed to return all ties.
+    │   - The returned employee has the maximum aggregated sales amount among all currently active employees with attributable sales.
+    │   - If two employees share the same maximum total sales and single-row output is used, the tie is resolved consistently using the lowest employee identifier.
+    │ estimated_complexity: simple
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> get_table_structure({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_table_structure({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    🔧 Tool called -> get_table_structure({'table_name': 'Person', 'schema_name': 'Person'})
+    🔧 Tool called -> get_table_structure({'table_name': 'SalesPerson', 'schema_name': 'Sales'})
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: NationalIDNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LoginID
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 256
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationNode
+    │   DATA_TYPE: hierarchyid
+    │   MAX_LENGTH: 892
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationLevel
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: JobTitle
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: BirthDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MaritalStatus
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Gender
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: HireDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalariedFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: VacationHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SickLeaveHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CurrentFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: SalesOrderID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: RevisionNumber
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OrderDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: DueDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ShipDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Status
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OnlineOrderFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalesOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: PurchaseOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: AccountNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CustomerID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SalesPersonID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: TerritoryID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: BillToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipMethodID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardApprovalCode
+    │   DATA_TYPE: varchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CurrencyRateID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SubTotal
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TaxAmt
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Freight
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TotalDue
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Comment
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 128
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: PersonType
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 2
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: NameStyle
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Title
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 8
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: FirstName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MiddleName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LastName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Suffix
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 10
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: EmailPromotion
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: AdditionalContactInfo
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Demographics
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: TerritoryID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SalesQuota
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Bonus
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: CommissionPct
+    │   DATA_TYPE: smallmoney
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: SalesYTD
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: SalesLastYear
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> execute_sql_query({'query': "WITH ActiveEmployees AS\n(\n    SELECT e.BusinessEntityID,\n           p.FirstName,\n           p.MiddleName,\n           p.LastName,\n           p.Suffix\n    FROM HumanResources.Employee AS e\n    INNER JOIN Person.Person AS p\n        ON p.BusinessEntityID = e.BusinessEntityID\n    WHE...)
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   EmployeeID: 276
+    │   EmployeeFullName: Linda C Mitchell
+    │   TotalSalesAmount: 11695019.0605
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ source_code:
+    │   WITH ActiveEmployees AS
+    │   (
+    │       -- Currently working employees
+    │       SELECT
+    │           e.BusinessEntityID,
+    │           p.FirstName,
+    │           p.MiddleName,
+    │           p.LastName,
+    │           p.Suffix
+    │       FROM HumanResources.Employee AS e
+    │       INNER JOIN Person.Person AS p
+    │           ON p.BusinessEntityID = e.BusinessEntityID
+    │       WHERE e.CurrentFlag = 1
+    │   ),
+    │   SalesByEmployee AS
+    │   (
+    │       -- Aggregate total sales per active employee (salesperson)
+    │       SELECT
+    │           ae.BusinessEntityID AS EmployeeID,
+    │           LTRIM(RTRIM(
+    │               COALESCE(ae.FirstName, '') +
+    │               CASE WHEN ae.MiddleName IS NULL OR ae.MiddleName = '' THEN '' ELSE ' ' + ae.MiddleName END +
+    │               ' ' + COALESCE(ae.LastName, '')
+    │           )) AS EmployeeFullName,
+    │           SUM(COALESCE(soh.TotalDue, 0)) AS TotalSalesAmount
+    │       FROM ActiveEmployees AS ae
+    │       INNER JOIN Sales.SalesOrderHeader AS soh
+    │           ON soh.SalesPersonID = ae.BusinessEntityID -- salesperson == employee
+    │       WHERE soh.SalesPersonID IS NOT NULL -- defensive: only attribute attributable orders
+    │       GROUP BY
+    │           ae.BusinessEntityID,
+    │           ae.FirstName,
+    │           ae.MiddleName,
+    │           ae.LastName
+    │   ),
+    │   Ranked AS
+    │   (
+    │       SELECT
+    │           sbe.EmployeeID,
+    │           sbe.EmployeeFullName,
+    │           sbe.TotalSalesAmount,
+    │           ROW_NUMBER() OVER
+    │           (
+    │               ORDER BY sbe.TotalSalesAmount DESC, sbe.EmployeeID ASC -- deterministic tie-breaker
+    │           ) AS rn
+    │       FROM SalesByEmployee AS sbe
+    │   )
+    │   SELECT
+    │       r.EmployeeID,
+    │       r.EmployeeFullName,
+    │       r.TotalSalesAmount
+    │   FROM Ranked AS r
+    │   WHERE r.rn = 1;
+    │ description: Filters HumanResources.Employee to currently active employees (CurrentFlag=1), joins them to Person.Person to build a readable employee name, aggregates sales per employee by joining Sales.SalesOrderHeader on SalesPersonID = BusinessEntityID and summing SalesOrderHeader.TotalDue, then selects the single top employee by sorting TotalSalesAmount DESC with a deterministic tie-break on EmployeeID ASC using ROW_NUMBER().
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> get_table_structure({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_table_structure({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    🔧 Tool called -> get_table_structure({'table_name': 'Person', 'schema_name': 'Person'})
+    🔧 Tool called -> execute_sql_query({'query': "WITH ActiveEmployees AS\n(\n    -- Currently working employees\n    SELECT\n        e.BusinessEntityID,\n        p.FirstName,\n        p.MiddleName,\n        p.LastName,\n        p.Suffix\n    FROM HumanResources.Employee AS e\n    INNER JOIN Person.Person AS p\n        ON p.BusinessEntit...)
+    🔧 Tool called -> execute_sql_query({'query': 'SELECT COUNT(*) AS NullSalesPersonOrders\nFROM Sales.SalesOrderHeader\nWHERE SalesPersonID IS NULL;'})
+    🔧 Tool called -> execute_sql_query({'query': 'WITH SalesByActiveEmployee AS\n(\n    SELECT\n        e.BusinessEntityID AS EmployeeID,\n        SUM(COALESCE(soh.TotalDue,0)) AS TotalSalesAmount\n    FROM HumanResources.Employee e\n    INNER JOIN Sales.SalesOrderHeader soh\n        ON soh.SalesPersonID = e.BusinessEntityID\n    WHERE e...)
+    🔧 Tool called -> execute_sql_query({'query': 'WITH SalesByActiveEmployee AS\n(\n    SELECT\n        e.BusinessEntityID AS EmployeeID,\n        SUM(COALESCE(soh.TotalDue,0)) AS TotalSalesAmount\n    FROM HumanResources.Employee e\n    INNER JOIN Sales.SalesOrderHeader soh\n        ON soh.SalesPersonID = e.BusinessEntityID\n    WHERE e...)
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: PersonType
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 2
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: NameStyle
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Title
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 8
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: FirstName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MiddleName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LastName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Suffix
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 10
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: EmailPromotion
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: AdditionalContactInfo
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Demographics
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: NationalIDNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LoginID
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 256
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationNode
+    │   DATA_TYPE: hierarchyid
+    │   MAX_LENGTH: 892
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationLevel
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: JobTitle
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: BirthDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MaritalStatus
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Gender
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: HireDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalariedFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: VacationHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SickLeaveHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CurrentFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: SalesOrderID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: RevisionNumber
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OrderDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: DueDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ShipDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Status
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OnlineOrderFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalesOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: PurchaseOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: AccountNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CustomerID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SalesPersonID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: TerritoryID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: BillToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipMethodID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardApprovalCode
+    │   DATA_TYPE: varchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CurrencyRateID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SubTotal
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TaxAmt
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Freight
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TotalDue
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Comment
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 128
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   EmployeeID: 276
+    │   EmployeeFullName: Linda C Mitchell
+    │   TotalSalesAmount: 11695019.0605
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   EmployeeID: 276
+    │   TotalSalesAmount: 11695019.0605
+    │   EmployeeID: 277
+    │   TotalSalesAmount: 11342385.8968
+    │   EmployeeID: 275
+    │   TotalSalesAmount: 10475367.0751
+    │   EmployeeID: 289
+    │   TotalSalesAmount: 9585124.9477
+    │   EmployeeID: 279
+    │   TotalSalesAmount: 8086073.6761
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   TiedAtTop: 1
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   NullSalesPersonOrders: 27659
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ verdict: APPROVED
+    │ issues:
+    │ suggestions:
+    │ score: 1.0
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'employee sales currently working company active employee sales tables metric DWH'})
+    🔧 Tool called -> list_schemas_and_tables({})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | HumanResources.Employee | Employee identification number. Foreign key to Employee.BusinessEntityID. |
+    │ | - | 2 | - | DepartmentID | smallint | - | - | HumanResources.Department | Department in which the employee worked including currently. Foreign key to Department.DepartmentID. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | LoginID | nvarchar(256) | - | - | - | Network login. Test2 |
+    │ | - | 4 | - | OrganizationNode | hierarchyid | - | - | - | Where the employee is located in corporate hierarchy. |
+    │ | - | 5 | - | OrganizationLevel | smallint | - | Computed: [OrganizationNode].[GetLevel]() | - | The depth of the employee in the corporate hierarchy. |
+    │ | - | 6 | - | JobTitle | nvarchar(50) | - | - | - | Work title such as Buyer or Sales Representative. |
+    │
+    │ --- Document 3 ---
+    │ Source: SQL Query Optimization_ 15 Techniques for Better Performance _ DataCamp.pdf (Page: 6)
+    │ Content:
+    │ WITH SalesCTE AS (              SELECT salesperson_id, SUM(sales_amount) AS total_sales              FROM sales GROUP BY salesperson_id )
+    │ SELECT salesperson_id, total_sales FROM SalesCTE WHERE total_sales > 5000;
+    │ POWERED BY
+    │ SELECT * FROM orders oWHERE EXISTS (SELECT 1 FROM customers c WHERE c.customer_id = o.customer_id AND c
+    │ POWERED BY
+    │ SELECT DISTINCT city FROM customers;
+    │ POWERED BY
+    │ SELECT city FROM customers GROUP BY city;
+    │ POWERED BY
+    │
+    │ --- Document 4 ---
+    │ Source: https://www.youtube.com/watch?v=O7AzUDogXsw (Page: Unknown)
+    │ Content:
+    │ and equal to as well product key now after that we're going to go and aggregate few stuff so we're going to aggregate by the product name so I'm going to take the product name so it's going to be the English product name and let's go and call it product name and let's go and aggregate the sales so sum and we're going to get it from the fact table it's going to be sales amount so as total sales and of course we have to go and do groupy and not the French name it's going to be the English name so
+    │
+    │ --- Document 5 ---
+    │ Source: Sales.SalesPerson.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | SalesQuota | money | - | - | - | Projected yearly sales. |
+    │ | - | 4 | - | Bonus | money | - | Default: 0.00 | - | Bonus due if quota is met. |
+    │ | - | 5 | - | CommissionPct | smallmoney | - | Default: 0.00 | - | Commision percent received per sale. |
+    │ | - | 6 | - | SalesYTD | money | - | Default: 0.00 | - | Sales total year to date. |
+    │ | - | 7 | - | SalesLastYear | money | - | Default: 0.00 | - | Sales total of previous year. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (list_schemas_and_tables):
+
+    ╭─── 📄 List Schemas And Tables ─────────────────
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: AWBuildVersion
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: DatabaseLog
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: dbo
+    │   TABLE_NAME: ErrorLog
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Department
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Employee
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: EmployeeDepartmentHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: EmployeePayHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: JobCandidate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: Shift
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployee
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployeeDepartment
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vEmployeeDepartmentHistory
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidate
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidateEducation
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: HumanResources
+    │   TABLE_NAME: vJobCandidateEmployment
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Address
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: AddressType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntity
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntityAddress
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: BusinessEntityContact
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: ContactType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: CountryRegion
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: EmailAddress
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Password
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: Person
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: PersonPhone
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: PhoneNumberType
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: StateProvince
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: vAdditionalContactInfo
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Person
+    │   TABLE_NAME: vStateProvinceCountryRegion
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: BillOfMaterials
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Culture
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Document
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Illustration
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Location
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: Product
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductCategory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductCostHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductDescription
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductDocument
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductInventory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductListPriceHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModel
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModelIllustration
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductModelProductDescriptionCulture
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductPhoto
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductProductPhoto
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductReview
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ProductSubcategory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: ScrapReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: TransactionHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: TransactionHistoryArchive
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: UnitMeasure
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductAndDescription
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductModelCatalogDescription
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: vProductModelInstructions
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: WorkOrder
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Production
+    │   TABLE_NAME: WorkOrderRouting
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: ProductVendor
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: PurchaseOrderDetail
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: PurchaseOrderHeader
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: ShipMethod
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: Vendor
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: vVendorWithAddresses
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Purchasing
+    │   TABLE_NAME: vVendorWithContacts
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CountryRegionCurrency
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CreditCard
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Currency
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: CurrencyRate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Customer
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: PersonCreditCard
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderDetail
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderHeader
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesOrderHeaderSalesReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesPerson
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesPersonQuotaHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesReason
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTaxRate
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTerritory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SalesTerritoryHistory
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: ShoppingCartItem
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SpecialOffer
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: SpecialOfferProduct
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: Store
+    │   TABLE_TYPE: BASE TABLE
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vIndividualCustomer
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vPersonDemographics
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vSalesPerson
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vSalesPersonSalesByFiscalYears
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithAddresses
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithContacts
+    │   TABLE_TYPE: VIEW
+    │   TABLE_SCHEMA: Sales
+    │   TABLE_NAME: vStoreWithDemographics
+    │   TABLE_TYPE: VIEW
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'SalesOrderHeader SalesPersonID employee current employee active status EndDate HumanResources.Employee current working'})
+    🔧 Tool called -> knowledge_search({'query': 'HumanResources.Employee current employee definition EndDate CurrentFlag SalesPerson BusinessEntityID Person name'})
+    🔧 Tool called -> get_view_definition({'view_name': 'vSalesPerson', 'schema_name': 'Sales'})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 2 ---
+    │ Source: Sales.SalesPerson.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesPerson | - | Sales.SalesTerritory | Sales.SalesPerson.TerritoryID = Sales.SalesTerritory.TerritoryID | FK_SalesPerson_SalesTerritory_TerritoryID Foreign key constraint referencing SalesTerritory.TerritoryID. |
+    │ | Sales.SalesOrderHeader | - | Sales.SalesPerson | Sales.SalesOrderHeader.SalesPersonID = Sales.SalesPerson.BusinessEntityID | FK_SalesOrderHeader_SalesPerson_SalesPersonID Foreign key constraint referencing SalesPerson.SalesPersonID. |
+    │
+    │ --- Document 3 ---
+    │ Source: Sales.SalesOrderHeader.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Sales.SalesPerson | Sales.SalesOrderHeader.SalesPersonID = Sales.SalesPerson.BusinessEntityID | FK_SalesOrderHeader_SalesPerson_SalesPersonID Foreign key constraint referencing SalesPerson.SalesPersonID. |
+    │ | Sales.SalesOrderHeader | - | Sales.SalesTerritory | Sales.SalesOrderHeader.TerritoryID = Sales.SalesTerritory.TerritoryID | FK_SalesOrderHeader_SalesTerritory_TerritoryID Foreign key constraint referencing SalesTerritory.TerritoryID. |
+    │
+    │ --- Document 4 ---
+    │ Source: Person.Address.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Person.Address | Sales.SalesOrderHeader.ShipToAddressID = Person.Address.AddressID | FK_SalesOrderHeader_Address_ShipToAddressID Foreign key constraint referencing Address.AddressID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Sales.SalesOrderHeader.md (Page: Unknown)
+    │ Content:
+    │ | Sales.SalesOrderHeader | - | Person.Address | Sales.SalesOrderHeader.ShipToAddressID = Person.Address.AddressID | FK_SalesOrderHeader_Address_ShipToAddressID Foreign key constraint referencing Address.AddressID. |
+    │ | Sales.SalesOrderHeader | - | Sales.CreditCard | Sales.SalesOrderHeader.CreditCardID = Sales.CreditCard.CreditCardID | FK_SalesOrderHeader_CreditCard_CreditCardID Foreign key constraint referencing CreditCard.CreditCardID. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ | Person.EmailAddress | - | Person.Person | Person.EmailAddress.BusinessEntityID = Person.Person.BusinessEntityID | FK_EmailAddress_Person_BusinessEntityID Foreign key constraint referencing Person.BusinessEntityID. |
+    │ | HumanResources.Employee | - | Person.Person | HumanResources.Employee.BusinessEntityID = Person.Person.BusinessEntityID | FK_Employee_Person_BusinessEntityID Foreign key constraint referencing Person.BusinessEntityID. |
+    │
+    │ --- Document 2 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ | Person.BusinessEntityContact | - | Person.Person | Person.BusinessEntityContact.PersonID = Person.Person.BusinessEntityID | FK_BusinessEntityContact_Person_PersonID Foreign key constraint referencing Person.BusinessEntityID. |
+    │ | Sales.Customer | - | Person.Person | Sales.Customer.PersonID = Person.Person.BusinessEntityID | FK_Customer_Person_PersonID Foreign key constraint referencing Person.BusinessEntityID. |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.EmployeePayHistory | - | HumanResources.Employee | HumanResources.EmployeePayHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeePayHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Person.Person.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | Person.BusinessEntity | Primary key for Person records. |
+    │ | - | 2 | - | PersonType | nchar(2) | - | - | - | Primary type of person: SC = Store Contact, IN = Individual (retail) customer, SP = Sales person, EM = Employee (non-sales), VC = Vendor contact, GC = General contact |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_view_definition):
+
+    ╭─── 📄 Get View Definition ─────────────────────
+    │ status: success
+    │ schema_name: Sales
+    │ view_name: vSalesPerson
+    │ definition:
+    │
+    │   CREATE VIEW [Sales].[vSalesPerson]
+    │   AS
+    │   SELECT
+    │       s.[BusinessEntityID]
+    │       ,p.[Title]
+    │       ,p.[FirstName]
+    │       ,p.[MiddleName]
+    │       ,p.[LastName]
+    │       ,p.[Suffix]
+    │       ,e.[JobTitle]
+    │       ,pp.[PhoneNumber]
+    │           ,pnt.[Name] AS [PhoneNumberType]
+    │       ,ea.[EmailAddress]
+    │       ,p.[EmailPromotion]
+    │       ,a.[AddressLine1]
+    │       ,a.[AddressLine2]
+    │       ,a.[City]
+    │       ,[StateProvinceName] = sp.[Name]
+    │       ,a.[PostalCode]
+    │       ,[CountryRegionName] = cr.[Name]
+    │       ,[TerritoryName] = st.[Name]
+    │       ,[TerritoryGroup] = st.[Group]
+    │       ,s.[SalesQuota]
+    │       ,s.[SalesYTD]
+    │       ,s.[SalesLastYear]
+    │   FROM [Sales].[SalesPerson] s
+    │       INNER JOIN [HumanResources].[Employee] e
+    │       ON e.[BusinessEntityID] = s.[BusinessEntityID]
+    │           INNER JOIN [Person].[Person] p
+    │           ON p.[BusinessEntityID] = s.[BusinessEntityID]
+    │       INNER JOIN [Person].[BusinessEntityAddress] bea
+    │       ON bea.[BusinessEntityID] = s.[BusinessEntityID]
+    │       INNER JOIN [Person].[Address] a
+    │       ON a.[AddressID] = bea.[AddressID]
+    │       INNER JOIN [Person].[StateProvince] sp
+    │       ON sp.[StateProvinceID] = a.[StateProvinceID]
+    │       INNER JOIN [Person].[CountryRegion] cr
+    │       ON cr.[CountryRegionCode] = sp.[CountryRegionCode]
+    │       LEFT OUTER JOIN [Sales].[SalesTerritory] st
+    │       ON st.[TerritoryID] = s.[TerritoryID]
+    │           LEFT OUTER JOIN [Person].[EmailAddress] ea
+    │           ON ea.[BusinessEntityID] = p.[BusinessEntityID]
+    │           LEFT OUTER JOIN [Person].[PersonPhone] pp
+    │           ON pp.[BusinessEntityID] = p.[BusinessEntityID]
+    │           LEFT OUTER JOIN [Person].[PhoneNumberType] pnt
+    │           ON pnt.[PhoneNumberTypeID] = pp.[PhoneNumberTypeID];
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> knowledge_search({'query': 'HumanResources.Employee columns CurrentFlag EndDate active employee'})
+    🔧 Tool called -> knowledge_search({'query': 'EmployeeDepartmentHistory EndDate current department currently working EndDate null'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'EmployeeDepartmentHistory', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_sample_rows({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | - | 12 | - | VacationHours | smallint | - | Default: 0 | - | Number of available vacation hours. |
+    │ | - | 13 | - | SickLeaveHours | smallint | - | Default: 0 | - | Number of available sick leave hours. |
+    │ | - | 14 | - | CurrentFlag | bit | - | Default: 1 | - | 0 = Inactive, 1 = Active |
+    │ | - | 15 | - | rowguid | uniqueidentifier | - | Default: newid() | - | ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.Employee | - | HumanResources.Shift | - | zzz zxczxc |
+    │ | HumanResources.Employee | - | HumanResources.vEmployeeDepartment | - | qqq asdasda |
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ ## Columns
+    │ |  |  | Key | Name | Data type | Null | Attributes | References | Description |
+    │ |---|---|---|---|---|---|---|---|---|
+    │ | - | 1 | - | BusinessEntityID | int | - | - | HumanResources.Employee | Employee identification number. Foreign key to Employee.BusinessEntityID. |
+    │ | - | 2 | - | DepartmentID | smallint | - | - | HumanResources.Department | Department in which the employee worked including currently. Foreign key to Department.DepartmentID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | ShiftID | tinyint | - | - | HumanResources.Shift | Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID. |
+    │ | - | 4 | - | StartDate | date | - | - | - | Date the employee started work in the department. |
+    │ | - | 5 | - | EndDate | date | - | - | - | Date the employee left the department. NULL = Current department. |
+    │ | - | 6 | - | ModifiedDate | datetime | - | Default: getdate() | - | Date and time the record was last updated. |
+    │
+    │ --- Document 5 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | Purchasing.PurchaseOrderHeader | - | HumanResources.Employee | Purchasing.PurchaseOrderHeader.EmployeeID = HumanResources.Employee.BusinessEntityID | FK_PurchaseOrderHeader_Employee_EmployeeID Foreign key constraint referencing Employee.EmployeeID. |
+    │ | Sales.SalesPerson | - | HumanResources.Employee | Sales.SalesPerson.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_SalesPerson_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (knowledge_search):
+
+    ╭─── 📄 Knowledge Search ────────────────────────
+    │ --- Document 1 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | ShiftID | tinyint | - | - | HumanResources.Shift | Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID. |
+    │ | - | 4 | - | StartDate | date | - | - | - | Date the employee started work in the department. |
+    │ | - | 5 | - | EndDate | date | - | - | - | Date the employee left the department. NULL = Current department. |
+    │ | - | 6 | - | ModifiedDate | datetime | - | Default: getdate() | - | Date and time the record was last updated. |
+    │
+    │ --- Document 2 ---
+    │ Source: HumanResources.Shift.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.vEmployeeDepartmentHistory | - | HumanResources.Shift | HumanResources.vEmployeeDepartmentHistory.Title = HumanResources.Shift.Name | fk_Shift_vEmployeeDepartmentHistory xcbxcvbxcvbbvbvb |
+    │
+    │ --- Document 3 ---
+    │ Source: HumanResources.EmployeeDepartmentHistory.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 4 ---
+    │ Source: HumanResources.Employee.md (Page: Unknown)
+    │ Content:
+    │ | HumanResources.Employee | - | HumanResources.Shift | - | zzz zxczxc |
+    │ | HumanResources.Employee | - | HumanResources.vEmployeeDepartment | - | qqq asdasda |
+    │ | HumanResources.EmployeeDepartmentHistory | - | HumanResources.Employee | HumanResources.EmployeeDepartmentHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID | FK_EmployeeDepartmentHistory_Employee_BusinessEntityID Foreign key constraint referencing Employee.EmployeeID. |
+    │
+    │ --- Document 5 ---
+    │ Source: Production.WorkOrder.md (Page: Unknown)
+    │ Content:
+    │ | - | 3 | - | OrderQty | int | - | - | - | Product quantity to build. |
+    │ | - | 4 | - | StockedQty | int | - | Computed: isnull([OrderQty]-[ScrappedQty],(0)) | - | Quantity built and put in inventory. |
+    │ | - | 5 | - | ScrappedQty | smallint | - | - | - | Quantity that failed inspection. |
+    │ | - | 6 | - | StartDate | datetime | - | - | - | Work order start date. |
+    │ | - | 7 | - | EndDate | datetime | - | - | - | Work order end date. |
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │ status: error
+    │ error_message: ('ODBC SQL type -151 is not yet supported.  column-index=3  type=-151', 'HY106')
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │   BusinessEntityID: 1
+    │   DepartmentID: 16
+    │   ShiftID: 1
+    │   StartDate: 2009-01-14
+    │   EndDate: None
+    │   ModifiedDate: 2009-01-13 00:00:00
+    │   BusinessEntityID: 2
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2008-01-31
+    │   EndDate: None
+    │   ModifiedDate: 2008-01-30 00:00:00
+    │   BusinessEntityID: 3
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2007-11-11
+    │   EndDate: None
+    │   ModifiedDate: 2007-11-10 00:00:00
+    │   BusinessEntityID: 4
+    │   DepartmentID: 1
+    │   ShiftID: 1
+    │   StartDate: 2007-12-05
+    │   EndDate: 2010-05-30
+    │   ModifiedDate: 2010-05-28 00:00:00
+    │   BusinessEntityID: 4
+    │   DepartmentID: 2
+    │   ShiftID: 1
+    │   StartDate: 2010-05-31
+    │   EndDate: None
+    │   ModifiedDate: 2010-05-30 00:00:00
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_sample_rows):
+
+    ╭─── 📄 Get Sample Rows ─────────────────────────
+    │   SalesOrderID: 43659
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43659
+    │   PurchaseOrderNumber: PO522145787
+    │   AccountNumber: 10-4020-000676
+    │   CustomerID: 29825
+    │   SalesPersonID: 279
+    │   TerritoryID: 5
+    │   BillToAddressID: 985
+    │   ShipToAddressID: 985
+    │   ShipMethodID: 5
+    │   CreditCardID: 16281
+    │   CreditCardApprovalCode: 105041Vi84182
+    │   CurrencyRateID: None
+    │   SubTotal: 20565.6206
+    │   TaxAmt: 1971.5149
+    │   Freight: 616.0984
+    │   TotalDue: 23153.2339
+    │   Comment: None
+    │   rowguid: 79B65321-39CA-4115-9CBA-8FE0903E12E6
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43660
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43660
+    │   PurchaseOrderNumber: PO18850127500
+    │   AccountNumber: 10-4020-000117
+    │   CustomerID: 29672
+    │   SalesPersonID: 279
+    │   TerritoryID: 5
+    │   BillToAddressID: 921
+    │   ShipToAddressID: 921
+    │   ShipMethodID: 5
+    │   CreditCardID: 5618
+    │   CreditCardApprovalCode: 115213Vi29411
+    │   CurrencyRateID: None
+    │   SubTotal: 1294.2529
+    │   TaxAmt: 124.2483
+    │   Freight: 38.8276
+    │   TotalDue: 1457.3288
+    │   Comment: None
+    │   rowguid: 738DC42D-D03B-48A1-9822-F95A67EA7389
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43661
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43661
+    │   PurchaseOrderNumber: PO18473189620
+    │   AccountNumber: 10-4020-000442
+    │   CustomerID: 29734
+    │   SalesPersonID: 282
+    │   TerritoryID: 6
+    │   BillToAddressID: 517
+    │   ShipToAddressID: 517
+    │   ShipMethodID: 5
+    │   CreditCardID: 1346
+    │   CreditCardApprovalCode: 85274Vi6854
+    │   CurrencyRateID: 4
+    │   SubTotal: 32726.4786
+    │   TaxAmt: 3153.7696
+    │   Freight: 985.5530
+    │   TotalDue: 36865.8012
+    │   Comment: None
+    │   rowguid: D91B9131-18A4-4A11-BC3A-90B6F53E9D74
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43662
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43662
+    │   PurchaseOrderNumber: PO18444174044
+    │   AccountNumber: 10-4020-000227
+    │   CustomerID: 29994
+    │   SalesPersonID: 282
+    │   TerritoryID: 6
+    │   BillToAddressID: 482
+    │   ShipToAddressID: 482
+    │   ShipMethodID: 5
+    │   CreditCardID: 10456
+    │   CreditCardApprovalCode: 125295Vi53935
+    │   CurrencyRateID: 4
+    │   SubTotal: 28832.5289
+    │   TaxAmt: 2775.1646
+    │   Freight: 867.2389
+    │   TotalDue: 32474.9324
+    │   Comment: None
+    │   rowguid: 4A1ECFC0-CC3A-4740-B028-1C50BB48711C
+    │   ModifiedDate: 2011-06-07 00:00:00
+    │   SalesOrderID: 43663
+    │   RevisionNumber: 8
+    │   OrderDate: 2011-05-31 00:00:00
+    │   DueDate: 2011-06-12 00:00:00
+    │   ShipDate: 2011-06-07 00:00:00
+    │   Status: 5
+    │   OnlineOrderFlag: False
+    │   SalesOrderNumber: SO43663
+    │   PurchaseOrderNumber: PO18009186470
+    │   AccountNumber: 10-4020-000510
+    │   CustomerID: 29565
+    │   SalesPersonID: 276
+    │   TerritoryID: 4
+    │   BillToAddressID: 1073
+    │   ShipToAddressID: 1073
+    │   ShipMethodID: 5
+    │   CreditCardID: 4322
+    │   CreditCardApprovalCode: 45303Vi22691
+    │   CurrencyRateID: None
+    │   SubTotal: 419.4589
+    │   TaxAmt: 40.2681
+    │   Freight: 12.5838
+    │   TotalDue: 472.3108
+    │   Comment: None
+    │   rowguid: 9B1E7A40-6AE0-4AD3-811C-A64951857C4B
+    │   ModifiedDate: 2011-06-07 00:00:00
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ title: Identify the currently active employee with the highest sales amount
+    │ requirements:
+    │   - Use Sales.SalesOrderHeader as the transactional source for sales and HumanResources.Employee as the source of employee employment status.
+    │   - Restrict the population to employees who are currently working in the company by filtering HumanResources.Employee.CurrentFlag = 1. Do not infer current employment only from department history if CurrentFlag is available.
+    │   - Link sales to employees through Sales.SalesOrderHeader.SalesPersonID = HumanResources.Employee.BusinessEntityID. Note that only employees who are also salespeople will have matching sales records.
+    │   - Use Person.Person to retrieve the employee's human-readable name via Person.Person.BusinessEntityID = HumanResources.Employee.BusinessEntityID.
+    │   - Aggregate sales by employee and calculate total sales amount using Sales.SalesOrderHeader.TotalDue as the sales amount, unless the business explicitly wants pre-tax/pre-freight revenue; based on the request wording, total sales amount should default to TotalDue because it represents the full order amount available in the sales header.
+    │   - Exclude rows where SalesOrderHeader.SalesPersonID is null, since those orders are not attributable to a salesperson.
+    │   - Return only the top employee by aggregated sales amount across all available data, sorted descending by the calculated total sales.
+    │   - Include at minimum these business output fields: employee identifier, employee full name, and aggregated sales amount.
+    │   - Handle ties deterministically. If multiple active employees have the same highest aggregated sales, either return all tied employees or apply a secondary stable sort by employee identifier ascending. Preferred default: return the single row with the lowest BusinessEntityID among tied highest totals unless the reporting requirement is to show all ties.
+    │   - Treat null sales amounts as zero during aggregation if encountered, although SalesOrderHeader.TotalDue is expected to be populated.
+    │   - Do not use Sales.SalesPerson.SalesYTD for this request because it is a pre-aggregated attribute and may not represent the full historical sales total in the same way as summing order-level sales records.
+    │ acceptance_criteria:
+    │   - The result includes only employees with HumanResources.Employee.CurrentFlag = 1.
+    │   - The calculation uses sales orders assigned to a salesperson through Sales.SalesOrderHeader.SalesPersonID.
+    │   - Orders with null SalesPersonID are excluded from the aggregation.
+    │   - The employee name is sourced from Person.Person and is readable in the final output.
+    │   - The sales metric is aggregated at employee level using Sales.SalesOrderHeader.TotalDue.
+    │   - The final result returns exactly one top employee unless tie-handling is explicitly changed to return all ties.
+    │   - The returned employee has the maximum aggregated sales amount among all currently active employees with attributable sales.
+    │   - If two employees share the same maximum total sales and single-row output is used, the tie is resolved consistently using the lowest employee identifier.
+    │ estimated_complexity: simple
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> get_table_structure({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_table_structure({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    🔧 Tool called -> get_table_structure({'table_name': 'Person', 'schema_name': 'Person'})
+    🔧 Tool called -> get_table_structure({'table_name': 'SalesPerson', 'schema_name': 'Sales'})
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: NationalIDNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LoginID
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 256
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationNode
+    │   DATA_TYPE: hierarchyid
+    │   MAX_LENGTH: 892
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationLevel
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: JobTitle
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: BirthDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MaritalStatus
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Gender
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: HireDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalariedFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: VacationHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SickLeaveHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CurrentFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: SalesOrderID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: RevisionNumber
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OrderDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: DueDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ShipDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Status
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OnlineOrderFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalesOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: PurchaseOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: AccountNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CustomerID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SalesPersonID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: TerritoryID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: BillToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipMethodID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardApprovalCode
+    │   DATA_TYPE: varchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CurrencyRateID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SubTotal
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TaxAmt
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Freight
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TotalDue
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Comment
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 128
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: PersonType
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 2
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: NameStyle
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Title
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 8
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: FirstName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MiddleName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LastName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Suffix
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 10
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: EmailPromotion
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: AdditionalContactInfo
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Demographics
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: TerritoryID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SalesQuota
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Bonus
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: CommissionPct
+    │   DATA_TYPE: smallmoney
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: SalesYTD
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: SalesLastYear
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> execute_sql_query({'query': "WITH ActiveEmployees AS\n(\n    SELECT e.BusinessEntityID,\n           p.FirstName,\n           p.MiddleName,\n           p.LastName,\n           p.Suffix\n    FROM HumanResources.Employee AS e\n    INNER JOIN Person.Person AS p\n        ON p.BusinessEntityID = e.BusinessEntityID\n    WHE...)
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   EmployeeID: 276
+    │   EmployeeFullName: Linda C Mitchell
+    │   TotalSalesAmount: 11695019.0605
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ source_code:
+    │   WITH ActiveEmployees AS
+    │   (
+    │       -- Currently working employees
+    │       SELECT
+    │           e.BusinessEntityID,
+    │           p.FirstName,
+    │           p.MiddleName,
+    │           p.LastName,
+    │           p.Suffix
+    │       FROM HumanResources.Employee AS e
+    │       INNER JOIN Person.Person AS p
+    │           ON p.BusinessEntityID = e.BusinessEntityID
+    │       WHERE e.CurrentFlag = 1
+    │   ),
+    │   SalesByEmployee AS
+    │   (
+    │       -- Aggregate total sales per active employee (salesperson)
+    │       SELECT
+    │           ae.BusinessEntityID AS EmployeeID,
+    │           LTRIM(RTRIM(
+    │               COALESCE(ae.FirstName, '') +
+    │               CASE WHEN ae.MiddleName IS NULL OR ae.MiddleName = '' THEN '' ELSE ' ' + ae.MiddleName END +
+    │               ' ' + COALESCE(ae.LastName, '')
+    │           )) AS EmployeeFullName,
+    │           SUM(COALESCE(soh.TotalDue, 0)) AS TotalSalesAmount
+    │       FROM ActiveEmployees AS ae
+    │       INNER JOIN Sales.SalesOrderHeader AS soh
+    │           ON soh.SalesPersonID = ae.BusinessEntityID -- salesperson == employee
+    │       WHERE soh.SalesPersonID IS NOT NULL -- defensive: only attribute attributable orders
+    │       GROUP BY
+    │           ae.BusinessEntityID,
+    │           ae.FirstName,
+    │           ae.MiddleName,
+    │           ae.LastName
+    │   ),
+    │   Ranked AS
+    │   (
+    │       SELECT
+    │           sbe.EmployeeID,
+    │           sbe.EmployeeFullName,
+    │           sbe.TotalSalesAmount,
+    │           ROW_NUMBER() OVER
+    │           (
+    │               ORDER BY sbe.TotalSalesAmount DESC, sbe.EmployeeID ASC -- deterministic tie-breaker
+    │           ) AS rn
+    │       FROM SalesByEmployee AS sbe
+    │   )
+    │   SELECT
+    │       r.EmployeeID,
+    │       r.EmployeeFullName,
+    │       r.TotalSalesAmount
+    │   FROM Ranked AS r
+    │   WHERE r.rn = 1;
+    │ description: Filters HumanResources.Employee to currently active employees (CurrentFlag=1), joins them to Person.Person to build a readable employee name, aggregates sales per employee by joining Sales.SalesOrderHeader on SalesPersonID = BusinessEntityID and summing SalesOrderHeader.TotalDue, then selects the single top employee by sorting TotalSalesAmount DESC with a deterministic tie-break on EmployeeID ASC using ROW_NUMBER().
+    ╰──────────────────────────────────────────────
+
+    🔧 Tool called -> get_table_structure({'table_name': 'Employee', 'schema_name': 'HumanResources'})
+    🔧 Tool called -> get_table_structure({'table_name': 'SalesOrderHeader', 'schema_name': 'Sales'})
+    🔧 Tool called -> get_table_structure({'table_name': 'Person', 'schema_name': 'Person'})
+    🔧 Tool called -> execute_sql_query({'query': "WITH ActiveEmployees AS\n(\n    -- Currently working employees\n    SELECT\n        e.BusinessEntityID,\n        p.FirstName,\n        p.MiddleName,\n        p.LastName,\n        p.Suffix\n    FROM HumanResources.Employee AS e\n    INNER JOIN Person.Person AS p\n        ON p.BusinessEntit...)
+    🔧 Tool called -> execute_sql_query({'query': 'SELECT COUNT(*) AS NullSalesPersonOrders\nFROM Sales.SalesOrderHeader\nWHERE SalesPersonID IS NULL;'})
+    🔧 Tool called -> execute_sql_query({'query': 'WITH SalesByActiveEmployee AS\n(\n    SELECT\n        e.BusinessEntityID AS EmployeeID,\n        SUM(COALESCE(soh.TotalDue,0)) AS TotalSalesAmount\n    FROM HumanResources.Employee e\n    INNER JOIN Sales.SalesOrderHeader soh\n        ON soh.SalesPersonID = e.BusinessEntityID\n    WHERE e...)
+    🔧 Tool called -> execute_sql_query({'query': 'WITH SalesByActiveEmployee AS\n(\n    SELECT\n        e.BusinessEntityID AS EmployeeID,\n        SUM(COALESCE(soh.TotalDue,0)) AS TotalSalesAmount\n    FROM HumanResources.Employee e\n    INNER JOIN Sales.SalesOrderHeader soh\n        ON soh.SalesPersonID = e.BusinessEntityID\n    WHERE e...)
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: NationalIDNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LoginID
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 256
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationNode
+    │   DATA_TYPE: hierarchyid
+    │   MAX_LENGTH: 892
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: OrganizationLevel
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: JobTitle
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: BirthDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MaritalStatus
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Gender
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 1
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: HireDate
+    │   DATA_TYPE: date
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalariedFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: VacationHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SickLeaveHours
+    │   DATA_TYPE: smallint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 5
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CurrentFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: SalesOrderID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: RevisionNumber
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OrderDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: DueDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ShipDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Status
+    │   DATA_TYPE: tinyint
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 3
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: OnlineOrderFlag
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: SalesOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: PurchaseOrderNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 25
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: AccountNumber
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CustomerID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SalesPersonID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: TerritoryID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: BillToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipToAddressID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: ShipMethodID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: CreditCardApprovalCode
+    │   DATA_TYPE: varchar
+    │   MAX_LENGTH: 15
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: CurrencyRateID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: SubTotal
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TaxAmt
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Freight
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: TotalDue
+    │   DATA_TYPE: money
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 19
+    │   NUMERIC_SCALE: 4
+    │   COLUMN_NAME: Comment
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 128
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (get_table_structure):
+
+    ╭─── 📄 Get Table Structure ─────────────────────
+    │   COLUMN_NAME: BusinessEntityID
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: PersonType
+    │   DATA_TYPE: nchar
+    │   MAX_LENGTH: 2
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: NameStyle
+    │   DATA_TYPE: bit
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Title
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 8
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: FirstName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: MiddleName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: LastName
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 50
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Suffix
+    │   DATA_TYPE: nvarchar
+    │   MAX_LENGTH: 10
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: EmailPromotion
+    │   DATA_TYPE: int
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: 10
+    │   NUMERIC_SCALE: 0
+    │   COLUMN_NAME: AdditionalContactInfo
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: Demographics
+    │   DATA_TYPE: xml
+    │   MAX_LENGTH: -1
+    │   IS_NULLABLE: YES
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: rowguid
+    │   DATA_TYPE: uniqueidentifier
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    │   COLUMN_NAME: ModifiedDate
+    │   DATA_TYPE: datetime
+    │   MAX_LENGTH: None
+    │   IS_NULLABLE: NO
+    │   NUMERIC_PRECISION: None
+    │   NUMERIC_SCALE: None
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   EmployeeID: 276
+    │   EmployeeFullName: Linda C Mitchell
+    │   TotalSalesAmount: 11695019.0605
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   NullSalesPersonOrders: 27659
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   EmployeeID: 276
+    │   TotalSalesAmount: 11695019.0605
+    │   EmployeeID: 277
+    │   TotalSalesAmount: 11342385.8968
+    │   EmployeeID: 275
+    │   TotalSalesAmount: 10475367.0751
+    │   EmployeeID: 289
+    │   TotalSalesAmount: 9585124.9477
+    │   EmployeeID: 279
+    │   TotalSalesAmount: 8086073.6761
+    ╰──────────────────────────────────────────────
+
+    ✅ Result (execute_sql_query):
+
+    ╭─── 📄 Execute Sql Query ───────────────────────
+    │   TiedAtTop: 1
+    ╰──────────────────────────────────────────────
+
+    🤖 Agent Output:
+    │ verdict: APPROVED
+    │ issues:
+    │ suggestions:
+    │ score: 1.0
+    ╰──────────────────────────────────────────────
  ```
