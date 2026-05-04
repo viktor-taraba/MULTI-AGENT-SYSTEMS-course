@@ -105,11 +105,11 @@ course-project/
 
 |Назва файлу|Тести та метрики|Короткий опис|
 |--|--|--|
-|`test_coder.py`|||
-|`test_planner.py`|||
-|`test_reviewer.py`|||
-|`test_tools.py`|||
-|`test_e2e.py`|||
+|`test_coder.py`|`test_code_schema_compliance`, `test_code_sql_best_practices`, `test_code_description_quality`, `test_code_logic_alignment` + метрики: `code_schema_compliance`, `code_sql_best_practices`, `code_description_quality`, `code_logic_alignment`|Перевіряє роботу агента-розробника (Coder). Тестується правильність формування вихідного JSON (схема), якість згенерованого T-SQL коду (використання CTE, коментарів), повнота текстового опису алгоритму та відповідність логіки запиту наданим вимогам специфікації.|
+|`test_planner.py`|`test_plan_quality`, `test_plan_has_queries`, `test_plan_edge_cases`, `test_plan_alignment` + метрики `plan_quality`, `plan_has_queries`, `plan_edge_cases`, `plan_alignment`|Перевіряє агента-планувальника (Planner). Аналізується повнота специфікації, наявність переліку необхідних таблиць та зв'язків між ними, врахування крайових випадків (наприклад, обробка NULL-значень чи дублікатів) і відповідність критеріїв приймання (Acceptance Criteria) базовим вимогам.|
+|`test_reviewer.py`|`test_reviewer_schema_compliance_approved`, `test_reviewer_bug_detection_divide_by_zero`, `test_reviewer_spec_alignment_missing_filter`+ метрики `reviewer_schema_compliance`, `reviewer_bug_detection`, `reviewer_spec_alignment`, `reviewer_actionable_feedback`|Перевіряє агента-QA (Reviewer). Оцінюється його здатність знаходити реальні баги (наприклад, потенційне ділення на нуль), перевіряти код на відповідність специфікації (наприклад, чи не забув розробник фільтр), надавати чіткі інструкції для виправлення та дотримуватись структури відповіді (APPROVED/REVISION_NEEDED).|
+|`test_tools.py`|`test_planner_tools`, `test_planner_tools_error_request`, `test_coder_tools`, `test_reviewer_tools` + метрика `tool_correctness_metric`|Перевіряє коректність виклику інструментів (Tools) кожним з агентів. Тестується, чи Planner викликає пошук і схеми, чи просить він уточнення при незрозумілому запиті, та чи Coder і Reviewer правильно використовують інструменти виконання SQL і перевірки планів виконання.|
+|`test_e2e.py`|`test_e2e_recent_hires`, `test_e2e_aw_customers_without_orders`, `test_e2e_high_reach_products`, `test_e2e_yoy_revenue_growth`, `test_e2e_email_domain_distribution` + метрики `e2e_task_completion`, `e2e_production_readiness`, `e2e_query_efficiency`, `e2e_security_safety`, `e2e_schema_hallucination`, `e2e_maintainability`|Наскрізні (End-to-End) тести всієї системи. Оцінюють успішність вирішення задач, безпеку коду (відсутність DML/DDL команд), ефективність, відсутність галюцинацій (вигаданих таблиць/колонок) тощо.|
 
 #### Результат для `deepeval test run tests/test_e2e.py`:
 
