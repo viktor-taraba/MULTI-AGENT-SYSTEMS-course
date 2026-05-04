@@ -38,7 +38,8 @@
 ![sessions](/course-project/screenshots/sessions.png)
 
 #### Trace tree / tracing
-![tracing_1](/course-project/screenshots/tracing_1.png)
+![tracing](/course-project/screenshots/tracing.png)
+![trace example](/course-project/screenshots/trace example.png)
 
 #### Prompt management
 ![prompts](/course-project/screenshots/prompts.png)
@@ -46,771 +47,305 @@
 #### Результат для `deepeval test run tests/test_e2e.py`:
 
 ```
--------------------------------------------------- Captured log call --------------------------------------------------
+---------------------------------------------------------------------------------------------- Captured log call -----------------------------------------------------------------------------------------------
 INFO     deepeval.evaluate.execute:execute.py:779 in _a_execute_llm_test_cases
-================================================ slowest 10 durations =================================================
-93.89s call     tests/test_e2e.py::test_e2e_high_reach_products
-68.49s call     tests/test_e2e.py::test_e2e_recent_hires
-66.04s call     tests/test_e2e.py::test_e2e_yoy_revenue_growth
-43.31s call     tests/test_e2e.py::test_e2e_email_domain_distribution
-40.37s call     tests/test_e2e.py::test_e2e_aw_customers_without_orders
-0.01s teardown tests/test_e2e.py::test_e2e_yoy_revenue_growth
+============================================================================================= slowest 10 durations =============================================================================================
+58.89s call     tests/test_e2e.py::test_e2e_email_domain_distribution
+56.40s call     tests/test_e2e.py::test_e2e_high_reach_products
+53.76s call     tests/test_e2e.py::test_e2e_yoy_revenue_growth
+45.47s call     tests/test_e2e.py::test_e2e_recent_hires
+29.58s call     tests/test_e2e.py::test_e2e_aw_customers_without_orders
 
-(4 durations < 0.005s hidden.  Use -vv to show these durations.)
-=============================================== short test summary info ===============================================
-FAILED tests/test_e2e.py::test_e2e_aw_customers_without_orders - AssertionError: Metrics: Task Accuracy and Completion [GEval] (score: 0.7, threshold: 0.8, strict: False, error: No...
-FAILED tests/test_e2e.py::test_e2e_high_reach_products - AssertionError: Metrics: Production SQL Quality [GEval] (score: 0.6, threshold: 0.8, strict: False, error: None, re...
-2 failed, 3 passed, 4 warnings in 382.70s (0:06:22)
-                                                      Test Results
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Test case                  ┃ Metric                     ┃ Score                      ┃ Status ┃ Overall Success Rate ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
-│ test_e2e_recent_hires      │                            │                            │        │ 100.0%               │
-│                            │ Task Accuracy and          │ 0.9 (threshold=0.8,        │ PASSED │                      │
-│                            │ Completion [GEval]         │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The response        │        │                      │
-│                            │                            │ matches the requirements   │        │                      │
-│                            │                            │ well: it joins Employee,   │        │                      │
-│                            │                            │ EmployeeDepartmentHistory, │        │                      │
-│                            │                            │ Department, and            │        │                      │
-│                            │                            │ Person.Person; filters     │        │                      │
-│                            │                            │ current assignments with   │        │                      │
-│                            │                            │ EndDate IS NULL; uses      │        │                      │
-│                            │                            │ ROW_NUMBER() partitioned   │        │                      │
-│                            │                            │ by department and ordered  │        │                      │
-│                            │                            │ by HireDate DESC; and      │        │                      │
-│                            │                            │ returns the required       │        │                      │
-│                            │                            │ DepartmentName, FirstName, │        │                      │
-│                            │                            │ LastName, and HireDate     │        │                      │
-│                            │                            │ columns. The only minor    │        │                      │
-│                            │                            │ issue is that it includes  │        │                      │
-│                            │                            │ extra non-code description │        │                      │
-│                            │                            │ text, but the SQL itself   │        │                      │
-│                            │                            │ satisfies the task.,       │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Production SQL Quality     │ 0.8 (threshold=0.8,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query is        │        │                      │
-│                            │                            │ syntactically valid T-SQL, │        │                      │
-│                            │                            │ uses the required tables,  │        │                      │
-│                            │                            │ filters                    │        │                      │
-│                            │                            │ EmployeeDepartmentHistory  │        │                      │
-│                            │                            │ with EndDate IS NULL, and  │        │                      │
-│                            │                            │ applies ROW_NUMBER()       │        │                      │
-│                            │                            │ partitioned by department  │        │                      │
-│                            │                            │ with HireDate DESC. It is  │        │                      │
-│                            │                            │ also well formatted and    │        │                      │
-│                            │                            │ includes helpful inline    │        │                      │
-│                            │                            │ comments. However, it does │        │                      │
-│                            │                            │ not show production-level  │        │                      │
-│                            │                            │ defensive programming      │        │                      │
-│                            │                            │ beyond a simple            │        │                      │
-│                            │                            │ tie-breaker, and the       │        │                      │
-│                            │                            │ submission includes no     │        │                      │
-│                            │                            │ evidence of placeholder    │        │                      │
-│                            │                            │ schema names or            │        │                      │
-│                            │                            │ schema-tool validation     │        │                      │
-│                            │                            │ being an issue, so only    │        │                      │
-│                            │                            │ the core SQL quality and   │        │                      │
-│                            │                            │ requirements are clearly   │        │                      │
-│                            │                            │ satisfied., error=None)    │        │                      │
-│                            │ Query Efficiency [GEval]   │ 1.0 (threshold=0.8,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query meets the │        │                      │
-│                            │                            │ requirements well: it      │        │                      │
-│                            │                            │ explicitly selects         │        │                      │
-│                            │                            │ DepartmentName, FirstName, │        │                      │
-│                            │                            │ LastName, and HireDate     │        │                      │
-│                            │                            │ instead of using SELECT *, │        │                      │
-│                            │                            │ joins the required tables, │        │                      │
-│                            │                            │ filters                    │        │                      │
-│                            │                            │ EmployeeDepartmentHistory  │        │                      │
-│                            │                            │ with EndDate IS NULL, and  │        │                      │
-│                            │                            │ uses ROW_NUMBER()          │        │                      │
-│                            │                            │ partitioned by department  │        │                      │
-│                            │                            │ with HireDate DESC to find │        │                      │
-│                            │                            │ the newest active          │        │                      │
-│                            │                            │ employee. It also avoids   │        │                      │
-│                            │                            │ correlated subqueries and  │        │                      │
-│                            │                            │ does not use inefficient   │        │                      │
-│                            │                            │ aggregation, though the    │        │                      │
-│                            │                            │ final ORDER BY is          │        │                      │
-│                            │                            │ unnecessary for the core   │        │                      │
-│                            │                            │ logic., error=None)        │        │                      │
-│                            │ Security and Safety        │ 1.0 (threshold=1.0,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The output is a     │        │                      │
-│                            │                            │ read-only SELECT query     │        │                      │
-│                            │                            │ with a CTE and no INSERT,  │        │                      │
-│                            │                            │ UPDATE, DELETE, TRUNCATE,  │        │                      │
-│                            │                            │ DROP, ALTER, CREATE, or    │        │                      │
-│                            │                            │ dynamic SQL. It also       │        │                      │
-│                            │                            │ matches the task           │        │                      │
-│                            │                            │ requirements by joining    │        │                      │
-│                            │                            │ the four required tables,  │        │                      │
-│                            │                            │ filtering                  │        │                      │
-│                            │                            │ EmployeeDepartmentHistory  │        │                      │
-│                            │                            │ with EndDate IS NULL, and  │        │                      │
-│                            │                            │ using ROW_NUMBER           │        │                      │
-│                            │                            │ partitioned by             │        │                      │
-│                            │                            │ DepartmentID ordered by    │        │                      │
-│                            │                            │ HireDate DESC to return    │        │                      │
-│                            │                            │ DepartmentName, FirstName, │        │                      │
-│                            │                            │ LastName, and HireDate.,   │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Schema Hallucination Free  │ 0.9 (threshold=0.9,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL matches the │        │                      │
-│                            │                            │ stated requirements well:  │        │                      │
-│                            │                            │ it joins                   │        │                      │
-│                            │                            │ HumanResources.Employee,   │        │                      │
-│                            │                            │ HumanResources.EmployeeDe… │        │                      │
-│                            │                            │ HumanResources.Department, │        │                      │
-│                            │                            │ and Person.Person; filters │        │                      │
-│                            │                            │ EmployeeDepartmentHistory  │        │                      │
-│                            │                            │ with EndDate IS NULL;      │        │                      │
-│                            │                            │ returns DepartmentName,    │        │                      │
-│                            │                            │ FirstName, LastName, and   │        │                      │
-│                            │                            │ HireDate; and uses         │        │                      │
-│                            │                            │ ROW_NUMBER partitioned by  │        │                      │
-│                            │                            │ department with HireDate   │        │                      │
-│                            │                            │ DESC. No invented          │        │                      │
-│                            │                            │ placeholder tables or      │        │                      │
-│                            │                            │ columns appear. The only   │        │                      │
-│                            │                            │ minor deviation is the     │        │                      │
-│                            │                            │ extra BusinessEntityID     │        │                      │
-│                            │                            │ tie-breaker and ordering   │        │                      │
-│                            │                            │ in the final output, which │        │                      │
-│                            │                            │ do not conflict with the   │        │                      │
-│                            │                            │ prompt., error=None)       │        │                      │
-│                            │ Maintainability [GEval]    │ 0.9 (threshold=0.7,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query uses      │        │                      │
-│                            │                            │ clear aliases for all      │        │                      │
-│                            │                            │ joined tables (edh, e, d,  │        │                      │
-│                            │                            │ p), includes explicit      │        │                      │
-│                            │                            │ aliases for calculated     │        │                      │
-│                            │                            │ columns like               │        │                      │
-│                            │                            │ DepartmentName and rn, and │        │                      │
-│                            │                            │ is cleanly indented with   │        │                      │
-│                            │                            │ logical                    │        │                      │
-│                            │                            │ CTE/SELECT/FROM/WHERE      │        │                      │
-│                            │                            │ structure. The description │        │                      │
-│                            │                            │ accurately explains the    │        │                      │
-│                            │                            │ intent, including          │        │                      │
-│                            │                            │ filtering EndDate IS NULL  │        │                      │
-│                            │                            │ and using ROW_NUMBER() to  │        │                      │
-│                            │                            │ pick the newest active     │        │                      │
-│                            │                            │ employee per department.   │        │                      │
-│                            │                            │ Minor deduction because    │        │                      │
-│                            │                            │ the result uses a          │        │                      │
-│                            │                            │ tie-breaker on             │        │                      │
-│                            │                            │ BusinessEntityID, but that │        │                      │
-│                            │                            │ does not conflict with the │        │                      │
-│                            │                            │ requirements., error=None) │        │                      │
-│                            │                            │                            │        │                      │
-│ test_e2e_aw_customers_wit… │                            │                            │        │ 66.67%               │
-│                            │ Task Accuracy and          │ 0.7 (threshold=0.8,        │ FAILED │                      │
-│                            │ Completion [GEval]         │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL correctly   │        │                      │
-│                            │                            │ identifies customers       │        │                      │
-│                            │                            │ without orders using a     │        │                      │
-│                            │                            │ LEFT JOIN and NULL filter  │        │                      │
-│                            │                            │ against Sales.Customer and │        │                      │
-│                            │                            │ Sales.SalesOrderHeader,    │        │                      │
-│                            │                            │ matching the requested     │        │                      │
-│                            │                            │ anti-join logic. However,  │        │                      │
-│                            │                            │ the actual output includes │        │                      │
-│                            │                            │ extra fields and           │        │                      │
-│                            │                            │ explanatory text           │        │                      │
-│                            │                            │ ('description' and         │        │                      │
-│                            │                            │ comments) instead of only  │        │                      │
-│                            │                            │ the final SQL code, which  │        │                      │
-│                            │                            │ violates the requirement   │        │                      │
-│                            │                            │ to return just the         │        │                      │
-│                            │                            │ requested output. It does  │        │                      │
-│                            │                            │ return the correct single  │        │                      │
-│                            │                            │ column CustomerID and      │        │                      │
-│                            │                            │ excludes ordered           │        │                      │
-│                            │                            │ customers., error=None)    │        │                      │
-│                            │ Production SQL Quality     │ 0.7 (threshold=0.8,        │ FAILED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL is          │        │                      │
-│                            │                            │ syntactically valid T-SQL  │        │                      │
-│                            │                            │ and correctly uses a LEFT  │        │                      │
-│                            │                            │ JOIN with a NULL check     │        │                      │
-│                            │                            │ against Sales.Customer and │        │                      │
-│                            │                            │ Sales.SalesOrderHeader to  │        │                      │
-│                            │                            │ find customers with no     │        │                      │
-│                            │                            │ orders. It also returns    │        │                      │
-│                            │                            │ only CustomerID as         │        │                      │
-│                            │                            │ required and includes an   │        │                      │
-│                            │                            │ inline comment. However,   │        │                      │
-│                            │                            │ it lacks broader           │        │                      │
-│                            │                            │ production-level defensive │        │                      │
-│                            │                            │ programming, and the       │        │                      │
-│                            │                            │ formatting/comments are    │        │                      │
-│                            │                            │ minimal rather than        │        │                      │
-│                            │                            │ strongly explanatory.      │        │                      │
-│                            │                            │ There are no placeholder   │        │                      │
-│                            │                            │ schema names, so schema    │        │                      │
-│                            │                            │ usage appears correct.,    │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Query Efficiency [GEval]   │ 0.8 (threshold=0.8,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query uses the  │        │                      │
-│                            │                            │ required LEFT JOIN with a  │        │                      │
-│                            │                            │ NULL check to find         │        │                      │
-│                            │                            │ customers without orders,  │        │                      │
-│                            │                            │ and it selects the         │        │                      │
-│                            │                            │ necessary column           │        │                      │
-│                            │                            │ explicitly as CustomerID.  │        │                      │
-│                            │                            │ It also avoids correlated  │        │                      │
-│                            │                            │ subqueries. However, it    │        │                      │
-│                            │                            │ adds DISTINCT redundantly  │        │                      │
-│                            │                            │ since the anti-join        │        │                      │
-│                            │                            │ already returns one row    │        │                      │
-│                            │                            │ per customer, so the       │        │                      │
-│                            │                            │ aggregation/duplication    │        │                      │
-│                            │                            │ handling is not fully      │        │                      │
-│                            │                            │ efficient., error=None)    │        │                      │
-│                            │ Security and Safety        │ 1.0 (threshold=1.0,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The output is a     │        │                      │
-│                            │                            │ read-only SELECT query     │        │                      │
-│                            │                            │ only, with no              │        │                      │
-│                            │                            │ INSERT/UPDATE/DELETE/TRUN… │        │                      │
-│                            │                            │ no DDL, and no dynamic     │        │                      │
-│                            │                            │ SQL. It also matches the   │        │                      │
-│                            │                            │ task requirements by using │        │                      │
-│                            │                            │ a LEFT JOIN with a NULL    │        │                      │
-│                            │                            │ check against              │        │                      │
-│                            │                            │ Sales.Customer and         │        │                      │
-│                            │                            │ Sales.SalesOrderHeader,    │        │                      │
-│                            │                            │ returning CustomerID to    │        │                      │
-│                            │                            │ identify customers without │        │                      │
-│                            │                            │ orders. One minor issue is │        │                      │
-│                            │                            │ the use of DISTINCT, but   │        │                      │
-│                            │                            │ it does not violate the    │        │                      │
-│                            │                            │ acceptance criteria.,      │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Schema Hallucination Free  │ 1.0 (threshold=0.9,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL uses the    │        │                      │
-│                            │                            │ specified tables,          │        │                      │
-│                            │                            │ Sales.Customer and         │        │                      │
-│                            │                            │ Sales.SalesOrderHeader,    │        │                      │
-│                            │                            │ and correctly applies a    │        │                      │
-│                            │                            │ LEFT JOIN with a NULL      │        │                      │
-│                            │                            │ check to find customers    │        │                      │
-│                            │                            │ with no orders. It also    │        │                      │
-│                            │                            │ returns only CustomerID,   │        │                      │
-│                            │                            │ matching the acceptance    │        │                      │
-│                            │                            │ criteria. The use of       │        │                      │
-│                            │                            │ DISTINCT is unnecessary    │        │                      │
-│                            │                            │ but not harmful, and there │        │                      │
-│                            │                            │ are no invented tables or  │        │                      │
-│                            │                            │ placeholder columns.,      │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Maintainability [GEval]    │ 0.8 (threshold=0.7,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query uses      │        │                      │
-│                            │                            │ clear aliases for both     │        │                      │
-│                            │                            │ joined tables (`c` and     │        │                      │
-│                            │                            │ `soh`), is cleanly         │        │                      │
-│                            │                            │ indented, and the          │        │                      │
-│                            │                            │ description accurately     │        │                      │
-│                            │                            │ explains the anti-join     │        │                      │
-│                            │                            │ logic for finding          │        │                      │
-│                            │                            │ customers with no orders.  │        │                      │
-│                            │                            │ However, it includes       │        │                      │
-│                            │                            │ `DISTINCT`, which is       │        │                      │
-│                            │                            │ unnecessary for a unique   │        │                      │
-│                            │                            │ `CustomerID` result and    │        │                      │
-│                            │                            │ does not fully address the │        │                      │
-│                            │                            │ acceptance criterion that  │        │                      │
-│                            │                            │ exactly one column be      │        │                      │
-│                            │                            │ returned as a simple       │        │                      │
-│                            │                            │ `CustomerID` output,       │        │                      │
-│                            │                            │ though the selected column │        │                      │
-│                            │                            │ is correct. There are no   │        │                      │
-│                            │                            │ calculated columns needing │        │                      │
-│                            │                            │ aliases., error=None)      │        │                      │
-│                            │                            │                            │        │                      │
-│ test_e2e_high_reach_produ… │                            │                            │        │ 83.33%               │
-│                            │ Task Accuracy and          │ 0.9 (threshold=0.8,        │ PASSED │                      │
-│                            │ Completion [GEval]         │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL matches the │        │                      │
-│                            │                            │ requested joins and        │        │                      │
-│                            │                            │ returns the required       │        │                      │
-│                            │                            │ fields ProductName,        │        │                      │
-│                            │                            │ UniqueCustomerCount, and   │        │                      │
-│                            │                            │ TotalLifetimeRevenue. It   │        │                      │
-│                            │                            │ correctly uses             │        │                      │
-│                            │                            │ COUNT(DISTINCT             │        │                      │
-│                            │                            │ h.CustomerID) and a HAVING │        │                      │
-│                            │                            │ clause to keep products    │        │                      │
-│                            │                            │ with at least 50 unique    │        │                      │
-│                            │                            │ customers. The only minor  │        │                      │
-│                            │                            │ issue is that it adds an   │        │                      │
-│                            │                            │ ORDER BY not requested,    │        │                      │
-│                            │                            │ but that does not affect   │        │                      │
-│                            │                            │ correctness., error=None)  │        │                      │
-│                            │ Production SQL Quality     │ 0.6 (threshold=0.8,        │ FAILED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL is          │        │                      │
-│                            │                            │ syntactically valid T-SQL  │        │                      │
-│                            │                            │ and correctly joins        │        │                      │
-│                            │                            │ Production.Product,        │        │                      │
-│                            │                            │ Sales.SalesOrderDetail,    │        │                      │
-│                            │                            │ and                        │        │                      │
-│                            │                            │ Sales.SalesOrderHeader,    │        │                      │
-│                            │                            │ using COUNT(DISTINCT       │        │                      │
-│                            │                            │ h.CustomerID) and a HAVING │        │                      │
-│                            │                            │ clause for the 50-customer │        │                      │
-│                            │                            │ threshold. However, it     │        │                      │
-│                            │                            │ lacks production-level     │        │                      │
-│                            │                            │ defensive programming and  │        │                      │
-│                            │                            │ does not include any       │        │                      │
-│                            │                            │ inline comments. It also   │        │                      │
-│                            │                            │ does not demonstrate any   │        │                      │
-│                            │                            │ schema-tool issue, and     │        │                      │
-│                            │                            │ there are no placeholder   │        │                      │
-│                            │                            │ schema names present.,     │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Query Efficiency [GEval]   │ 0.9 (threshold=0.8,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query meets the │        │                      │
-│                            │                            │ key requirements well: it  │        │                      │
-│                            │                            │ explicitly selects only    │        │                      │
-│                            │                            │ the needed columns, uses   │        │                      │
-│                            │                            │ joins across the required  │        │                      │
-│                            │                            │ tables, applies            │        │                      │
-│                            │                            │ COUNT(DISTINCT             │        │                      │
-│                            │                            │ h.CustomerID) with a       │        │                      │
-│                            │                            │ HAVING clause for the      │        │                      │
-│                            │                            │ 50-customer threshold, and │        │                      │
-│                            │                            │ avoids correlated          │        │                      │
-│                            │                            │ subqueries. It also uses   │        │                      │
-│                            │                            │ efficient aggregation at   │        │                      │
-│                            │                            │ the product level without  │        │                      │
-│                            │                            │ redundant grouping. One    │        │                      │
-│                            │                            │ minor gap is that it       │        │                      │
-│                            │                            │ groups by p.Name instead   │        │                      │
-│                            │                            │ of a stable product key,   │        │                      │
-│                            │                            │ which could merge products │        │                      │
-│                            │                            │ with duplicate names, but  │        │                      │
-│                            │                            │ overall it aligns strongly │        │                      │
-│                            │                            │ with the evaluation        │        │                      │
-│                            │                            │ steps., error=None)        │        │                      │
-│                            │ Security and Safety        │ 1.0 (threshold=1.0,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The output contains │        │                      │
-│                            │                            │ a single read-only SELECT  │        │                      │
-│                            │                            │ query with no INSERT,      │        │                      │
-│                            │                            │ UPDATE, DELETE, TRUNCATE,  │        │                      │
-│                            │                            │ DROP, ALTER, CREATE, or    │        │                      │
-│                            │                            │ dynamic SQL. It also       │        │                      │
-│                            │                            │ matches the task           │        │                      │
-│                            │                            │ requirements by joining    │        │                      │
-│                            │                            │ Production.Product,        │        │                      │
-│                            │                            │ Sales.SalesOrderDetail,    │        │                      │
-│                            │                            │ and                        │        │                      │
-│                            │                            │ Sales.SalesOrderHeader,    │        │                      │
-│                            │                            │ using COUNT(DISTINCT       │        │                      │
-│                            │                            │ h.CustomerID), and         │        │                      │
-│                            │                            │ applying a HAVING clause   │        │                      │
-│                            │                            │ for at least 50 unique     │        │                      │
-│                            │                            │ customers., error=None)    │        │                      │
-│                            │ Schema Hallucination Free  │ 1.0 (threshold=0.9,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL uses        │        │                      │
-│                            │                            │ exactly the required       │        │                      │
-│                            │                            │ tables:                    │        │                      │
-│                            │                            │ Production.Product,        │        │                      │
-│                            │                            │ Sales.SalesOrderDetail,    │        │                      │
-│                            │                            │ and                        │        │                      │
-│                            │                            │ Sales.SalesOrderHeader,    │        │                      │
-│                            │                            │ and the columns align with │        │                      │
-│                            │                            │ the task by returning      │        │                      │
-│                            │                            │ ProductName,               │        │                      │
-│                            │                            │ UniqueCustomerCount, and   │        │                      │
-│                            │                            │ TotalLifetimeRevenue. It   │        │                      │
-│                            │                            │ correctly applies          │        │                      │
-│                            │                            │ COUNT(DISTINCT             │        │                      │
-│                            │                            │ h.CustomerID) and a HAVING │        │                      │
-│                            │                            │ clause to filter products  │        │                      │
-│                            │                            │ with at least 50 unique    │        │                      │
-│                            │                            │ customers. No invented or  │        │                      │
-│                            │                            │ generic placeholder        │        │                      │
-│                            │                            │ tables/columns are         │        │                      │
-│                            │                            │ present; the only minor    │        │                      │
-│                            │                            │ issue is that it orders    │        │                      │
-│                            │                            │ the results, which was not │        │                      │
-│                            │                            │ requested, but this does   │        │                      │
-│                            │                            │ not violate the            │        │                      │
-│                            │                            │ requirements., error=None) │        │                      │
-│                            │ Maintainability [GEval]    │ 0.9 (threshold=0.7,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query is well   │        │                      │
-│                            │                            │ structured with clear      │        │                      │
-│                            │                            │ aliases for all joined     │        │                      │
-│                            │                            │ tables (p, d, h), uses     │        │                      │
-│                            │                            │ explicit AS aliases for    │        │                      │
-│                            │                            │ the calculated columns,    │        │                      │
-│                            │                            │ and has clean indentation  │        │                      │
-│                            │                            │ across SELECT, FROM, JOIN, │        │                      │
-│                            │                            │ GROUP BY, and HAVING. The  │        │                      │
-│                            │                            │ description also           │        │                      │
-│                            │                            │ accurately explains the    │        │                      │
-│                            │                            │ joins, COUNT(DISTINCT      │        │                      │
-│                            │                            │ h.CustomerID),             │        │                      │
-│                            │                            │ SUM(d.LineTotal), and the  │        │                      │
-│                            │                            │ 50-customer HAVING filter. │        │                      │
-│                            │                            │ Minor shortcoming: the     │        │                      │
-│                            │                            │ requirement says to return │        │                      │
-│                            │                            │ ProductName,               │        │                      │
-│                            │                            │ UniqueCustomerCount, and   │        │                      │
-│                            │                            │ TotalLifetimeRevenue, and  │        │                      │
-│                            │                            │ the query provides that,   │        │                      │
-│                            │                            │ though it orders the       │        │                      │
-│                            │                            │ results additionally,      │        │                      │
-│                            │                            │ which is acceptable.,      │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │                            │                            │        │                      │
-│ test_e2e_yoy_revenue_grow… │                            │                            │        │ 100.0%               │
-│                            │ Task Accuracy and          │ 1.0 (threshold=0.8,        │ PASSED │                      │
-│                            │ Completion [GEval]         │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL fully       │        │                      │
-│                            │                            │ addresses the request: it  │        │                      │
-│                            │                            │ uses                       │        │                      │
-│                            │                            │ Sales.SalesOrderHeader and │        │                      │
-│                            │                            │ Sales.SalesTerritory,      │        │                      │
-│                            │                            │ includes a CTE for annual  │        │                      │
-│                            │                            │ territory revenue, applies │        │                      │
-│                            │                            │ LAG() by territory and     │        │                      │
-│                            │                            │ year, and returns the      │        │                      │
-│                            │                            │ required columns           │        │                      │
-│                            │                            │ TerritoryName, SalesYear,  │        │                      │
-│                            │                            │ CurrentYearRevenue,        │        │                      │
-│                            │                            │ PreviousYearRevenue, and   │        │                      │
-│                            │                            │ YoYGrowthPercentage. It    │        │                      │
-│                            │                            │ also gracefully handles    │        │                      │
-│                            │                            │ the first year by yielding │        │                      │
-│                            │                            │ NULL for missing prior     │        │                      │
-│                            │                            │ revenue and avoids         │        │                      │
-│                            │                            │ division by zero. No       │        │                      │
-│                            │                            │ reviewer notes or          │        │                      │
-│                            │                            │ intermediate planning are  │        │                      │
-│                            │                            │ present in the output.,    │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Production SQL Quality     │ 0.8 (threshold=0.8,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL is          │        │                      │
-│                            │                            │ syntactically valid T-SQL  │        │                      │
-│                            │                            │ and correctly uses a CTE,  │        │                      │
-│                            │                            │ Sales.SalesOrderHeader,    │        │                      │
-│                            │                            │ Sales.SalesTerritory, and  │        │                      │
-│                            │                            │ LAG() to compute           │        │                      │
-│                            │                            │ previous-year revenue with │        │                      │
-│                            │                            │ NULL handling for the      │        │                      │
-│                            │                            │ first year. It is also     │        │                      │
-│                            │                            │ reasonably well formatted  │        │                      │
-│                            │                            │ and includes inline        │        │                      │
-│                            │                            │ comments. However, it      │        │                      │
-│                            │                            │ reuses LAG() multiple      │        │                      │
-│                            │                            │ times instead of computing │        │                      │
-│                            │                            │ it once defensively, and   │        │                      │
-│                            │                            │ the YoY percentage returns │        │                      │
-│                            │                            │ NULL for the first year    │        │                      │
-│                            │                            │ rather than explicitly     │        │                      │
-│                            │                            │ handling it in a           │        │                      │
-│                            │                            │ documented                 │        │                      │
-│                            │                            │ business-friendly way;     │        │                      │
-│                            │                            │ there are also no          │        │                      │
-│                            │                            │ schema-tool placeholder    │        │                      │
-│                            │                            │ issues. Overall it aligns  │        │                      │
-│                            │                            │ strongly with the          │        │                      │
-│                            │                            │ requirements., error=None) │        │                      │
-│                            │ Query Efficiency [GEval]   │ 0.8 (threshold=0.8,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query satisfies │        │                      │
-│                            │                            │ the main acceptance        │        │                      │
-│                            │                            │ criteria: it uses a CTE,   │        │                      │
-│                            │                            │ explicitly selects needed  │        │                      │
-│                            │                            │ columns, joins             │        │                      │
-│                            │                            │ Sales.SalesOrderHeader to  │        │                      │
-│                            │                            │ Sales.SalesTerritory, and  │        │                      │
-│                            │                            │ uses LAG() to get the      │        │                      │
-│                            │                            │ prior year's revenue with  │        │                      │
-│                            │                            │ NULL handling for the      │        │                      │
-│                            │                            │ first year. However, it    │        │                      │
-│                            │                            │ does not follow the        │        │                      │
-│                            │                            │ sargability guidance       │        │                      │
-│                            │                            │ because it groups by       │        │                      │
-│                            │                            │ YEAR(OrderDate), which     │        │                      │
-│                            │                            │ wraps the date column in a │        │                      │
-│                            │                            │ function instead of using  │        │                      │
-│                            │                            │ a range predicate, though  │        │                      │
-│                            │                            │ this requirement was not   │        │                      │
-│                            │                            │ directly needed by the     │        │                      │
-│                            │                            │ task. It also repeats the  │        │                      │
-│                            │                            │ same LAG() expression      │        │                      │
-│                            │                            │ multiple times in the YoY  │        │                      │
-│                            │                            │ calculation instead of     │        │                      │
-│                            │                            │ computing it once, which   │        │                      │
-│                            │                            │ is less efficient.,        │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Security and Safety        │ 1.0 (threshold=1.0,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL is          │        │                      │
-│                            │                            │ read-only and consists     │        │                      │
-│                            │                            │ only of a CTE followed by  │        │                      │
-│                            │                            │ a SELECT, with no INSERT,  │        │                      │
-│                            │                            │ UPDATE, DELETE, TRUNCATE,  │        │                      │
-│                            │                            │ DROP, ALTER, CREATE, or    │        │                      │
-│                            │                            │ dynamic EXEC/sp_executesql │        │                      │
-│                            │                            │ usage. It also matches the │        │                      │
-│                            │                            │ task requirements by using │        │                      │
-│                            │                            │ Sales.SalesOrderHeader and │        │                      │
-│                            │                            │ Sales.SalesTerritory,      │        │                      │
-│                            │                            │ returning TerritoryName,   │        │                      │
-│                            │                            │ SalesYear,                 │        │                      │
-│                            │                            │ CurrentYearRevenue,        │        │                      │
-│                            │                            │ PreviousYearRevenue, and   │        │                      │
-│                            │                            │ YoYGrowthPercentage, and   │        │                      │
-│                            │                            │ handling the first year    │        │                      │
-│                            │                            │ with NULL via LAG().,      │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Schema Hallucination Free  │ 1.0 (threshold=0.9,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL matches the │        │                      │
-│                            │                            │ requirements well: it uses │        │                      │
-│                            │                            │ the specified              │        │                      │
-│                            │                            │ Sales.SalesOrderHeader and │        │                      │
-│                            │                            │ Sales.SalesTerritory       │        │                      │
-│                            │                            │ tables, includes a CTE for │        │                      │
-│                            │                            │ annual revenue by          │        │                      │
-│                            │                            │ territory, applies LAG()   │        │                      │
-│                            │                            │ partitioned by territory   │        │                      │
-│                            │                            │ and ordered by SalesYear,  │        │                      │
-│                            │                            │ and returns the required   │        │                      │
-│                            │                            │ fields TerritoryName,      │        │                      │
-│                            │                            │ SalesYear,                 │        │                      │
-│                            │                            │ CurrentYearRevenue,        │        │                      │
-│                            │                            │ PreviousYearRevenue, and   │        │                      │
-│                            │                            │ YoYGrowthPercentage. It    │        │                      │
-│                            │                            │ also handles the first     │        │                      │
-│                            │                            │ year with NULL and avoids  │        │                      │
-│                            │                            │ division-by-zero. No       │        │                      │
-│                            │                            │ invented or generic        │        │                      │
-│                            │                            │ placeholder tables/columns │        │                      │
-│                            │                            │ are present., error=None)  │        │                      │
-│                            │ Maintainability [GEval]    │ 0.9 (threshold=0.7,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query largely   │        │                      │
-│                            │                            │ matches the requirements:  │        │                      │
-│                            │                            │ it uses a CTE to aggregate │        │                      │
-│                            │                            │ annual revenue by          │        │                      │
-│                            │                            │ territory, joins           │        │                      │
-│                            │                            │ Sales.SalesOrderHeader and │        │                      │
-│                            │                            │ Sales.SalesTerritory with  │        │                      │
-│                            │                            │ clear aliases, and         │        │                      │
-│                            │                            │ computes LAG() plus        │        │                      │
-│                            │                            │ YoYGrowthPercentage with   │        │                      │
-│                            │                            │ NULL handling for the      │        │                      │
-│                            │                            │ first year. The columns    │        │                      │
-│                            │                            │ also have explicit         │        │                      │
-│                            │                            │ aliases. However, the      │        │                      │
-│                            │                            │ description is accurate    │        │                      │
-│                            │                            │ but slightly incomplete    │        │                      │
-│                            │                            │ because it omits the exact │        │                      │
-│                            │                            │ acceptance criteria naming │        │                      │
-│                            │                            │ of the previous-year field │        │                      │
-│                            │                            │ as a returned output and   │        │                      │
-│                            │                            │ could more clearly         │        │                      │
-│                            │                            │ emphasize the grouped      │        │                      │
-│                            │                            │ annual revenue step.       │        │                      │
-│                            │                            │ Overall, strong alignment  │        │                      │
-│                            │                            │ with only minor issues.,   │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │                            │                            │        │                      │
-│ test_e2e_email_domain_dis… │                            │                            │        │ 100.0%               │
-│                            │ Task Accuracy and          │ 0.9 (threshold=0.8,        │ PASSED │                      │
-│                            │ Completion [GEval]         │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL matches the │        │                      │
-│                            │                            │ request well: it extracts  │        │                      │
-│                            │                            │ EmailDomain from           │        │                      │
-│                            │                            │ Person.EmailAddress.Email… │        │                      │
-│                            │                            │ using CHARINDEX and        │        │                      │
-│                            │                            │ SUBSTRING, returns the     │        │                      │
-│                            │                            │ required EmailDomain and   │        │                      │
-│                            │                            │ DomainCount columns,       │        │                      │
-│                            │                            │ groups by the extracted    │        │                      │
-│                            │                            │ domain, and orders by      │        │                      │
-│                            │                            │ frequency descending. The  │        │                      │
-│                            │                            │ only minor issue is the    │        │                      │
-│                            │                            │ added NULL/'@' filtering,  │        │                      │
-│                            │                            │ which is reasonable and    │        │                      │
-│                            │                            │ does not conflict with the │        │                      │
-│                            │                            │ requirements. No reviewer  │        │                      │
-│                            │                            │ notes or planning steps    │        │                      │
-│                            │                            │ are present in the final   │        │                      │
-│                            │                            │ code output., error=None)  │        │                      │
-│                            │ Production SQL Quality     │ 0.8 (threshold=0.8,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL is          │        │                      │
-│                            │                            │ syntactically valid T-SQL  │        │                      │
-│                            │                            │ and satisfies the          │        │                      │
-│                            │                            │ acceptance criteria by     │        │                      │
-│                            │                            │ returning EmailDomain and  │        │                      │
-│                            │                            │ DomainCount, extracting    │        │                      │
-│                            │                            │ the domain with            │        │                      │
-│                            │                            │ SUBSTRING/CHARINDEX,       │        │                      │
-│                            │                            │ grouping by it, and        │        │                      │
-│                            │                            │ ordering by frequency. It  │        │                      │
-│                            │                            │ also includes a defensive  │        │                      │
-│                            │                            │ NULL/@ check and a brief   │        │                      │
-│                            │                            │ inline comment. However,   │        │                      │
-│                            │                            │ it does not demonstrate    │        │                      │
-│                            │                            │ broader production-level   │        │                      │
-│                            │                            │ defensive programming, and │        │                      │
-│                            │                            │ it does not address the    │        │                      │
-│                            │                            │ schema-tool requirement    │        │                      │
-│                            │                            │ beyond using               │        │                      │
-│                            │                            │ Person.EmailAddress; there │        │                      │
-│                            │                            │ is no placeholder schema   │        │                      │
-│                            │                            │ name, but the output lacks │        │                      │
-│                            │                            │ evidence of schema         │        │                      │
-│                            │                            │ validation or more robust  │        │                      │
-│                            │                            │ safeguards., error=None)   │        │                      │
-│                            │ Query Efficiency [GEval]   │ 0.8 (threshold=0.8,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query meets the │        │                      │
-│                            │                            │ task requirements by       │        │                      │
-│                            │                            │ explicitly selecting       │        │                      │
-│                            │                            │ EmailDomain and            │        │                      │
-│                            │                            │ DomainCount, extracting    │        │                      │
-│                            │                            │ the domain with SUBSTRING  │        │                      │
-│                            │                            │ and CHARINDEX, grouping by │        │                      │
-│                            │                            │ the derived domain, and    │        │                      │
-│                            │                            │ ordering by count          │        │                      │
-│                            │                            │ descending. It also avoids │        │                      │
-│                            │                            │ SELECT * and does not use  │        │                      │
-│                            │                            │ a correlated subquery.     │        │                      │
-│                            │                            │ However, the WHERE clause  │        │                      │
-│                            │                            │ is not meaningfully        │        │                      │
-│                            │                            │ sargable because it        │        │                      │
-│                            │                            │ applies CHARINDEX to the   │        │                      │
-│                            │                            │ EmailAddress column, which │        │                      │
-│                            │                            │ can limit index use, and   │        │                      │
-│                            │                            │ the GROUP BY repeats the   │        │                      │
-│                            │                            │ same expression instead of │        │                      │
-│                            │                            │ using a more efficient     │        │                      │
-│                            │                            │ derivation approach.,      │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│                            │ Security and Safety        │ 1.0 (threshold=1.0,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL is          │        │                      │
-│                            │                            │ read-only and uses only a  │        │                      │
-│                            │                            │ SELECT statement, with no  │        │                      │
-│                            │                            │ INSERT, UPDATE, DELETE,    │        │                      │
-│                            │                            │ TRUNCATE, DROP, ALTER,     │        │                      │
-│                            │                            │ CREATE, or dynamic SQL. It │        │                      │
-│                            │                            │ also matches the task by   │        │                      │
-│                            │                            │ extracting the domain      │        │                      │
-│                            │                            │ after '@' using SUBSTRING  │        │                      │
-│                            │                            │ and CHARINDEX, grouping by │        │                      │
-│                            │                            │ the extracted domain,      │        │                      │
-│                            │                            │ counting rows as           │        │                      │
-│                            │                            │ DomainCount, and ordering  │        │                      │
-│                            │                            │ descending. The only minor │        │                      │
-│                            │                            │ mismatch is that it        │        │                      │
-│                            │                            │ queries                    │        │                      │
-│                            │                            │ Person.EmailAddress rather │        │                      │
-│                            │                            │ than a contact table name, │        │                      │
-│                            │                            │ but the structure and      │        │                      │
-│                            │                            │ intent align with the      │        │                      │
-│                            │                            │ requirements., error=None) │        │                      │
-│                            │ Schema Hallucination Free  │ 1.0 (threshold=0.9,        │ PASSED │                      │
-│                            │ [GEval]                    │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The SQL matches the │        │                      │
-│                            │                            │ requirements well: it      │        │                      │
-│                            │                            │ queries                    │        │                      │
-│                            │                            │ Person.EmailAddress,       │        │                      │
-│                            │                            │ extracts the domain from   │        │                      │
-│                            │                            │ EmailAddress using         │        │                      │
-│                            │                            │ CHARINDEX and SUBSTRING,   │        │                      │
-│                            │                            │ returns EmailDomain and    │        │                      │
-│                            │                            │ DomainCount, groups by the │        │                      │
-│                            │                            │ derived domain, and orders │        │                      │
-│                            │                            │ by frequency descending.   │        │                      │
-│                            │                            │ No invented tables or      │        │                      │
-│                            │                            │ placeholder columns        │        │                      │
-│                            │                            │ appear. A minor difference │        │                      │
-│                            │                            │ is the added NULL/@        │        │                      │
-│                            │                            │ validation filter, but it  │        │                      │
-│                            │                            │ is compatible with the     │        │                      │
-│                            │                            │ task., error=None)         │        │                      │
-│                            │ Maintainability [GEval]    │ 0.9 (threshold=0.7,        │ PASSED │                      │
-│                            │                            │ evaluation                 │        │                      │
-│                            │                            │ model=gpt-5.4-mini,        │        │                      │
-│                            │                            │ reason=The query is        │        │                      │
-│                            │                            │ well-structured, uses a    │        │                      │
-│                            │                            │ clear table alias for      │        │                      │
-│                            │                            │ Person.EmailAddress, and   │        │                      │
-│                            │                            │ gives explicit aliases to  │        │                      │
-│                            │                            │ the calculated domain and  │        │                      │
-│                            │                            │ count columns. The         │        │                      │
-│                            │                            │ description accurately     │        │                      │
-│                            │                            │ explains extracting the    │        │                      │
-│                            │                            │ domain after '@',          │        │                      │
-│                            │                            │ grouping, and ordering by  │        │                      │
-│                            │                            │ frequency. The main gap is │        │                      │
-│                            │                            │ that the evaluation step   │        │                      │
-│                            │                            │ asks for the description   │        │                      │
-│                            │                            │ field to clearly explain   │        │                      │
-│                            │                            │ the technical intent,      │        │                      │
-│                            │                            │ which is satisfied, but    │        │                      │
-│                            │                            │ the output does not show   │        │                      │
-│                            │                            │ any JOINs, so aliasing     │        │                      │
-│                            │                            │ guidance for JOINs is not  │        │                      │
-│                            │                            │ applicable here.,          │        │                      │
-│                            │                            │ error=None)                │        │                      │
-│ Note: Use Confident AI     │                            │                            │        │                      │
-│ with DeepEval to analyze   │                            │                            │        │                      │
-│ failed test cases for more │                            │                            │        │                      │
-│ details                    │                            │                            │        │                      │
-└────────────────────────────┴────────────────────────────┴────────────────────────────┴────────┴──────────────────────┘
+(5 durations < 0.005s hidden.  Use -vv to show these durations.)
+=========================================================================================== short test summary info ============================================================================================
+FAILED tests/test_e2e.py::test_e2e_aw_customers_without_orders - AssertionError: Metrics: Production SQL Quality [GEval] (score: 0.7, threshold: 0.8, strict: False, error: None, reason: The SQL is syntactically valid T-SQL and correctly uses a LEFT JOIN with a NULL che...
+1 failed, 4 passed, 4 warnings in 259.85s (0:04:19)
+                                                                                                  Test Results
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Test case                                                          ┃ Metric                               ┃ Score                                                             ┃ Status ┃ Overall Success Rate ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ test_e2e_recent_hires                                              │                                      │                                                                   │        │ 100.0%               │
+│                                                                    │ Task Accuracy and Completion [GEval] │ 0.9 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ meets the main requirements: it joins Employee,                   │        │                      │
+│                                                                    │                                      │ EmployeeDepartmentHistory, Department, and Person; filters        │        │                      │
+│                                                                    │                                      │ current assignments with EndDate IS NULL; uses ROW_NUMBER         │        │                      │
+│                                                                    │                                      │ partitioned by department and ordered by HireDate descending; and │        │                      │
+│                                                                    │                                      │ returns DepartmentName, FirstName, LastName, and HireDate. Minor  │        │                      │
+│                                                                    │                                      │ issue: the response includes extra metadata fields (source_code   │        │                      │
+│                                                                    │                                      │ and description) rather than only the final SQL, but the actual   │        │                      │
+│                                                                    │                                      │ query itself is aligned with the task., error=None)               │        │                      │
+│                                                                    │ Production SQL Quality [GEval]       │ 0.8 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query is valid T-SQL and satisfies the core requirements: it      │        │                      │
+│                                                                    │                                      │ joins HumanResources.Employee,                                    │        │                      │
+│                                                                    │                                      │ HumanResources.EmployeeDepartmentHistory,                         │        │                      │
+│                                                                    │                                      │ HumanResources.Department, and Person.Person, filters EndDate IS  │        │                      │
+│                                                                    │                                      │ NULL, and uses ROW_NUMBER() to partition and sort by HireDate     │        │                      │
+│                                                                    │                                      │ descending. It is also reasonably formatted and includes inline   │        │                      │
+│                                                                    │                                      │ comments. However, it does not demonstrate strong                 │        │                      │
+│                                                                    │                                      │ production-level defensive programming beyond a simple            │        │                      │
+│                                                                    │                                      │ tie-breaker, and the output includes a schema-mapped query in a   │        │                      │
+│                                                                    │                                      │ JSON wrapper rather than just final SQL; there are no placeholder │        │                      │
+│                                                                    │                                      │ schema names like your_db.your_table, so that part is fine.,      │        │                      │
+│                                                                    │                                      │ error=None)                                                       │        │                      │
+│                                                                    │ Query Efficiency [GEval]             │ 0.9 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query meets the functional requirements and aligns well with the  │        │                      │
+│                                                                    │                                      │ optimization checks: it explicitly selects only needed columns,   │        │                      │
+│                                                                    │                                      │ uses a sargable filter with `edh.EndDate IS NULL`, and uses joins │        │                      │
+│                                                                    │                                      │ instead of correlated subqueries. It also uses `ROW_NUMBER()` to  │        │                      │
+│                                                                    │                                      │ rank employees per department and avoids redundant aggregation.   │        │                      │
+│                                                                    │                                      │ One minor issue is that it partitions by `DepartmentName` instead │        │                      │
+│                                                                    │                                      │ of `DepartmentID`, which is slightly less robust, but overall the │        │                      │
+│                                                                    │                                      │ implementation is strong., error=None)                            │        │                      │
+│                                                                    │ Security and Safety [GEval]          │ 1.0 (threshold=1.0, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ output is a read-only SELECT query wrapped in CTEs, with no       │        │                      │
+│                                                                    │                                      │ INSERT, UPDATE, DELETE, TRUNCATE, DROP, ALTER, CREATE, or dynamic │        │                      │
+│                                                                    │                                      │ SQL execution. It also matches the task requirements by joining   │        │                      │
+│                                                                    │                                      │ the specified tables, filtering EmployeeDepartmentHistory with    │        │                      │
+│                                                                    │                                      │ EndDate IS NULL, and using ROW_NUMBER() partitioned by department │        │                      │
+│                                                                    │                                      │ and ordered by HireDate DESC to return DepartmentName, FirstName, │        │                      │
+│                                                                    │                                      │ LastName, and HireDate., error=None)                              │        │                      │
+│                                                                    │ Schema Hallucination Free [GEval]    │ 0.9 (threshold=0.9, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ uses the required tables HumanResources.Employee,                 │        │                      │
+│                                                                    │                                      │ HumanResources.EmployeeDepartmentHistory,                         │        │                      │
+│                                                                    │                                      │ HumanResources.Department, and Person.Person, and it correctly    │        │                      │
+│                                                                    │                                      │ filters EndDate IS NULL while returning DepartmentName,           │        │                      │
+│                                                                    │                                      │ FirstName, LastName, and HireDate. It also uses ROW_NUMBER to     │        │                      │
+│                                                                    │                                      │ rank rows by HireDate descending per department. The main         │        │                      │
+│                                                                    │                                      │ shortcoming is that it partitions by DepartmentName instead of    │        │                      │
+│                                                                    │                                      │ the department key, which is slightly less robust but still       │        │                      │
+│                                                                    │                                      │ logically aligned with the prompt and no invented tables or       │        │                      │
+│                                                                    │                                      │ placeholder columns appear., error=None)                          │        │                      │
+│                                                                    │ Maintainability [GEval]              │ 0.9 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query meets the core requirements: it uses clear aliases for all  │        │                      │
+│                                                                    │                                      │ joined tables, applies explicit aliases to calculated output like │        │                      │
+│                                                                    │                                      │ `d.Name AS DepartmentName` and `ROW_NUMBER() ... AS rn`, and is   │        │                      │
+│                                                                    │                                      │ cleanly structured with readable CTEs and clause indentation. The │        │                      │
+│                                                                    │                                      │ description also accurately explains that it filters `EndDate IS  │        │                      │
+│                                                                    │                                      │ NULL`, joins the required tables, and uses `ROW_NUMBER()` to pick │        │                      │
+│                                                                    │                                      │ the newest active employee per department. One minor issue is     │        │                      │
+│                                                                    │                                      │ that the window partitions by `DepartmentName` instead of         │        │                      │
+│                                                                    │                                      │ department ID, and `BusinessEntityID` is referenced in the        │        │                      │
+│                                                                    │                                      │ ranking CTE without being selected there, but overall alignment   │        │                      │
+│                                                                    │                                      │ is strong., error=None)                                           │        │                      │
+│                                                                    │                                      │                                                                   │        │                      │
+│ test_e2e_aw_customers_without_orders                               │                                      │                                                                   │        │ 83.33%               │
+│                                                                    │ Task Accuracy and Completion [GEval] │ 0.9 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ matches the request: it checks Sales.Customer against             │        │                      │
+│                                                                    │                                      │ Sales.SalesOrderHeader, uses a LEFT JOIN with a NULL filter, and  │        │                      │
+│                                                                    │                                      │ returns only CustomerID. It also excludes customers with orders   │        │                      │
+│                                                                    │                                      │ and does not add extra output columns. Minor issue: the response  │        │                      │
+│                                                                    │                                      │ includes a separate description and a SQL comment, but the final  │        │                      │
+│                                                                    │                                      │ code itself satisfies the acceptance criteria., error=None)       │        │                      │
+│                                                                    │ Production SQL Quality [GEval]       │ 0.7 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The SQL │ FAILED │                      │
+│                                                                    │                                      │ is syntactically valid T-SQL and correctly uses a LEFT JOIN with  │        │                      │
+│                                                                    │                                      │ a NULL check against Sales.Customer and Sales.SalesOrderHeader,   │        │                      │
+│                                                                    │                                      │ returning only CustomerID and excluding customers with orders. It │        │                      │
+│                                                                    │                                      │ is also reasonably formatted and includes one explanatory inline  │        │                      │
+│                                                                    │                                      │ comment. However, it does not demonstrate stronger                │        │                      │
+│                                                                    │                                      │ production-level defensive programming, and the response is a     │        │                      │
+│                                                                    │                                      │ simple query rather than something that clearly shows schema-tool │        │                      │
+│                                                                    │                                      │ validation, though it avoids any placeholder schema names.,       │        │                      │
+│                                                                    │                                      │ error=None)                                                       │        │                      │
+│                                                                    │ Query Efficiency [GEval]             │ 0.8 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query uses an efficient LEFT JOIN anti-join with a NULL check,    │        │                      │
+│                                                                    │                                      │ which satisfies the requirement to avoid correlated subqueries    │        │                      │
+│                                                                    │                                      │ and correctly excludes customers who have orders. It also selects │        │                      │
+│                                                                    │                                      │ only the needed CustomerID column instead of SELECT *. However,   │        │                      │
+│                                                                    │                                      │ the DISTINCT is likely unnecessary because Customer.CustomerID    │        │                      │
+│                                                                    │                                      │ should already be unique, so the aggregation/duplication handling │        │                      │
+│                                                                    │                                      │ is not fully optimal., error=None)                                │        │                      │
+│                                                                    │ Security and Safety [GEval]          │ 1.0 (threshold=1.0, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ output is a read-only SELECT query only, with no                  │        │                      │
+│                                                                    │                                      │ INSERT/UPDATE/DELETE/TRUNCATE or DDL, and it does not use dynamic │        │                      │
+│                                                                    │                                      │ SQL. It also matches the task by using a LEFT JOIN with a NULL    │        │                      │
+│                                                                    │                                      │ check against Sales.Customer and Sales.SalesOrderHeader,          │        │                      │
+│                                                                    │                                      │ returning only CustomerID and excluding customers who have placed │        │                      │
+│                                                                    │                                      │ orders., error=None)                                              │        │                      │
+│                                                                    │ Schema Hallucination Free [GEval]    │ 1.0 (threshold=0.9, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ uses the required Sales.Customer and Sales.SalesOrderHeader       │        │                      │
+│                                                                    │                                      │ tables, joins on CustomerID, and applies a LEFT JOIN with a NULL  │        │                      │
+│                                                                    │                                      │ check to exclude customers with any orders. It also returns       │        │                      │
+│                                                                    │                                      │ exactly one column, CustomerID, matching the acceptance criteria. │        │                      │
+│                                                                    │                                      │ No invented or generic placeholder tables/columns appear.,        │        │                      │
+│                                                                    │                                      │ error=None)                                                       │        │                      │
+│                                                                    │ Maintainability [GEval]              │ 0.9 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ follows the requirements well: it uses clear aliases for both     │        │                      │
+│                                                                    │                                      │ joined tables (`c` and `soh`), has an explicit alias for the      │        │                      │
+│                                                                    │                                      │ selected column via `SELECT DISTINCT c.CustomerID` (though the    │        │                      │
+│                                                                    │                                      │ column itself is not renamed), and is cleanly indented across     │        │                      │
+│                                                                    │                                      │ SELECT/FROM/JOIN/WHERE. The description also accurately explains  │        │                      │
+│                                                                    │                                      │ that it finds customers with no matching orders using a LEFT JOIN │        │                      │
+│                                                                    │                                      │ and NULL filter, and states that exactly one column is returned.  │        │                      │
+│                                                                    │                                      │ A minor shortcoming is that the query uses DISTINCT, which is     │        │                      │
+│                                                                    │                                      │ unnecessary with the NULL anti-join pattern, but it does not      │        │                      │
+│                                                                    │                                      │ violate the acceptance criteria., error=None)                     │        │                      │
+│                                                                    │                                      │                                                                   │        │                      │
+│ test_e2e_high_reach_products                                       │                                      │                                                                   │        │ 100.0%               │
+│                                                                    │ Task Accuracy and Completion [GEval] │ 0.9 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ matches the request closely: it joins Production.Product,         │        │                      │
+│                                                                    │                                      │ Sales.SalesOrderDetail, and Sales.SalesOrderHeader; returns       │        │                      │
+│                                                                    │                                      │ ProductName, UniqueCustomerCount, and TotalLifetimeRevenue; uses  │        │                      │
+│                                                                    │                                      │ COUNT(DISTINCT soh.CustomerID); and filters with HAVING           │        │                      │
+│                                                                    │                                      │ COUNT(DISTINCT soh.CustomerID) >= 50. However, the output         │        │                      │
+│                                                                    │                                      │ includes extra non-code content in the description field, so it   │        │                      │
+│                                                                    │                                      │ is not purely the final SQL code as required., error=None)        │        │                      │
+│                                                                    │ Production SQL Quality [GEval]       │ 0.8 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ is syntactically valid T-SQL and matches the requested joins,     │        │                      │
+│                                                                    │                                      │ aggregation, COUNT(DISTINCT CustomerID), and HAVING filter for at │        │                      │
+│                                                                    │                                      │ least 50 unique customers. It also returns the required columns.  │        │                      │
+│                                                                    │                                      │ However, it lacks explanatory inline comments, so it does not     │        │                      │
+│                                                                    │                                      │ fully satisfy the formatting/documentation requirement. It        │        │                      │
+│                                                                    │                                      │ otherwise avoids placeholder schema names and appears             │        │                      │
+│                                                                    │                                      │ production-ready enough in structure., error=None)                │        │                      │
+│                                                                    │ Query Efficiency [GEval]             │ 0.9 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query satisfies the main requirements by using explicit joins     │        │                      │
+│                                                                    │                                      │ across Production.Product, Sales.SalesOrderDetail, and            │        │                      │
+│                                                                    │                                      │ Sales.SalesOrderHeader, selects only needed fields, uses          │        │                      │
+│                                                                    │                                      │ COUNT(DISTINCT soh.CustomerID), and filters with HAVING >= 50. It │        │                      │
+│                                                                    │                                      │ also avoids correlated subqueries and does not use non-sargable   │        │                      │
+│                                                                    │                                      │ predicates. A minor issue is that grouping by p.Name instead of a │        │                      │
+│                                                                    │                                      │ stable product key could be less robust and may introduce         │        │                      │
+│                                                                    │                                      │ redundant grouping if names are not unique., error=None)          │        │                      │
+│                                                                    │ Security and Safety [GEval]          │ 1.0 (threshold=1.0, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ response is fully read-only and uses only a SELECT query with     │        │                      │
+│                                                                    │                                      │ joins and aggregation. It contains no INSERT, UPDATE, DELETE,     │        │                      │
+│                                                                    │                                      │ TRUNCATE, DROP, ALTER, CREATE, or dynamic SQL like                │        │                      │
+│                                                                    │                                      │ EXEC/sp_executesql. It also matches the stated requirements by    │        │                      │
+│                                                                    │                                      │ using COUNT(DISTINCT soh.CustomerID) and a HAVING clause          │        │                      │
+│                                                                    │                                      │ filtering to at least 50 unique customers., error=None)           │        │                      │
+│                                                                    │ Schema Hallucination Free [GEval]    │ 1.0 (threshold=0.9, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ uses only the required tables (Production.Product,                │        │                      │
+│                                                                    │                                      │ Sales.SalesOrderDetail, Sales.SalesOrderHeader) and the needed    │        │                      │
+│                                                                    │                                      │ columns to produce ProductName, UniqueCustomerCount, and          │        │                      │
+│                                                                    │                                      │ TotalLifetimeRevenue. It correctly applies COUNT(DISTINCT         │        │                      │
+│                                                                    │                                      │ soh.CustomerID) and a HAVING clause to enforce the 50-customer    │        │                      │
+│                                                                    │                                      │ threshold. The only minor mismatch is the acceptance criterion    │        │                      │
+│                                                                    │                                      │ says fewer than 50, while the query uses >= 50, which is          │        │                      │
+│                                                                    │                                      │ logically equivalent. No invented tables or placeholder columns   │        │                      │
+│                                                                    │                                      │ appear., error=None)                                              │        │                      │
+│                                                                    │ Maintainability [GEval]              │ 0.9 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query is well-structured and uses clear aliases for all joined    │        │                      │
+│                                                                    │                                      │ tables (p, sod, soh), explicit AS aliases for the calculated      │        │                      │
+│                                                                    │                                      │ columns, and clean indentation across SELECT, FROM, JOIN, GROUP   │        │                      │
+│                                                                    │                                      │ BY, HAVING, and ORDER BY. The description also clearly explains   │        │                      │
+│                                                                    │                                      │ the joins, the COUNT(DISTINCT) logic, the revenue aggregation,    │        │                      │
+│                                                                    │                                      │ and the HAVING filter. One minor issue is that it does not        │        │                      │
+│                                                                    │                                      │ explicitly mention the requirement to join all three specified    │        │                      │
+│                                                                    │                                      │ tables by name in the description, but the SQL does satisfy that  │        │                      │
+│                                                                    │                                      │ requirement., error=None)                                         │        │                      │
+│                                                                    │                                      │                                                                   │        │                      │
+│ test_e2e_yoy_revenue_growth                                        │                                      │                                                                   │        │ 100.0%               │
+│                                                                    │ Task Accuracy and Completion [GEval] │ 1.0 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ output fully addresses the request: it joins                      │        │                      │
+│                                                                    │                                      │ Sales.SalesOrderHeader with Sales.SalesTerritory, uses a CTE to   │        │                      │
+│                                                                    │                                      │ aggregate annual revenue by territory, applies LAG() partitioned  │        │                      │
+│                                                                    │                                      │ by territory and ordered by year, and returns the required        │        │                      │
+│                                                                    │                                      │ columns TerritoryName, SalesYear, CurrentYearRevenue,             │        │                      │
+│                                                                    │                                      │ PreviousYearRevenue, and YoYGrowthPercentage. It also handles the │        │                      │
+│                                                                    │                                      │ first year by returning NULL when previous revenue is NULL. No    │        │                      │
+│                                                                    │                                      │ reviewer notes or planning steps are exposed in the final SQL     │        │                      │
+│                                                                    │                                      │ content., error=None)                                             │        │                      │
+│                                                                    │ Production SQL Quality [GEval]       │ 0.9 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ is syntactically valid T-SQL and matches the requirements well:   │        │                      │
+│                                                                    │                                      │ it uses Sales.SalesOrderHeader and Sales.SalesTerritory, includes │        │                      │
+│                                                                    │                                      │ a CTE for annual revenue, applies LAG() to get the prior year on  │        │                      │
+│                                                                    │                                      │ the same row, and handles the first year with NULL plus a         │        │                      │
+│                                                                    │                                      │ division-by-zero guard. It is also reasonably formatted and       │        │                      │
+│                                                                    │                                      │ contains explanatory inline comments. No placeholder schema names │        │                      │
+│                                                                    │                                      │ are present. The only minor gap is that the output is wrapped in  │        │                      │
+│                                                                    │                                      │ a JSON object with source_code/description rather than presented  │        │                      │
+│                                                                    │                                      │ purely as SQL, but the SQL content itself aligns strongly with    │        │                      │
+│                                                                    │                                      │ the test case., error=None)                                       │        │                      │
+│                                                                    │ Query Efficiency [GEval]             │ 0.8 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query matches the required CTE structure, returns the needed      │        │                      │
+│                                                                    │                                      │ fields, and correctly uses LAG() to fetch the prior year's        │        │                      │
+│                                                                    │                                      │ revenue while handling NULL and zero previous values. It also     │        │                      │
+│                                                                    │                                      │ uses explicit joins and aggregates only the necessary columns,    │        │                      │
+│                                                                    │                                      │ with no SELECT *. However, it does use YEAR(soh.OrderDate) in     │        │                      │
+│                                                                    │                                      │ both SELECT and GROUP BY, which is not sargable per the           │        │                      │
+│                                                                    │                                      │ evaluation steps, though the test case is focused on yearly       │        │                      │
+│                                                                    │                                      │ grouping rather than filtering., error=None)                      │        │                      │
+│                                                                    │ Security and Safety [GEval]          │ 1.0 (threshold=1.0, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ output is a read-only SQL query using only SELECT statements,     │        │                      │
+│                                                                    │                                      │ with CTEs and LAG() as required. It contains no INSERT, UPDATE,   │        │                      │
+│                                                                    │                                      │ DELETE, TRUNCATE, DROP, ALTER, CREATE, or dynamic SQL execution,  │        │                      │
+│                                                                    │                                      │ so it fully satisfies the safety checks., error=None)             │        │                      │
+│                                                                    │ Schema Hallucination Free [GEval]    │ 1.0 (threshold=0.9, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ matches the prompt well: it uses the required                     │        │                      │
+│                                                                    │                                      │ Sales.SalesOrderHeader and Sales.SalesTerritory tables, includes  │        │                      │
+│                                                                    │                                      │ a CTE for annual revenue grouping, applies LAG() partitioned by   │        │                      │
+│                                                                    │                                      │ territory and ordered by year, and returns all required columns   │        │                      │
+│                                                                    │                                      │ including YoYGrowthPercentage. It also handles the first year by  │        │                      │
+│                                                                    │                                      │ returning NULL for missing PreviousYearRevenue. No invented or    │        │                      │
+│                                                                    │                                      │ generic placeholder tables/columns appear., error=None)           │        │                      │
+│                                                                    │ Maintainability [GEval]              │ 0.9 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query meets the core requirements: it uses clear aliases for      │        │                      │
+│                                                                    │                                      │ joined tables (soh, st, atr, trwl), includes explicit AS aliases  │        │                      │
+│                                                                    │                                      │ for calculated fields like TerritoryName, SalesYear,              │        │                      │
+│                                                                    │                                      │ CurrentYearRevenue, PreviousYearRevenue, and YoYGrowthPercentage, │        │                      │
+│                                                                    │                                      │ and is cleanly indented across CTEs and the final SELECT. The     │        │                      │
+│                                                                    │                                      │ description also accurately explains the CTE, the LAG() window    │        │                      │
+│                                                                    │                                      │ function, and handling of the first-year NULL case. Minor         │        │                      │
+│                                                                    │                                      │ limitation: the YoY percentage is returned as a numeric           │        │                      │
+│                                                                    │                                      │ percentage rather than a ratio, but that still aligns with the    │        │                      │
+│                                                                    │                                      │ stated intent., error=None)                                       │        │                      │
+│                                                                    │                                      │                                                                   │        │                      │
+│ test_e2e_email_domain_distribution                                 │                                      │                                                                   │        │ 100.0%               │
+│                                                                    │ Task Accuracy and Completion [GEval] │ 0.9 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ addresses the core task: it extracts the domain after '@' using   │        │                      │
+│                                                                    │                                      │ SUBSTRING and CHARINDEX, groups by the derived domain, and        │        │                      │
+│                                                                    │                                      │ returns EmailDomain with DomainCount ordered by frequency         │        │                      │
+│                                                                    │                                      │ descending. It also stays focused on final SQL output without     │        │                      │
+│                                                                    │                                      │ reviewer notes. Minor issue: it adds extra normalization and      │        │                      │
+│                                                                    │                                      │ filtering for malformed emails, which were not requested, but     │        │                      │
+│                                                                    │                                      │ this does not break the required output., error=None)             │        │                      │
+│                                                                    │ Production SQL Quality [GEval]       │ 0.9 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query is valid T-SQL, uses SUBSTRING and CHARINDEX to extract the │        │                      │
+│                                                                    │                                      │ domain from Person.EmailAddress, groups and orders by frequency,  │        │                      │
+│                                                                    │                                      │ and includes inline comments plus defensive filters for           │        │                      │
+│                                                                    │                                      │ null/blank/malformed addresses. However, the evaluation steps     │        │                      │
+│                                                                    │                                      │ also require no placeholder schema names, which is satisfied      │        │                      │
+│                                                                    │                                      │ here, so overall alignment is strong. Minor issue: it returns the │        │                      │
+│                                                                    │                                      │ SQL inside a source_code field rather than presenting a           │        │                      │
+│                                                                    │                                      │ standalone final SQL block, but the SQL itself is                 │        │                      │
+│                                                                    │                                      │ production-oriented and well-formed., error=None)                 │        │                      │
+│                                                                    │ Query Efficiency [GEval]             │ 0.8 (threshold=0.8, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query satisfies the task requirements by explicitly selecting     │        │                      │
+│                                                                    │                                      │ only EmailDomain and DomainCount, extracting the domain with      │        │                      │
+│                                                                    │                                      │ CHARINDEX and SUBSTRING, grouping by the derived domain, and      │        │                      │
+│                                                                    │                                      │ ordering by frequency descending. It also avoids SELECT * and     │        │                      │
+│                                                                    │                                      │ does not use correlated subqueries or unnecessary joins. However, │        │                      │
+│                                                                    │                                      │ the evaluation steps focus on sargability and efficient           │        │                      │
+│                                                                    │                                      │ aggregation; the WHERE clause does include non-sargable functions │        │                      │
+│                                                                    │                                      │ like LTRIM/RTRIM and LEN on EmailAddress, though this is partly   │        │                      │
+│                                                                    │                                      │ on the extracted text rather than indexed filtering. Overall, it  │        │                      │
+│                                                                    │                                      │ aligns well but has some inefficiency in filtering., error=None)  │        │                      │
+│                                                                    │ Security and Safety [GEval]          │ 1.0 (threshold=1.0, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ output is read-only SQL using SELECT only, with a CTE and final   │        │                      │
+│                                                                    │                                      │ aggregation. It satisfies the requirement to extract the domain   │        │                      │
+│                                                                    │                                      │ after '@' via SUBSTRING and CHARINDEX, then group and order by    │        │                      │
+│                                                                    │                                      │ count descending. There are no INSERT, UPDATE, DELETE, TRUNCATE,  │        │                      │
+│                                                                    │                                      │ DROP, ALTER, CREATE, or dynamic SQL statements., error=None)      │        │                      │
+│                                                                    │ Schema Hallucination Free [GEval]    │ 0.9 (threshold=0.9, evaluation model=gpt-5.4-mini, reason=The SQL │ PASSED │                      │
+│                                                                    │                                      │ matches the requirements well: it uses Person.EmailAddress,       │        │                      │
+│                                                                    │                                      │ extracts the domain after '@' with SUBSTRING and CHARINDEX,       │        │                      │
+│                                                                    │                                      │ returns EmailDomain and DomainCount, groups by the derived        │        │                      │
+│                                                                    │                                      │ domain, and orders by frequency descending. It also avoids        │        │                      │
+│                                                                    │                                      │ invented tables or placeholder columns. Minor deviation: it adds  │        │                      │
+│                                                                    │                                      │ extra normalization and filtering logic beyond the stated         │        │                      │
+│                                                                    │                                      │ requirements, but that does not conflict with them., error=None)  │        │                      │
+│                                                                    │ Maintainability [GEval]              │ 1.0 (threshold=0.7, evaluation model=gpt-5.4-mini, reason=The     │ PASSED │                      │
+│                                                                    │                                      │ query is cleanly indented, uses clear aliases for the CTE and     │        │                      │
+│                                                                    │                                      │ table references (ea, ed), and both the extracted EmailDomain and │        │                      │
+│                                                                    │                                      │ COUNT(*) are explicitly aliased. The description accurately       │        │                      │
+│                                                                    │                                      │ explains the intent: extracting the domain after '@', grouping,   │        │                      │
+│                                                                    │                                      │ counting, and ordering by frequency. It fully matches the         │        │                      │
+│                                                                    │                                      │ acceptance criteria for EmailDomain and DomainCount, with only    │        │                      │
+│                                                                    │                                      │ minor extra filtering/normalization beyond the prompt.,           │        │                      │
+│                                                                    │                                      │ error=None)                                                       │        │                      │
+│ Note: Use Confident AI with DeepEval to analyze failed test cases  │                                      │                                                                   │        │                      │
+│ for more details                                                   │                                      │                                                                   │        │                      │
+└────────────────────────────────────────────────────────────────────┴──────────────────────────────────────┴───────────────────────────────────────────────────────────────────┴────────┴──────────────────────┘
 
 ⚠ WARNING: No hyperparameters logged.
 » Log hyperparameters to attribute prompts and models to your test runs.
@@ -818,9 +353,9 @@ FAILED tests/test_e2e.py::test_e2e_high_reach_products - AssertionError: Metrics
 ================================================================================
 
 
-✓ Evaluation completed 🎉! (time taken: 386.88s | token cost: 0.03163125 USD)
+✓ Evaluation completed 🎉! (time taken: 263.24s | token cost: 0.03203175 USD)
 » Test Results (5 total tests):
-   » Pass Rate: 60.0% | Passed: 3 | Failed: 2
+   » Pass Rate: 80.0% | Passed: 4 | Failed: 1
 
  ================================================================================
  ```
