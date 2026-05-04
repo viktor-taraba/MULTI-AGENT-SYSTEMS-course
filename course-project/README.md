@@ -1,11 +1,11 @@
 ### Загальний опис
 
-Система призначеня для повного циклу створення SQL-запитів: від аналізу бізнес-вимог до написання та тестування готового коду (T-SQL, Microsoft SQL Server), запускається з терміналу (python main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
+Мультиагентна система, що симулює AI-команду розробки за патерном Planner–Coder–Reviewer для повного циклу SQL-запитів: від аналізу бізнес-вимог до написання та тестування готового коду (T-SQL, Microsoft SQL Server), запускається з терміналу (python main.py) та працює в інтерактивному режимі — користувач вводить запитання, отримує відповідь, і може продовжити діалог.
 Підтримує зв'язний діалог — пам'ятає попередні повідомлення в межах сесії. Як приклад DWH використовується AdventureWorks 2022 [AdventureWorks sample databases](https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-configure?view=sql-server-ver17&tabs=ssms).
 
-Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>` та `HF_TOKEN=<тут_ваш_ключ>`
+Для коректної роботи потрібен [API-ключ OpenAI](https://platform.openai.com/) та аналогічно для [Hugging Face](https://huggingface.co/settings/tokens) та [Langfuse](https://us.cloud.langfuse.com/), має бути створений файл .env з вказаними ключами: `OPENAI_API_KEY=<тут_ваш_ключ>`, `HF_TOKEN=<тут_ваш_ключ>`, `LANGFUSE_PUBLIC_KEY=<тут_ваш_ключ>`,`LANGFUSE_SECRET_KEY=<тут_ваш_ключ>`,`LANGFUSE_BASE_URL=https://us.cloud.langfuse.com`
 
-Файл залежностей — [requirements.txt](/course-project/screenshots/requirements.txt), встановлення необхідних бібліотек `python3 -m pip install -r requirements.txt`
+Файл залежностей — [requirements.txt](/course-project/screenshots/requirements.txt), встановлення необхідних бібліотек `python -m pip install -r requirements.txt`
 
 Підтримувані формати файлів для RAG (для збереження використовуєьтся chromadb):
 - `PDF-файли (.pdf)` — спочатку намагаємося витягнути текст через `PyPDFLoader`. Якщо сторінки виявляються "порожніми" (наприклад, це скани або складний формат), використовуємо резервний `PyMuPDFLoader`.
@@ -51,6 +51,18 @@ python main.py
 |`planner`|Спілкується з користувачем, досліджує структуру бази даних (схеми, таблиці) та формує чітке технічне завдання (специфікацію).|
 |`coder`|Пише T-SQL код на основі специфікації, перевіряє структуру конкретних таблиць та робить тестові запуски запитів.|
 |`reviewer`|Перевіряє написаний код, виконує його, аналізує продуктивність за допомогою планів виконання (execution plans) та вирішує: затвердити код чи повернути розробнику на доопрацювання.|
+
+Взаємодія між агентами:
+
+| Від | Кому | Що передається (structured output) |
+|-----|------|-----------------------------------|
+| User | Planner | User story (текст) |
+| Planner | User | SpecOutput на затвердження (Human-in-the-Loop gate) |
+| User | Planner | Feedback (якщо специфікацію не затверджено) → BA переробляє spec |
+| Planner | Developer | Затверджена SpecOutput |
+| Developer | Reviewer (QA) | CodeOutput |
+| Reviewer (QA) | Developer | ReviewOutput (verdict=REVISION_NEEDED, issues[], score) — макс. 5 ітерацій |
+| Reviewer (QA) | User | ReviewOutput (verdict=APPROVED) + фінальний код |
 
 ### Скріншоти з Langfuse UI
 
@@ -110,6 +122,16 @@ course-project/
 |`test_reviewer.py`|`test_reviewer_schema_compliance_approved`, `test_reviewer_bug_detection_divide_by_zero`, `test_reviewer_spec_alignment_missing_filter`+ метрики `reviewer_schema_compliance`, `reviewer_bug_detection`, `reviewer_spec_alignment`, `reviewer_actionable_feedback`|Перевіряє агента-QA (Reviewer). Оцінюється його здатність знаходити реальні баги (наприклад, потенційне ділення на нуль), перевіряти код на відповідність специфікації (наприклад, чи не забув розробник фільтр), надавати чіткі інструкції для виправлення та дотримуватись структури відповіді (APPROVED/REVISION_NEEDED).|
 |`test_tools.py`|`test_planner_tools`, `test_planner_tools_error_request`, `test_coder_tools`, `test_reviewer_tools` + метрика `tool_correctness_metric`|Перевіряє коректність виклику інструментів (Tools) кожним з агентів. Тестується, чи Planner викликає пошук і схеми, чи просить він уточнення при незрозумілому запиті, та чи Coder і Reviewer правильно використовують інструменти виконання SQL і перевірки планів виконання.|
 |`test_e2e.py`|`test_e2e_recent_hires`, `test_e2e_aw_customers_without_orders`, `test_e2e_high_reach_products`, `test_e2e_yoy_revenue_growth`, `test_e2e_email_domain_distribution` + метрики `e2e_task_completion`, `e2e_production_readiness`, `e2e_query_efficiency`, `e2e_security_safety`, `e2e_schema_hallucination`, `e2e_maintainability`|Наскрізні (End-to-End) тести всієї системи. Оцінюють успішність вирішення задач, безпеку коду (відсутність DML/DDL команд), ефективність, відсутність галюцинацій (вигаданих таблиць/колонок) тощо.|
+
+Як запустити тести:
+
+```bash
+# Run all tests
+deepeval test run tests/
+
+# Run specific test file
+deepeval test run tests/test_planner.py
+```
 
 #### Результат для `deepeval test run tests/test_e2e.py`:
 
