@@ -14,13 +14,6 @@ import json
 import uuid
 load_dotenv()
 
-# додати тести по тулах (для кожного агента окремо) (все через deepeval)
-# для оціночного плану запиту покращити форматування аутпуту
-# додати до RAG відео та документ по оптимізації запитів
-# Get_Sample_Rows: Accepts a table_name and returns the top 3–5 rows. This is crucial for agents to understand data formatting (e.g., are dates stored as YYYY-MM-DD or unix timestamps? Are strings lowercase?).
-
-# подивитися як отримати фактичний план запиту, а не лише оціночнийs
-
 langfuse = get_client()
 langfuse_handler = CallbackHandler()
 
