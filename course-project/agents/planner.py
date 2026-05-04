@@ -8,7 +8,9 @@ from tools import (
     web_search, 
     knowledge_search,
     read_url,
-    ask_user_for_clarification
+    ask_user_for_clarification,
+    list_schemas_and_tables,
+    get_sample_rows
 )
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
@@ -20,7 +22,7 @@ memory = InMemorySaver(serde=custom_serializer)
 
 planner = create_agent(
     model=LLM_POWERFUL,
-    tools=[knowledge_search,web_search,read_url,ask_user_for_clarification],
+    tools=[knowledge_search,web_search,read_url,ask_user_for_clarification,list_schemas_and_tables,get_sample_rows],
     system_prompt=Business_Analyst_SYSTEM_prompt,
     response_format=SpecOutput,
     checkpointer=memory,
